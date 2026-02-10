@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <RootNamespace>VibeMQ.Core</RootNamespace>
+    <Description>Core models, enums, and interfaces for VibeMQ message broker</Description>
+  </PropertyGroup>
+
+</Project>

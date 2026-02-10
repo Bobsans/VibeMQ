@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <RootNamespace>VibeMQ.Protocol</RootNamespace>
+    <Description>Wire protocol, framing, and serialization for VibeMQ</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\VibeMQ.Core\VibeMQ.Core.csproj" />
+  </ItemGroup>
+
+</Project>
