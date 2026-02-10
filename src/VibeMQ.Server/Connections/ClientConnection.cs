@@ -9,10 +9,11 @@ namespace VibeMQ.Server.Connections;
 /// <summary>
 /// Represents a single client connection to the broker.
 /// Wraps a <see cref="TcpClient"/> with frame-level read/write operations.
+/// Supports both plain TCP and TLS (via <see cref="Stream"/> abstraction).
 /// </summary>
 public sealed partial class ClientConnection : IAsyncDisposable {
     private readonly TcpClient _tcpClient;
-    private readonly NetworkStream _stream;
+    private Stream _stream;
     private readonly ILogger _logger;
     private readonly int _maxMessageSize;
     private readonly SemaphoreSlim _writeLock = new(1, 1);
@@ -69,6 +70,14 @@ public sealed partial class ClientConnection : IAsyncDisposable {
     public bool IsConnected => _tcpClient.Connected && Volatile.Read(ref _disposed) == 0;
 
     /// <summary>
+    /// Upgrades the connection stream to TLS.
+    /// Must be called before any read/write operations.
+    /// </summary>
+    public void UpgradeToTls(Stream sslStream) {
+        _stream = sslStream;
+    }
+
+    /// <summary>
     /// Reads the next protocol message from the connection.
     /// Returns null if the connection was closed gracefully.
     /// </summary>
@@ -116,15 +125,13 @@ public sealed partial class ClientConnection : IAsyncDisposable {
         LogDisconnecting(Id, RemoteEndPoint);
 
         try {
-            _stream.Close();
+            await _stream.DisposeAsync().ConfigureAwait(false);
         } catch {
             // Ignore stream close errors
         }
 
         _tcpClient.Close();
         _writeLock.Dispose();
-
-        await Task.CompletedTask.ConfigureAwait(false);
     }
 
     [LoggerMessage(Level = LogLevel.Debug, Message = "Client {clientId} disconnecting ({remoteEndPoint}).")]

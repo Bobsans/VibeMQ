@@ -23,4 +23,14 @@ public sealed class ClientOptions {
     /// Timeout for waiting a response from the broker. Default: 10 seconds.
     /// </summary>
     public TimeSpan CommandTimeout { get; set; } = TimeSpan.FromSeconds(10);
+
+    /// <summary>
+    /// Whether to use TLS for the connection. Default: false.
+    /// </summary>
+    public bool UseTls { get; set; }
+
+    /// <summary>
+    /// Whether to skip TLS certificate validation (for self-signed certs). Default: false.
+    /// </summary>
+    public bool SkipCertificateValidation { get; set; }
 }

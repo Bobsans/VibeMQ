@@ -8,6 +8,7 @@ using VibeMQ.Server.Connections;
 using VibeMQ.Server.Delivery;
 using VibeMQ.Server.Handlers;
 using VibeMQ.Server.Queues;
+using VibeMQ.Server.Security;
 
 namespace VibeMQ.Server;
 
@@ -77,6 +78,23 @@ public sealed class BrokerBuilder {
     }
 
     /// <summary>
+    /// Configures TLS/SSL options.
+    /// </summary>
+    public BrokerBuilder UseTls(Action<TlsOptions> configure) {
+        configure(_options.Tls);
+        _options.Tls.Enabled = true;
+        return this;
+    }
+
+    /// <summary>
+    /// Configures rate limiting options.
+    /// </summary>
+    public BrokerBuilder ConfigureRateLimiting(Action<RateLimitOptions> configure) {
+        configure(_options.RateLimit);
+        return this;
+    }
+
+    /// <summary>
     /// Sets the logger factory for the broker. If not called, logging is disabled.
     /// </summary>
     public BrokerBuilder UseLoggerFactory(ILoggerFactory loggerFactory) {
@@ -130,12 +148,19 @@ public sealed class BrokerBuilder {
 
         var dispatcher = new CommandDispatcher(handlers, _loggerFactory.CreateLogger<CommandDispatcher>());
 
+        // Security
+        var rateLimiter = new RateLimiter(
+            _options.RateLimit,
+            _loggerFactory.CreateLogger<RateLimiter>()
+        );
+
         return new BrokerServer(
             _options,
             connectionManager,
             dispatcher,
             queueManager,
             ackTracker,
+            rateLimiter,
             _loggerFactory.CreateLogger<BrokerServer>()
         );
     }

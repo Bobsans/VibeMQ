@@ -33,4 +33,14 @@ public sealed class BrokerOptions {
     /// Default options applied to newly created queues.
     /// </summary>
     public QueueDefaults QueueDefaults { get; set; } = new();
+
+    /// <summary>
+    /// TLS/SSL configuration. Disabled by default.
+    /// </summary>
+    public TlsOptions Tls { get; set; } = new();
+
+    /// <summary>
+    /// Rate limiting configuration.
+    /// </summary>
+    public RateLimitOptions RateLimit { get; set; } = new();
 }

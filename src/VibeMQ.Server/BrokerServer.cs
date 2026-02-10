@@ -7,6 +7,7 @@ using VibeMQ.Server.Connections;
 using VibeMQ.Server.Delivery;
 using VibeMQ.Server.Handlers;
 using VibeMQ.Server.Queues;
+using VibeMQ.Server.Security;
 
 namespace VibeMQ.Server;
 
@@ -22,6 +23,7 @@ public sealed partial class BrokerServer : IAsyncDisposable {
     private readonly CommandDispatcher _commandDispatcher;
     private readonly QueueManager _queueManager;
     private readonly AckTracker _ackTracker;
+    private readonly RateLimiter _rateLimiter;
     private readonly ILogger<BrokerServer> _logger;
     private readonly CancellationTokenSource _shutdownCts = new();
     private TcpListener? _listener;
@@ -32,6 +34,7 @@ public sealed partial class BrokerServer : IAsyncDisposable {
         CommandDispatcher commandDispatcher,
         QueueManager queueManager,
         AckTracker ackTracker,
+        RateLimiter rateLimiter,
         ILogger<BrokerServer> logger
     ) {
         _options = options;
@@ -39,6 +42,7 @@ public sealed partial class BrokerServer : IAsyncDisposable {
         _commandDispatcher = commandDispatcher;
         _queueManager = queueManager;
         _ackTracker = ackTracker;
+        _rateLimiter = rateLimiter;
         _logger = logger;
     }
 
@@ -64,7 +68,7 @@ public sealed partial class BrokerServer : IAsyncDisposable {
         _listener = new TcpListener(IPAddress.Any, _options.Port);
         _listener.Start();
 
-        LogServerStarted(_options.Port, _options.MaxConnections);
+        LogServerStarted(_options.Port, _options.MaxConnections, _options.Tls.Enabled);
 
         try {
             while (!token.IsCancellationRequested) {
@@ -89,11 +93,9 @@ public sealed partial class BrokerServer : IAsyncDisposable {
     public async Task StopAsync(CancellationToken cancellationToken = default) {
         LogServerShuttingDown();
 
-        // 1. Stop accepting new connections
         _listener?.Stop();
         await _shutdownCts.CancelAsync().ConfigureAwait(false);
 
-        // 2. Notify connected clients about shutdown
         var connections = _connectionManager.GetAll();
 
         foreach (var connection in connections) {
@@ -109,10 +111,7 @@ public sealed partial class BrokerServer : IAsyncDisposable {
             }
         }
 
-        // 3. Wait for in-flight messages to be acknowledged (with grace period)
         await WaitForInFlightMessagesAsync(_shutdownGracePeriod, cancellationToken).ConfigureAwait(false);
-
-        // 4. Cleanup
         await _ackTracker.DisposeAsync().ConfigureAwait(false);
         await _connectionManager.DisposeAsync().ConfigureAwait(false);
     }
@@ -141,8 +140,33 @@ public sealed partial class BrokerServer : IAsyncDisposable {
     }
 
     private async Task HandleClientAsync(TcpClient tcpClient, CancellationToken cancellationToken) {
+        var remoteEndPoint = tcpClient.Client.RemoteEndPoint as IPEndPoint;
+        var ipAddress = remoteEndPoint?.Address.ToString() ?? "unknown";
+
+        // Rate limit: connections per IP
+        if (!_rateLimiter.IsConnectionAllowed(ipAddress)) {
+            tcpClient.Close();
+            return;
+        }
+
         var connectionId = Guid.NewGuid().ToString("N");
         var connection = new ClientConnection(connectionId, tcpClient, _options.MaxMessageSize, _logger);
+
+        // TLS handshake if enabled
+        if (_options.Tls.Enabled) {
+            try {
+                var sslStream = await TlsHelper.AuthenticateAsServerAsync(
+                    tcpClient.GetStream(), _options.Tls, cancellationToken
+                ).ConfigureAwait(false);
+
+                connection.UpgradeToTls(sslStream);
+                LogTlsHandshakeCompleted(connectionId);
+            } catch (Exception ex) {
+                LogTlsHandshakeFailed(connectionId, ex);
+                await connection.DisposeAsync().ConfigureAwait(false);
+                return;
+            }
+        }
 
         if (!_connectionManager.TryAdd(connection)) {
             try {
@@ -165,6 +189,7 @@ public sealed partial class BrokerServer : IAsyncDisposable {
         } catch (Exception ex) {
             LogClientError(connectionId, ex);
         } finally {
+            _rateLimiter.RemoveClient(connectionId);
             await _connectionManager.RemoveAsync(connectionId).ConfigureAwait(false);
         }
     }
@@ -175,6 +200,22 @@ public sealed partial class BrokerServer : IAsyncDisposable {
 
             if (message is null) {
                 break;
+            }
+
+            // Rate limit: messages per client
+            if (!_rateLimiter.IsMessageAllowed(connection.Id)) {
+                await connection.SendErrorAsync("RATE_LIMITED", "Message rate limit exceeded.", cancellationToken)
+                    .ConfigureAwait(false);
+                continue;
+            }
+
+            // Validate message
+            var validationError = MessageValidator.Validate(message);
+
+            if (validationError is not null) {
+                await connection.SendErrorAsync("INVALID_MESSAGE", validationError, cancellationToken)
+                    .ConfigureAwait(false);
+                continue;
             }
 
             if (!connection.IsAuthenticated && message.Type != CommandType.Connect && message.Type != CommandType.Ping) {
@@ -192,8 +233,8 @@ public sealed partial class BrokerServer : IAsyncDisposable {
         _shutdownCts.Dispose();
     }
 
-    [LoggerMessage(Level = LogLevel.Information, Message = "VibeMQ server started on port {port}. Max connections: {maxConnections}.")]
-    private partial void LogServerStarted(int port, int maxConnections);
+    [LoggerMessage(Level = LogLevel.Information, Message = "VibeMQ server started on port {port}. Max connections: {maxConnections}. TLS: {tlsEnabled}.")]
+    private partial void LogServerStarted(int port, int maxConnections, bool tlsEnabled);
 
     [LoggerMessage(Level = LogLevel.Information, Message = "VibeMQ server shutting down...")]
     private partial void LogServerShuttingDown();
@@ -206,6 +247,12 @@ public sealed partial class BrokerServer : IAsyncDisposable {
 
     [LoggerMessage(Level = LogLevel.Warning, Message = "Shutdown grace period expired. {count} messages still unacknowledged.")]
     private partial void LogInFlightTimeout(int count);
+
+    [LoggerMessage(Level = LogLevel.Debug, Message = "TLS handshake completed for client {clientId}.")]
+    private partial void LogTlsHandshakeCompleted(string clientId);
+
+    [LoggerMessage(Level = LogLevel.Warning, Message = "TLS handshake failed for client {clientId}.")]
+    private partial void LogTlsHandshakeFailed(string clientId, Exception exception);
 
     [LoggerMessage(Level = LogLevel.Debug, Message = "Client {clientId} disconnected abruptly.")]
     private partial void LogClientDisconnectedAbruptly(string clientId);

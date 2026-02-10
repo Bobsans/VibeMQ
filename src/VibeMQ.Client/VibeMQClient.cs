@@ -1,4 +1,5 @@
 using System.Collections.Concurrent;
+using System.Net.Security;
 using System.Net.Sockets;
 using System.Text.Json;
 using Microsoft.Extensions.Logging;
@@ -22,7 +23,7 @@ public sealed partial class VibeMQClient : IAsyncDisposable {
     private string _host = string.Empty;
     private int _port;
     private TcpClient? _tcpClient;
-    private NetworkStream? _stream;
+    private Stream? _stream;
     private CancellationTokenSource? _cts;
     private Task? _readLoopTask;
     private Task? _keepAliveTask;
@@ -182,8 +183,20 @@ public sealed partial class VibeMQClient : IAsyncDisposable {
 
         _tcpClient = new TcpClient();
         await _tcpClient.ConnectAsync(_host, _port, cancellationToken).ConfigureAwait(false);
-        _stream = _tcpClient.GetStream();
 
+        Stream stream = _tcpClient.GetStream();
+
+        // TLS handshake if enabled
+        if (_options.UseTls) {
+            var sslStream = new SslStream(stream, leaveInnerStreamOpen: false, (_, _, _, errors) =>
+                _options.SkipCertificateValidation || errors == SslPolicyErrors.None
+            );
+
+            await sslStream.AuthenticateAsClientAsync(_host).ConfigureAwait(false);
+            stream = sslStream;
+        }
+
+        _stream = stream;
         _cts = new CancellationTokenSource();
 
         // Authenticate if required
