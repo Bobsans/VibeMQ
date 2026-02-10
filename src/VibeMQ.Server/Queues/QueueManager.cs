@@ -6,6 +6,7 @@ using VibeMQ.Core.Enums;
 using VibeMQ.Core.Interfaces;
 using VibeMQ.Core.Models;
 using VibeMQ.Protocol;
+using VibeMQ.Core.Metrics;
 using VibeMQ.Server.Connections;
 using VibeMQ.Server.Delivery;
 
@@ -20,6 +21,7 @@ public sealed partial class QueueManager : IQueueManager {
     private readonly ConnectionManager _connectionManager;
     private readonly AckTracker _ackTracker;
     private readonly DeadLetterQueue _deadLetterQueue;
+    private readonly IBrokerMetrics _metrics;
     private readonly QueueDefaults _defaults;
     private readonly ILogger<QueueManager> _logger;
 
@@ -27,12 +29,14 @@ public sealed partial class QueueManager : IQueueManager {
         ConnectionManager connectionManager,
         AckTracker ackTracker,
         DeadLetterQueue deadLetterQueue,
+        IBrokerMetrics metrics,
         QueueDefaults defaults,
         ILogger<QueueManager> logger
     ) {
         _connectionManager = connectionManager;
         _ackTracker = ackTracker;
         _deadLetterQueue = deadLetterQueue;
+        _metrics = metrics;
         _defaults = defaults;
         _logger = logger;
 
@@ -111,11 +115,14 @@ public sealed partial class QueueManager : IQueueManager {
             if (queue.Options.OverflowStrategy == OverflowStrategy.RedirectToDlq && queue.Options.EnableDeadLetterQueue) {
                 await _deadLetterQueue.HandleFailedMessageAsync(message, FailureReason.MaxRetriesExceeded)
                     .ConfigureAwait(false);
+                _metrics.RecordDeadLettered();
             }
 
+            _metrics.RecordError();
             return;
         }
 
+        _metrics.RecordPublished();
         await DeliverAsync(queue, cancellationToken).ConfigureAwait(false);
     }
 
@@ -123,12 +130,14 @@ public sealed partial class QueueManager : IQueueManager {
     public Task<bool> AcknowledgeAsync(string messageId, CancellationToken cancellationToken = default) {
         // First try the AckTracker (centralized tracking)
         if (_ackTracker.Acknowledge(messageId)) {
+            _metrics.RecordAcknowledged();
             return Task.FromResult(true);
         }
 
         // Fallback: check individual queues
         foreach (var queue in _queues.Values) {
             if (queue.Acknowledge(messageId)) {
+                _metrics.RecordAcknowledged();
                 return Task.FromResult(true);
             }
         }
@@ -177,8 +186,10 @@ public sealed partial class QueueManager : IQueueManager {
         try {
             await target.SendMessageAsync(protocolMessage, cancellationToken).ConfigureAwait(false);
             _ackTracker.Track(message, target.Id);
+            _metrics.RecordDelivered(DateTime.UtcNow - message.Timestamp);
             LogMessageDelivered(message.Id, queue.Name, target.Id);
         } catch (Exception ex) {
+            _metrics.RecordError();
             LogDeliveryFailed(message.Id, target.Id, ex);
             queue.Enqueue(message);
         }
@@ -206,8 +217,10 @@ public sealed partial class QueueManager : IQueueManager {
                     _ackTracker.Track(message, subscriber.Id);
                 }
 
+                _metrics.RecordDelivered(DateTime.UtcNow - message.Timestamp);
                 LogMessageDelivered(message.Id, queue.Name, subscriber.Id);
             } catch (Exception ex) {
+                _metrics.RecordError();
                 LogDeliveryFailed(message.Id, subscriber.Id, ex);
             }
         }
@@ -220,6 +233,7 @@ public sealed partial class QueueManager : IQueueManager {
         if (_queues.TryGetValue(message.QueueName, out var queue) && queue.Options.EnableDeadLetterQueue) {
             await _deadLetterQueue.HandleFailedMessageAsync(message, FailureReason.MaxRetriesExceeded)
                 .ConfigureAwait(false);
+            _metrics.RecordDeadLettered();
         }
     }
 
@@ -227,6 +241,7 @@ public sealed partial class QueueManager : IQueueManager {
     /// Called by AckTracker when a message needs to be redelivered.
     /// </summary>
     private async Task OnRetryRequiredAsync(PendingDelivery delivery) {
+        _metrics.RecordRetry();
         var connection = _connectionManager.Get(delivery.ClientId);
 
         if (connection is null || !connection.IsConnected) {

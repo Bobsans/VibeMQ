@@ -1,5 +1,6 @@
 using System.Collections.Concurrent;
 using Microsoft.Extensions.Logging;
+using VibeMQ.Core.Metrics;
 
 namespace VibeMQ.Server.Connections;
 
@@ -10,10 +11,12 @@ namespace VibeMQ.Server.Connections;
 public sealed partial class ConnectionManager : IAsyncDisposable {
     private readonly ConcurrentDictionary<string, ClientConnection> _connections = new();
     private readonly int _maxConnections;
+    private readonly IBrokerMetrics _metrics;
     private readonly ILogger<ConnectionManager> _logger;
 
-    public ConnectionManager(int maxConnections, ILogger<ConnectionManager> logger) {
+    public ConnectionManager(int maxConnections, IBrokerMetrics metrics, ILogger<ConnectionManager> logger) {
         _maxConnections = maxConnections;
+        _metrics = metrics;
         _logger = logger;
     }
 
@@ -28,6 +31,7 @@ public sealed partial class ConnectionManager : IAsyncDisposable {
     public bool TryAdd(ClientConnection connection) {
         if (_connections.Count >= _maxConnections) {
             LogConnectionLimitReached(_maxConnections);
+            _metrics.RecordConnectionRejected();
             return false;
         }
 
@@ -35,6 +39,7 @@ public sealed partial class ConnectionManager : IAsyncDisposable {
             return false;
         }
 
+        _metrics.RecordConnectionAccepted();
         LogClientConnected(connection.Id, connection.RemoteEndPoint?.ToString() ?? "unknown", ActiveCount);
         return true;
     }

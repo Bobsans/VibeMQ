@@ -2,6 +2,7 @@ using System.Net;
 using System.Net.Sockets;
 using Microsoft.Extensions.Logging;
 using VibeMQ.Core.Configuration;
+using VibeMQ.Core.Metrics;
 using VibeMQ.Protocol;
 using VibeMQ.Server.Connections;
 using VibeMQ.Server.Delivery;
@@ -24,6 +25,7 @@ public sealed partial class BrokerServer : IAsyncDisposable {
     private readonly QueueManager _queueManager;
     private readonly AckTracker _ackTracker;
     private readonly RateLimiter _rateLimiter;
+    private readonly IBrokerMetrics _metrics;
     private readonly ILogger<BrokerServer> _logger;
     private readonly CancellationTokenSource _shutdownCts = new();
     private TcpListener? _listener;
@@ -35,6 +37,7 @@ public sealed partial class BrokerServer : IAsyncDisposable {
         QueueManager queueManager,
         AckTracker ackTracker,
         RateLimiter rateLimiter,
+        IBrokerMetrics metrics,
         ILogger<BrokerServer> logger
     ) {
         _options = options;
@@ -43,8 +46,14 @@ public sealed partial class BrokerServer : IAsyncDisposable {
         _queueManager = queueManager;
         _ackTracker = ackTracker;
         _rateLimiter = rateLimiter;
+        _metrics = metrics;
         _logger = logger;
     }
+
+    /// <summary>
+    /// Provides read-only access to broker metrics.
+    /// </summary>
+    public IBrokerMetrics Metrics => _metrics;
 
     /// <summary>
     /// Number of currently active client connections.
@@ -67,6 +76,9 @@ public sealed partial class BrokerServer : IAsyncDisposable {
 
         _listener = new TcpListener(IPAddress.Any, _options.Port);
         _listener.Start();
+
+        // Start background gauge metrics updater
+        _ = UpdateGaugeMetricsLoopAsync(token);
 
         LogServerStarted(_options.Port, _options.MaxConnections, _options.Tls.Enabled);
 
@@ -145,6 +157,7 @@ public sealed partial class BrokerServer : IAsyncDisposable {
 
         // Rate limit: connections per IP
         if (!_rateLimiter.IsConnectionAllowed(ipAddress)) {
+            _metrics.RecordConnectionRejected();
             tcpClient.Close();
             return;
         }
@@ -187,6 +200,7 @@ public sealed partial class BrokerServer : IAsyncDisposable {
         } catch (IOException) {
             LogClientDisconnectedAbruptly(connectionId);
         } catch (Exception ex) {
+            _metrics.RecordError();
             LogClientError(connectionId, ex);
         } finally {
             _rateLimiter.RemoveClient(connectionId);
@@ -225,6 +239,22 @@ public sealed partial class BrokerServer : IAsyncDisposable {
             }
 
             await _commandDispatcher.DispatchAsync(connection, message, cancellationToken).ConfigureAwait(false);
+        }
+    }
+
+    private async Task UpdateGaugeMetricsLoopAsync(CancellationToken cancellationToken) {
+        while (!cancellationToken.IsCancellationRequested) {
+            try {
+                _metrics.UpdateGauges(
+                    _connectionManager.ActiveCount,
+                    _queueManager.QueueCount,
+                    _ackTracker.PendingCount
+                );
+
+                await Task.Delay(TimeSpan.FromSeconds(5), cancellationToken).ConfigureAwait(false);
+            } catch (OperationCanceledException) {
+                break;
+            }
         }
     }
 

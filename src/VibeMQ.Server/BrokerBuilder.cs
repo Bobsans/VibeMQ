@@ -7,6 +7,7 @@ using VibeMQ.Server.Auth;
 using VibeMQ.Server.Connections;
 using VibeMQ.Server.Delivery;
 using VibeMQ.Server.Handlers;
+using VibeMQ.Core.Metrics;
 using VibeMQ.Server.Queues;
 using VibeMQ.Server.Security;
 
@@ -112,9 +113,13 @@ public sealed class BrokerBuilder {
             authService = new TokenAuthenticationService(_options.AuthToken);
         }
 
+        // Metrics
+        var metrics = new Server.Metrics.BrokerMetrics();
+
         // Connection manager
         var connectionManager = new ConnectionManager(
             _options.MaxConnections,
+            metrics,
             _loggerFactory.CreateLogger<ConnectionManager>()
         );
 
@@ -132,6 +137,7 @@ public sealed class BrokerBuilder {
             connectionManager,
             ackTracker,
             deadLetterQueue,
+            metrics,
             _options.QueueDefaults,
             _loggerFactory.CreateLogger<QueueManager>()
         );
@@ -161,6 +167,7 @@ public sealed class BrokerBuilder {
             queueManager,
             ackTracker,
             rateLimiter,
+            metrics,
             _loggerFactory.CreateLogger<BrokerServer>()
         );
     }
