@@ -1,4 +1,8 @@
 <Solution>
+  <Folder Name="/examples/">
+    <Project Path="examples/VibeMQ.Example.Client/VibeMQ.Example.Client.csproj" />
+    <Project Path="examples/VibeMQ.Example.Server/VibeMQ.Example.Server.csproj" />
+  </Folder>
   <Folder Name="/src/">
     <Project Path="src/VibeMQ.Client/VibeMQ.Client.csproj" />
     <Project Path="src/VibeMQ.Core/VibeMQ.Core.csproj" />
