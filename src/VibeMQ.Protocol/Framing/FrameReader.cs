@@ -1,3 +1,4 @@
+using System.Buffers;
 using System.Buffers.Binary;
 using System.Text.Json;
 
@@ -6,6 +7,7 @@ namespace VibeMQ.Protocol.Framing;
 /// <summary>
 /// Reads length-prefixed frames from a stream.
 /// Format: [4 bytes: body length in Big Endian uint32] [N bytes: JSON body in UTF-8]
+/// Uses <see cref="ArrayPool{T}"/> to minimize heap allocations for body buffers.
 /// </summary>
 public static class FrameReader {
     /// <summary>
@@ -22,7 +24,7 @@ public static class FrameReader {
         int maxMessageSize,
         CancellationToken cancellationToken = default
     ) {
-        // Read 4-byte length prefix
+        // Read 4-byte length prefix (stack-allocated equivalent via small buffer)
         var lengthBuffer = new byte[4];
         var bytesRead = await ReadExactAsync(stream, lengthBuffer, cancellationToken).ConfigureAwait(false);
 
@@ -46,32 +48,40 @@ public static class FrameReader {
             );
         }
 
-        // Read body
-        var bodyBuffer = new byte[bodyLength];
-        bytesRead = await ReadExactAsync(stream, bodyBuffer, cancellationToken).ConfigureAwait(false);
+        // Read body using pooled buffer to avoid GC pressure
+        var bodyBuffer = ArrayPool<byte>.Shared.Rent(bodyLength);
 
-        if (bytesRead < bodyLength) {
-            throw new IOException("Connection closed unexpectedly while reading frame body.");
+        try {
+            bytesRead = await ReadExactAsync(stream, bodyBuffer.AsMemory(0, bodyLength), cancellationToken)
+                .ConfigureAwait(false);
+
+            if (bytesRead < bodyLength) {
+                throw new IOException("Connection closed unexpectedly while reading frame body.");
+            }
+
+            return JsonSerializer.Deserialize<ProtocolMessage>(
+                bodyBuffer.AsSpan(0, bodyLength),
+                ProtocolSerializer.Options
+            ) ?? throw new InvalidOperationException("Failed to deserialize protocol message.");
+        } finally {
+            ArrayPool<byte>.Shared.Return(bodyBuffer);
         }
-
-        return JsonSerializer.Deserialize<ProtocolMessage>(bodyBuffer, ProtocolSerializer.Options)
-            ?? throw new InvalidOperationException("Failed to deserialize protocol message.");
     }
 
     /// <summary>
-    /// Reads exactly buffer.Length bytes from the stream.
+    /// Reads exactly the specified number of bytes from the stream.
     /// Returns the number of bytes actually read (may be less if the stream ends).
     /// </summary>
     private static async Task<int> ReadExactAsync(
         Stream stream,
-        byte[] buffer,
+        Memory<byte> buffer,
         CancellationToken cancellationToken
     ) {
         var totalRead = 0;
 
         while (totalRead < buffer.Length) {
             var read = await stream.ReadAsync(
-                buffer.AsMemory(totalRead, buffer.Length - totalRead),
+                buffer[totalRead..],
                 cancellationToken
             ).ConfigureAwait(false);
 

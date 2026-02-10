@@ -18,7 +18,7 @@ public sealed class ProtocolMessage {
     /// Command type that determines how this message is processed.
     /// </summary>
     [JsonPropertyName("type")]
-    [JsonConverter(typeof(JsonStringEnumConverter))]
+    [JsonConverter(typeof(JsonStringEnumConverter<CommandType>))]
     public required CommandType Type { get; set; }
 
     /// <summary>

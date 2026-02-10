@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>VibeMQ.Benchmarks</RootNamespace>
+    <!-- Relax code analysis for benchmark projects -->
+    <NoWarn>$(NoWarn);CA1001;CA1050;CA1305;CA1848</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BenchmarkDotNet" Version="0.*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\VibeMQ.Protocol\VibeMQ.Protocol.csproj" />
+    <ProjectReference Include="..\..\src\VibeMQ.Server\VibeMQ.Server.csproj" />
+    <ProjectReference Include="..\..\src\VibeMQ.Client\VibeMQ.Client.csproj" />
+  </ItemGroup>
+
+</Project>
