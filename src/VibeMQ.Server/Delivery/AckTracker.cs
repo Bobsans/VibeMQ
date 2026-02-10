@@ -143,9 +143,11 @@ public sealed partial class AckTracker : IAsyncDisposable {
     }
 
     public async ValueTask DisposeAsync() {
-        if (_cts is not null) {
-            await _cts.CancelAsync().ConfigureAwait(false);
+        if (_cts is null || _cts.IsCancellationRequested) {
+            return;
         }
+
+        await _cts.CancelAsync().ConfigureAwait(false);
 
         if (_monitorTask is not null) {
             try {
@@ -155,7 +157,8 @@ public sealed partial class AckTracker : IAsyncDisposable {
             }
         }
 
-        _cts?.Dispose();
+        _cts.Dispose();
+        _cts = null;
     }
 
     [LoggerMessage(Level = LogLevel.Debug, Message = "Tracking message {messageId} delivered to client {clientId}.")]

@@ -89,6 +89,10 @@ public sealed partial class BrokerServer : IAsyncDisposable {
             }
         } catch (OperationCanceledException) {
             // Expected on shutdown
+        } catch (SocketException) {
+            // Expected when listener is stopped during shutdown
+        } catch (ObjectDisposedException) {
+            // Expected when listener is disposed during shutdown
         } finally {
             _listener.Stop();
             LogServerStopped();
@@ -105,8 +109,9 @@ public sealed partial class BrokerServer : IAsyncDisposable {
     public async Task StopAsync(CancellationToken cancellationToken = default) {
         LogServerShuttingDown();
 
-        _listener?.Stop();
+        // Cancel first, then stop listener to avoid SocketException race
         await _shutdownCts.CancelAsync().ConfigureAwait(false);
+        _listener?.Stop();
 
         var connections = _connectionManager.GetAll();
 
@@ -259,7 +264,12 @@ public sealed partial class BrokerServer : IAsyncDisposable {
     }
 
     public async ValueTask DisposeAsync() {
-        await StopAsync().ConfigureAwait(false);
+        try {
+            await StopAsync().ConfigureAwait(false);
+        } catch {
+            // Best effort cleanup
+        }
+
         _shutdownCts.Dispose();
     }
 
