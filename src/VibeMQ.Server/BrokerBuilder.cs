@@ -5,6 +5,7 @@ using VibeMQ.Core.Enums;
 using VibeMQ.Core.Interfaces;
 using VibeMQ.Server.Auth;
 using VibeMQ.Server.Connections;
+using VibeMQ.Server.Delivery;
 using VibeMQ.Server.Handlers;
 using VibeMQ.Server.Queues;
 
@@ -99,9 +100,20 @@ public sealed class BrokerBuilder {
             _loggerFactory.CreateLogger<ConnectionManager>()
         );
 
+        // Delivery infrastructure
+        var ackTracker = new AckTracker(
+            logger: _loggerFactory.CreateLogger<AckTracker>()
+        );
+
+        var deadLetterQueue = new DeadLetterQueue(
+            _loggerFactory.CreateLogger<DeadLetterQueue>()
+        );
+
         // Queue manager
         var queueManager = new QueueManager(
             connectionManager,
+            ackTracker,
+            deadLetterQueue,
             _options.QueueDefaults,
             _loggerFactory.CreateLogger<QueueManager>()
         );
@@ -122,6 +134,8 @@ public sealed class BrokerBuilder {
             _options,
             connectionManager,
             dispatcher,
+            queueManager,
+            ackTracker,
             _loggerFactory.CreateLogger<BrokerServer>()
         );
     }

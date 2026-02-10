@@ -8,9 +8,7 @@ namespace VibeMQ.Server.Queues;
 /// <summary>
 /// In-memory message queue with support for different delivery modes and overflow strategies.
 /// </summary>
-#pragma warning disable CA1711 // Identifiers should not have incorrect suffix — this is a domain queue, not System.Collections.Queue
 public sealed class MessageQueue {
-#pragma warning restore CA1711
     private readonly ConcurrentQueue<BrokerMessage> _messages = new();
     private readonly ConcurrentDictionary<string, BrokerMessage> _unacknowledged = new();
     private int _roundRobinIndex;

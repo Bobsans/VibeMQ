@@ -10,7 +10,9 @@
     <AnalysisLevel>latest-recommended</AnalysisLevel>
     <!-- CA1707: Identifiers should not contain underscores — suppressed because
          .editorconfig enforces UPPER_CASE naming for constants (AA_BB style) -->
-    <NoWarn>$(NoWarn);CA1707</NoWarn>
+    <!-- CA1711: Identifiers should not have incorrect suffix — suppressed because
+         *Queue is a domain concept in a message broker, not System.Collections.Queue -->
+    <NoWarn>$(NoWarn);CA1707;CA1711</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup>

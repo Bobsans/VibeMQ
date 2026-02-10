@@ -7,26 +7,38 @@ using VibeMQ.Core.Interfaces;
 using VibeMQ.Core.Models;
 using VibeMQ.Protocol;
 using VibeMQ.Server.Connections;
+using VibeMQ.Server.Delivery;
 
 namespace VibeMQ.Server.Queues;
 
 /// <summary>
-/// Manages all message queues: creation, publishing, delivery, and acknowledgment.
+/// Manages all message queues: creation, publishing, delivery, acknowledgment, DLQ.
+/// Integrates with <see cref="AckTracker"/> for retry logic and <see cref="DeadLetterQueue"/> for failed messages.
 /// </summary>
 public sealed partial class QueueManager : IQueueManager {
     private readonly ConcurrentDictionary<string, MessageQueue> _queues = new();
     private readonly ConnectionManager _connectionManager;
+    private readonly AckTracker _ackTracker;
+    private readonly DeadLetterQueue _deadLetterQueue;
     private readonly QueueDefaults _defaults;
     private readonly ILogger<QueueManager> _logger;
 
     public QueueManager(
         ConnectionManager connectionManager,
+        AckTracker ackTracker,
+        DeadLetterQueue deadLetterQueue,
         QueueDefaults defaults,
         ILogger<QueueManager> logger
     ) {
         _connectionManager = connectionManager;
+        _ackTracker = ackTracker;
+        _deadLetterQueue = deadLetterQueue;
         _defaults = defaults;
         _logger = logger;
+
+        // Wire up AckTracker events
+        _ackTracker.OnMessageExpired += OnMessageExpiredAsync;
+        _ackTracker.OnRetryRequired += OnRetryRequiredAsync;
     }
 
     /// <inheritdoc />
@@ -76,7 +88,6 @@ public sealed partial class QueueManager : IQueueManager {
     /// <inheritdoc />
     public async Task PublishAsync(BrokerMessage message, CancellationToken cancellationToken = default) {
         if (!_queues.TryGetValue(message.QueueName, out var queue)) {
-            // Auto-create queue if enabled
             if (_defaults.EnableAutoCreate) {
                 await CreateQueueAsync(message.QueueName, cancellationToken: cancellationToken).ConfigureAwait(false);
                 _queues.TryGetValue(message.QueueName, out queue);
@@ -88,19 +99,34 @@ public sealed partial class QueueManager : IQueueManager {
             }
         }
 
+        // Set max retry attempts from queue config
+        message.DeliveryAttempts = queue.Options.MaxRetryAttempts;
+
         var accepted = queue.Enqueue(message);
 
         if (!accepted) {
             LogMessageRejected(message.Id, message.QueueName, queue.Options.OverflowStrategy);
+
+            // If overflow strategy is RedirectToDlq, send to DLQ
+            if (queue.Options.OverflowStrategy == OverflowStrategy.RedirectToDlq && queue.Options.EnableDeadLetterQueue) {
+                await _deadLetterQueue.HandleFailedMessageAsync(message, FailureReason.MaxRetriesExceeded)
+                    .ConfigureAwait(false);
+            }
+
             return;
         }
 
-        // Deliver to subscribers immediately
         await DeliverAsync(queue, cancellationToken).ConfigureAwait(false);
     }
 
     /// <inheritdoc />
     public Task<bool> AcknowledgeAsync(string messageId, CancellationToken cancellationToken = default) {
+        // First try the AckTracker (centralized tracking)
+        if (_ackTracker.Acknowledge(messageId)) {
+            return Task.FromResult(true);
+        }
+
+        // Fallback: check individual queues
         foreach (var queue in _queues.Values) {
             if (queue.Acknowledge(messageId)) {
                 return Task.FromResult(true);
@@ -110,9 +136,6 @@ public sealed partial class QueueManager : IQueueManager {
         return Task.FromResult(false);
     }
 
-    /// <summary>
-    /// Delivers pending messages from a queue to its subscribers based on the delivery mode.
-    /// </summary>
     private async Task DeliverAsync(MessageQueue queue, CancellationToken cancellationToken) {
         var subscribers = _connectionManager.GetSubscribers(queue.Name);
 
@@ -122,6 +145,7 @@ public sealed partial class QueueManager : IQueueManager {
 
         switch (queue.Options.Mode) {
             case DeliveryMode.RoundRobin:
+            case DeliveryMode.PriorityBased:
                 await DeliverRoundRobinAsync(queue, subscribers, cancellationToken).ConfigureAwait(false);
                 break;
 
@@ -131,10 +155,6 @@ public sealed partial class QueueManager : IQueueManager {
 
             case DeliveryMode.FanOutWithoutAck:
                 await DeliverFanOutAsync(queue, subscribers, requireAck: false, cancellationToken).ConfigureAwait(false);
-                break;
-
-            case DeliveryMode.PriorityBased:
-                await DeliverRoundRobinAsync(queue, subscribers, cancellationToken).ConfigureAwait(false);
                 break;
         }
     }
@@ -152,20 +172,14 @@ public sealed partial class QueueManager : IQueueManager {
 
         var index = queue.GetNextRoundRobinIndex(subscribers.Count);
         var target = subscribers[index];
-
         var protocolMessage = ToDeliverMessage(message);
 
         try {
             await target.SendMessageAsync(protocolMessage, cancellationToken).ConfigureAwait(false);
-
-            if (queue.Options.Mode is DeliveryMode.RoundRobin or DeliveryMode.PriorityBased) {
-                queue.TrackUnacknowledged(message);
-            }
-
+            _ackTracker.Track(message, target.Id);
             LogMessageDelivered(message.Id, queue.Name, target.Id);
         } catch (Exception ex) {
             LogDeliveryFailed(message.Id, target.Id, ex);
-            // Re-enqueue for retry
             queue.Enqueue(message);
         }
     }
@@ -189,13 +203,47 @@ public sealed partial class QueueManager : IQueueManager {
                 await subscriber.SendMessageAsync(protocolMessage, cancellationToken).ConfigureAwait(false);
 
                 if (requireAck) {
-                    queue.TrackUnacknowledged(message);
+                    _ackTracker.Track(message, subscriber.Id);
                 }
 
                 LogMessageDelivered(message.Id, queue.Name, subscriber.Id);
             } catch (Exception ex) {
                 LogDeliveryFailed(message.Id, subscriber.Id, ex);
             }
+        }
+    }
+
+    /// <summary>
+    /// Called by AckTracker when a message has exhausted all retries.
+    /// </summary>
+    private async Task OnMessageExpiredAsync(BrokerMessage message) {
+        if (_queues.TryGetValue(message.QueueName, out var queue) && queue.Options.EnableDeadLetterQueue) {
+            await _deadLetterQueue.HandleFailedMessageAsync(message, FailureReason.MaxRetriesExceeded)
+                .ConfigureAwait(false);
+        }
+    }
+
+    /// <summary>
+    /// Called by AckTracker when a message needs to be redelivered.
+    /// </summary>
+    private async Task OnRetryRequiredAsync(PendingDelivery delivery) {
+        var connection = _connectionManager.Get(delivery.ClientId);
+
+        if (connection is null || !connection.IsConnected) {
+            // Original subscriber is gone — re-enqueue for another subscriber
+            if (_queues.TryGetValue(delivery.Message.QueueName, out var queue)) {
+                queue.Enqueue(delivery.Message);
+            }
+
+            return;
+        }
+
+        var protocolMessage = ToDeliverMessage(delivery.Message);
+
+        try {
+            await connection.SendMessageAsync(protocolMessage, CancellationToken.None).ConfigureAwait(false);
+        } catch {
+            // If redelivery fails, the message stays in AckTracker for next retry cycle
         }
     }
 
