@@ -1,5 +1,12 @@
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using VibeMQ.Core.Configuration;
 using VibeMQ.Core.Enums;
+using VibeMQ.Core.Interfaces;
+using VibeMQ.Server.Auth;
+using VibeMQ.Server.Connections;
+using VibeMQ.Server.Handlers;
+using VibeMQ.Server.Queues;
 
 namespace VibeMQ.Server;
 
@@ -9,6 +16,7 @@ namespace VibeMQ.Server;
 public sealed class BrokerBuilder {
     private readonly BrokerOptions _options = new();
     private readonly HealthCheckOptions _healthCheckOptions = new();
+    private ILoggerFactory _loggerFactory = NullLoggerFactory.Instance;
 
     private BrokerBuilder() { }
 
@@ -68,11 +76,54 @@ public sealed class BrokerBuilder {
     }
 
     /// <summary>
-    /// Builds the broker server instance.
+    /// Sets the logger factory for the broker. If not called, logging is disabled.
+    /// </summary>
+    public BrokerBuilder UseLoggerFactory(ILoggerFactory loggerFactory) {
+        _loggerFactory = loggerFactory;
+        return this;
+    }
+
+    /// <summary>
+    /// Builds the broker server instance with all configured components.
     /// </summary>
     public BrokerServer Build() {
-        // TODO: Wire up DI, logging, and all services
-        throw new NotImplementedException("BrokerBuilder.Build is not yet implemented.");
+        // Authentication
+        IAuthenticationService? authService = null;
+        if (_options.EnableAuthentication && !string.IsNullOrEmpty(_options.AuthToken)) {
+            authService = new TokenAuthenticationService(_options.AuthToken);
+        }
+
+        // Connection manager
+        var connectionManager = new ConnectionManager(
+            _options.MaxConnections,
+            _loggerFactory.CreateLogger<ConnectionManager>()
+        );
+
+        // Queue manager
+        var queueManager = new QueueManager(
+            connectionManager,
+            _options.QueueDefaults,
+            _loggerFactory.CreateLogger<QueueManager>()
+        );
+
+        // Command handlers
+        var handlers = new ICommandHandler[] {
+            new ConnectHandler(_options, authService, _loggerFactory.CreateLogger<ConnectHandler>()),
+            new PingHandler(),
+            new PublishHandler(queueManager, _loggerFactory.CreateLogger<PublishHandler>()),
+            new SubscribeHandler(queueManager, _loggerFactory.CreateLogger<SubscribeHandler>()),
+            new UnsubscribeHandler(_loggerFactory.CreateLogger<UnsubscribeHandler>()),
+            new AckHandler(queueManager, _loggerFactory.CreateLogger<AckHandler>()),
+        };
+
+        var dispatcher = new CommandDispatcher(handlers, _loggerFactory.CreateLogger<CommandDispatcher>());
+
+        return new BrokerServer(
+            _options,
+            connectionManager,
+            dispatcher,
+            _loggerFactory.CreateLogger<BrokerServer>()
+        );
     }
 }
 
