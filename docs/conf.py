@@ -3,37 +3,34 @@
 # For the full list of built-in configuration values, see the documentation:
 # https://www.sphinx-doc.org/en/master/usage/configuration.html
 
-import os
-import sys
-sys.path.insert(0, os.path.abspath('..'))
-
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = 'VibeMQ'
-copyright = '2026, VibeMQ Contributors'
-author = 'VibeMQ Contributors'
+copyright = '2026, Darkboy'
+author = 'Darkboy'
 release = '1.0.0'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
 extensions = [
-    'myst_parser',  # Markdown support
+    'sphinx.ext.duration',
+    'sphinx.ext.doctest',
     'sphinx.ext.autodoc',
-    'sphinx.ext.viewcode',
-    'sphinx.ext.napoleon',
+    'sphinx.ext.autosummary',
+    'sphinx.ext.intersphinx',
 ]
+
+intersphinx_mapping = {
+    'rtd': ('https://docs.readthedocs.io/en/stable/', None),
+    'python': ('https://docs.python.org/3/', None),
+}
+
+intersphinx_disabled_domains = ['std']
 
 templates_path = ['_templates']
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
-
-# Markdown parser settings
-myst_enable_extensions = [
-    "colon_fence",
-    "deflist",
-    "tasklist",
-]
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
@@ -41,15 +38,9 @@ myst_enable_extensions = [
 html_theme = 'sphinx_rtd_theme'
 html_static_path = ['_static']
 
-# Theme options
-html_theme_options = {
-    'navigation_depth': 4,
-    'collapse_navigation': False,
-    'sticky_navigation': True,
-    'includehidden': True,
-    'titles_only': False,
-}
+# -- Options for EPUB output
+epub_show_urls = 'footnote'
 
-# -- Options for MyST parser -------------------------------------------------
-
-myst_heading_anchors = 3
+# -- Language settings
+language = 'ru'
+locale_dirs = ['locale/']
