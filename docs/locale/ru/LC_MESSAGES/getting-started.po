@@ -1,0 +1,143 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2026, Darkboy
+# This file is distributed under the same license as the VibeMQ package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: VibeMQ 1.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-02-18 18:37+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: ru\n"
+"Language-Team: ru <LL@li.org>\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+
+
+
+#: ../../getting-started.rst:3 64d61b06d2d048eb9f8e43da44270409
+msgid "Quick Start"
+msgstr "Быстрый старт"
+
+#: ../../getting-started.rst:5 4145a0f727554bfb8b0497c4ec608d57
+msgid ""
+"This guide will help you quickly get started with VibeMQ — from "
+"installation to your first message."
+msgstr "Это руководство поможет вам быстро начать работу с VibeMQ — от установки до первого сообщения."
+
+#: ../../getting-started.rst:9 e2d4a545cf544f97af0649affaa805c0
+msgid "Contents"
+msgstr ":local:"
+
+#: ../../getting-started.rst:12 ed06468a7bcc472a936f698068cbaaf1
+msgid "Prerequisites"
+msgstr ":depth: 2"
+
+#: ../../getting-started.rst:14 c2d6e8e7cb304133a7df79ce41c68a42
+msgid "**.NET 8.0 SDK** or higher"
+msgstr "Предварительные требования"
+
+#: ../../getting-started.rst:15 f85f604ab20d416d88a4ad87ebf6d317
+msgid "Basic knowledge of C# and asynchronous programming"
+msgstr "Установка"
+
+#: ../../getting-started.rst:18 2adf34d49fe2445bb4a91b77ea3e9334
+msgid "Installation"
+msgstr "Создайте новый проект или откройте существующий:"
+
+#: ../../getting-started.rst:20 f715f9eb3cc644e3a309de5fc5e855b8
+msgid "Create a new project or open an existing one:"
+msgstr "Создайте новый проект или откройте существующий:"
+
+#: ../../getting-started.rst:27 e5f6a31fcc1a4194ba38b73bcdaa47df
+msgid "Install the required NuGet packages:"
+msgstr "Установите необходимые NuGet-пакеты:"
+
+#: ../../getting-started.rst:35 35d39a7e06e74f2e86d827f7f99654ef
+msgid "First Server"
+msgstr "Установите необходимые NuGet-пакеты:"
+
+#: ../../getting-started.rst:37 59ceab4f974a4a8aac62dd2ffbc353fc
+msgid "Create a ``Program.cs`` file with the server startup code:"
+msgstr "Создайте файл ``Program.cs`` с кодом запуска сервера:"
+
+#: ../../getting-started.rst:66 12bc7a0395424e01993b1638ac282c15
+msgid "Start the server:"
+msgstr "Запустите сервер:"
+
+#: ../../getting-started.rst:73 1eedf509dfda4a9184ec840e64f2d89a
+msgid "First Client"
+msgstr "Первый сервер"
+
+#: ../../getting-started.rst:75 7ea76a8b774244c1b4e612cfc1efa936
+msgid "Create a second project for the client:"
+msgstr "Создайте второй проект для клиента:"
+
+#: ../../getting-started.rst:83 94def626295f42b7880a94fa26ad217a
+msgid "Edit ``Program.cs``:"
+msgstr "Отредактируйте ``Program.cs``:"
+
+#: ../../getting-started.rst:138 8469bf9aa3394fd983cf2ee5bf28da6c
+msgid "Start the client:"
+msgstr "Запустите клиента:"
+
+#: ../../getting-started.rst:145 6f8d418aab3d494093b47c429916c08b
+msgid "Complete Example: Publisher and Subscriber"
+msgstr "using VibeMQ.Core.Enums;"
+
+#: ../../getting-started.rst:147 8e411775d36846768a67bdda37e89784
+msgid "Create two separate applications:"
+msgstr "Создайте два отдельных приложения:"
+
+#: ../../getting-started.rst:149 67518b28a6944802943d93723363fdd5
+msgid "**Publisher (Publisher.cs):**"
+msgstr "**Издатель (Publisher.cs):**"
+
+#: ../../getting-started.rst:174 e76349e2b89640f491891643d3cc1658
+msgid "**Subscriber (Subscriber.cs):**"
+msgstr "**Подписчик (Subscriber.cs):**"
+
+#: ../../getting-started.rst:194 efaf7ffd745d435ea30e0a0cbc4aad81
+msgid "Start the subscriber first, then the publisher, and send a few messages."
+msgstr "Запустите сначала подписчика, затем издателя и отправьте несколько сообщений."
+
+#: ../../getting-started.rst:197 c46ca4e3c97942f38f12a093ef94e7b4
+msgid "Next Steps"
+msgstr "var broker = BrokerBuilder.Create()"
+
+#: ../../getting-started.rst:199 5aa45fe1e8a647568942cca96c934553
+msgid "Now that you're familiar with the basics, you can explore:"
+msgstr "Теперь, когда вы познакомились с основами, вы можете изучить:"
+
+#: ../../getting-started.rst:201 a1e30be97d184163b071c3d6afae9299
+msgid ":doc:`architecture` — how VibeMQ works internally"
+msgstr ".UseAuthentication(\"my-secret-token\")"
+
+#: ../../getting-started.rst:202 7db4bb804bfa4083a2865b555416b2fe
+msgid ":doc:`features` — detailed overview of all features"
+msgstr ".ConfigureQueues(options => {"
+
+#: ../../getting-started.rst:203 793fab3bf7e94fbbb2135478702fec22
+msgid ":doc:`server-setup` — detailed server configuration"
+msgstr "options.DefaultDeliveryMode = DeliveryMode.RoundRobin;"
+
+#: ../../getting-started.rst:204 bc061b38b8ac410fa441823e878ef09a
+msgid ":doc:`client-usage` — advanced client usage"
+msgstr "options.MaxQueueSize = 10_000;"
+
+#: ../../getting-started.rst:205 5ebb6293d61845cf943f84ff8384ed2a
+msgid ":doc:`configuration` — all configuration parameters"
+msgstr "options.EnableAutoCreate = true;"
+
+#: ../../getting-started.rst:206 3575f7fb0aea4a58b8b480a87878662e
+msgid ":doc:`di-integration` — integration with Dependency Injection"
+msgstr "})"
+

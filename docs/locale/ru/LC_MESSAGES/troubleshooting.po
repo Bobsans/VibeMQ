@@ -1,0 +1,391 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2026, Darkboy
+# This file is distributed under the same license as the VibeMQ package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: VibeMQ 1.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-02-18 18:37+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: ru\n"
+"Language-Team: ru <LL@li.org>\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+
+
+
+#: ../../troubleshooting.rst:3 e79b13a861614577875cd58f196cf11b
+msgid "Troubleshooting"
+msgstr "Устранение проблем"
+
+#: ../../troubleshooting.rst:5 45f402c320f84c23b8d537328130ea17
+msgid "This guide will help solve common problems when using VibeMQ."
+msgstr "Это руководство поможет решить распространённые проблемы при использовании VibeMQ."
+
+#: ../../troubleshooting.rst:9 4164769be14840678568341e57307ebc
+msgid "Contents"
+msgstr ":local:"
+
+#: ../../troubleshooting.rst:12 b922cc2841774bbea026751a6136174f
+msgid "Connection Issues"
+msgstr ":depth: 2"
+
+#: ../../troubleshooting.rst:15 a15124d7557a401c890ba709d87f92f7
+msgid "\"Connection refused\""
+msgstr "Проблемы подключения"
+
+#: c3ffdcaa498b48f5902fd0ee3125970f f4e3488774eb4addb179f5545e9df9c1
+msgid "**Error:**"
+msgstr "«Connection refused»"
+
+#: e0812faaafce45419792cdd5b2b076af fb02b2dc8840468aad479f79af085c2d
+msgid "**Causes:**"
+msgstr "**Ошибка:**"
+
+#: ../../troubleshooting.rst:25 8c5457756cb141e2b2bc86b0e9634652
+msgid "Server not running"
+msgstr "1. Сервер не запущен"
+
+#: ../../troubleshooting.rst:26 aed128a09eb44e979134def903cd95e4
+msgid "Wrong port"
+msgstr "2. Неверный порт"
+
+#: ../../troubleshooting.rst:27 fe84d752bc2045ae919c93decf919b87
+msgid "Firewall blocking connection"
+msgstr "3. Брандмауэр блокирует подключение"
+
+#: ../../troubleshooting.rst:28 303976c60dd84786aa4f7f3b46f4c336
+msgid "Server listening only on localhost"
+msgstr "4. Сервер слушает только localhost"
+
+#: f2e3eab2e5b841c587efcb2c932c6c2f fd0c81d76de4413aa444f3023cb5e487
+msgid "**Solution:**"
+msgstr "3. Брандмауэр блокирует подключение"
+
+#: 75501e52d1124b00bcaea7858a49e74a 96aa7e53c4894c1ea7cd9b3cee0fb0b3
+msgid "**Check:**"
+msgstr "4. Сервер слушает только localhost"
+
+#: ../../troubleshooting.rst:55 3c26aa247701401f97b6136651950ac7
+msgid "\"Connection timeout\""
+msgstr "**Решение:**"
+
+#: ../../troubleshooting.rst:65 2402f2f630804929bc4234d696cbcfc5
+msgid "Network latency"
+msgstr "1. Сетевая задержка"
+
+#: ../../troubleshooting.rst:66 3d5bfab139354079bf2769e0b45fcb9a
+msgid "Server overloaded"
+msgstr "2. Сервер перегружен"
+
+#: ../../troubleshooting.rst:67 508fcd5cb3f1470a84f77bcef6815042
+msgid "Wrong timeout"
+msgstr "3. Неправильный таймаут"
+
+#: ../../troubleshooting.rst:82 321dfa820b0e4a979d3507066f69e50e
+msgid "\"Host unreachable\""
+msgstr ".Build();"
+
+#: ../../troubleshooting.rst:92 9d8295f22a7a423aa2eab6deeeaa751f
+msgid "Wrong host"
+msgstr "1. Неправильный хост"
+
+#: 5159410f6d7446a789b64baae1d384ac d87a95816daa4a72b476c2bb16ac4ad9
+msgid "Network issues"
+msgstr "// Проверьте, что клиент подключается к правильному порту"
+
+#: ../../troubleshooting.rst:94 dc66bcf07a3c4d9bb2ae593feebd038a
+msgid "DNS not resolving"
+msgstr "3. DNS не разрешается"
+
+#: ../../troubleshooting.rst:106 caa892a81bfa4ad9968587c245fa2861
+msgid "**DNS check:**"
+msgstr "**Проверка DNS:**"
+
+#: ../../troubleshooting.rst:114 30546729b7ab4f9ba371937a865215f3
+msgid "Authentication Issues"
+msgstr "netstat -an | grep 8080"
+
+#: ../../troubleshooting.rst:117 87f08fcafd354067af9012279ab80ad0
+msgid "\"Authentication failed\""
+msgstr "Get-NetTCPConnection -LocalPort 8080"
+
+#: ../../troubleshooting.rst:125 e1b06fa39651456f8f9a37960b84280c
+msgid "**Cause:** Tokens on server and client do not match."
+msgstr "**Причина:** Токены на сервере и клиенте не совпадают."
+
+#: ../../troubleshooting.rst:147 a8a469f8c43e44a1832201bf2f0863f1
+msgid "Tokens are case-sensitive!"
+msgstr "Токены чувствительны к регистру!"
+
+#: ../../troubleshooting.rst:150 77abab842de941a49ad413c40686c757
+msgid "\"Authentication required\""
+msgstr "System.TimeoutException: Connection timeout"
+
+#: ../../troubleshooting.rst:158 18926b6ad8014031a1488a368ff60881
+msgid ""
+"**Cause:** Server requires authentication, but client did not provide "
+"token."
+msgstr "**Причина:** Сервер требует аутентификацию, но клиент не предоставил токен."
+
+#: ../../troubleshooting.rst:173 0ae67a4459634951b086c7c8ecc3ea9c
+msgid "Queue Issues"
+msgstr "1. Сетевая задержка"
+
+#: ../../troubleshooting.rst:176 b3734c423cd444259500547a6868cf7b
+msgid "\"Queue not found\""
+msgstr "2. Сервер перегружен"
+
+#: ../../troubleshooting.rst:186 210eac2ed62242cca4cfd1db69f33ec2
+msgid "Queue does not exist"
+msgstr "1. Очередь не существует"
+
+#: ../../troubleshooting.rst:187 6f8a0552b9c747db97ceb9728c7027e9
+msgid "Auto-create disabled"
+msgstr "2. Отключено авто-создание"
+
+#: ../../troubleshooting.rst:189 04acc7a8c54241b58ddc8df70dde9a88
+msgid "**Solution 1:** Enable auto-create:"
+msgstr "**Решение 1:** Включите авто-создание:"
+
+#: ../../troubleshooting.rst:197 e26577ffc68e4cd284cabd19faa59561
+msgid "**Solution 2:** Create queue manually:"
+msgstr "**Решение 2:** Создайте очередь вручную:"
+
+#: ../../troubleshooting.rst:207 1bff7bf16d7f4eb8aa689a14e7e465ed
+msgid "\"Queue already exists\""
+msgstr "8080,"
+
+#: ../../troubleshooting.rst:215 ceac7ecf69f941988d720e758f9105e7
+msgid "**Cause:** Attempting to create existing queue."
+msgstr "**Причина:** Попытка создать существующую очередь."
+
+#: ../../troubleshooting.rst:228 9b87c04ed749420fa8f7327750fb602c
+msgid "Message Delivery Issues"
+msgstr "CommandTimeout = TimeSpan.FromSeconds(30)  // Увеличьте таймаут"
+
+#: ../../troubleshooting.rst:231 294ae8bb0c394ce6a7e40a2eda388f80
+msgid "Messages Not Delivered"
+msgstr "}"
+
+#: ../../troubleshooting.rst:233 929ca78c1d03456d900b82520b161e42
+msgid "**Problem:** Messages are published but subscribers do not receive them."
+msgstr "**Проблема:** Сообщения публикуются, но подписчики не получают."
+
+#: ../../troubleshooting.rst:235 b111d26ebb154e9fb52f77bf9fde1ef6
+msgid "**Possible causes:**"
+msgstr "**Возможные причины:**"
+
+#: ../../troubleshooting.rst:237 50f8b9ad9e1a4486a309115caea501d6
+msgid "Subscriber not subscribed to queue"
+msgstr "1. Подписчик не подписан на очередь"
+
+#: ../../troubleshooting.rst:238 dd6ac8fbe8474085a45b15706fb85c37
+msgid "Wrong queue name"
+msgstr "2. Неправильное имя очереди"
+
+#: ../../troubleshooting.rst:261 916a143464084a958d0fa57faec01b77
+msgid "Slow Message Delivery"
+msgstr "**Причины:**"
+
+#: ../../troubleshooting.rst:263 e915b27e0f1043558bda313ca94f5cb0
+msgid "**Problem:** High delivery latency."
+msgstr "**Проблема:** Высокая латентность доставки."
+
+#: ../../troubleshooting.rst:267 a2e51290aae0457f97dbe616dc292dd0
+msgid "Server overload"
+msgstr "1. Перегрузка сервера"
+
+#: ../../troubleshooting.rst:268 2d236627fd6e4cb19fc095099662b29f
+msgid "Slow handlers"
+msgstr "2. Медленные обработчики"
+
+#: ../../troubleshooting.rst:269 6cf39fb8cc484146bb6791ef73bccf2a
+msgid "Network delays"
+msgstr "3. Сетевые задержки"
+
+#: ../../troubleshooting.rst:287 cc983af46e9e445986853019b01dd407
+msgid "**Monitor latency:**"
+msgstr "**Мониторинг латентности:**"
+
+#: ../../troubleshooting.rst:294 bc9389a0b26e4c71ac602f84c5a14348
+msgid "\"Message timeout\""
+msgstr "var client = await VibeMQClient.ConnectAsync("
+
+#: ../../troubleshooting.rst:302 ee51853574e5475fbf06a305063ae9b4
+msgid "**Cause:** Subscriber did not send ACK within timeout."
+msgstr "**Причина:** Подписчик не отправил ACK в течение таймаута."
+
+#: ../../troubleshooting.rst:328 4d05c2f1e34a4a8daf3e9d69ba0581a8
+msgid "Memory Issues"
+msgstr "8080"
+
+#: ../../troubleshooting.rst:331 08761dbbc1e74d77a1e7141fb7634e31
+msgid "\"Out of memory\""
+msgstr ");"
+
+#: ../../troubleshooting.rst:341 f103411566ab49079a769d17179066af
+msgid "Queues too large"
+msgstr "1. Слишком большие очереди"
+
+#: ../../troubleshooting.rst:342 a4c0c19eb4d641b39c3dba91e6186171
+msgid "Many unacknowledged messages"
+msgstr "2. Много неподтверждённых сообщений"
+
+#: ../../troubleshooting.rst:343 981eec7012df4fe3be646ae36df82df8
+msgid "Memory leaks"
+msgstr "3. Утечки памяти"
+
+#: ../../troubleshooting.rst:359 654976039ec74f509addfbba6664b6a1
+msgid "**Monitor memory:**"
+msgstr "**Мониторинг памяти:**"
+
+#: ../../troubleshooting.rst:366 adc45a61f29f418b800a52206ea93821
+msgid "Backpressure"
+msgstr "Backpressure"
+
+#: ../../troubleshooting.rst:368 9e09c33444ad4b78a1bc7870a805cbaa
+msgid "**Problem:** Publications are blocked."
+msgstr "**Проблема:** Публикации блокируются."
+
+#: ../../troubleshooting.rst:370 2497a190cc4144c895eeeacdf2881fc9
+msgid "**Cause:** Backpressure enabled due to high memory usage."
+msgstr "**Причина:** Включён backpressure из-за высокого использования памяти."
+
+#: ../../troubleshooting.rst:383 f50d5b873e8c4c98aa4f048b0befd421
+msgid "Reconnection Issues"
+msgstr "**Причина:** Токены на сервере и клиенте не совпадают."
+
+#: ../../troubleshooting.rst:386 c1e36c32f56446d68bda9f287a7614dc
+msgid "Frequent Disconnections"
+msgstr "**Решение:**"
+
+#: ../../troubleshooting.rst:388 1df4c251476e4df4a24f5a3e4cae4a2d
+msgid "**Problem:** Client frequently disconnects."
+msgstr "**Проблема:** Клиент часто отключается."
+
+#: ../../troubleshooting.rst:393 3f1a2ba5a4f945768175f588e9965c09
+msgid "Server restarting"
+msgstr "2. Сервер перезапускается"
+
+#: ../../troubleshooting.rst:394 defb59e0ac954e70aef8ee10620c70bd
+msgid "Keep-alive timeout"
+msgstr "3. Таймаут keep-alive"
+
+#: ../../troubleshooting.rst:415 21ecf1cabfaf4a90a428f1050d270ec4
+msgid "\"Max reconnect attempts exceeded\""
+msgstr ".Build();"
+
+#: ../../troubleshooting.rst:423 e39f116ae11a42148c6db20c82db89f4
+msgid "**Cause:** Reconnection attempts exhausted."
+msgstr "**Причина:** Исчерпаны попытки переподключения."
+
+#: ../../troubleshooting.rst:446 0e1876d3c32a488db9583b0ad99f3244
+msgid "TLS/SSL Issues"
+msgstr "var client = await VibeMQClient.ConnectAsync("
+
+#: ../../troubleshooting.rst:449 b9f094b12f9a49a7b8038adeb64c0838
+msgid "\"Certificate validation failed\""
+msgstr "\"localhost\","
+
+#: ../../troubleshooting.rst:459 ae133bd357974b8fb1f142aa844a7f68
+msgid "Self-signed certificate"
+msgstr "1. Самоподписанный сертификат"
+
+#: ../../troubleshooting.rst:460 56be9cbf0b684424a37ae42097f560c7
+msgid "Certificate expired"
+msgstr "2. Истёк срок действия"
+
+#: ../../troubleshooting.rst:461 12f4479ef6554714a8b3b6fd772130c3
+msgid "Wrong hostname"
+msgstr "3. Неправильное имя хоста"
+
+#: ../../troubleshooting.rst:463 d07cb27bc0e543689c68b36d541fcabc
+msgid "**Solution (tests only):**"
+msgstr "**Решение (только для тестов):**"
+
+#: ../../troubleshooting.rst:476 cc5273ca2e494e18827d5d11f3a81972
+msgid "**Solution (production):**"
+msgstr "**Решение (для production):**"
+
+#: ../../troubleshooting.rst:485 dfb0db7371a944f5ab5c1d174531ad32
+msgid "Do not use ``SkipCertificateValidation = true`` in production!"
+msgstr "Не используйте ``SkipCertificateValidation = true`` в production!"
+
+#: ../../troubleshooting.rst:488 67ad7e0257154a89ba76cd2c06575a30
+msgid "\"TLS handshake failed\""
+msgstr "«Authentication required»"
+
+#: ../../troubleshooting.rst:498 1b3458c422ca445fbc4d3e7d2c26c661
+msgid "Server not configured for TLS"
+msgstr "1. Сервер не настроен на TLS"
+
+#: ../../troubleshooting.rst:499 70c4a8398c274c2d945fef77dd7e7a05
+msgid "Wrong certificate"
+msgstr "2. Неправильный сертификат"
+
+#: ../../troubleshooting.rst:518 dbe1c3f3e12a48d6be98d3f6baaaa1cb
+msgid "Rate Limiting Issues"
+msgstr "**Причина:** Сервер требует аутентификацию, но клиент не предоставил токен."
+
+#: ../../troubleshooting.rst:521 01e59714f71f413f821681f3da7461a3
+msgid "\"Rate limit exceeded\""
+msgstr "**Решение:**"
+
+#: ../../troubleshooting.rst:529 4772ade4eea249239b41c78374fecf00
+msgid "**Cause:** Message limit exceeded."
+msgstr "**Причина:** Превышен лимит сообщений."
+
+#: ../../troubleshooting.rst:545 24eecaae2c9d4550b036f005128adeb9
+msgid "\"Too many connections\""
+msgstr "\"localhost\","
+
+#: ../../troubleshooting.rst:553 d954fa77bc11449ba0d315f036824217
+msgid "**Cause:** Connection limit exceeded."
+msgstr "**Причина:** Превышен лимит подключений."
+
+#: ../../troubleshooting.rst:565 0b47d1a260d64212863c26545dee10be
+msgid "Diagnostics"
+msgstr "new ClientOptions {"
+
+#: ../../troubleshooting.rst:568 0fa664c7519e4725ade4c917740b664c
+msgid "Enabling Verbose Logging"
+msgstr "AuthToken = \"my-token\"  // Предоставьте токен"
+
+#: ../../troubleshooting.rst:587 a6196ffc79274789b9e2390cdd51d45f
+msgid "Health Check"
+msgstr "}"
+
+#: ../../troubleshooting.rst:598 834af0aef37944baab71491b5331c25e
+msgid "Queue Check"
+msgstr ");"
+
+#: ../../troubleshooting.rst:610 330632b61e6842f0be1b95b6ad143955
+msgid "Connection Check"
+msgstr "Проблемы с очередями"
+
+#: ../../troubleshooting.rst:618 85bb1759bca04463942d10187f445a9b
+msgid "Next Steps"
+msgstr "«Queue not found»"
+
+#: ../../troubleshooting.rst:620 39844450616146a0aa14281ef4b7d80c
+msgid ":doc:`monitoring` — monitoring"
+msgstr "**Ошибка:**"
+
+#: ../../troubleshooting.rst:621 b884e2519f34481c9e95d2f32ec05c23
+msgid ":doc:`health-checks` — health checks"
+msgstr "Queue not found: notifications"
+
+#: ../../troubleshooting.rst:622 af0e2db8252f4e9bbe451022b5f5c909
+msgid ":doc:`configuration` — configuration"
+msgstr "**Причины:**"
+

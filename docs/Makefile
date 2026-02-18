@@ -1,45 +1,64 @@
-# Minimal makefile for Sphinx documentation
+# Minimal makefile for Sphinx documentation with i18n support
 #
 
 # You can set these variables from the command line, and also
 # from the environment for the first two.
 SPHINXOPTS    ?=
 SPHINXBUILD   ?= sphinx-build
-SOURCEDIR_RU  = ru
-SOURCEDIR_EN  = en
+SOURCEDIR     = .
 BUILDDIR      = _build
+
+# Note: Source files are in docs/ subdirectory, but conf.py is in root
+# Sphinx will automatically find files referenced in index.rst
+
+# Languages supported
+LANGUAGES     = en ru
 
 # Put it first so that "make" without argument is like "make help".
 help:
 	@echo "Available targets:"
-	@echo "  html       - Build Russian documentation"
-	@echo "  html-en    - Build English documentation"
-	@echo "  html-all   - Build both Russian and English documentation"
-	@echo "  clean      - Clean build directory"
-	@echo "  livehtml   - Build with live reload (Russian)"
+	@echo "  gettext      - Generate .pot files for translation"
+	@echo "  update-po    - Update .po files from .pot files"
+	@echo "  html         - Build English documentation"
+	@echo "  html-ru      - Build Russian documentation"
+	@echo "  html-all     - Build all language versions"
+	@echo "  clean        - Clean build directory"
+	@echo "  livehtml     - Build with live reload (English)"
 
 .PHONY: help Makefile
 
-# Build Russian HTML
+# Generate .pot files for translation
+gettext:
+	@$(SPHINXBUILD) -b gettext $(SOURCEDIR) $(BUILDDIR)/gettext $(SPHINXOPTS) $(O)
+	@echo ""
+	@echo "Gettext files generated in $(BUILDDIR)/gettext"
+
+# Update .po files from .pot files (requires sphinx-intl)
+update-po:
+	@sphinx-intl update -p $(BUILDDIR)/gettext -l ru $(SPHINXOPTS)
+	@echo ""
+	@echo ".po files updated in locale/"
+
+# Build English HTML (default language)
 html:
-	@$(SPHINXBUILD) -M html "$(SOURCEDIR_RU)" "$(BUILDDIR)/html" -c "$(SOURCEDIR_RU)" $(SPHINXOPTS) $(O)
+	@$(SPHINXBUILD) -b html -D language=en $(SOURCEDIR) $(BUILDDIR)/html/en $(SPHINXOPTS) $(O)
 	@echo ""
-	@echo "Build finished! The HTML pages are in $(BUILDDIR)/html."
+	@echo "Build finished! The HTML pages are in $(BUILDDIR)/html/en."
 
-# Build English HTML
-html-en:
-	@$(SPHINXBUILD) -M html "$(SOURCEDIR_EN)" "$(BUILDDIR)/en/html" -c "$(SOURCEDIR_EN)" $(SPHINXOPTS) $(O)
+# Build Russian HTML
+html-ru:
+	@$(SPHINXBUILD) -b html -D language=ru $(SOURCEDIR) $(BUILDDIR)/html/ru $(SPHINXOPTS) $(O)
 	@echo ""
-	@echo "Build finished! The HTML pages are in $(BUILDDIR)/en/html."
+	@echo "Build finished! The HTML pages are in $(BUILDDIR)/html/ru."
 
-# Build both languages
-html-all: html html-en
+# Build all language versions
+html-all: html html-ru
 	@echo ""
 	@echo "All documentation built!"
 
-# Build HTML with live reload (Russian)
+# Build HTML with live reload (English)
 livehtml:
-	@$(SPHINXBUILD) -M html "$(SOURCEDIR_RU)" "$(BUILDDIR)" -c "$(SOURCEDIR_RU)" $(SPHINXOPTS) -W --keep-going --watch "$(SOURCEDIR_RU)"
+	@$(SPHINXBUILD) -b html -D language=en $(SOURCEDIR) $(BUILDDIR) $(SPHINXOPTS) -W --keep-going --watch $(SOURCEDIR)
 
 # Clean build directory
 clean:
@@ -49,4 +68,4 @@ clean:
 # Catch-all target: route all unknown targets to Sphinx using the new
 # "make mode" option.  $(O) is meant as a shortcut for $(SPHINXOPTS).
 %: Makefile
-	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR_RU)" "$(BUILDDIR)" -c "$(SOURCEDIR_RU)" $(SPHINXOPTS) $(O)
+	@$(SPHINXBUILD) -M $@ $(SOURCEDIR) $(BUILDDIR) $(SPHINXOPTS) $(O)

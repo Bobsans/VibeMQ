@@ -1,0 +1,345 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2026, Darkboy
+# This file is distributed under the same license as the VibeMQ package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: VibeMQ 1.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-02-18 18:37+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: ru\n"
+"Language-Team: ru <LL@li.org>\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+
+
+
+#: ../../protocol.rst:3 a7fe27f6800f4c8ab2426ecb9fdbe010
+msgid "Communication Protocol"
+msgstr "Протокол связи"
+
+#: ../../protocol.rst:5 7f4858f0aaeb4c7988c1dce438151ac2
+msgid "This guide describes the VibeMQ message exchange protocol."
+msgstr "Это руководство описывает протокол обмена сообщениями VibeMQ."
+
+#: ../../protocol.rst:9 35ee1f1b41ef4a4eb56c97bf01ed8d7a
+msgid "Contents"
+msgstr ":local:"
+
+#: ../../protocol.rst:12 fb5d4bfee212426093f2c799378ed5a1
+msgid "Overview"
+msgstr ":depth: 2"
+
+#: ../../protocol.rst:14 467785f9f1a14588a87865d236547849
+msgid ""
+"VibeMQ uses TCP as transport and JSON for message serialization. The "
+"protocol is designed for simplicity and performance."
+msgstr "VibeMQ использует TCP в качестве транспорта и JSON для сериализации сообщений. Протокол разработан для простоты и производительности."
+
+#: ../../protocol.rst:17 5e55707c73c348bbbce309f3e6148232
+msgid "Protocol Layers"
+msgstr "VibeMQ использует TCP в качестве транспорта и JSON для сериализации сообщений. Протокол разработан для простоты и производительности."
+
+#: ../../protocol.rst:30 680b21f4af454d4a94b09f173254b895
+msgid "Framing"
+msgstr "Уровни протокола"
+
+#: ../../protocol.rst:32 eb8d2b153810426382190405422d3b14
+msgid "**Length-prefix** approach is used to separate messages in TCP stream:"
+msgstr "Для разделения сообщений в TCP-потоке используется **length-prefix** подход:"
+
+#: ../../protocol.rst:39 c4c71d2b1e974595bdef02d86845f696
+msgid "Length Format"
+msgstr "│  Прикладной уровень (JSON)          │"
+
+#: ../../protocol.rst:41 3c744d24e54a4ef29d8d9425b3b52d78
+msgid ""
+"First 4 bytes of each frame contain message body length encoded as Big "
+"Endian:"
+msgstr "Первые 4 байта каждого фрейма содержат длину тела сообщения в кодировке Big Endian:"
+
+#: ../../protocol.rst:55 38c8017e3b7f4b3796fc48dbbb1baa51
+msgid "Frame Example"
+msgstr "│  Фрейминг (Length-prefix)           │"
+
+#: ../../protocol.rst:63 cd79a2011de44c76a318ec170babb265
+msgid "Message Format"
+msgstr "├─────────────────────────────────────┤"
+
+#: ../../protocol.rst:66 fe09222934c5407696060f4985a5b2a9
+msgid "Basic Structure"
+msgstr "│  Транспорт (TCP)                    │"
+
+#: ../../protocol.rst:68 b9faf974e8fe46c9b08238834d2955b7
+msgid "All protocol messages have common structure:"
+msgstr "Все сообщения протокола имеют общую структуру:"
+
+#: ../../protocol.rst:82 3ec66c6e95dc45618e20451ca443df08
+msgid "Message Fields"
+msgstr "Фрейминг"
+
+#: ../../protocol.rst:106 d93370ea75bd4dffbcb1a46b9b0cf05a
+msgid "Command Types (CommandType)"
+msgstr "Для разделения сообщений в TCP-потоке используется **length-prefix** подход:"
+
+#: ../../protocol.rst:143 27ac0e92b291468ba434fa86e8fb23fa
+msgid "Command Descriptions"
+msgstr "[4 байта: длина тела в Big Endian uint32] [N байт: JSON-тело в UTF-8]"
+
+#: ../../protocol.rst:146 7ac7e37de73e4322af573a8d0217d60b
+msgid "Connection Management"
+msgstr "Формат длины"
+
+#: ../../protocol.rst:149 d4f7dbb673e74b5896973fba104d463f
+msgid "Connect"
+msgstr "Connect"
+
+#: e8cf900e0e014c41b463e9a4d656f920
+msgid "**Direction:** Client → Server"
+msgstr "// Чтение длины"
+
+#: ../../protocol.rst:153 7d5b4214335a4b789a55f78387687829
+msgid "**Description:** Connection request."
+msgstr "**Описание:** Запрос на установление соединения."
+
+#: ../../protocol.rst:167 8b85180920644947bdca4b016507485a
+msgid "ConnectAck"
+msgstr "ConnectAck"
+
+#: e5d41d79af454e939b98af302fdade7c ec2696ba720d4e1292d8ffb0c073f976
+msgid "**Direction:** Server → Client"
+msgstr "// Запись длины"
+
+#: ../../protocol.rst:171 4457fb658b994c119c8e1c69d464a6b5
+msgid "**Description:** Connection acknowledgment."
+msgstr "**Описание:** Подтверждение соединения."
+
+#: ../../protocol.rst:185 340ad6719b8343d9985a8c3e73598ebe
+msgid "Disconnect"
+msgstr "Disconnect"
+
+#: ../../protocol.rst:189 b3d40ff6fb1e446e872f51328b184bc3
+msgid "**Description:** Disconnection request."
+msgstr "**Описание:** Запрос на завершение соединения."
+
+#: 05c5bdb72a6145998a1bdf4a5efa42a1 9b020bd7e0164a91847b3095c4780a3f
+msgid "Keep-alive"
+msgstr "Keep-alive"
+
+#: ../../protocol.rst:202 c1e3fcd0db274a38ab50b1e9f9ba0678
+msgid "Ping"
+msgstr "Ping"
+
+#: ../../protocol.rst:206 245524f6cf104078872dc823d93f7e5f
+msgid "**Description:** Connection keep-alive check."
+msgstr "**Описание:** Проверка активности соединения."
+
+#: ../../protocol.rst:216 c6823d03910b44fa840f8819467a7e29
+msgid "Pong"
+msgstr "Pong"
+
+#: ../../protocol.rst:220 a495dafe39eb4e85a4b72f9ec9b0e166
+msgid "**Description:** Response to Ping."
+msgstr "**Описание:** Ответ на Ping."
+
+#: ../../protocol.rst:230 9d18affd2cc349f39251010ae4b4f947
+msgid "Publish/Subscribe"
+msgstr "Все сообщения протокола имеют общую структуру:"
+
+#: ../../protocol.rst:233 0b7e6fd5341f4b8bbcef268b888d4234
+msgid "Publish"
+msgstr "Publish"
+
+#: ../../protocol.rst:237 4937a12539694781ac716440741f4a72
+msgid "**Description:** Publish message to queue."
+msgstr "**Описание:** Публикация сообщения в очередь."
+
+#: ../../protocol.rst:257 bb3c6060ae2344228b1eb052def74da5
+msgid "PublishAck"
+msgstr "PublishAck"
+
+#: ../../protocol.rst:261 c27bbced60874682bba0d9706d411715
+msgid "**Description:** Publish acknowledgment."
+msgstr "**Описание:** Подтверждение публикации."
+
+#: ../../protocol.rst:275 0c2fa057e3aa482994a075d197d9dc82
+msgid "Subscribe"
+msgstr "Subscribe"
+
+#: ../../protocol.rst:279 e1e3fbf3afba46879c82e2218e72610f
+msgid "**Description:** Subscribe to queue."
+msgstr "**Описание:** Подписка на очередь."
+
+#: ../../protocol.rst:290 5f79a99e931045d8811df1e94495243f
+msgid "SubscribeAck"
+msgstr "SubscribeAck"
+
+#: ../../protocol.rst:294 bf1eb1dc0cc94763af72d4f9672a28fb
+msgid "**Description:** Subscription acknowledgment."
+msgstr "**Описание:** Подтверждение подписки."
+
+#: ../../protocol.rst:308 8c19fdaec60a4d699282d44169bc639a
+msgid "Unsubscribe"
+msgstr "Unsubscribe"
+
+#: ../../protocol.rst:312 283c3e08db024d5bb5734684d52dab55
+msgid "**Description:** Unsubscribe from queue."
+msgstr "**Описание:** Отписка от очереди."
+
+#: ../../protocol.rst:323 5924ea2c879540c0a45e0196cd2122c7
+msgid "UnsubscribeAck"
+msgstr "UnsubscribeAck"
+
+#: ../../protocol.rst:327 3e73391a131d437091aa9056cd308690
+msgid "**Description:** Unsubscription acknowledgment."
+msgstr "**Описание:** Подтверждение отписки."
+
+#: ../../protocol.rst:340 8466d4051faf403b95501af7c8e4edbd
+msgid "Deliver"
+msgstr "Deliver"
+
+#: ../../protocol.rst:344 71950f70a191463da21f364ca8343b5c
+msgid "**Description:** Message delivery to subscriber."
+msgstr "**Описание:** Доставка сообщения подписчику."
+
+#: ../../protocol.rst:363 496ed71876bf4a0999b9c820e5ef01b5
+msgid "Acknowledgment"
+msgstr "| ``headers``       | object?          | Заголовки                        │"
+
+#: ../../protocol.rst:366 922aa15a99494ff2adc9af26282bb8d7
+msgid "Ack"
+msgstr "Ack"
+
+#: ../../protocol.rst:370 bb6a09a6648f4dc0918a39a6d788cda2
+msgid "**Description:** Message receipt acknowledgment."
+msgstr "**Описание:** Подтверждение получения сообщения."
+
+#: ../../protocol.rst:383 faa8bef1e45e45cbaf55598feb3a1cc2
+msgid "Queue Management"
+msgstr "| ``errorCode``     | string?          | Код ошибки (для Error)           │"
+
+#: ../../protocol.rst:386 0dd98eb663fe4748bc094e119f863e5a
+msgid "CreateQueue"
+msgstr "CreateQueue"
+
+#: ../../protocol.rst:390 05d70c375c3d482bab549afd4312df7a
+msgid "**Description:** Create queue."
+msgstr "**Описание:** Создание очереди."
+
+#: ../../protocol.rst:406 7df3c5ac0841476c8eb7b33765e13b0b
+msgid "DeleteQueue"
+msgstr "DeleteQueue"
+
+#: ../../protocol.rst:410 09d55d1dca4247498c94d56e4126bd34
+msgid "**Description:** Delete queue."
+msgstr "**Описание:** Удаление очереди."
+
+#: ../../protocol.rst:421 eedc3bc9bb464be8bbf132c63347c51c
+msgid "QueueInfo"
+msgstr "QueueInfo"
+
+#: 51d01837af3940aeaf53e38fdb469a74 640877fb9f91473ab5aa1a02064b3ba8
+msgid "**Direction:** Client → Server, Server → Client"
+msgstr "ConnectAck = 1,"
+
+#: ../../protocol.rst:425 5c21c3cdf2cd4a5b823c1bf9a0ad4e45
+msgid "**Description:** Queue information request/response."
+msgstr "**Описание:** Запрос/ответ информации об очереди."
+
+#: 325cd1625ad94194bac28e672e69765e 511da4a61e074b338adf87af69c9e4a6
+msgid "**Request:**"
+msgstr "// Keep-alive"
+
+#: 9be8ac0ca07c4e2aa05e4ed73ce9c59f ca591fb6e4fe4c3fa3db27a1b6b63c00
+msgid "**Response:**"
+msgstr "Ping = 10,"
+
+#: ../../protocol.rst:456 94947920243f49939f97d9b84fddb1f6
+msgid "ListQueues"
+msgstr "ListQueues"
+
+#: ../../protocol.rst:460 6335a24fa3c4454a83941e22f7109bc4
+msgid "**Description:** Queue list request/response."
+msgstr "**Описание:** Запрос/ответ списка очередей."
+
+#: ../../protocol.rst:482 a7f6f41267cc404fb8cbdcd476a4c7e2
+msgid "Errors"
+msgstr "Publish = 20,"
+
+#: ../../protocol.rst:485 78b5afc01b7c48eaaddcc63984334acb
+msgid "Error"
+msgstr "Error"
+
+#: ../../protocol.rst:489 da04cbedee3e468fba90c7095478f035
+msgid "**Description:** Error message."
+msgstr "**Описание:** Сообщение об ошибке."
+
+#: ../../protocol.rst:501 cb6883c7841045dd971a962be447fc32
+msgid "Error Codes"
+msgstr "SubscribeAck = 23,"
+
+#: ../../protocol.rst:520 c9a30022db9c47a49f2b8fdb82e8ebdb
+msgid "Headers"
+msgstr "Unsubscribe = 24,"
+
+#: ../../protocol.rst:523 47f39385486940f1962c2137f52ad26d
+msgid "Common Headers"
+msgstr "UnsubscribeAck = 25,"
+
+#: ../../protocol.rst:538 d7a60c484f9b4daeaed529e1ecd3b6f1
+msgid "Message Headers"
+msgstr "Deliver = 26,"
+
+#: ../../protocol.rst:560 0b12814f15ed4485a7ed0073d866b672
+msgid "Queue Headers"
+msgstr "// Подтверждение"
+
+#: ../../protocol.rst:577 f91b75c4ac504198904664bd7b9c6a18
+msgid "Exchange Examples"
+msgstr "Ack = 30,"
+
+#: ../../protocol.rst:580 e2f3abd0ed484165adc30df22fb882fe
+msgid "Connection Establishment"
+msgstr "// Управление очередями"
+
+#: ../../protocol.rst:603 5886cfabe40a4dab8ade1b9767442b6d
+msgid "Message Publishing"
+msgstr "CreateQueue = 40,"
+
+#: ../../protocol.rst:629 2b6bea2beaa243f6adf2202a261c9169
+msgid "Message Delivery"
+msgstr "DeleteQueue = 41,"
+
+#: ../../protocol.rst:671 ae972572d7244974b60f4bcd69a35e9b
+msgid "Protocol Versions"
+msgstr "QueueInfo = 42,"
+
+#: ../../protocol.rst:673 90bdd85b5a184f2e8aec2c1c20c8b5a7
+msgid "Current version: **1.0**"
+msgstr "Текущая версия: **1.0**"
+
+#: ../../protocol.rst:682 e6f64e47c0cc4d6a910734f048d7ad2a
+msgid "Next Steps"
+msgstr "// Ошибки"
+
+#: ../../protocol.rst:684 9e0a98601d974467887be311ba26ddaa
+msgid ":doc:`architecture` — system architecture"
+msgstr "Error = 99,"
+
+#: ../../protocol.rst:685 216389b5b8bc4d569d563e7203b2ee62
+msgid ":doc:`features` — VibeMQ capabilities"
+msgstr "}"
+
+#: ../../protocol.rst:686 156883ce7d8f4a218b65207036810f75
+msgid ":doc:`monitoring` — monitoring"
+msgstr "Описание команд"
+

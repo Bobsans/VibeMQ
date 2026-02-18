@@ -1,0 +1,153 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2026, Darkboy
+# This file is distributed under the same license as the VibeMQ package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: VibeMQ 1.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-02-18 18:37+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: ru\n"
+"Language-Team: ru <LL@li.org>\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+
+
+
+#: ../../examples.rst:3 1bda56723fae423a9e65b472e92c9601
+msgid "Examples"
+msgstr "Примеры"
+
+#: ../../examples.rst:5 7feaf2fb85f14f6fb9cf832c1a1906ca
+msgid "This guide contains practical examples of using VibeMQ."
+msgstr "Это руководство содержит практические примеры использования VibeMQ."
+
+#: ../../examples.rst:9 c4518e05fd2f4280b2f28a9eecf4fb96
+msgid "Contents"
+msgstr ":local:"
+
+#: ../../examples.rst:12 93cbebaae94d47cbb49ee1b07f6ba93c
+msgid "Basic Examples"
+msgstr ":depth: 2"
+
+#: ../../examples.rst:15 f218c79b9e6b4b019fa05a44fef26974
+msgid "Simple Publisher"
+msgstr "Базовые примеры"
+
+#: ../../examples.rst:50 fb885f8a0dfd4c958af88206c29e53c5
+msgid "Simple Subscriber"
+msgstr "Простой издатель"
+
+#: ../../examples.rst:81 4cdb5a0a972a43e9bb91be26edb793e0
+msgid "Server"
+msgstr "using Microsoft.Extensions.Logging;"
+
+#: ../../examples.rst:112 d92ae297f71c436294c268ba32151ca9
+msgid "Task Queues"
+msgstr "using VibeMQ.Client;"
+
+#: ../../examples.rst:115 6891c78a12524cfba23bdcd354273f7e
+msgid "Order Processing"
+msgstr "using var loggerFactory = LoggerFactory.Create(builder => {"
+
+#: ../../examples.rst:117 9c2d83aa903b4debaa64cb3754983ad8
+msgid "**Publisher (OrderService.cs):**"
+msgstr "**Издатель (OrderService.cs):**"
+
+#: ../../examples.rst:155 6e7552540f8e4438908aef06108c4e30
+msgid "**Handler (OrderProcessor.cs):**"
+msgstr "**Обработчик (OrderProcessor.cs):**"
+
+#: ../../examples.rst:210 b5047f8ba91b411fa1108a9e1c7a637a
+msgid "**DI Registration:**"
+msgstr "**Регистрация в DI:**"
+
+#: ../../examples.rst:231 cfea7c57bd68416ebd2d5bcab48d2d02
+msgid "Background Tasks with Priorities"
+msgstr "await using var publisher = await VibeMQClient.ConnectAsync("
+
+#: f379037ec4d5495fb6edf870f6c0d2aa
+msgid "**Usage:**"
+msgstr "\"localhost\","
+
+#: ../../examples.rst:281 c0aaadd1362d49d494a804d40f49a51c
+msgid "Event Bus"
+msgstr "8080,"
+
+#: ../../examples.rst:284 a70afb4199fc4acb8d7e55b506635858
+msgid "EventBus Implementation"
+msgstr "new ClientOptions { AuthToken = \"my-token\" },"
+
+#: ../../examples.rst:364 087c446d43444b2d8088a65d111f3ab6
+msgid "**Registration:**"
+msgstr "**Регистрация:**"
+
+#: ../../examples.rst:405 da2846f3735840f1bcb5c19c97101f17
+msgid "Microservices"
+msgstr ");"
+
+#: ../../examples.rst:408 4a18b126a0b74a2ab0c9d1c847593ba9
+msgid "Data Synchronization Between Services"
+msgstr "Console.WriteLine(\"Издатель подключён. Введите сообщение (Enter для выхода):\");"
+
+#: ../../examples.rst:410 bd5e80a98a28417899972d5574c3f8cd
+msgid "**User Service (Users.cs):**"
+msgstr "**Сервис пользователей (Users.cs):**"
+
+#: ../../examples.rst:432 698720b350db429686c9ccc4f4790ba5
+msgid "**Notification Service (Notifications.cs):**"
+msgstr "**Сервис уведомлений (Notifications.cs):**"
+
+#: ../../examples.rst:459 a1b72a7e78e54cbaa41ac35e9e0e6794
+msgid "**Analytics Service (Analytics.cs):**"
+msgstr "**Сервис аналитики (Analytics.cs):**"
+
+#: ../../examples.rst:488 12073681722e4c52b7b7a213ff367913
+msgid "CQRS with VibeMQ"
+msgstr "await publisher.PublishAsync(\"messages\", new {"
+
+#: ../../examples.rst:490 fe91906b90fb4e67a60f8c6b7edbba6c
+msgid "**Commands:**"
+msgstr "**Commands:**"
+
+#: ../../examples.rst:511 c35a1bfc75094a66b40d4578ee92a14c
+msgid "**Queries:**"
+msgstr "**Queries:**"
+
+#: ../../examples.rst:557 f0f45e7a8d064a0b8b1ff6eec016691e
+msgid "Monitoring and Logging"
+msgstr "});"
+
+#: ../../examples.rst:560 2fd1a60f90a747359b5ddcb3485a30cf
+msgid "Custom Logger"
+msgstr "Console.WriteLine(\"✓ Сообщение отправлено\");"
+
+#: ../../examples.rst:621 03da64f8168f4683b679dc1b52c64439
+msgid "Application Metrics"
+msgstr "}"
+
+#: ../../examples.rst:656 b4cb46914a294108b074349004fdf988
+msgid "Next Steps"
+msgstr "Простой подписчик"
+
+#: ../../examples.rst:658 f7de15afd78548dab18aedbd33264f49
+msgid ":doc:`getting-started` — quick start"
+msgstr "using Microsoft.Extensions.Logging;"
+
+#: ../../examples.rst:659 291ef77610f74252a6d92c47e7c901ca
+msgid ":doc:`client-usage` — client usage"
+msgstr "using VibeMQ.Client;"
+
+#: ../../examples.rst:660 15ac14dabc874c16a72e8345b2881fda
+msgid ":doc:`di-integration` — DI integration"
+msgstr "using var loggerFactory = LoggerFactory.Create(builder => {"
+

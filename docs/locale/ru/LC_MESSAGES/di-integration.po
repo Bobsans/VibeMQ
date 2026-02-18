@@ -1,0 +1,221 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2026, Darkboy
+# This file is distributed under the same license as the VibeMQ package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: VibeMQ 1.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-02-18 18:37+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: ru\n"
+"Language-Team: ru <LL@li.org>\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+
+
+
+#: ../../di-integration.rst:3 2e924c8619ae499abce17b7cab1d8567
+msgid "DI Integration"
+msgstr "Интеграция с DI"
+
+#: ../../di-integration.rst:5 ec742de797d543f393a2259ba045e327
+msgid ""
+"This guide describes VibeMQ integration with "
+"Microsoft.Extensions.DependencyInjection."
+msgstr "Это руководство описывает интеграцию VibeMQ с Microsoft.Extensions.DependencyInjection."
+
+#: ../../di-integration.rst:9 df7efa704e1f449d8b55af6d796640ae
+msgid "Contents"
+msgstr ":local:"
+
+#: ../../di-integration.rst:12 6f385b11fb5b4bd5a9cdb8d722371d52
+msgid "Overview"
+msgstr ":depth: 2"
+
+#: ../../di-integration.rst:14 76972253fab244329a42e247b81c4984
+msgid "VibeMQ provides packages for convenient Dependency Injection integration:"
+msgstr "VibeMQ предоставляет пакеты для удобной интеграции с Dependency Injection:"
+
+#: ../../di-integration.rst:16 530b8f089f3b4c5097e0c3d4bcd24ab8
+msgid "``VibeMQ.Server.DependencyInjection`` — for server"
+msgstr "VibeMQ предоставляет пакеты для удобной интеграции с Dependency Injection:"
+
+#: ../../di-integration.rst:17 1c6aeaab9c0e4a2d886a17d3d1c2cdf1
+msgid "``VibeMQ.Client.DependencyInjection`` — for client"
+msgstr "Эти пакеты регистрируют необходимые сервисы в DI-контейнере и автоматически управляют жизненным циклом компонентов."
+
+#: ../../di-integration.rst:19 1c0231e91a7f4675aa2fd3c1c7154da1
+msgid ""
+"These packages register necessary services in the DI container and "
+"automatically manage component lifecycle."
+msgstr "Эти пакеты регистрируют необходимые сервисы в DI-контейнере и автоматически управляют жизненным циклом компонентов."
+
+#: ../../di-integration.rst:22 912a56a44c9343fe8e600d8527fc2d20
+msgid "Package Installation"
+msgstr "dotnet add package VibeMQ.Server.DependencyInjection"
+
+#: ../../di-integration.rst:30 e8d80eaf03e54af1b0c2dc3719266e31
+msgid "Server Integration"
+msgstr "dotnet add package VibeMQ.Client.DependencyInjection"
+
+#: 3477de353ef045768c7071bc598140ce 8ce86445b6f64758b6e8ac57ce96cc29
+msgid "Basic Registration"
+msgstr "Интеграция сервера"
+
+#: ../../di-integration.rst:47 c78613717b504f15ae85e958b171bc8c
+msgid "The server will start automatically when the host starts."
+msgstr "Сервер будет запущен автоматически при старте хоста."
+
+#: 5f28b6a5cdcc4569ab178075effd6565 e970939b6df841c99dfaf40307213d21
+msgid "Registration with Configuration"
+msgstr "using VibeMQ.Server.DependencyInjection;"
+
+#: 25fd5bd256ff406382a6212af6993c5b 4e2469a8820143fdbc3ff98e828eeb60
+msgid "Configuration from appsettings.json"
+msgstr "var host = Host.CreateDefaultBuilder(args)"
+
+#: 67cf926267ec45ca8ba2c140ecdebf56 72da1ab3a42b4dfba9f475f9de403bfa
+msgid "**appsettings.json:**"
+msgstr "**appsettings.json:**"
+
+#: eba13b923ee6495f99a0e832c3eb212a fc007e5576a6400fa521c620e52e831e
+msgid "**Program.cs:**"
+msgstr "**Program.cs:**"
+
+#: ../../di-integration.rst:112 a2e1a5e0bb404dcfabd58904840e913a
+msgid "Advanced Configuration"
+msgstr "})"
+
+#: ../../di-integration.rst:158 31892f4db412403ebbabf1b59e2efb27
+msgid "Client Integration"
+msgstr ".Build();"
+
+#: ../../di-integration.rst:236 7dd3f7539352493bb279fc1539b34b8f
+msgid "Advanced Client Configuration"
+msgstr "await host.RunAsync();"
+
+#: ../../di-integration.rst:266 54ad3089816846318a3dc09112369619
+msgid "Using in Services"
+msgstr "Сервер будет запущен автоматически при старте хоста."
+
+#: ../../di-integration.rst:269 18bcb643c35d4d76aa35c1c03e392359
+msgid "Publishing Messages from Service"
+msgstr "Регистрация с конфигурацией"
+
+#: ../../di-integration.rst:300 775ed662cd1a4a1989796337137edbc8
+msgid "Service registration:"
+msgstr "Регистрация сервиса:"
+
+#: ../../di-integration.rst:307 c37899460ca54cbfb522eabb7493adc2
+msgid "Subscribing to Messages in Background Service"
+msgstr "using VibeMQ.Core.Enums;"
+
+#: ../../di-integration.rst:358 d0b78d2b88d2413b9d0ca5a2358d9aaf
+msgid "Background service registration:"
+msgstr "Регистрация фонового сервиса:"
+
+#: ../../di-integration.rst:365 fd9024aeb01a40e6b51ad30a918e0302
+msgid "Event Bus with DI"
+msgstr ".ConfigureServices(services => {"
+
+#: ../../di-integration.rst:414 9ec8c548181e4a23854fc67866d1bc71
+msgid "Registration:"
+msgstr "Регистрация:"
+
+#: 2e7f4101940d4f1295afc541ffc93ba3 46c6b69f27a3481cbfe76ca48f4433e7
+msgid "Usage:"
+msgstr "options.Port = 8080;"
+
+#: ../../di-integration.rst:444 06b773a2dd114693859f304d960baddc
+msgid "Combined Usage"
+msgstr "options.EnableAuthentication = true;"
+
+#: ../../di-integration.rst:447 ce6546f0458744b0b9e93ae8e4c29efc
+msgid "Server + Client in One Application"
+msgstr "options.AuthToken = \"my-secret-token\";"
+
+#: ../../di-integration.rst:475 03f6d8f143094f59b8ccaa9aab438120
+msgid "Multiple Clients"
+msgstr "options.QueueDefaults.DefaultDeliveryMode = DeliveryMode.RoundRobin;"
+
+#: ../../di-integration.rst:477 5a09cdac8adc4bfda3973a1b6c3eef1f
+msgid "To connect to multiple brokers:"
+msgstr "Для подключения к нескольким брокерам:"
+
+#: ../../di-integration.rst:516 dd676fd1fd3d450995b1c6258ba96120
+msgid "Configuration via Environment Variables"
+msgstr "options.QueueDefaults.EnableAutoCreate = true;"
+
+#: ../../di-integration.rst:518 9a7261370ad2428a941a2ac4618abb5f
+msgid "For Docker and cloud deployments:"
+msgstr "Для Docker и cloud-развёртываний:"
+
+#: ../../di-integration.rst:520 1e6f891086d24108ba86c77ab2471a4a
+msgid "**Environment variables:**"
+msgstr "**Environment variables:**"
+
+#: ../../di-integration.rst:555 a52a2486ebf641719a811531f9689a2e
+msgid "Docker Compose Example"
+msgstr ".Build();"
+
+#: ../../di-integration.rst:582 9c34446184ca4266a1873f26a942aa7d
+msgid "Troubleshooting"
+msgstr "await host.RunAsync();"
+
+#: ../../di-integration.rst:585 1a6bb7d27a5c4490afb208a2115a388a
+msgid "Error: \"Broker already registered\""
+msgstr "Конфигурация из appsettings.json"
+
+#: ../../di-integration.rst:587 b30ba84c18d34377aba6b345f3048b1f
+msgid "**Cause:** Attempting to register broker multiple times."
+msgstr "**Причина:** Попытка зарегистрировать брокер несколько раз."
+
+#: ../../di-integration.rst:589 8c2f0f9636f344e9b6b755194182819e
+msgid "**Solution:** Make sure ``AddVibeMQBroker`` is called only once."
+msgstr "**Решение:** Убедитесь, что ``AddVibeMQBroker`` вызывается один раз."
+
+#: ../../di-integration.rst:592 2c26e2b1465147f0992e7e0a7cff2248
+msgid "Error: \"Unable to connect\""
+msgstr "\"VibeMQ\": {"
+
+#: ../../di-integration.rst:594 de4057997d4143ed84a1b6af601d9238
+msgid "**Cause:** Server is not started yet when creating client."
+msgstr "**Причина:** Сервер ещё не запущен при создании клиента."
+
+#: ../../di-integration.rst:596 53622a9ca4c4448bba44636d11d207c5
+msgid "**Solution:** Create client after host starts:"
+msgstr "**Решение:** Создавайте клиента после запуска хоста:"
+
+#: ../../di-integration.rst:607 1c93be460359406daa8e3a73537783bd
+msgid "Auto-start Server"
+msgstr "\"AuthToken\": \"my-secret-token\","
+
+#: ../../di-integration.rst:609 7c30b956e8c84444968f2e68a8bc1067
+msgid "Server starts automatically as ``IHostedService``. For manual control:"
+msgstr "Сервер запускается автоматически как ``IHostedService``. Для ручного управления:"
+
+#: ../../di-integration.rst:619 3f56f79038844f808ba38ce8d8eb7eaa
+msgid "Next Steps"
+msgstr "\"DefaultDeliveryMode\": \"RoundRobin\","
+
+#: ../../di-integration.rst:621 591d3464d9a1450fa62b6714167b214e
+msgid ":doc:`server-setup` — server setup"
+msgstr "\"MaxQueueSize\": 10000,"
+
+#: ../../di-integration.rst:622 8e341540c82a43dfb045c7c8a3aefe01
+msgid ":doc:`client-usage` — client usage"
+msgstr "\"EnableAutoCreate\": true"
+
+#: ../../di-integration.rst:623 da1fb0b4a53948daab0b5e93ae04e369
+msgid ":doc:`monitoring` — monitoring"
+msgstr "}"
+

@@ -1,0 +1,681 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2026, Darkboy
+# This file is distributed under the same license as the VibeMQ package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: VibeMQ 1.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-02-18 18:37+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: ru\n"
+"Language-Team: ru <LL@li.org>\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+
+
+
+#: ../../features.rst:3 df702dd5293d44ed806c13131fed02bb
+msgid "Features"
+msgstr "Возможности"
+
+#: ../../features.rst:5 92b53043c1f447a8b7342b1493120074
+msgid "This guide describes all capabilities and features of VibeMQ."
+msgstr "Это руководство описывает все возможности и функции VibeMQ."
+
+#: ../../features.rst:9 de9eb56d2b68415e88e68bbf3163291f
+msgid "Contents"
+msgstr ":local:"
+
+#: ../../features.rst:12 c46801bd4eb94ae8a994c475106d6d55
+msgid "Publish/Subscribe (Pub/Sub)"
+msgstr ":depth: 2"
+
+#: ../../features.rst:14 b3502596a8f041ff96b7d6a81e82cfcc
+msgid "VibeMQ implements the publish/subscribe pattern through message queues."
+msgstr "VibeMQ реализует паттерн публикации/подписки через очереди сообщений."
+
+#: ../../features.rst:16 ae2d2d312b2840d7b3348a2f79f42b38
+msgid "**Basic concepts:**"
+msgstr "**Основные понятия:**"
+
+#: ../../features.rst:18 72a4d114351342e489aaf93d409156a7
+msgid "**Publisher** — client sending messages"
+msgstr "**Основные понятия:**"
+
+#: ../../features.rst:19 6356638b379c4869be68af03442e4967
+msgid "**Subscriber** — client receiving messages"
+msgstr "**Базовый пример:**"
+
+#: ../../features.rst:20 2cbe4d62e2d64000aa76272be675c2d3
+msgid "**Queue** — buffer for storing messages"
+msgstr "// Издатель"
+
+#: ../../features.rst:21 1245657086b54a04a38409d9f6dbd6c3
+msgid "**Broker** — server managing queues"
+msgstr "await client.PublishAsync(\"notifications\", new {"
+
+#: ../../features.rst:23 4f042c5b8df640eebb1c6dbe73a47c99
+msgid "**Basic example:**"
+msgstr "**Базовый пример:**"
+
+#: ../../features.rst:42 3287619cc9d94221908cc0b8083d17af
+msgid "Delivery Modes"
+msgstr "Body = \"World\""
+
+#: ../../features.rst:44 cea3d859d584497bbd6566f7775c9ea5
+msgid "VibeMQ supports four message delivery modes:"
+msgstr "VibeMQ поддерживает четыре режима доставки сообщений:"
+
+#: ../../features.rst:47 0ec3e9d2c5b74753ae5f6af51686cd6e
+msgid "Round-robin"
+msgstr "Round-robin"
+
+#: ../../features.rst:49 83d2d975bc0b45239f5bbb85ac033ec4
+msgid "**Description:** Each message is delivered to one subscriber cyclically."
+msgstr "**Описание:** Каждое сообщение доставляется одному подписчику циклически."
+
+#: 92d205412b84482b8bdfd7508f2b28e0 a4e8f739d3e043209f9e605105fc313c
+msgid "**Configuration:**"
+msgstr "\"notifications\","
+
+#: e01cdb30ea954a07bc0eca7c33424fd2
+msgid "**Use cases:**"
+msgstr "async msg => {"
+
+#: ../../features.rst:65 20eb39c6ff8f4f78a28c35360f8cfc44
+msgid "Task processing by multiple workers"
+msgstr "Console.WriteLine($\"{msg.Title}: {msg.Body}\");"
+
+#: ../../features.rst:66 75b5f5d3ce5f4d11a39dddc6905a65a0
+msgid "Load balancing"
+msgstr "}"
+
+#: ../../features.rst:67 be96893879dc466daa5af072b210afdf
+msgid "Task queues"
+msgstr ");"
+
+#: ../../features.rst:70 044f05551a9943fa8f83af774444dba4
+msgid "Fan-out with Acknowledgment"
+msgstr "Режимы доставки"
+
+#: ../../features.rst:72 28b4b47a870d4e5f93b488e57ad35c95
+msgid ""
+"**Description:** Message is delivered to all subscribers, each must "
+"acknowledge receipt."
+msgstr "**Описание:** Сообщение доставляется всем подписчикам, каждый должен подтвердить получение."
+
+#: ../../features.rst:89 81c2aae52908458fb7dc18aab75517f7
+msgid "Notification broadcasting"
+msgstr "Round-robin"
+
+#: ../../features.rst:90 96269efec1554db99b1306de78519d94
+msgid "Data replication"
+msgstr "**Описание:** Каждое сообщение доставляется одному подписчику циклически."
+
+#: ../../features.rst:91 2c52954f098b44288ff8bf391b03502b
+msgid "Audit and logging"
+msgstr "Publisher → [Queue] → Subscriber 1 (сообщение 1)"
+
+#: ../../features.rst:94 aaba6891caec42bc80d1b08887544163
+msgid "Fan-out without Acknowledgment"
+msgstr "→ Subscriber 2 (сообщение 2)"
+
+#: ../../features.rst:96 177173e8cc9a4df59c1cdd200259558e
+msgid ""
+"**Description:** Message is delivered to all subscribers without "
+"confirmation."
+msgstr "**Описание:** Сообщение доставляется всем подписчикам без подтверждения."
+
+#: ../../features.rst:112 b6dfbdf8ac4342989aced2a9e9b9b49e
+msgid "Broadcast messages"
+msgstr "**Настройка:**"
+
+#: ../../features.rst:113 75cf901838504cc69d0c017100633187
+msgid "Real-time updates"
+msgstr "options.DefaultDeliveryMode = DeliveryMode.RoundRobin;"
+
+#: ../../features.rst:114 ceb7ae6352ed4b91bbb1b231871878a9
+msgid "Data streaming"
+msgstr "**Использование:**"
+
+#: ../../features.rst:117 0d4a77cd3299476c9c0c0722d09b0f53
+msgid "Priority-based"
+msgstr "Priority-based"
+
+#: ../../features.rst:119 2db14adc8e02445d9dd2e0a5d72668c8
+msgid "**Description:** Messages are delivered by priority."
+msgstr "**Описание:** Сообщения доставляются по приоритету."
+
+#: ../../features.rst:125 e8768fd4ba2248aabf4b4d5a4f3475ec
+msgid "**Priorities:**"
+msgstr "**Приоритеты:**"
+
+#: ../../features.rst:128 fae3b8536fdb4a3896e74283a9083348
+msgid "Priority"
+msgstr "| Приоритет      | Значе-| Описание                         |"
+
+#: ../../features.rst:128 32f519525bad4b19b1c9b6f34e96a1f4
+msgid "Value"
+msgstr "| Приоритет      | Значе-| Описание                         |"
+
+#: deaf20f562aa4c86821ef55cb29fef3a
+msgid "Description"
+msgstr "**Настройка:**"
+
+#: ../../features.rst:130 7dc6e0edd00e498898532f98093b1e40
+msgid "Critical"
+msgstr "options.DefaultDeliveryMode = DeliveryMode.FanOutWithAck;"
+
+#: ../../features.rst:130 39e39a4dfeee4124b563f68750017140
+msgid "3"
+msgstr "options.MaxRetryAttempts = 3;"
+
+#: ../../features.rst:130 6bf2bc6d6bc74e4d871a7fcac932daeb
+msgid "Critical, delivered first"
+msgstr "**Использование:**"
+
+#: ../../features.rst:132 19461bc9709e424783f1a2f4dc01520a
+msgid "High"
+msgstr "Fan-out без подтверждения"
+
+#: ../../features.rst:132 edf0bd08e2a54e2d82cedc9859db8c49
+msgid "2"
+msgstr "**Описание:** Сообщение доставляется всем подписчикам без подтверждения."
+
+#: ../../features.rst:132 046a90d8c7e845179416f34fe5d5930f
+msgid "High priority"
+msgstr "Publisher → [Queue] → Subscriber 1 (копия)"
+
+#: ../../features.rst:134 1ea8dbe6ef1b45d6a236af11fa685878
+msgid "Normal"
+msgstr "→ Subscriber 2 (копия)"
+
+#: ../../features.rst:134 66e43add82fe40f6972e60ec81ee5d22
+msgid "1"
+msgstr "→ Subscriber 3 (копия)"
+
+#: ../../features.rst:134 bead31a784ba4a9bbc99d381eb6acd07
+msgid "Normal (default)"
+msgstr "**Настройка:**"
+
+#: ../../features.rst:136 060f1b5149aa4260b9585cd17ec47630
+msgid "Low"
+msgstr "options.DefaultDeliveryMode = DeliveryMode.FanOutWithoutAck;"
+
+#: ../../features.rst:136 990910f1d811468fa4bb294bdd20b4a8
+msgid "0"
+msgstr "**Использование:**"
+
+#: ../../features.rst:136 ee2e11ceb6714dbd9094a71a0415811e
+msgid "Low, delivered last"
+msgstr "Priority-based"
+
+#: c4244d42ff8849518ccf6c62c20ff45b d0b966eb5dd9410ba6ef248b415250ed
+msgid "**Publish with priority:**"
+msgstr "**Описание:** Сообщения доставляются по приоритету."
+
+#: ../../features.rst:154 c2ecbed519e74d6da77cf754469b4bd7
+msgid "Delivery Guarantees"
+msgstr "[Critical] → [High] → [Normal] → [Low]"
+
+#: ../../features.rst:157 fe53373c6c9d46509509d89eba271c85
+msgid "Acknowledgments (ACK)"
+msgstr "**Приоритеты:**"
+
+#: ../../features.rst:159 2b0e167bf43a4dd8a9afadbe93093a48
+msgid "VibeMQ uses an acknowledgment mechanism for delivery guarantees:"
+msgstr "| Приоритет      | Значе-| Описание                         |"
+
+#: ../../features.rst:169 8da66bf8935542d7a60c85412e5bc640
+msgid "**How it works:**"
+msgstr "|                | ние   |                                  |"
+
+#: ../../features.rst:171 bdbbd3f2fdd047ea9b0b403e6a0c7071
+msgid "Broker sends message to client"
+msgstr "| Critical       | 3     | Критические, доставляются первыми|"
+
+#: ../../features.rst:172 fa3b56d8801a43f9b10ea51431313e84
+msgid "ACK wait timer starts"
+msgstr "1. Брокер отправляет сообщение клиенту"
+
+#: ../../features.rst:173 0e29ed185c0b4c01a63aab1a2ee63102
+msgid "Client processes message and sends ACK"
+msgstr "2. Запускается таймер ожидания ACK"
+
+#: ../../features.rst:174 ba40145ce9b34941b7cdb3ad3752c896
+msgid "Broker receives ACK and marks message as delivered"
+msgstr "3. Клиент обрабатывает сообщение и отправляет ACK"
+
+#: ../../features.rst:176 ca6f0e3384724f1680d0aaf55284be96
+msgid "**Automatic ACKs:**"
+msgstr "**Настройка:**"
+
+#: ../../features.rst:178 93761ff1c3be4d928ed6a1e2485a29a4
+msgid ""
+"By default, the client automatically sends ACK after successful "
+"processing:"
+msgstr "options.DefaultDeliveryMode = DeliveryMode.PriorityBased;"
+
+#: ../../features.rst:191 d1d964fe25fc4fa49cc788f36dcda29f
+msgid "Retry Attempts"
+msgstr "**Публикация с приоритетом:**"
+
+#: ../../features.rst:193 74b621e57aff4a3db4f06baac85e1275
+msgid "If ACK is not received within the timeout, the message is resent:"
+msgstr "await client.PublishAsync(\"alerts\", message, options => {"
+
+#: ../../features.rst:205 c1c1bfdd008b4a528556440b947c7ab8
+msgid "**Exponential backoff:**"
+msgstr "options.Priority = MessagePriority.Critical;"
+
+#: ../../features.rst:207 6816d6dbbb884bcdab9cf89525d438ae
+msgid "Exponential delay is used between attempts:"
+msgstr "});"
+
+#: ../../features.rst:209 d1eb109ea2e64acc87b325d3bae1669f
+msgid "Attempt 1: immediately"
+msgstr "Гарантии доставки"
+
+#: ../../features.rst:210 6a3ee1d4aa0e40c298c92bb251310853
+msgid "Attempt 2: after 1s"
+msgstr "Подтверждения (ACK)"
+
+#: ../../features.rst:211 edcf999ee6274bc7a44e06e0e2a7f43a
+msgid "Attempt 3: after 2s"
+msgstr "VibeMQ использует механизм подтверждений для гарантии доставки:"
+
+#: ../../features.rst:212 a20eb3c9ff27401187da771a5fb7e589
+msgid "Attempt 4: after 4s"
+msgstr "Брокер → Доставить сообщение → Клиент"
+
+#: ../../features.rst:213 53d05cb548a14c7c97a10282f602aaf7
+msgid "..."
+msgstr "│"
+
+#: ../../features.rst:216 63c380ab09df47deb57bff6c16266088
+msgid "Dead Letter Queue (DLQ)"
+msgstr "Dead Letter Queue (DLQ)"
+
+#: ../../features.rst:218 af1d93a3cc204bc9831f2670c1cde0e8
+msgid ""
+"Messages that fail to deliver after all attempts are moved to Dead Letter"
+" Queue:"
+msgstr "│"
+
+#: ../../features.rst:226 5965554192e24360914671edc4bd2105
+msgid "**Reasons for DLQ:**"
+msgstr "◀────── ACK ────────────┘"
+
+#: ../../features.rst:228 ff8bf189f165405ab9aea5c0dd6682f0
+msgid "Maximum delivery attempts exceeded"
+msgstr "**Как работает:**"
+
+#: ../../features.rst:229 af98ced9c3314e5b9a416c6191f983ab
+msgid "Message TTL expired"
+msgstr "1. Брокер отправляет сообщение клиенту"
+
+#: ../../features.rst:230 16920a49e3ce4c90b9067d79dba51b37
+msgid "Deserialization error"
+msgstr "2. Запускается таймер ожидания ACK"
+
+#: ../../features.rst:231 bf40f2c5d79a457cb511d05883e87140
+msgid "Exception in handler"
+msgstr "3. Клиент обрабатывает сообщение и отправляет ACK"
+
+#: ../../features.rst:233 e3da4e8e2c27483ca3b5a5ddf2fa21ff
+msgid "**DLQ processing:**"
+msgstr "4. Брокер получает ACK и помечает сообщение как доставленное"
+
+#: ../../features.rst:245 bc775891d8224eed8ad6538db74e7b2e
+msgid "Queue Management"
+msgstr "**Автоматические ACK:**"
+
+#: ../../features.rst:248 956fe9416ae54d89805dbc07f8b307f9
+msgid "Creating a Queue"
+msgstr "По умолчанию клиент автоматически отправляет ACK после успешной обработки:"
+
+#: ../../features.rst:250 1cb4495328b04921be455e99fc754534
+msgid "**Automatic creation:**"
+msgstr "await using var subscription = await client.SubscribeAsync<dynamic>("
+
+#: ../../features.rst:252 369fd7c6e7144e54a063017c96c2cbe1
+msgid "When publishing to a non-existent queue, it's created automatically:"
+msgstr "\"notifications\","
+
+#: ../../features.rst:258 e561c92c1f7942f5901ec748e66b78c8
+msgid "**Manual creation:**"
+msgstr "async msg => {"
+
+#: ../../features.rst:269 be0a9514eece4bfda83226ebf034e487
+msgid "Deleting a Queue"
+msgstr "await ProcessMessageAsync(msg);"
+
+#: ../../features.rst:276 147fe438dc8345609d164ab7d76df26e
+msgid "Getting Information"
+msgstr "// ACK отправляется автоматически"
+
+#: ../../features.rst:288 6fcace54c3614b408d8a664a84394dbe
+msgid "List Queues"
+msgstr "}"
+
+#: ../../features.rst:299 a954789f7fd74e5b9e9eba7226f2cceb
+msgid "Message Priorities"
+msgstr ");"
+
+#: ../../features.rst:301 d530f8624a6e4e75be2773706b9f6d7f
+msgid "VibeMQ supports message priorities for important deliveries."
+msgstr "Повторные попытки"
+
+#: ../../features.rst:303 2002f0258568457c910b0890b0a1798a
+msgid "**Priority levels:**"
+msgstr "Если ACK не получен в течение таймаута, сообщение отправляется повторно:"
+
+#: ../../features.rst:332 759f468d0e9641ddab214b8f49821504
+msgid "Keep-alive (PING/PONG)"
+msgstr "Keep-alive (PING/PONG)"
+
+#: ../../features.rst:334 eee610993b9e448c961f357232a7d4a7
+msgid "Active connections are maintained using the keep-alive mechanism:"
+msgstr "**Настройка:**"
+
+#: ../../features.rst:344 58574807345e4a60be1672fcf76f509f
+msgid "**Client configuration:**"
+msgstr "options.MaxRetryAttempts = 3;"
+
+#: ../../features.rst:357 9f4bc18866fa4771931e2f7744bcc62a
+msgid "Automatic Reconnections"
+msgstr "**Экспоненциальная задержка:**"
+
+#: ../../features.rst:359 bc918b0fb7274efb854a830388a5a564
+msgid "The client automatically reconnects when the connection is lost."
+msgstr "Между попытками используется экспоненциальная задержка:"
+
+#: ../../features.rst:361 e68566ab09cb409d8ed245a34c994936
+msgid "**Reconnect policy configuration:**"
+msgstr "Dead Letter Queue (DLQ)"
+
+#: 15bcd1144b844c3e89727cf5124e7be6 4f7c2da835774152bff5a626a778953f
+msgid "**Parameters:**"
+msgstr "Сообщения, которые не удалось доставить после всех попыток, перемещаются в Dead Letter Queue:"
+
+#: 50d883ae48574acc8ccc95b10ca2bdd4 5a0f02c1214c49119a73f53593880f15
+msgid "Parameter"
+msgstr "options.EnableDeadLetterQueue = true;"
+
+#: 1ea1842da3f949ecb18ef1e3da8e6ff3 ad5f73cd3c834f7d8d64f4149be76eb4
+msgid "Default"
+msgstr "options.DeadLetterQueueName = \"dead-letters\";"
+
+#: ../../features.rst:383 b881579de5964da0a35b10c3889e6475
+msgid "``MaxAttempts``"
+msgstr "options.MaxRetryAttempts = 3;"
+
+#: ../../features.rst:383 8ff9dc528e8d4d6b949bb13fc00e4839
+msgid "int.MaxValue"
+msgstr "**Причины попадания в DLQ:**"
+
+#: ../../features.rst:383 a90da4f3d6eb453688f870dc2e7d29d1
+msgid "Maximum number of attempts"
+msgstr "**Обработка DLQ:**"
+
+#: ../../features.rst:385 0a389e1da37e4c9994e8a7f95fc639b4
+msgid "``InitialDelay``"
+msgstr "var dlqMessages = await queueManager.GetDeadLetterMessagesAsync(100);"
+
+#: ../../features.rst:385 d2e1d48962a349c59e46439146ab5322
+msgid "1s"
+msgstr "foreach (var message in dlqMessages) {"
+
+#: ../../features.rst:385 ef9bdba869444a50bce22fd7cc650ef8
+msgid "Initial delay"
+msgstr "// Повторная обработка или логирование"
+
+#: ../../features.rst:387 abd5975dbdf74f0385c68c4250512428
+msgid "``MaxDelay``"
+msgstr "await RetryOrLogAsync(message);"
+
+#: ../../features.rst:387 7e10ce47737a449991fbe212c1d0307d
+msgid "5min"
+msgstr "}"
+
+#: ../../features.rst:387 7bc7cd0fc29642acb951ade41ada65ed
+msgid "Maximum delay"
+msgstr "Управление очередями"
+
+#: ../../features.rst:389 f846720f266546a19cb28e67c92aa276
+msgid "``UseExponentialBackoff`` | true"
+msgstr "Создание очереди"
+
+#: ../../features.rst:389 fef8f6437626483c96d119d1dfc03b40
+msgid "Exponential increase"
+msgstr "**Автоматическое создание:**"
+
+#: ../../features.rst:393 62609e422e3a49e7a4897e4ee6a7208a
+msgid "Authentication"
+msgstr "При публикации в несуществующую очередь она создаётся автоматически:"
+
+#: ../../features.rst:395 9398720760c9475baf87fdd9452a3f7b
+msgid "Token-based authentication:"
+msgstr "options.EnableAutoCreate = true;"
+
+#: a76cbcfb8dd942c4afd1d6e89cc695a9 cd8d590fcce9491389c34841e0158a82
+msgid "**On server:**"
+msgstr "**Ручное создание:**"
+
+#: 4761dd234cd24c8fb5f0d9b93555538f f9ed4319508044ba88a96fae637677fc
+msgid "**On client:**"
+msgstr "await queueManager.CreateQueueAsync(\"my-queue\", new QueueOptions {"
+
+#: ../../features.rst:419 393fdf8aa1274da6a628924b308651b3
+msgid "Use complex tokens (32+ characters) and store them in a secure location."
+msgstr "DeliveryMode = DeliveryMode.RoundRobin,"
+
+#: ../../features.rst:422 06fec9f571c94b1fbcddf75fd295e333
+msgid "TLS/SSL Encryption"
+msgstr "MaxQueueSize = 10_000,"
+
+#: ../../features.rst:424 cbce8502c6a4412d98184c41ca15215b
+msgid "Transport encryption support:"
+msgstr "MessageTtl = TimeSpan.FromHours(1),"
+
+#: ../../features.rst:450 8de7c44ad1dd467ab14262fd650d0e8a
+msgid "Rate Limiting"
+msgstr "Rate Limiting"
+
+#: ../../features.rst:452 48541c3f309246e7a7c365654e31c97a
+msgid "Overload protection:"
+msgstr "Удаление очереди"
+
+#: ../../features.rst:470 36e864a648124f0b9768ac13cf41208f
+msgid "``Enabled``"
+msgstr "await queueManager.DeleteQueueAsync(\"my-queue\");"
+
+#: ../../features.rst:470 ebcc19115da64b5fbd38f40d21e07c3e
+msgid "false"
+msgstr "Получение информации"
+
+#: ../../features.rst:470 ed54ed602713436d8da9f89d0446d3aa
+msgid "Enable rate limiting"
+msgstr "var info = await queueManager.GetQueueInfoAsync(\"my-queue\");"
+
+#: ../../features.rst:472 7dcca3e5a07e44c4b7e0a5ccb1d2f518
+msgid "``MaxConnectionsPerIpPerWindow`` | 100"
+msgstr "Console.WriteLine($\"Очередь: {info.Name}\");"
+
+#: ../../features.rst:472 593332138ec34466bb1bc8175b80ddc5
+msgid "Max connections per IP per window"
+msgstr "Console.WriteLine($\"Сообщений: {info.MessageCount}\");"
+
+#: ../../features.rst:474 08cdf24f6bab487a81857d0823805a59
+msgid "``ConnectionWindowSeconds`` | 60"
+msgstr "Console.WriteLine($\"Подписчиков: {info.SubscriberCount}\");"
+
+#: ../../features.rst:474 b2c227586d56425a99303df93a7c80cb
+msgid "Time window (seconds)"
+msgstr "Console.WriteLine($\"Режим: {info.DeliveryMode}\");"
+
+#: ../../features.rst:476 e0fe2576d12547298ab8de588c3c78af
+msgid "``MaxMessagesPerClientPerSecond`` | 1000"
+msgstr "Список очередей"
+
+#: ../../features.rst:476 8fa0cfd0a5e1494a9cab3039f02c6527
+msgid "Max messages per second per client"
+msgstr "var queues = await queueManager.ListQueuesAsync();"
+
+#: ../../features.rst:480 385d895250784bdfab118855ad368109
+msgid "Graceful Shutdown"
+msgstr "Graceful Shutdown"
+
+#: ../../features.rst:482 b4c27835e2184d15bc3ac6abbe4fde9b
+msgid "Correct server shutdown without message loss:"
+msgstr "Console.WriteLine(queueName);"
+
+#: ../../features.rst:495 7d001f04c595445d818a42758713065d
+msgid "**Shutdown stages:**"
+msgstr "}"
+
+#: ../../features.rst:497 2d7cab66e4d247feba717a4b71aa3241
+msgid "Stop accepting new connections"
+msgstr "Приоритеты сообщений"
+
+#: ../../features.rst:498 3cfeb0f315a04de18929b6c61b6e4bba
+msgid "Notify clients about shutdown"
+msgstr "1. Остановка приёма новых соединений"
+
+#: ../../features.rst:499 a8cbbf7f41a146198aa5a5841089c2ea
+msgid "Wait for in-flight message processing (up to 30s)"
+msgstr "2. Уведомление клиентов о shutdown"
+
+#: ../../features.rst:500 ffcd6b1cbfc748b98daf910eb1a8f1c3
+msgid "Close all connections"
+msgstr "3. Ожидание обработки in-flight сообщений (до 30с)"
+
+#: ../../features.rst:501 66a6b927bb654efb85370d3b412b198f
+msgid "Clean up resources"
+msgstr "4. Закрытие всех соединений"
+
+#: ../../features.rst:504 ff0106c98f104be5a8e91294fc815f7a
+msgid "Health Checks"
+msgstr "Health Checks"
+
+#: ../../features.rst:506 586557c90a894525a3d3e8e6e21455d1
+msgid "HTTP endpoints for monitoring:"
+msgstr "High = 2,     // Высокий"
+
+#: ../../features.rst:508 d9eb54828ef14f6fa88a1ce2118ec6f3
+msgid "**Enable:**"
+msgstr "Critical = 3  // Критический"
+
+#: ../../features.rst:517 448357dc3e4c4d02b9cc4bed51c8d81e
+msgid "**Endpoints:**"
+msgstr "}"
+
+#: ../../features.rst:519 2a287a4ce6624a0f9a753c4115e608fe
+msgid "``GET /health/`` — health status (200 OK or 503)"
+msgstr "**Публикация с приоритетом:**"
+
+#: ../../features.rst:520 ef3a9eda6d2248348c4701e496aa429b
+msgid "``GET /metrics/`` — broker metrics (JSON)"
+msgstr "// Критическое сообщение"
+
+#: ../../features.rst:522 00bcf49007e946f0962a21062913787a
+msgid "**Example /health/ response:**"
+msgstr "await client.PublishAsync(\"alerts\", alertData, options => {"
+
+#: ../../features.rst:533 069cfa8132eb49c5ac04696177828b95
+msgid "**Example /metrics/ response:**"
+msgstr "options.Priority = MessagePriority.Critical;"
+
+#: ../../features.rst:548 1b99867e0c254aa4a579ebfb71703861
+msgid "Metrics"
+msgstr "});"
+
+#: ../../features.rst:550 fdb8f398a5ef441992bd2722501fb4eb
+msgid "**Counters:**"
+msgstr "// Высокий приоритет"
+
+#: ../../features.rst:552 3576e3985c4a4feca102e83335ebd3aa
+msgid "``TotalMessagesPublished`` — total published"
+msgstr "await client.PublishAsync(\"notifications\", data, options => {"
+
+#: ../../features.rst:553 34a8e52d413244668b6b2cb091cedb75
+msgid "``TotalMessagesDelivered`` — total delivered"
+msgstr "options.Priority = MessagePriority.High;"
+
+#: ../../features.rst:554 ab53a1c4bc514e9187c042f829acb3d1
+msgid "``TotalMessagesAcknowledged`` — total acknowledged"
+msgstr "});"
+
+#: ../../features.rst:555 5e4c947ca7a44d2cb3a8edf37925ac36
+msgid "``TotalRetries`` — retry attempts"
+msgstr "// Обычный приоритет (по умолчанию)"
+
+#: ../../features.rst:556 920b04380f374404810cc1939ea84a59
+msgid "``TotalDeadLettered`` — in DLQ"
+msgstr "await client.PublishAsync(\"logs\", logData);"
+
+#: ../../features.rst:557 1cb79599bb9b4c92af7771fe333fcc15
+msgid "``TotalErrors`` — errors"
+msgstr "Keep-alive (PING/PONG)"
+
+#: ../../features.rst:558 adfb58892d384027ac9dd9d5b78a973a
+msgid "``TotalConnectionsAccepted`` — connections accepted"
+msgstr "Для поддержания активных соединений используется механизм keep-alive:"
+
+#: ../../features.rst:559 806acf06fd964f87b2b492921440b4b2
+msgid "``TotalConnectionsRejected`` — connections rejected"
+msgstr "Клиент                    Сервер"
+
+#: ../../features.rst:561 63c6f24aa17a4b9b97d1215d3f7dcfe4
+msgid "**Gauge metrics:**"
+msgstr "│                         │"
+
+#: ../../features.rst:563 711bc11f3ae4484a9fc646b355475ff8
+msgid "``ActiveConnections`` — active connections"
+msgstr "│─── PING (30с) ─────────▶│"
+
+#: ../../features.rst:564 76e073b0b04f4a019d58658ba527418d
+msgid "``ActiveQueues`` — active queues"
+msgstr "│                         │"
+
+#: ../../features.rst:565 0c1715b37c4a408aab24720972b3915c
+msgid "``InFlightMessages`` — in flight"
+msgstr "│◄── PONG (немедленно) ───│"
+
+#: ../../features.rst:566 4a53de05660c47b79c4b2d144a2e017e
+msgid "``MemoryUsageBytes`` — memory usage"
+msgstr "**Настройка на клиенте:**"
+
+#: ../../features.rst:568 40931e4799fa40afb183065fbee1398a
+msgid "**Latency:**"
+msgstr "var client = await VibeMQClient.ConnectAsync("
+
+#: ../../features.rst:570 d5aae2b9837e4ec383a7950b37d084fe
+msgid "``AverageDeliveryLatencyMs`` — average delivery latency"
+msgstr "\"localhost\","
+
+#: ../../features.rst:573 050d65601c37497cb672c4c7227c0811
+msgid "Next Steps"
+msgstr "8080,"
+
+#: ../../features.rst:575 ee93200e46dd4d9f9dafe661079458cd
+msgid ":doc:`server-setup` — server configuration"
+msgstr "new ClientOptions {"
+
+#: ../../features.rst:576 5d1a31250412483abe6493a4f7a6bce0
+msgid ":doc:`client-usage` — client usage"
+msgstr "KeepAliveInterval = TimeSpan.FromSeconds(30)"
+
+#: ../../features.rst:577 144befaa2c1147218294fce935db025b
+msgid ":doc:`monitoring` — monitoring"
+msgstr "}"
+
