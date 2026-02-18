@@ -1,6 +1,6 @@
 # .readthedocs.yaml
 # Read the Docs configuration file for i18n documentation
-# See https://docs.readthedocs.io/en/stable/config-file/v2.html for details
+# See https://docs.readthedocs.com/en/stable/config-file/v2.html for details
 #
 # IMPORTANT: For multi-language support with i18n:
 # 1. Create two separate projects in ReadTheDocs admin panel:
@@ -8,7 +8,8 @@
 #    - Translation project (Russian): vibemq-ru (Language: Russian)
 # 2. In the main project admin, go to Translations and add Russian project
 # 3. Each project uses the same .readthedocs.yaml and docs/conf.py
-# 4. Read the Docs will automatically set READTHEDOCS_LANGUAGE environment variable
+# 4. Read the Docs automatically sets READTHEDOCS_LANGUAGE environment variable
+#    (values: 'en' for English, 'ru' for Russian)
 # 5. The conf.py reads this variable to set the correct language
 
 version: 2
@@ -31,6 +32,7 @@ build:
 # Build documentation with i18n support
 # The language is determined by READTHEDOCS_LANGUAGE environment variable
 # which is automatically set by Read the Docs based on project language settings
+# Values: 'en' for English project, 'ru' for Russian project
 sphinx:
   configuration: docs/conf.py
   fail_on_warning: false

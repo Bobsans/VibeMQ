@@ -47,9 +47,13 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store', '**.ipynb_checkpoints', 
 locale_dirs = ['locale']
 
 # Languages to build
-# Read the Docs sets READTHEDOCS_LANGUAGE environment variable
-# Default to 'en' if not set
-language = os.environ.get('READTHEDOCS_LANGUAGE', 'en')
+# Read the Docs sets READTHEDOCS_LANGUAGE environment variable (e.g., 'en', 'ru')
+# The value is lowercase and uses dash as separator (e.g., 'pt-br')
+# For Russian it will be 'ru', for English 'en'
+rtd_language = os.environ.get('READTHEDOCS_LANGUAGE', 'en')
+# Convert to standard locale format if needed (e.g., 'pt-br' -> 'pt_BR')
+# For simple cases like 'en' and 'ru', use as-is
+language = rtd_language.replace('-', '_') if '-' in rtd_language else rtd_language
 
 # Gettext settings for better translation management
 # UUID helps track changes in source files
