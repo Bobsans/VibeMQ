@@ -29,6 +29,22 @@ public sealed class BrokerBuilder {
     public static BrokerBuilder Create() => new();
 
     /// <summary>
+    /// Applies configuration from a <see cref="BrokerOptions"/> instance (e.g. from Microsoft.Extensions.Options).
+    /// </summary>
+    public BrokerBuilder ConfigureFrom(BrokerOptions options) {
+        ArgumentNullException.ThrowIfNull(options);
+        _options.Port = options.Port;
+        _options.MaxConnections = options.MaxConnections;
+        _options.MaxMessageSize = options.MaxMessageSize;
+        _options.EnableAuthentication = options.EnableAuthentication;
+        _options.AuthToken = options.AuthToken;
+        _options.QueueDefaults = options.QueueDefaults;
+        _options.Tls = options.Tls;
+        _options.RateLimit = options.RateLimit;
+        return this;
+    }
+
+    /// <summary>
     /// Sets the TCP port for the broker to listen on.
     /// </summary>
     public BrokerBuilder UsePort(int port) {
