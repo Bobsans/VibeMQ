@@ -1,16 +1,15 @@
 # .readthedocs.yaml
-# Read the Docs configuration file
+# Read the Docs configuration file for i18n documentation
 # See https://docs.readthedocs.io/en/stable/config-file/v2.html for details
 #
-# IMPORTANT: For multi-language support without i18n, you need to:
+# IMPORTANT: For multi-language support with i18n:
 # 1. Create two separate projects in ReadTheDocs admin panel:
-#    - Main project (Russian): vibemq (uses docs/ru/conf.py)
-#    - Translation project (English): vibemq-en (uses docs/en/conf.py)
-# 2. In the Russian project admin, go to Translations and add English project
-# 3. Each project should have its own .readthedocs.yaml pointing to the correct conf.py
-#
-# For Russian project, use: sphinx.configuration: docs/ru/conf.py
-# For English project, use: sphinx.configuration: docs/en/conf.py
+#    - Main project (English): vibemq (Language: English)
+#    - Translation project (Russian): vibemq-ru (Language: Russian)
+# 2. In the main project admin, go to Translations and add Russian project
+# 3. Each project uses the same .readthedocs.yaml and docs/conf.py
+# 4. Read the Docs will automatically set READTHEDOCS_LANGUAGE environment variable
+# 5. The conf.py reads this variable to set the correct language
 
 version: 2
 
@@ -29,13 +28,13 @@ build:
           exit 1;
         fi
 
-# Build documentation
-# IMPORTANT: In ReadTheDocs admin, set the configuration file to:
-# - docs/ru/conf.py for Russian project
-# - docs/en/conf.py for English project
+# Build documentation with i18n support
+# The language is determined by READTHEDOCS_LANGUAGE environment variable
+# which is automatically set by Read the Docs based on project language settings
 sphinx:
-  configuration: docs/ru/conf.py  # Change to docs/en/conf.py for English project
+  configuration: docs/conf.py
   fail_on_warning: false
+  builder: html
 
 # Optionally build your docs in additional formats such as PDF and ePub
 formats:

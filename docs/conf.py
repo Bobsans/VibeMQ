@@ -47,7 +47,9 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store', '**.ipynb_checkpoints', 
 locale_dirs = ['locale']
 
 # Languages to build
-language = 'en'
+# Read the Docs sets READTHEDOCS_LANGUAGE environment variable
+# Default to 'en' if not set
+language = os.environ.get('READTHEDOCS_LANGUAGE', 'en')
 
 # Gettext settings for better translation management
 # UUID helps track changes in source files
