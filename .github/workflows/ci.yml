@@ -32,10 +32,10 @@ jobs:
             ${{ runner.os }}-nuget-
 
       - name: Restore dependencies
-        run: dotnet restore -p:GITHUB_ACTIONS=${{ env.GITHUB_ACTIONS }}
+        run: dotnet restore -p:GITHUB_ACTIONS=true
 
       - name: Build
-        run: dotnet build --no-incremental --configuration Release -p:GITHUB_ACTIONS=${{ env.GITHUB_ACTIONS }}
+        run: dotnet build --no-incremental --configuration Release -p:GITHUB_ACTIONS=true
 
       - name: Run unit tests
         run: dotnet test --no-build --configuration Release --filter "FullyQualifiedName~VibeMQ.Tests.Unit" --verbosity normal

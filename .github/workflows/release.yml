@@ -34,16 +34,16 @@ jobs:
             ${{ runner.os }}-nuget-
 
       - name: Restore dependencies
-        run: dotnet restore -p:GITHUB_ACTIONS=${{ env.GITHUB_ACTIONS }}
+        run: dotnet restore -p:GITHUB_ACTIONS=true
 
       - name: Run unit tests
-        run: dotnet test --configuration Release --filter "FullyQualifiedName~VibeMQ.Tests.Unit" --verbosity normal -p:GITHUB_ACTIONS=${{ env.GITHUB_ACTIONS }}
+        run: dotnet test --configuration Release --filter "FullyQualifiedName~VibeMQ.Tests.Unit" --verbosity normal -p:GITHUB_ACTIONS=true
 
       - name: Run integration tests
-        run: dotnet test --configuration Release --filter "FullyQualifiedName~VibeMQ.Tests.Integration" --verbosity normal -p:GITHUB_ACTIONS=${{ env.GITHUB_ACTIONS }}
+        run: dotnet test --configuration Release --filter "FullyQualifiedName~VibeMQ.Tests.Integration" --verbosity normal -p:GITHUB_ACTIONS=true
 
       - name: Build projects
-        run: dotnet build --no-incremental --configuration Release -p:GITHUB_ACTIONS=${{ env.GITHUB_ACTIONS }}
+        run: dotnet build --no-incremental --configuration Release -p:GITHUB_ACTIONS=true
 
       - name: Pack NuGet packages
         run: dotnet pack --no-build --configuration Release --output ./artifacts
