@@ -40,7 +40,9 @@ public sealed partial class ConnectionManager : IAsyncDisposable {
         }
 
         _metrics.RecordConnectionAccepted();
-        LogClientConnected(connection.Id, connection.RemoteEndPoint?.ToString() ?? "unknown", ActiveCount);
+        if (_logger.IsEnabled(LogLevel.Information)) {
+            LogClientConnected(connection.Id, connection.RemoteEndPoint?.ToString() ?? "unknown", ActiveCount);
+        }
         return true;
     }
 

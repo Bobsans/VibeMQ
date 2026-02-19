@@ -63,7 +63,7 @@
 4. Публикация артефактов сборки (для отладки)
 
 **Особенности:**
-- Использование `actions/setup-dotnet@v4` для установки .NET SDK (версия определяется автоматически из проекта)
+- Использование `actions/setup-dotnet@v4` с `dotnet-version: '10.0.x'` для установки .NET SDK 10 в CI и release workflow
 - Проекты уже настроены на multi-targeting через `TargetFrameworks` в `Directory.Build.props` (.NET 8.0 и .NET 10.0)
 - Пакеты будут собираться автоматически для всех указанных target frameworks без необходимости явного указания версий
 - Использование `Nerdbank.GitVersioning` для автоматического версионирования
@@ -127,7 +127,7 @@
    - Значение: `https://api.nuget.org/v3/index.json`
    - Описание: URL источника NuGet для публикации
 
-**Примечание:** Версия .NET SDK определяется автоматически из проекта через `TargetFrameworks` в `Directory.Build.props`, поэтому переменная `DOTNET_VERSION` не требуется.
+**Примечание:** В workflow явно задаётся `dotnet-version: '10.0.x'`. Переменная `DOTNET_VERSION` в репозитории не используется.
 
 ### Дополнительные настройки репозитория
 
@@ -284,3 +284,7 @@ ls -R **/bin/Release/*.nupkg
 # Локальная проверка публикации (dry-run)
 dotnet nuget push **/bin/Release/*.nupkg --api-key YOUR_KEY --source https://api.nuget.org/v3/index.json --skip-duplicate
 ```
+
+## Известные исправления при сборке в CI
+
+- **CA1873 (expensive logging arguments):** На hosted runner используется .NET SDK 10.x с включённым правилом CA1873. Вызовы source-generated логгера с «дорогими» аргументами (например, `connection.RemoteEndPoint?.ToString() ?? "unknown"`) нужно оборачивать в проверку `if (_logger.IsEnabled(LogLevel.Information)) { ... }`, чтобы аргументы не вычислялись при отключённом логировании. Исправлено в `ConnectionManager.cs` и `VibeMQClient.cs`.
