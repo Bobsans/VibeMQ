@@ -85,7 +85,7 @@ public class MessageQueueTests {
         Assert.True(accepted);
         Assert.Equal(2, queue.MessageCount);
 
-        // First dequeued message should be "b" (oldest "a" was dropped)
+        // The first dequeued message should be "b" (the oldest "a" was dropped)
         var first = queue.Dequeue();
         Assert.NotNull(first);
         Assert.Equal("b", first.Id);
@@ -137,13 +137,13 @@ public class MessageQueueTests {
         var idx0 = queue.GetNextRoundRobinIndex(3);
         var idx1 = queue.GetNextRoundRobinIndex(3);
         var idx2 = queue.GetNextRoundRobinIndex(3);
-        var idx3 = queue.GetNextRoundRobinIndex(3);
+        _ = queue.GetNextRoundRobinIndex(3);
 
         // Should cycle through 0, 1, 2, 0, 1, 2...
-        // Initial increment is from 0 to 1, then 2, then 0 (mod 3), etc.
-        Assert.True(idx0 >= 0 && idx0 < 3);
-        Assert.True(idx1 >= 0 && idx1 < 3);
-        Assert.True(idx2 >= 0 && idx2 < 3);
+        // The initial increment is from 0 to 1, then 2, then 0 (mod 3), etc.
+        Assert.True(idx0 is >= 0 and < 3);
+        Assert.True(idx1 is >= 0 and < 3);
+        Assert.True(idx2 is >= 0 and < 3);
         Assert.NotEqual(idx0, idx1);
     }
 

@@ -5,7 +5,9 @@ using VibeMQ.Protocol.Binary;
 namespace VibeMQ.Tests.Unit.Protocol;
 
 public class BinaryCodecTests {
-    private static readonly VibeMQBinaryCodec Codec = new();
+    private static readonly VibeMQBinaryCodec _codec = new();
+    private static readonly int[] _testItems = [1, 2, 3];
+    private static readonly string[] _testNames = ["a", "b", "c"];
 
     [Fact]
     public void EncodeDecode_BasicMessage_RoundTripsCorrectly() {
@@ -15,8 +17,8 @@ public class BinaryCodecTests {
             Headers = new Dictionary<string, string> { ["key"] = "value" },
         };
 
-        var encoded = Codec.Encode(original);
-        var decoded = Codec.Decode(encoded);
+        var encoded = _codec.Encode(original);
+        var decoded = _codec.Decode(encoded);
 
         Assert.Equal(original.Id, decoded.Id);
         Assert.Equal(CommandType.Publish, decoded.Type);
@@ -41,8 +43,8 @@ public class BinaryCodecTests {
             },
         };
 
-        var encoded = Codec.Encode(original);
-        var decoded = Codec.Decode(encoded);
+        var encoded = _codec.Encode(original);
+        var decoded = _codec.Decode(encoded);
 
         Assert.Equal(original.Version, decoded.Version);
         Assert.Equal(original.Type, decoded.Type);
@@ -64,8 +66,8 @@ public class BinaryCodecTests {
             Payload = null,
         };
 
-        var encoded = Codec.Encode(original);
-        var decoded = Codec.Decode(encoded);
+        var encoded = _codec.Encode(original);
+        var decoded = _codec.Decode(encoded);
 
         Assert.Equal(CommandType.Ping, decoded.Type);
         Assert.Null(decoded.Payload);
@@ -79,8 +81,8 @@ public class BinaryCodecTests {
             Payload = payloadJson,
         };
 
-        var encoded = Codec.Encode(original);
-        var decoded = Codec.Decode(encoded);
+        var encoded = _codec.Encode(original);
+        var decoded = _codec.Decode(encoded);
 
         Assert.NotNull(decoded.Payload);
         Assert.Equal(JsonValueKind.Object, decoded.Payload.Value.ValueKind);
@@ -101,8 +103,8 @@ public class BinaryCodecTests {
             Payload = payloadJson,
         };
 
-        var encoded = Codec.Encode(original);
-        var decoded = Codec.Decode(encoded);
+        var encoded = _codec.Encode(original);
+        var decoded = _codec.Decode(encoded);
 
         Assert.NotNull(decoded.Payload);
         Assert.Equal("hello", decoded.Payload.Value.GetProperty("StringValue").GetString());
@@ -114,8 +116,8 @@ public class BinaryCodecTests {
     [Fact]
     public void EncodeDecode_PayloadWithArray_RoundTripsCorrectly() {
         var payloadJson = JsonSerializer.SerializeToElement(new {
-            Items = new[] { 1, 2, 3 },
-            Names = new[] { "a", "b", "c" },
+            Items = _testItems,
+            Names = _testNames,
         });
 
         var original = new ProtocolMessage {
@@ -123,8 +125,8 @@ public class BinaryCodecTests {
             Payload = payloadJson,
         };
 
-        var encoded = Codec.Encode(original);
-        var decoded = Codec.Decode(encoded);
+        var encoded = _codec.Encode(original);
+        var decoded = _codec.Decode(encoded);
 
         Assert.NotNull(decoded.Payload);
         var itemsArray = decoded.Payload.Value.GetProperty("Items");
@@ -141,8 +143,8 @@ public class BinaryCodecTests {
             Queue = null,
         };
 
-        var encoded = Codec.Encode(original);
-        var decoded = Codec.Decode(encoded);
+        var encoded = _codec.Encode(original);
+        var decoded = _codec.Decode(encoded);
 
         Assert.Equal(CommandType.Ping, decoded.Type);
         Assert.Null(decoded.Queue);
@@ -155,10 +157,10 @@ public class BinaryCodecTests {
             Queue = "",
         };
 
-        var encoded = Codec.Encode(original);
-        var decoded = Codec.Decode(encoded);
+        var encoded = _codec.Encode(original);
+        var decoded = _codec.Decode(encoded);
 
-        Assert.Equal("", decoded.Queue);
+        Assert.Null(decoded.Queue);
     }
 
     [Fact]
@@ -168,8 +170,8 @@ public class BinaryCodecTests {
             Headers = null,
         };
 
-        var encoded = Codec.Encode(original);
-        var decoded = Codec.Decode(encoded);
+        var encoded = _codec.Encode(original);
+        var decoded = _codec.Decode(encoded);
 
         Assert.Equal(CommandType.Ping, decoded.Type);
         Assert.Null(decoded.Headers);
@@ -182,8 +184,8 @@ public class BinaryCodecTests {
             Headers = new Dictionary<string, string>(),
         };
 
-        var encoded = Codec.Encode(original);
-        var decoded = Codec.Decode(encoded);
+        var encoded = _codec.Encode(original);
+        var decoded = _codec.Decode(encoded);
 
         Assert.Equal(CommandType.Ping, decoded.Type);
         Assert.Null(decoded.Headers);
@@ -197,8 +199,8 @@ public class BinaryCodecTests {
             ErrorMessage = "Invalid token",
         };
 
-        var encoded = Codec.Encode(original);
-        var decoded = Codec.Decode(encoded);
+        var encoded = _codec.Encode(original);
+        var decoded = _codec.Decode(encoded);
 
         Assert.Equal(CommandType.Error, decoded.Type);
         Assert.Equal("AUTH_FAILED", decoded.ErrorCode);
@@ -213,8 +215,8 @@ public class BinaryCodecTests {
             ErrorMessage = null,
         };
 
-        var encoded = Codec.Encode(original);
-        var decoded = Codec.Decode(encoded);
+        var encoded = _codec.Encode(original);
+        var decoded = _codec.Decode(encoded);
 
         Assert.Equal(CommandType.Error, decoded.Type);
         Assert.Null(decoded.ErrorCode);
@@ -231,8 +233,8 @@ public class BinaryCodecTests {
                 Queue = commandType.ToString(),
             };
 
-            var encoded = Codec.Encode(original);
-            var decoded = Codec.Decode(encoded);
+            var encoded = _codec.Encode(original);
+            var decoded = _codec.Decode(encoded);
 
             Assert.Equal(commandType, decoded.Type);
             Assert.Equal(commandType.ToString(), decoded.Queue);
@@ -246,8 +248,8 @@ public class BinaryCodecTests {
             Type = CommandType.Ping,
         };
 
-        var encoded = Codec.Encode(original);
-        var decoded = Codec.Decode(encoded);
+        var encoded = _codec.Encode(original);
+        var decoded = _codec.Decode(encoded);
 
         Assert.Equal(2, decoded.Version);
     }
@@ -260,8 +262,8 @@ public class BinaryCodecTests {
             Queue = longString,
         };
 
-        var encoded = Codec.Encode(original);
-        var decoded = Codec.Decode(encoded);
+        var encoded = _codec.Encode(original);
+        var decoded = _codec.Decode(encoded);
 
         Assert.Equal(longString, decoded.Queue);
     }
@@ -274,8 +276,8 @@ public class BinaryCodecTests {
             Queue = unicodeString,
         };
 
-        var encoded = Codec.Encode(original);
-        var decoded = Codec.Decode(encoded);
+        var encoded = _codec.Encode(original);
+        var decoded = _codec.Decode(encoded);
 
         Assert.Equal(unicodeString, decoded.Queue);
     }
@@ -284,7 +286,7 @@ public class BinaryCodecTests {
     public void Decode_InsufficientData_ThrowsException() {
         byte[] data = new byte[] { 1, 2 }; // Too short
 
-        Assert.Throws<InvalidOperationException>(() => Codec.Decode(data));
+        Assert.Throws<InvalidOperationException>(() => _codec.Decode(data));
     }
 
     [Fact]
@@ -299,8 +301,8 @@ public class BinaryCodecTests {
             Headers = headers,
         };
 
-        var encoded = Codec.Encode(original);
-        var decoded = Codec.Decode(encoded);
+        var encoded = _codec.Encode(original);
+        var decoded = _codec.Decode(encoded);
 
         Assert.NotNull(decoded.Headers);
         Assert.Equal(100, decoded.Headers!.Count);

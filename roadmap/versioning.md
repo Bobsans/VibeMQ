@@ -60,7 +60,7 @@ dotnet build                         # Версия автоматически �
      "version": "1.0",
      "publicReleaseRefSpec": [
        "^refs/heads/main$",
-       "^refs/tags/v\\d+\\.\\d+"
+       "^refs/tags/v\\d+\\.\\d+(\\.\\d+)?$"
      ],
      "cloudBuild": {
        "buildNumber": {
@@ -92,24 +92,21 @@ dotnet build                         # Версия автоматически �
      "version": "1.0",
      "publicReleaseRefSpec": [
        "^refs/heads/main$",
-       "^refs/tags/v\\d+\\.\\d+"
+       "^refs/tags/v\\d+\\.\\d+(\\.\\d+)?$"
      ],
-     "branches": {
-       "^feature/": {
-         "versionIncrement": "minor",
-         "prerelease": "feature"
-       },
-       "^feat/": {
-         "versionIncrement": "minor",
-         "prerelease": "feature"
-       },
-       "^develop": {
-         "versionIncrement": "build",
-         "prerelease": "dev"
+     "cloudBuild": {
+       "buildNumber": {
+         "enabled": true
        }
+     },
+     "release": {
+       "branchName": "v{version}",
+       "versionIncrement": "minor"
      }
    }
    ```
+   
+   **Примечание:** Nerdbank.GitVersioning не поддерживает поле `branches` в `version.json`. Версионирование основано на git тегах и количестве коммитов, а не на именах веток. Для настройки версионирования для разных веток можно использовать разные `version.json` файлы в разных ветках или управлять версиями через git теги.
 
 ## Шаг 3: Централизованное управление версиями
 **Файл:** `Directory.Build.props`

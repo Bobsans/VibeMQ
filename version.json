@@ -13,22 +13,5 @@
   "release": {
     "branchName": "v{version}",
     "versionIncrement": "minor"
-  },
-  "branches": {
-    "^feature/": {
-      "versionIncrement": "minor",
-      "prerelease": "feature"
-    },
-    "^feat/": {
-      "versionIncrement": "minor",
-      "prerelease": "feature"
-    },
-    "^develop": {
-      "versionIncrement": "build",
-      "prerelease": "dev"
-    },
-    "^main$": {
-      "versionIncrement": "build"
-    }
   }
 }
