@@ -16,7 +16,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Required for Nerdbank.GitVersioning
+          fetch-depth: 0
 
       - name: Setup .NET SDK
         uses: actions/setup-dotnet@v4
@@ -38,10 +38,10 @@ jobs:
         run: dotnet build --no-incremental --configuration Release -p:GITHUB_ACTIONS=true
 
       - name: Run unit tests
-        run: dotnet test --no-build --configuration Release --filter "FullyQualifiedName~VibeMQ.Tests.Unit" --verbosity normal
+        run: dotnet test --no-build --configuration Release --filter "FullyQualifiedName~VibeMQ.Tests.Unit" --verbosity normal --logger "trx;LogFileName=unit-test-results.trx" --results-directory "TestResults"
 
       - name: Run integration tests
-        run: dotnet test --no-build --configuration Release --filter "FullyQualifiedName~VibeMQ.Tests.Integration" --verbosity normal
+        run: dotnet test --no-build --configuration Release --filter "FullyQualifiedName~VibeMQ.Tests.Integration" --verbosity normal --logger "trx;LogFileName=integration-test-results.trx" --results-directory "TestResults"
 
       - name: Upload test results
         if: always()
@@ -50,6 +50,7 @@ jobs:
           name: test-results
           path: '**/TestResults/**/*'
           retention-days: 30
+          if-no-files-found: warn
 
       - name: Upload build artifacts
         if: always()

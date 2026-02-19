@@ -5,7 +5,7 @@
 **Платформа:** GitHub Actions
 
 **Особенности:**
-- Использование Nerdbank.GitVersioning для автоматического версионирования
+- Версия задаётся тегом репозитория и передаётся в пайплайн напрямую (``-p:Version=...``)
 - Multi-targeting для .NET 8.0 и .NET 10.0
 - Публикация всех библиотечных проектов на NuGet.org
 - Автоматическое создание GitHub Releases
@@ -66,7 +66,7 @@
 - Использование `actions/setup-dotnet@v4` с `dotnet-version: '10.0.x'` для установки .NET SDK 10 в CI и release workflow
 - Проекты уже настроены на multi-targeting через `TargetFrameworks` в `Directory.Build.props` (.NET 8.0 и .NET 10.0)
 - Пакеты будут собираться автоматически для всех указанных target frameworks без необходимости явного указания версий
-- Использование `Nerdbank.GitVersioning` для автоматического версионирования
+- Версия из тега передаётся в restore/build/pack (Release workflow)
 - Кэширование `~/.nuget/packages` для ускорения восстановления пакетов
 - Публикация результатов тестов как артефакты
 - **Важно:** При пуше в `main` выполняется только сборка и тестирование, публикация пакетов не выполняется
@@ -81,7 +81,7 @@
    - Тег должен соответствовать SemVer
    - Ручной запуск через `workflow_dispatch` с возможностью указать тег (опционально)
 3. Версионирование:
-   - Извлечение версии из тега (Nerdbank.GitVersioning автоматически определит)
+   - Извлечение версии из тега и передача в restore/build/pack через ``-p:Version=...``
    - Проверка формата версии
 4. Сборка всех проектов:
    - Запуск тестов (unit и integration)
@@ -234,13 +234,9 @@
 
 ### 2. Проверка версионирования
 
-1. Убедиться, что файл `version.json` существует в корне репозитория
-2. Убедиться, что `Directory.Build.props` содержит ссылку на `Nerdbank.GitVersioning`
-3. Проверить версию локально:
-   ```bash
-   dotnet tool install -g nbgv
-   nbgv get-version
-   ```
+1. Убедиться, что в `Directory.Build.props` задаётся версия из свойства MSBuild `Version` (fallback `1.0.0`)
+2. В release workflow версия из тега передаётся в шаги restore, test, build, pack через `-p:Version=...`
+3. Локальная сборка по умолчанию — версия `1.0.0`; для проверки другой версии: `dotnet build -p:Version=1.2.3`
 
 ### 3. Создание workflow файлов
 
@@ -266,11 +262,11 @@
 ## Примеры команд для проверки
 
 ```bash
-# Проверка версии локально
-nbgv get-version
-
-# Сборка проекта
+# Сборка проекта (версия по умолчанию 1.0.0)
 dotnet build
+
+# Сборка с указанием версии
+dotnet build -p:Version=1.2.3
 
 # Запуск тестов
 dotnet test
@@ -284,6 +280,14 @@ ls -R **/bin/Release/*.nupkg
 # Локальная проверка публикации (dry-run)
 dotnet nuget push **/bin/Release/*.nupkg --api-key YOUR_KEY --source https://api.nuget.org/v3/index.json --skip-duplicate
 ```
+
+## Версионирование из тега репозитория
+
+Версия задаётся **тегом репозитория** (формат SemVer: `vMajor.Minor.Patch`) и передаётся в пайплайн **напрямую** (файла версии в репозитории нет):
+
+- В [release workflow](../.github/workflows/release.yml) версия из тега передаётся в restore, test, build и pack через ``-p:Version=...`` и ``-p:PackageVersion=...``.
+- В [`Directory.Build.props`](../Directory.Build.props) версия берётся из свойства MSBuild; если не задано — используется `1.0.0`.
+- Локальная сборка: по умолчанию `1.0.0`; при необходимости — ``dotnet build -p:Version=1.2.3``.
 
 ## Известные исправления при сборке в CI
 

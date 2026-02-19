@@ -17,8 +17,19 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0  # Required for Nerdbank.GitVersioning
+
+      - name: Get version from tag
+        id: get_version
+        shell: bash
+        run: |
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ] && [ -n "${{ github.event.inputs.tag }}" ]; then
+            VERSION="${{ github.event.inputs.tag }}"
+          else
+            VERSION=${GITHUB_REF#refs/tags/}
+          fi
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "version_num=${VERSION#v}" >> $GITHUB_OUTPUT
+          echo "Version: $VERSION"
 
       - name: Setup .NET SDK
         uses: actions/setup-dotnet@v4
@@ -34,31 +45,19 @@ jobs:
             ${{ runner.os }}-nuget-
 
       - name: Restore dependencies
-        run: dotnet restore -p:GITHUB_ACTIONS=true
+        run: dotnet restore -p:GITHUB_ACTIONS=true -p:Version=${{ steps.get_version.outputs.version_num }} -p:PackageVersion=${{ steps.get_version.outputs.version_num }}
 
       - name: Run unit tests
-        run: dotnet test --configuration Release --filter "FullyQualifiedName~VibeMQ.Tests.Unit" --verbosity normal -p:GITHUB_ACTIONS=true
+        run: dotnet test --configuration Release --filter "FullyQualifiedName~VibeMQ.Tests.Unit" --verbosity normal -p:GITHUB_ACTIONS=true -p:Version=${{ steps.get_version.outputs.version_num }} -p:PackageVersion=${{ steps.get_version.outputs.version_num }}
 
       - name: Run integration tests
-        run: dotnet test --configuration Release --filter "FullyQualifiedName~VibeMQ.Tests.Integration" --verbosity normal -p:GITHUB_ACTIONS=true
+        run: dotnet test --configuration Release --filter "FullyQualifiedName~VibeMQ.Tests.Integration" --verbosity normal -p:GITHUB_ACTIONS=true -p:Version=${{ steps.get_version.outputs.version_num }} -p:PackageVersion=${{ steps.get_version.outputs.version_num }}
 
       - name: Build projects
-        run: dotnet build --no-incremental --configuration Release -p:GITHUB_ACTIONS=true
+        run: dotnet build --no-incremental --configuration Release -p:GITHUB_ACTIONS=true -p:Version=${{ steps.get_version.outputs.version_num }} -p:PackageVersion=${{ steps.get_version.outputs.version_num }}
 
       - name: Pack NuGet packages
-        run: dotnet pack --no-build --configuration Release --output ./artifacts
-
-      - name: Get version from tag
-        id: get_version
-        shell: bash
-        run: |
-          if [ "${{ github.event_name }}" == "workflow_dispatch" ] && [ -n "${{ github.event.inputs.tag }}" ]; then
-            VERSION="${{ github.event.inputs.tag }}"
-          else
-            VERSION=${GITHUB_REF#refs/tags/}
-          fi
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
-          echo "Version: $VERSION"
+        run: dotnet pack --no-build --configuration Release --output ./artifacts -p:Version=${{ steps.get_version.outputs.version_num }} -p:PackageVersion=${{ steps.get_version.outputs.version_num }}
 
       - name: Verify version format
         shell: bash

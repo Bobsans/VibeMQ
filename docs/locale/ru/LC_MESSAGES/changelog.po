@@ -255,73 +255,53 @@ msgstr "Формат версий"
 msgid "Version Format"
 msgstr "Формат версий"
 
-#: ../../changelog.rst:94 2b07d284daaf4d47b727629a79e6b592
-msgid "VibeMQ uses `SemVer 2.0 <https://semver.org/>`_ for versioning with automatic version management via `Nerdbank.GitVersioning <https://github.com/dotnet/Nerdbank.GitVersioning>`_:"
-msgstr "VibeMQ использует `SemVer 2.0 <https://semver.org/lang/ru/>`_ для версионирования с автоматическим управлением версиями через `Nerdbank.GitVersioning <https://github.com/dotnet/Nerdbank.GitVersioning>`_:"
+#: ../../changelog.rst:98
+msgid "VibeMQ uses `SemVer 2.0 <https://semver.org/>`_ with version set from the repository tag in the Release pipeline (passed as MSBuild property ``Version``):"
+msgstr "VibeMQ использует `SemVer 2.0 <https://semver.org/lang/ru/>`_ с версией из тега репозитория, передаваемой в Release pipeline как свойство MSBuild ``Version``:"
 
-#: ../../changelog.rst:96 e7fec99c03b945d59939d7ca8cf13466
-msgid "**Format:** ``MAJOR.MINOR.PATCH`` or ``MAJOR.MINOR.BUILD``"
-msgstr "**Формат:** ``MAJOR.MINOR.PATCH`` или ``MAJOR.MINOR.BUILD``"
+#: ../../changelog.rst:100
+msgid "**Format:** ``MAJOR.MINOR.PATCH``"
+msgstr "**Формат:** ``MAJOR.MINOR.PATCH``"
 
-#: ../../changelog.rst:98 2e8e4bbd8f274fb08f0de2f68c883e30
-msgid "**MAJOR** — incompatible API changes (manual increment via git tag)"
-msgstr "**MAJOR** — несовместимые изменения API (ручной инкремент через git тег)"
+#: ../../changelog.rst:102
+msgid "- **MAJOR** — incompatible API changes (set via release tag)"
+msgstr "- **MAJOR** — несовместимые изменения API (задаётся тегом релиза)"
 
-#: ../../changelog.rst:99 3b489a4df1a3407ea9107545939b5c67
-msgid "**MINOR** — new functionality (backward compatible, automatically incremented in feature branches)"
-msgstr "**MINOR** — новая функциональность (обратно совместимая, автоматически инкрементируется в feature ветках)"
+#: ../../changelog.rst:103
+msgid "- **MINOR** — new functionality, backward compatible (set via release tag)"
+msgstr "- **MINOR** — новая функциональность, обратно совместимая (задаётся тегом релиза)"
 
-#: ../../changelog.rst:100 f6ef7e61b3e944abb7134243f6ee540b
-msgid "**PATCH/BUILD** — bug fixes and build number (automatically incremented)"
-msgstr "**PATCH/BUILD** — исправления багов и номер сборки (автоматически инкрементируется)"
+#: ../../changelog.rst:104
+msgid "- **PATCH** — bug fixes (set via release tag)"
+msgstr "- **PATCH** — исправления багов (задаётся тегом релиза)"
 
 #: ../../changelog.rst:106
-msgid "**Automatic Versioning:**"
-msgstr "**Автоматическое версионирование:**"
+msgid "**Versioning:**"
+msgstr "**Версионирование:**"
 
 #: ../../changelog.rst:108
-msgid "Versions are automatically calculated from git commits and tags:"
-msgstr "Версии автоматически вычисляются из git коммитов и тегов:"
+msgid "- **Releases:** version is taken from the git tag (e.g. ``v1.0.0``) and passed directly into the pipeline (``-p:Version=...``); no version file in the repo."
+msgstr "- **Релизы:** версия берётся из git-тега (например, ``v1.0.0``) и передаётся в пайплайн (``-p:Version=...``); файла версии в репозитории нет."
 
-#: ../../changelog.rst:110
-msgid "- **Stable releases:** ``1.0.0`` — version from git tag (e.g., ``v1.0.0``)"
-msgstr "- **Стабильные релизы:** ``1.0.0`` — версия из git тега (например, ``v1.0.0``)"
+#: ../../changelog.rst:109
+msgid "- **Local builds:** default ``1.0.0`` (or pass ``-p:Version=1.2.3``)."
+msgstr "- **Локальные сборки:** по умолчанию ``1.0.0`` (или передать ``-p:Version=1.2.3``)."
 
 #: ../../changelog.rst:111
-msgid "- **Development builds:** ``1.0.{build}`` — build number increments with each commit"
-msgstr "- **Сборки разработки:** ``1.0.{build}`` — номер сборки инкрементируется с каждым коммитом"
-
-#: ../../changelog.rst:112
-msgid "- **Feature branches:** ``1.1.{build}-feature.{branch}`` — minor version auto-increments, includes branch name"
-msgstr "- **Feature ветки:** ``1.1.{build}-feature.{branch}`` — минорная версия автоматически инкрементируется, включает имя ветки"
-
-#: ../../changelog.rst:113
-msgid "- **Develop branch:** ``1.0.{build}-dev`` — development pre-release version"
-msgstr "- **Ветка develop:** ``1.0.{build}-dev`` — предрелизная версия разработки"
-
-#: ../../changelog.rst:102 d5a2229ba3ab496f8b66da6f4df9e20b
 msgid "**Examples:**"
 msgstr "**Примеры:**"
 
+#: ../../changelog.rst:113
+msgid "- ``1.0.0`` — release from tag ``v1.0.0``"
+msgstr "- ``1.0.0`` — релиз из тега ``v1.0.0``"
+
+#: ../../changelog.rst:114
+msgid "- ``1.1.0`` — release from tag ``v1.1.0``"
+msgstr "- ``1.1.0`` — релиз из тега ``v1.1.0``"
+
 #: ../../changelog.rst:115
-msgid "- ``1.0.0`` — stable release from tag ``v1.0.0``"
-msgstr "- ``1.0.0`` — стабильный релиз из тега ``v1.0.0``"
-
-#: ../../changelog.rst:116
-msgid "- ``1.0.42`` — development build on main branch (42 commits after last tag)"
-msgstr "- ``1.0.42`` — сборка разработки на ветке main (42 коммита после последнего тега)"
-
-#: ../../changelog.rst:117
-msgid "- ``1.1.15-feature.new-auth`` — feature branch with auto-incremented minor version"
-msgstr "- ``1.1.15-feature.new-auth`` — feature ветка с автоматически инкрементированной минорной версией"
-
-#: ../../changelog.rst:118
-msgid "- ``1.0.50-dev`` — development branch build"
-msgstr "- ``1.0.50-dev`` — сборка ветки разработки"
-
-#: ../../changelog.rst:119
-msgid "- ``2.0.0`` — breaking changes release"
-msgstr "- ``2.0.0`` — релиз с breaking changes"
+msgid "- ``2.0.0`` — breaking changes release from tag ``v2.0.0``"
+msgstr "- ``2.0.0`` — релиз с breaking changes из тега ``v2.0.0``"
 
 #: ../../changelog.rst:104 0ea7dbd122b741ed84646f0cc2d9248a
 msgid "``1.0.0`` — first stable release"

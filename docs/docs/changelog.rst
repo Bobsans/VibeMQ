@@ -95,30 +95,24 @@ Version 0.1.0 (Alpha)
 Version Format
 ==============
 
-VibeMQ uses `SemVer 2.0 <https://semver.org/>`_ for versioning with automatic version management via `Nerdbank.GitVersioning <https://github.com/dotnet/Nerdbank.GitVersioning>`_:
+VibeMQ uses `SemVer 2.0 <https://semver.org/>`_ with version set from the repository tag in the Release pipeline (passed as MSBuild property ``Version``):
 
-**Format:** ``MAJOR.MINOR.PATCH`` or ``MAJOR.MINOR.BUILD``
+**Format:** ``MAJOR.MINOR.PATCH``
 
-- **MAJOR** — incompatible API changes (manual increment via git tag)
-- **MINOR** — new functionality (backward compatible, automatically incremented in feature branches)
-- **PATCH/BUILD** — bug fixes and build number (automatically incremented)
+- **MAJOR** — incompatible API changes (set via release tag)
+- **MINOR** — new functionality, backward compatible (set via release tag)
+- **PATCH** — bug fixes (set via release tag)
 
-**Automatic Versioning:**
+**Versioning:**
 
-Versions are automatically calculated from git commits and tags:
-
-- **Stable releases:** ``1.0.0`` — version from git tag (e.g., ``v1.0.0``)
-- **Development builds:** ``1.0.{build}`` — build number increments with each commit
-- **Feature branches:** ``1.1.{build}-feature.{branch}`` — minor version auto-increments, includes branch name
-- **Develop branch:** ``1.0.{build}-dev`` — development pre-release version
+- **Releases:** version is taken from the git tag (e.g. ``v1.0.0``) and passed directly into the pipeline (``-p:Version=...``); no version file in the repo.
+- **Local builds:** default ``1.0.0`` (or pass ``-p:Version=1.2.3``).
 
 **Examples:**
 
-- ``1.0.0`` — stable release from tag ``v1.0.0``
-- ``1.0.42`` — development build on main branch (42 commits after last tag)
-- ``1.1.15-feature.new-auth`` — feature branch with auto-incremented minor version
-- ``1.0.50-dev`` — development branch build
-- ``2.0.0`` — breaking changes release
+- ``1.0.0`` — release from tag ``v1.0.0``
+- ``1.1.0`` — release from tag ``v1.1.0``
+- ``2.0.0`` — breaking changes release from tag ``v2.0.0``
 
 Pre-release versions:
 
