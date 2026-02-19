@@ -20,7 +20,14 @@ public static class TlsHelper {
             throw new InvalidOperationException("TLS is enabled but no certificate path is configured.");
         }
 
+#if NET10_0_OR_GREATER
+        var collection = X509CertificateLoader.LoadPkcs12CollectionFromFile(
+            options.CertificatePath,
+            options.CertificatePassword ?? string.Empty);
+        var certificate = collection[0];
+#else
         var certificate = new X509Certificate2(options.CertificatePath, options.CertificatePassword);
+#endif
         var sslStream = new SslStream(innerStream, leaveInnerStreamOpen: false);
 
         await sslStream.AuthenticateAsServerAsync(
