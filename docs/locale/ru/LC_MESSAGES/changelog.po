@@ -253,55 +253,103 @@ msgstr "Формат версий"
 
 #: ../../changelog.rst:92 015a5c7bfc1440a8a307a8e82b4440ac
 msgid "Version Format"
-msgstr "VibeMQ использует `SemVer 2.0 <https://semver.org/lang/ru/>`_ для версионирования:"
+msgstr "Формат версий"
 
 #: ../../changelog.rst:94 2b07d284daaf4d47b727629a79e6b592
-msgid "VibeMQ uses `SemVer 2.0 <https://semver.org/>`_ for versioning:"
-msgstr "**Формат:** ``MAJOR.MINOR.PATCH``"
+msgid "VibeMQ uses `SemVer 2.0 <https://semver.org/>`_ for versioning with automatic version management via `Nerdbank.GitVersioning <https://github.com/dotnet/Nerdbank.GitVersioning>`_:"
+msgstr "VibeMQ использует `SemVer 2.0 <https://semver.org/lang/ru/>`_ для версионирования с автоматическим управлением версиями через `Nerdbank.GitVersioning <https://github.com/dotnet/Nerdbank.GitVersioning>`_:"
 
 #: ../../changelog.rst:96 e7fec99c03b945d59939d7ca8cf13466
-msgid "**Format:** ``MAJOR.MINOR.PATCH``"
-msgstr "**Формат:** ``MAJOR.MINOR.PATCH``"
+msgid "**Format:** ``MAJOR.MINOR.PATCH`` or ``MAJOR.MINOR.BUILD``"
+msgstr "**Формат:** ``MAJOR.MINOR.PATCH`` или ``MAJOR.MINOR.BUILD``"
 
 #: ../../changelog.rst:98 2e8e4bbd8f274fb08f0de2f68c883e30
-msgid "**MAJOR** — incompatible API changes"
-msgstr "**Breaking changes** анонсируются:"
+msgid "**MAJOR** — incompatible API changes (manual increment via git tag)"
+msgstr "**MAJOR** — несовместимые изменения API (ручной инкремент через git тег)"
 
 #: ../../changelog.rst:99 3b489a4df1a3407ea9107545939b5c67
-msgid "**MINOR** — new functionality (backward compatible)"
-msgstr "3. Если одобрено — создайте pull request"
+msgid "**MINOR** — new functionality (backward compatible, automatically incremented in feature branches)"
+msgstr "**MINOR** — новая функциональность (обратно совместимая, автоматически инкрементируется в feature ветках)"
 
 #: ../../changelog.rst:100 f6ef7e61b3e944abb7134243f6ee540b
-msgid "**PATCH** — bug fixes (backward compatible)"
-msgstr "**Примеры:**"
+msgid "**PATCH/BUILD** — bug fixes and build number (automatically incremented)"
+msgstr "**PATCH/BUILD** — исправления багов и номер сборки (автоматически инкрементируется)"
+
+#: ../../changelog.rst:106
+msgid "**Automatic Versioning:**"
+msgstr "**Автоматическое версионирование:**"
+
+#: ../../changelog.rst:108
+msgid "Versions are automatically calculated from git commits and tags:"
+msgstr "Версии автоматически вычисляются из git коммитов и тегов:"
+
+#: ../../changelog.rst:110
+msgid "- **Stable releases:** ``1.0.0`` — version from git tag (e.g., ``v1.0.0``)"
+msgstr "- **Стабильные релизы:** ``1.0.0`` — версия из git тега (например, ``v1.0.0``)"
+
+#: ../../changelog.rst:111
+msgid "- **Development builds:** ``1.0.{build}`` — build number increments with each commit"
+msgstr "- **Сборки разработки:** ``1.0.{build}`` — номер сборки инкрементируется с каждым коммитом"
+
+#: ../../changelog.rst:112
+msgid "- **Feature branches:** ``1.1.{build}-feature.{branch}`` — minor version auto-increments, includes branch name"
+msgstr "- **Feature ветки:** ``1.1.{build}-feature.{branch}`` — минорная версия автоматически инкрементируется, включает имя ветки"
+
+#: ../../changelog.rst:113
+msgid "- **Develop branch:** ``1.0.{build}-dev`` — development pre-release version"
+msgstr "- **Ветка develop:** ``1.0.{build}-dev`` — предрелизная версия разработки"
 
 #: ../../changelog.rst:102 d5a2229ba3ab496f8b66da6f4df9e20b
 msgid "**Examples:**"
-msgstr ""
+msgstr "**Примеры:**"
+
+#: ../../changelog.rst:115
+msgid "- ``1.0.0`` — stable release from tag ``v1.0.0``"
+msgstr "- ``1.0.0`` — стабильный релиз из тега ``v1.0.0``"
+
+#: ../../changelog.rst:116
+msgid "- ``1.0.42`` — development build on main branch (42 commits after last tag)"
+msgstr "- ``1.0.42`` — сборка разработки на ветке main (42 коммита после последнего тега)"
+
+#: ../../changelog.rst:117
+msgid "- ``1.1.15-feature.new-auth`` — feature branch with auto-incremented minor version"
+msgstr "- ``1.1.15-feature.new-auth`` — feature ветка с автоматически инкрементированной минорной версией"
+
+#: ../../changelog.rst:118
+msgid "- ``1.0.50-dev`` — development branch build"
+msgstr "- ``1.0.50-dev`` — сборка ветки разработки"
+
+#: ../../changelog.rst:119
+msgid "- ``2.0.0`` — breaking changes release"
+msgstr "- ``2.0.0`` — релиз с breaking changes"
 
 #: ../../changelog.rst:104 0ea7dbd122b741ed84646f0cc2d9248a
 msgid "``1.0.0`` — first stable release"
-msgstr "3. Если одобрено — создайте pull request"
+msgstr "``1.0.0`` — первый стабильный релиз"
 
 #: ../../changelog.rst:105 9cd0d37707f24159834134fccb97ad3f
 msgid "``1.1.0`` — new functionality"
-msgstr ""
+msgstr "``1.1.0`` — новая функциональность"
 
 #: ../../changelog.rst:106 ee01ea024f844dc48e08cca747ea233e
 msgid "``1.1.1`` — bug fixes"
-msgstr ""
+msgstr "``1.1.1`` — исправления багов"
 
 #: ../../changelog.rst:107 fdb1e7ee01664ba9875d7bdf4a3d9c1a
 msgid "``2.0.0`` — breaking changes"
+msgstr "``2.0.0`` — breaking changes"
+
+#: ../../changelog.rst:121
+msgid "Pre-release versions:"
 msgstr "Предрелизные версии:"
 
-#: ../../changelog.rst:109 b7352c31bb014cc792dd735e797dd357
-msgid "Pre-release versions:"
-msgstr ""
+#: ../../changelog.rst:123
+msgid "- ``1.0.0-alpha.1`` — alpha version"
+msgstr "- ``1.0.0-alpha.1`` — alpha версия"
 
 #: ../../changelog.rst:111 3750ae598314467281bb6b287b6bcd2d
 msgid "``1.0.0-alpha.1`` — alpha version"
-msgstr ""
+msgstr "``1.0.0-alpha.1`` — alpha версия"
 
 #: ../../changelog.rst:112 147dc7879df544eb84b63e0a0a1ed4c8
 msgid "``1.0.0-beta.1`` — beta version"

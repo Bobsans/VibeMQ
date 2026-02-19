@@ -95,20 +95,30 @@ Version 0.1.0 (Alpha)
 Version Format
 ==============
 
-VibeMQ uses `SemVer 2.0 <https://semver.org/>`_ for versioning:
+VibeMQ uses `SemVer 2.0 <https://semver.org/>`_ for versioning with automatic version management via `Nerdbank.GitVersioning <https://github.com/dotnet/Nerdbank.GitVersioning>`_:
 
-**Format:** ``MAJOR.MINOR.PATCH``
+**Format:** ``MAJOR.MINOR.PATCH`` or ``MAJOR.MINOR.BUILD``
 
-- **MAJOR** — incompatible API changes
-- **MINOR** — new functionality (backward compatible)
-- **PATCH** — bug fixes (backward compatible)
+- **MAJOR** — incompatible API changes (manual increment via git tag)
+- **MINOR** — new functionality (backward compatible, automatically incremented in feature branches)
+- **PATCH/BUILD** — bug fixes and build number (automatically incremented)
+
+**Automatic Versioning:**
+
+Versions are automatically calculated from git commits and tags:
+
+- **Stable releases:** ``1.0.0`` — version from git tag (e.g., ``v1.0.0``)
+- **Development builds:** ``1.0.{build}`` — build number increments with each commit
+- **Feature branches:** ``1.1.{build}-feature.{branch}`` — minor version auto-increments, includes branch name
+- **Develop branch:** ``1.0.{build}-dev`` — development pre-release version
 
 **Examples:**
 
-- ``1.0.0`` — first stable release
-- ``1.1.0`` — new functionality
-- ``1.1.1`` — bug fixes
-- ``2.0.0`` — breaking changes
+- ``1.0.0`` — stable release from tag ``v1.0.0``
+- ``1.0.42`` — development build on main branch (42 commits after last tag)
+- ``1.1.15-feature.new-auth`` — feature branch with auto-incremented minor version
+- ``1.0.50-dev`` — development branch build
+- ``2.0.0`` — breaking changes release
 
 Pre-release versions:
 
