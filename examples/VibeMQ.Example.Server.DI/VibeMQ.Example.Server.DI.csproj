@@ -3,6 +3,7 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <RootNamespace>VibeMQ.Example.Server.DI</RootNamespace>
+    <IsPackable>false</IsPackable>
     <NoWarn>$(NoWarn);CA1050;CA1848</NoWarn>
   </PropertyGroup>
 
