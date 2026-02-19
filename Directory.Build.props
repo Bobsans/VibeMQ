@@ -13,6 +13,9 @@
     <!-- CA1711: Identifiers should not have incorrect suffix — suppressed because
          *Queue is a domain concept in a message broker, not System.Collections.Queue -->
     <NoWarn>$(NoWarn);CA1707;CA1711</NoWarn>
+    <!-- CA1873 (expensive logging): suppressed in CI only; .NET 10 SDK on hosted runners
+         enables it and fails the build. Locally the rule remains active. -->
+    <NoWarn Condition="'$(Env.GITHUB_ACTIONS)' == 'true'">$(NoWarn);CA1873</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup>
