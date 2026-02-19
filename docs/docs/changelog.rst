@@ -29,6 +29,11 @@ Version 1.0.0 (In Development)
 - Graceful shutdown
 - Health checks for orchestrators
 - Performance metrics collection
+- **Custom binary protocol** for improved performance:
+  - Fixed field order for unambiguous parsing
+  - Payload stored as JSON in UTF-8 for easy debugging and UI display
+  - Zero external dependencies
+  - Protocol version support for backward compatibility
 
 **Components:**
 
@@ -59,7 +64,6 @@ Backlog (Version 2.0+)
 - .NET 10 support
 - Protocol-level compression
 - Granular authorization
-- Binary protocol (MessagePack/Protobuf)
 - Class-based subscriptions
 - Delayed messages
 - Transactional messages
@@ -174,4 +178,4 @@ Links
 - `Issues <https://github.com/DarkBoy/VibeMQ/issues>`_
 - `Discussions <https://github.com/DarkBoy/VibeMQ/discussions>`_
 
-Last updated: February 2026
+Last updated: February 19, 2026
