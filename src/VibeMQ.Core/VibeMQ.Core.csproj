@@ -3,7 +3,12 @@
   <PropertyGroup>
     <RootNamespace>VibeMQ.Core</RootNamespace>
     <Description>Core models, enums, interfaces, protocol implementation, and health check server for VibeMQ message broker. Unified package that includes VibeMQ.Core, VibeMQ.Protocol, and VibeMQ.Health.</Description>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.*" />

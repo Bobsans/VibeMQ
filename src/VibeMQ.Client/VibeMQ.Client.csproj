@@ -3,7 +3,12 @@
   <PropertyGroup>
     <RootNamespace>VibeMQ.Client</RootNamespace>
     <Description>Client library for connecting to VibeMQ message broker</Description>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.*" />
