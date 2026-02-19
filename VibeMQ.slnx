@@ -9,8 +9,6 @@
   <Folder Name="/src/">
     <Project Path="src/VibeMQ.Client/VibeMQ.Client.csproj" />
     <Project Path="src/VibeMQ.Core/VibeMQ.Core.csproj" />
-    <Project Path="src/VibeMQ.Health/VibeMQ.Health.csproj" />
-    <Project Path="src/VibeMQ.Protocol/VibeMQ.Protocol.csproj" />
     <Project Path="src/VibeMQ.Server/VibeMQ.Server.csproj" />
   </Folder>
   <Folder Name="/tests/">

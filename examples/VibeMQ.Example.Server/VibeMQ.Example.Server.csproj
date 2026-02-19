@@ -14,7 +14,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\VibeMQ.Server\VibeMQ.Server.csproj" />
-    <ProjectReference Include="..\..\src\VibeMQ.Health\VibeMQ.Health.csproj" />
   </ItemGroup>
 
 </Project>

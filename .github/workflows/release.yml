@@ -1,0 +1,107 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag to release (e.g., v1.0.0)'
+        required: false
+
+jobs:
+  build-test-publish:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Required for Nerdbank.GitVersioning
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Run unit tests
+        run: dotnet test --configuration Release --filter "FullyQualifiedName~VibeMQ.Tests.Unit" --verbosity normal
+
+      - name: Run integration tests
+        run: dotnet test --configuration Release --filter "FullyQualifiedName~VibeMQ.Tests.Integration" --verbosity normal
+
+      - name: Build projects
+        run: dotnet build --no-incremental --configuration Release
+
+      - name: Pack NuGet packages
+        run: dotnet pack --no-build --configuration Release --output ./artifacts
+
+      - name: Get version from tag
+        id: get_version
+        shell: bash
+        run: |
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ] && [ -n "${{ github.event.inputs.tag }}" ]; then
+            VERSION="${{ github.event.inputs.tag }}"
+          else
+            VERSION=${GITHUB_REF#refs/tags/}
+          fi
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Version: $VERSION"
+
+      - name: Verify version format
+        shell: bash
+        run: |
+          VERSION="${{ steps.get_version.outputs.version }}"
+          if [[ ! "$VERSION" =~ ^v[0-9]+\.[0-9]+\.[0-9]+ ]]; then
+            echo "Error: Invalid version format. Expected format: vX.Y.Z"
+            exit 1
+          fi
+
+      - name: Publish to NuGet.org
+        run: |
+          for package in ./artifacts/*.nupkg; do
+            dotnet nuget push "$package" \
+              --api-key "${{ secrets.NUGET_API_KEY }}" \
+              --source https://api.nuget.org/v3/index.json \
+              --skip-duplicate \
+              --no-symbols
+          done
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ steps.get_version.outputs.version }}
+          name: Release ${{ steps.get_version.outputs.version }}
+          body: |
+            ## Release ${{ steps.get_version.outputs.version }}
+            
+            This release includes all VibeMQ packages:
+            - VibeMQ.Core
+            - VibeMQ.Client
+            - VibeMQ.Server
+            - VibeMQ.Client.DependencyInjection
+            - VibeMQ.Server.DependencyInjection
+            
+            See [changelog](https://github.com/${{ github.repository }}/blob/main/docs/docs/changelog.rst) for details.
+          draft: false
+          prerelease: false
+          files: ./artifacts/*.nupkg
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: nuget-packages
+          path: ./artifacts/*.nupkg
+          retention-days: 90

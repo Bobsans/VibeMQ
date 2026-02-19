@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\VibeMQ.Protocol\VibeMQ.Protocol.csproj" />
+    <ProjectReference Include="..\..\src\VibeMQ.Core\VibeMQ.Core.csproj" />
     <ProjectReference Include="..\..\src\VibeMQ.Server\VibeMQ.Server.csproj" />
     <ProjectReference Include="..\..\src\VibeMQ.Client\VibeMQ.Client.csproj" />
   </ItemGroup>
