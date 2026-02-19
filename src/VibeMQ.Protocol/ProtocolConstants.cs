@@ -12,7 +12,7 @@ public static class ProtocolConstants {
     /// <summary>
     /// Current protocol version.
     /// </summary>
-    public const string PROTOCOL_VERSION = "1.0";
+    public const int PROTOCOL_VERSION = 1;
 
     /// <summary>
     /// Default maximum message size (1 MB).

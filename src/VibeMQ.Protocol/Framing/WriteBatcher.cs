@@ -1,6 +1,6 @@
 using System.Buffers;
 using System.Buffers.Binary;
-using System.Text.Json;
+using VibeMQ.Protocol.Binary;
 
 namespace VibeMQ.Protocol.Framing;
 
@@ -9,6 +9,7 @@ namespace VibeMQ.Protocol.Framing;
 /// Reduces the number of syscalls and TCP packets for high-throughput scenarios.
 /// </summary>
 public sealed class WriteBatcher : IDisposable {
+    private static readonly VibeMQBinaryCodec Codec = new();
     private readonly Stream _stream;
     private readonly int _maxBatchSize;
     private byte[] _buffer;
@@ -36,16 +37,16 @@ public sealed class WriteBatcher : IDisposable {
     /// Adds a message to the batch. Auto-flushes when <see cref="_maxBatchSize"/> is reached.
     /// </summary>
     public async Task AddAsync(ProtocolMessage message, CancellationToken cancellationToken = default) {
-        var json = JsonSerializer.SerializeToUtf8Bytes(message, ProtocolSerializer.Options);
-        var frameSize = 4 + json.Length;
+        var binaryBody = Codec.Encode(message);
+        var frameSize = 4 + binaryBody.Length;
 
         EnsureCapacity(frameSize);
 
-        BinaryPrimitives.WriteUInt32BigEndian(_buffer.AsSpan(_position, 4), (uint)json.Length);
+        BinaryPrimitives.WriteUInt32BigEndian(_buffer.AsSpan(_position, 4), (uint)binaryBody.Length);
         _position += 4;
 
-        json.CopyTo(_buffer, _position);
-        _position += json.Length;
+        binaryBody.CopyTo(_buffer, _position);
+        _position += binaryBody.Length;
 
         PendingCount++;
 

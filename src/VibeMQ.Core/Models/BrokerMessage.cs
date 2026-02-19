@@ -35,9 +35,9 @@ public sealed class BrokerMessage {
     public Dictionary<string, string> Headers { get; set; } = new();
 
     /// <summary>
-    /// Protocol schema version for backward compatibility.
+    /// Protocol version for backward compatibility.
     /// </summary>
-    public string SchemaVersion { get; set; } = "1.0";
+    public int Version { get; set; } = 1;
 
     /// <summary>
     /// Message priority level.

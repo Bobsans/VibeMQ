@@ -1,15 +1,17 @@
 using System.Buffers;
 using System.Buffers.Binary;
-using System.Text.Json;
+using VibeMQ.Protocol.Binary;
 
 namespace VibeMQ.Protocol.Framing;
 
 /// <summary>
 /// Reads length-prefixed frames from a stream.
-/// Format: [4 bytes: body length in Big Endian uint32] [N bytes: JSON body in UTF-8]
+/// Format: [4 bytes: body length in Big Endian uint32] [N bytes: binary body]
 /// Uses <see cref="ArrayPool{T}"/> to minimize heap allocations for body buffers.
 /// </summary>
 public static class FrameReader {
+    private static readonly VibeMQBinaryCodec Codec = new();
+
     /// <summary>
     /// Reads a single frame from the stream and deserializes it into a <see cref="ProtocolMessage"/>.
     /// Returns null if the stream is closed (0 bytes read for the length prefix).
@@ -59,10 +61,7 @@ public static class FrameReader {
                 throw new IOException("Connection closed unexpectedly while reading frame body.");
             }
 
-            return JsonSerializer.Deserialize<ProtocolMessage>(
-                bodyBuffer.AsSpan(0, bodyLength),
-                ProtocolSerializer.Options
-            ) ?? throw new InvalidOperationException("Failed to deserialize protocol message.");
+            return Codec.Decode(bodyBuffer.AsSpan(0, bodyLength));
         } finally {
             ArrayPool<byte>.Shared.Return(bodyBuffer);
         }

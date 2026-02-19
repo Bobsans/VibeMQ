@@ -71,19 +71,9 @@ public class ProtocolSerializationTests {
     }
 
     [Fact]
-    public void Serialize_SchemaVersion_DefaultsTo1() {
+    public void Serialize_Version_DefaultsTo1() {
         var message = new ProtocolMessage { Type = CommandType.Ping };
 
-        Assert.Equal("1.0", message.SchemaVersion);
-    }
-
-    [Fact]
-    public void Deserialize_UnknownFields_IgnoredGracefully() {
-        var json = """{"id":"abc","type":"ping","unknownField":"value","schemaVersion":"1.0"}""";
-        var message = JsonSerializer.Deserialize<ProtocolMessage>(json, ProtocolSerializer.Options);
-
-        Assert.NotNull(message);
-        Assert.Equal("abc", message.Id);
-        Assert.Equal(CommandType.Ping, message.Type);
+        Assert.Equal(1, message.Version);
     }
 }

@@ -11,7 +11,7 @@ This guide describes the VibeMQ message exchange protocol.
 Overview
 ========
 
-VibeMQ uses TCP as transport and JSON for message serialization. The protocol is designed for simplicity and performance.
+VibeMQ uses TCP as transport and a custom binary format for message serialization. The protocol is designed for simplicity and performance. Payload data is stored as JSON in UTF-8 for easy debugging and UI display, while the protocol message structure uses a compact binary format.
 
 Protocol Layers
 ================
@@ -19,7 +19,7 @@ Protocol Layers
 .. code-block:: text
 
    ┌─────────────────────────────────────┐
-   │  Application Layer (JSON)          │
+   │  Application Layer (Binary)         │
    ├─────────────────────────────────────┤
    │  Framing (Length-prefix)            │
    ├─────────────────────────────────────┤
@@ -33,7 +33,7 @@ Framing
 
 .. code-block:: text
 
-   [4 bytes: body length in Big Endian uint32] [N bytes: JSON body in UTF-8]
+   [4 bytes: body length in Big Endian uint32] [N bytes: binary body]
 
 Length Format
 ------------
@@ -57,25 +57,43 @@ Frame Example
 .. code-block:: text
 
    Bytes 0-3:   [0x00 0x00 0x00 0x5A]  ← Length 90 bytes
-   Bytes 4-93:  [{"id":"msg_123",...}]  ← JSON message
+   Bytes 4-93:  [binary message data]  ← Binary protocol message
 
 Message Format
 ================
 
-Basic Structure
+Binary Protocol Structure
+-------------------------
+
+All protocol messages are serialized in a custom binary format with fixed field order:
+
+.. code-block:: text
+
+   version (1 byte) | type (1 byte) | id (2B len + UTF-8) | 
+   queue (2B len + UTF-8) | payload (4B len + UTF-8 JSON) | 
+   headers (2B count + pairs) | errorCode (2B len + UTF-8) | 
+   errorMessage (2B len + UTF-8)
+
+All lengths are encoded as Big Endian. Length 0 means the field is absent/null.
+
+**Important:** Payload is stored as JSON in UTF-8 for easy debugging and UI display, but the protocol message structure itself uses binary encoding for optimal performance.
+
+Logical Structure
 -----------------
 
-All protocol messages have common structure:
+The logical structure of messages (shown as JSON for clarity):
 
 .. code-block:: json
 
    {
+     "version": 1,
      "id": "msg_123",
      "type": "publish",
      "queue": "notifications",
      "payload": {...},
      "headers": {...},
-     "schemaVersion": "1.0"
+     "errorCode": null,
+     "errorMessage": null
    }
 
 Message Fields

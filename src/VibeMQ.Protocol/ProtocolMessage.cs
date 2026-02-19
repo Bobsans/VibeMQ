@@ -5,7 +5,7 @@ namespace VibeMQ.Protocol;
 
 /// <summary>
 /// Wire-level message that wraps all commands in the VibeMQ protocol.
-/// Serialized as JSON and framed with a 4-byte length prefix over TCP.
+/// Serialized as binary format and framed with a 4-byte length prefix over TCP.
 /// </summary>
 public sealed class ProtocolMessage {
     /// <summary>
@@ -40,10 +40,10 @@ public sealed class ProtocolMessage {
     public Dictionary<string, string>? Headers { get; set; }
 
     /// <summary>
-    /// Protocol schema version for backward compatibility.
+    /// Protocol version for backward compatibility.
     /// </summary>
-    [JsonPropertyName("schemaVersion")]
-    public string SchemaVersion { get; set; } = "1.0";
+    [JsonPropertyName("version")]
+    public int Version { get; set; } = 1;
 
     /// <summary>
     /// Error code (only used with <see cref="CommandType.Error"/>).

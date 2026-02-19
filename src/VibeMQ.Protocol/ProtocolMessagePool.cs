@@ -17,7 +17,7 @@ public static class ProtocolMessagePool {
         if (_pool.TryTake(out var message)) {
             message.Id = Guid.NewGuid().ToString("N");
             message.Type = type;
-            message.SchemaVersion = "1.0";
+            message.Version = 1;
             return message;
         }
 
