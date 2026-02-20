@@ -1,3 +1,6 @@
+using System.Collections.Concurrent;
+using VibeMQ.Interfaces;
+
 namespace VibeMQ.Tests.Integration;
 
 public class PubSubTests : IAsyncLifetime {
@@ -57,6 +60,78 @@ public class PubSubTests : IAsyncLifetime {
     }
 
     [Fact]
+    public async Task PublishAndSubscribe_ClassBasedHandler_Delivered() {
+        await using var publisher = await _fixture.CreateClientAsync();
+        await using var subscriber = await _fixture.CreateClientAsync();
+
+        var queueName = $"class-queue-{Guid.NewGuid():N}";
+        var messageName = $"class-msg-{Guid.NewGuid():N}";
+        var receivedTask = ClassBasedTestPayloadHandler.Expect(messageName);
+
+        await using var subscription = await subscriber.SubscribeAsync<TestPayload, ClassBasedTestPayloadHandler>(queueName);
+
+        await Task.Delay(100);
+
+        await publisher.PublishAsync(queueName, new TestPayload { Name = messageName, Value = 777 });
+
+        var received = await receivedTask.WaitAsync(TimeSpan.FromSeconds(5));
+
+        Assert.Equal(messageName, received.Name);
+        Assert.Equal(777, received.Value);
+    }
+
+    [Fact]
+    public async Task Subscribe_ClassBasedHandlerWithoutResolvableConstructor_Throws() {
+        await using var subscriber = await _fixture.CreateClientAsync();
+
+        var queueName = $"ctor-queue-{Guid.NewGuid():N}";
+
+        var ex = await Assert.ThrowsAsync<InvalidOperationException>(
+            () => subscriber.SubscribeAsync<TestPayload, HandlerWithoutDefaultConstructor>(queueName)
+        );
+
+        Assert.Contains("Failed to create instance", ex.Message);
+    }
+
+    [Fact]
+    public async Task Subscribe_ClassBasedHandler_CancellationTokenCancelledAfterSubscription_StillProcessesMessages() {
+        await using var publisher = await _fixture.CreateClientAsync();
+        await using var subscriber = await _fixture.CreateClientAsync();
+
+        var queueName = $"class-cancel-queue-{Guid.NewGuid():N}";
+        var messageName = $"class-cancel-msg-{Guid.NewGuid():N}";
+        var receivedTask = CancelAwareClassBasedHandler.Expect(messageName);
+        using var subscribeCts = new CancellationTokenSource();
+
+        await using var subscription = await subscriber.SubscribeAsync<TestPayload, CancelAwareClassBasedHandler>(
+            queueName,
+            subscribeCts.Token
+        );
+
+        subscribeCts.Cancel();
+        await Task.Delay(100);
+
+        await publisher.PublishAsync(queueName, new TestPayload { Name = messageName, Value = 551 });
+        var received = await receivedTask.WaitAsync(TimeSpan.FromSeconds(5));
+
+        Assert.Equal(messageName, received.Name);
+        Assert.Equal(551, received.Value);
+    }
+
+    [Fact]
+    public async Task Subscribe_ClassBasedHandler_DuplicateQueueOnSameClient_Throws() {
+        await using var subscriber = await _fixture.CreateClientAsync();
+        var queueName = $"duplicate-class-queue-{Guid.NewGuid():N}";
+
+        await using var first = await subscriber.SubscribeAsync<TestPayload, ClassBasedTestPayloadHandler>(queueName);
+        var ex = await Assert.ThrowsAsync<InvalidOperationException>(
+            () => subscriber.SubscribeAsync<TestPayload, ClassBasedTestPayloadHandler>(queueName)
+        );
+
+        Assert.Contains("already subscribed", ex.Message, StringComparison.OrdinalIgnoreCase);
+    }
+
+    [Fact]
     public async Task Subscribe_ThenUnsubscribe_StopsReceiving() {
         await using var publisher = await _fixture.CreateClientAsync();
         await using var subscriber = await _fixture.CreateClientAsync();
@@ -109,4 +184,50 @@ public class PubSubTests : IAsyncLifetime {
 public class TestPayload {
     public string Name { get; set; } = "";
     public int Value { get; set; }
+}
+
+public sealed class ClassBasedTestPayloadHandler : IMessageHandler<TestPayload> {
+    private static readonly ConcurrentDictionary<string, TaskCompletionSource<TestPayload>> PendingByMessageName = new();
+
+    public static Task<TestPayload> Expect(string messageName) {
+        var tcs = new TaskCompletionSource<TestPayload>(TaskCreationOptions.RunContinuationsAsynchronously);
+        PendingByMessageName[messageName] = tcs;
+        return tcs.Task;
+    }
+
+    public Task HandleAsync(TestPayload message, CancellationToken cancellationToken) {
+        if (PendingByMessageName.TryRemove(message.Name, out var pending)) {
+            pending.TrySetResult(message);
+        }
+
+        return Task.CompletedTask;
+    }
+}
+
+public sealed class HandlerWithoutDefaultConstructor : IMessageHandler<TestPayload> {
+    public HandlerWithoutDefaultConstructor(string requiredDependency) {
+        _ = requiredDependency;
+    }
+
+    public Task HandleAsync(TestPayload message, CancellationToken cancellationToken) {
+        return Task.CompletedTask;
+    }
+}
+
+public sealed class CancelAwareClassBasedHandler : IMessageHandler<TestPayload> {
+    private static readonly ConcurrentDictionary<string, TaskCompletionSource<TestPayload>> PendingByMessageName = new();
+
+    public static Task<TestPayload> Expect(string messageName) {
+        var tcs = new TaskCompletionSource<TestPayload>(TaskCreationOptions.RunContinuationsAsynchronously);
+        PendingByMessageName[messageName] = tcs;
+        return tcs.Task;
+    }
+
+    public Task HandleAsync(TestPayload message, CancellationToken cancellationToken) {
+        cancellationToken.ThrowIfCancellationRequested();
+        if (PendingByMessageName.TryRemove(message.Name, out var pending)) {
+            pending.TrySetResult(message);
+        }
+        return Task.CompletedTask;
+    }
 }

@@ -1,6 +1,6 @@
-using VibeMQ.Core.Enums;
+using VibeMQ.Enums;
 
-namespace VibeMQ.Core.Configuration;
+namespace VibeMQ.Configuration;
 
 /// <summary>
 /// Configuration options for an individual queue.

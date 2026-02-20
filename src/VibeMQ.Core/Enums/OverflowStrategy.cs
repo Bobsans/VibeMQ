@@ -1,4 +1,4 @@
-namespace VibeMQ.Core.Enums;
+namespace VibeMQ.Enums;
 
 /// <summary>
 /// Strategy for handling queue overflow when the maximum size is reached.

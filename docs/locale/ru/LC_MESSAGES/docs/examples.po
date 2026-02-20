@@ -3,12 +3,11 @@
 # This file is distributed under the same license as the VibeMQ package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: VibeMQ 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-20 10:37+0300\n"
+"POT-Creation-Date: 2026-02-18 18:37+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ru\n"
@@ -20,133 +19,134 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.18.0\n"
 
-#: ../../docs/examples.rst:3 3a71f390d9bf43938bc566edb0c75ca7
+
+
+
+#: ../../examples.rst:3 1bda56723fae423a9e65b472e92c9601
 msgid "Examples"
-msgstr ""
+msgstr "Примеры"
 
-#: ../../docs/examples.rst:5 6faa3de34a7047be95941b07d0a488c8
+#: ../../examples.rst:5 7feaf2fb85f14f6fb9cf832c1a1906ca
 msgid "This guide contains practical examples of using VibeMQ."
-msgstr ""
+msgstr "Это руководство содержит практические примеры использования VibeMQ."
 
-#: ../../docs/examples.rst:9 2466a5768c8746349af099d10cc8a85f
+#: ../../examples.rst:9 c4518e05fd2f4280b2f28a9eecf4fb96
 msgid "Contents"
-msgstr ""
+msgstr ":local:"
 
-#: ../../docs/examples.rst:12 9ae5cfd02b794ba89cfe8b5d51fbf9a1
+#: ../../examples.rst:12 93cbebaae94d47cbb49ee1b07f6ba93c
 msgid "Basic Examples"
-msgstr ""
+msgstr ":depth: 2"
 
-#: ../../docs/examples.rst:15 d6d5141fb871413ebefea45307debb5d
+#: ../../examples.rst:15 f218c79b9e6b4b019fa05a44fef26974
 msgid "Simple Publisher"
-msgstr ""
+msgstr "Базовые примеры"
 
-#: ../../docs/examples.rst:50 482ccafdcad1480981e87d733f2c8413
+#: ../../examples.rst:50 fb885f8a0dfd4c958af88206c29e53c5
 msgid "Simple Subscriber"
-msgstr ""
+msgstr "Простой издатель"
 
-#: ../../docs/examples.rst:81 8aeb9204de5444eaadbd447f754c803b
+#: ../../examples.rst:81 4cdb5a0a972a43e9bb91be26edb793e0
 msgid "Server"
-msgstr ""
+msgstr "using Microsoft.Extensions.Logging;"
 
-#: ../../docs/examples.rst:112 13c00802dda844188c191969b4d9130a
+#: ../../examples.rst:112 d92ae297f71c436294c268ba32151ca9
 msgid "Task Queues"
-msgstr ""
+msgstr "using VibeMQ.Client;"
 
-#: ../../docs/examples.rst:115 e76ce0341b10456092dc01944a31c5f2
+#: ../../examples.rst:115 6891c78a12524cfba23bdcd354273f7e
 msgid "Order Processing"
-msgstr ""
+msgstr "using var loggerFactory = LoggerFactory.Create(builder => {"
 
-#: ../../docs/examples.rst:117 0c0637f3350747b39c40d7c582c3dd5b
+#: ../../examples.rst:117 9c2d83aa903b4debaa64cb3754983ad8
 msgid "**Publisher (OrderService.cs):**"
-msgstr ""
+msgstr "**Издатель (OrderService.cs):**"
 
-#: ../../docs/examples.rst:155 49b07b0c0f874db19f47c55ecd7383ad
+#: ../../examples.rst:155 6e7552540f8e4438908aef06108c4e30
 msgid "**Handler (OrderProcessor.cs):**"
-msgstr ""
+msgstr "**Обработчик (OrderProcessor.cs):**"
 
-#: ../../docs/examples.rst:210 7ba51d04bece4911b3f2be352f693e41
+#: ../../examples.rst:210 b5047f8ba91b411fa1108a9e1c7a637a
 msgid "**DI Registration:**"
-msgstr ""
+msgstr "**Регистрация в DI:**"
 
-#: ../../docs/examples.rst:231 aac0511492724fbaba3a71ac4c7f5001
+#: ../../examples.rst:231 cfea7c57bd68416ebd2d5bcab48d2d02
 msgid "Background Tasks with Priorities"
-msgstr ""
+msgstr "await using var publisher = await VibeMQClient.ConnectAsync("
 
-#: ../../docs/examples.rst:262 ../../docs/examples.rst:370
-#: ../../docs/examples.rst:609 052f5563d1724035a68af593f70ec45b
-#: 359c3da0151b49aca6b42626875f2b52 ce5ffa6c54d645a686f129abb9395282
+#: f379037ec4d5495fb6edf870f6c0d2aa
 msgid "**Usage:**"
-msgstr ""
+msgstr "\"localhost\","
 
-#: ../../docs/examples.rst:281 0ecdcd28a74a4580a5ccfb257536e416
+#: ../../examples.rst:281 c0aaadd1362d49d494a804d40f49a51c
 msgid "Event Bus"
-msgstr ""
+msgstr "8080,"
 
-#: ../../docs/examples.rst:284 4c1416a5830844b49bc15b4f6a48fe03
+#: ../../examples.rst:284 a70afb4199fc4acb8d7e55b506635858
 msgid "EventBus Implementation"
-msgstr ""
+msgstr "new ClientOptions { AuthToken = \"my-token\" },"
 
-#: ../../docs/examples.rst:364 5ce5fd2d271f4d07816a1b900da310c4
+#: ../../examples.rst:364 087c446d43444b2d8088a65d111f3ab6
 msgid "**Registration:**"
-msgstr ""
+msgstr "**Регистрация:**"
 
-#: ../../docs/examples.rst:405 a940378077f14a5d88c254c14e8c7d97
+#: ../../examples.rst:405 da2846f3735840f1bcb5c19c97101f17
 msgid "Microservices"
-msgstr ""
+msgstr ");"
 
-#: ../../docs/examples.rst:408 dae34137c1de4ef9bd7bf65b8dd41a6a
+#: ../../examples.rst:408 4a18b126a0b74a2ab0c9d1c847593ba9
 msgid "Data Synchronization Between Services"
-msgstr ""
+msgstr "Console.WriteLine(\"Издатель подключён. Введите сообщение (Enter для выхода):\");"
 
-#: ../../docs/examples.rst:410 4c2fd753ce824e288595ec96c1a85d9f
+#: ../../examples.rst:410 bd5e80a98a28417899972d5574c3f8cd
 msgid "**User Service (Users.cs):**"
-msgstr ""
+msgstr "**Сервис пользователей (Users.cs):**"
 
-#: ../../docs/examples.rst:432 2b26a8a723dc4b7fae5bfe3755ec3e99
+#: ../../examples.rst:432 698720b350db429686c9ccc4f4790ba5
 msgid "**Notification Service (Notifications.cs):**"
-msgstr ""
+msgstr "**Сервис уведомлений (Notifications.cs):**"
 
-#: ../../docs/examples.rst:459 9d1008b7b82242e7ab2c279ad259d285
+#: ../../examples.rst:459 a1b72a7e78e54cbaa41ac35e9e0e6794
 msgid "**Analytics Service (Analytics.cs):**"
-msgstr ""
+msgstr "**Сервис аналитики (Analytics.cs):**"
 
-#: ../../docs/examples.rst:488 ae108dc2a92a4f5ba3518dc4095236b5
+#: ../../examples.rst:488 12073681722e4c52b7b7a213ff367913
 msgid "CQRS with VibeMQ"
-msgstr ""
+msgstr "await publisher.PublishAsync(\"messages\", new {"
 
-#: ../../docs/examples.rst:490 70ec2097b34a450c97bb5b6942a7fdda
+#: ../../examples.rst:490 fe91906b90fb4e67a60f8c6b7edbba6c
 msgid "**Commands:**"
-msgstr ""
+msgstr "**Commands:**"
 
-#: ../../docs/examples.rst:511 04d8f4b64d43441abe5a4cc199c1e988
+#: ../../examples.rst:511 c35a1bfc75094a66b40d4578ee92a14c
 msgid "**Queries:**"
-msgstr ""
+msgstr "**Queries:**"
 
-#: ../../docs/examples.rst:557 1919bb052a9b4ab09ade27a87c821b59
+#: ../../examples.rst:557 f0f45e7a8d064a0b8b1ff6eec016691e
 msgid "Monitoring and Logging"
-msgstr ""
+msgstr "});"
 
-#: ../../docs/examples.rst:560 29b4e829891841468484431b086a7b6f
+#: ../../examples.rst:560 2fd1a60f90a747359b5ddcb3485a30cf
 msgid "Custom Logger"
-msgstr ""
+msgstr "Console.WriteLine(\"✓ Сообщение отправлено\");"
 
-#: ../../docs/examples.rst:621 a9794a1386024c4592aab6605062371c
+#: ../../examples.rst:621 03da64f8168f4683b679dc1b52c64439
 msgid "Application Metrics"
-msgstr ""
+msgstr "}"
 
-#: ../../docs/examples.rst:656 1000a61b0fa144309eb88d1bcd8e8b06
+#: ../../examples.rst:656 b4cb46914a294108b074349004fdf988
 msgid "Next Steps"
-msgstr ""
+msgstr "Простой подписчик"
 
-#: ../../docs/examples.rst:658 d147c0004bbe4846b45dd61fa3e429d3
+#: ../../examples.rst:658 f7de15afd78548dab18aedbd33264f49
 msgid ":doc:`getting-started` — quick start"
-msgstr ""
+msgstr "using Microsoft.Extensions.Logging;"
 
-#: ../../docs/examples.rst:659 b525585c0e9b4c8183f300ef6b7e0c7c
+#: ../../examples.rst:659 291ef77610f74252a6d92c47e7c901ca
 msgid ":doc:`client-usage` — client usage"
-msgstr ""
+msgstr "using VibeMQ.Client;"
 
-#: ../../docs/examples.rst:660 f2b6035deaa3473a9a94a2a9d1a50705
+#: ../../examples.rst:660 15ac14dabc874c16a72e8345b2881fda
 msgid ":doc:`di-integration` — DI integration"
-msgstr ""
+msgstr "using var loggerFactory = LoggerFactory.Create(builder => {"
 

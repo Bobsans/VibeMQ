@@ -230,8 +230,10 @@ Delivery by message priority:
 
 .. code-block:: csharp
 
-   await client.PublishAsync("alerts", message, options => {
-       options.Priority = MessagePriority.Critical;
+   using VibeMQ.Core.Enums;
+
+   await client.PublishAsync("alerts", message, new Dictionary<string, string> {
+       ["priority"] = MessagePriority.Critical.ToString()
    });
 
 Overflow Strategies

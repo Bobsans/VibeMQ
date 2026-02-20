@@ -1,6 +1,6 @@
 using System.Collections.Concurrent;
-using VibeMQ.Core.Interfaces;
-using VibeMQ.Core.Models;
+using VibeMQ.Interfaces;
+using VibeMQ.Models;
 
 namespace VibeMQ.Server.Storage;
 

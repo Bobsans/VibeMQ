@@ -1,4 +1,4 @@
-namespace VibeMQ.Core.Enums;
+namespace VibeMQ.Enums;
 
 /// <summary>
 /// Priority level for message processing order.

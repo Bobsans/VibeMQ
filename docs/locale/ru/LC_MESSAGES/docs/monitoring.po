@@ -3,12 +3,11 @@
 # This file is distributed under the same license as the VibeMQ package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: VibeMQ 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-20 10:37+0300\n"
+"POT-Creation-Date: 2026-02-18 18:37+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ru\n"
@@ -20,510 +19,492 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.18.0\n"
 
-#: ../../docs/monitoring.rst:3 f01d25b9c32645b095e3ba33f14817d5
+
+
+
+#: ../../monitoring.rst:3 57f4d5b3e61d433f9262a7b16e1b8404
 msgid "Monitoring"
-msgstr ""
+msgstr "Мониторинг"
 
-#: ../../docs/monitoring.rst:5 5416c11862fe4720a656b15371f6ce6d
+#: ../../monitoring.rst:5 f087ad3f131a411e9ac891ba6c266b71
 msgid "This guide describes monitoring capabilities and health checks in VibeMQ."
-msgstr ""
+msgstr "Это руководство описывает возможности мониторинга и health checks в VibeMQ."
 
-#: ../../docs/monitoring.rst:9 74015c6e24e34579b5b6b35c04fed68a
+#: ../../monitoring.rst:9 ff1a0dcadc6042e1910b01b7f8d1dc65
 msgid "Contents"
-msgstr ""
+msgstr ":local:"
 
-#: ../../docs/monitoring.rst:12 f069e408b9a74a7d83bf3610d70dffdf
+#: ../../monitoring.rst:12 aa564471af5d42fc9875671212f4ea4a
 msgid "Health Checks"
-msgstr ""
+msgstr "Health Checks"
 
-#: ../../docs/monitoring.rst:14 103966133ab24fdfbe431418f2ae3855
+#: ../../monitoring.rst:14 32088a22b3b34bcbb08d5d12fbbb31e0
 msgid "VibeMQ provides HTTP endpoints for health checks and metrics."
-msgstr ""
+msgstr "VibeMQ предоставляет HTTP эндпоинты для проверки здоровья и получения метрик."
 
-#: ../../docs/monitoring.rst:17 5eb6eafe97ef4b8fb36b789bdd5fc004
+#: ../../monitoring.rst:17 8bddb066f4f04c13a30cd04dafde74dd
 msgid "Enabling Health Checks"
-msgstr ""
+msgstr "VibeMQ предоставляет HTTP эндпоинты для проверки здоровья и получения метрик."
 
-#: ../../docs/monitoring.rst:27 e3caac5e06d14c3ea63e11fc12902675
+#: ../../monitoring.rst:27 eff87bd3f46142e0bec899368d3015d2
 msgid "Endpoints"
-msgstr ""
+msgstr "Включение health checks"
 
-#: ../../docs/monitoring.rst:30 604824babd274ca998fb9f56ff0fc3c3
+#: ../../monitoring.rst:30 6713c7876ece466ebbeccdeb864e98dc
 msgid "GET /health/"
-msgstr ""
+msgstr "GET /health/"
 
-#: ../../docs/monitoring.rst:32 554db7fc3ac8405daea6d996497d8258
+#: ../../monitoring.rst:32 78f79c76210444cdaf2fc736ff71e7bc
 msgid "Returns server health status."
-msgstr ""
+msgstr "Возвращает статус здоровья сервера."
 
-#: ../../docs/monitoring.rst:34 ../../docs/monitoring.rst:72
-#: af13eaa826344b3c9d87234570a03538 d5781bef1e75410e8b2b646de7313f72
+#: 361305affa684ab08771b0094b6e9835 de9ec2f45c184830859273cda480fb67
 msgid "**Request:**"
-msgstr ""
+msgstr "options.Port = 8081;"
 
-#: ../../docs/monitoring.rst:40 7657a76ae7c84c7e8589fa5c058ffe43
+#: ../../monitoring.rst:40 14a542b8a85c4b0c893d312ba39f14c3
 msgid "**Response (200 OK):**"
-msgstr ""
+msgstr "**Ответ (200 OK):**"
 
-#: ../../docs/monitoring.rst:51 364bcd4e3c2a469f94b5e9a1e939a28c
+#: ../../monitoring.rst:51 6fd541e6045143c3be766b99b5b9eb8a
 msgid "**Response (503 Service Unavailable):**"
-msgstr ""
+msgstr "**Ответ (503 Service Unavailable):**"
 
-#: ../../docs/monitoring.rst:62 3ac271d2e4b6420a936ac1bb3333d278
+#: ../../monitoring.rst:62 a261330923ba43589da9ecd5773c9227
 msgid "**Status codes:**"
-msgstr ""
+msgstr "**Коды состояния:**"
 
-#: ../../docs/monitoring.rst:64 32941ac59e104e9688b1b2d944b4f28f
+#: ../../monitoring.rst:64 f692bbfa14564bda85835657ef31a11a
 msgid "``200 OK`` — server healthy"
-msgstr ""
+msgstr "~~~~~~~~~~~~"
 
-#: ../../docs/monitoring.rst:65 f824b34ad3644827a0ab1a06de92e5ad
+#: ../../monitoring.rst:65 d37086a5db394f3ab5296d13c7884f99
 msgid "``503 Service Unavailable`` — server unhealthy (critical memory usage)"
-msgstr ""
+msgstr "Возвращает статус здоровья сервера."
 
-#: ../../docs/monitoring.rst:68 a503181fc7d14befbd9eeee9c4e0bc6c
+#: ../../monitoring.rst:68 a1b1c0ea70434e0f818bdd4c06f28874
 msgid "GET /metrics/"
-msgstr ""
+msgstr "GET /metrics/"
 
-#: ../../docs/monitoring.rst:70 be363f654f2a44f7a05dfab20e908665
+#: ../../monitoring.rst:70 aa14e57ccbfa4fc69eb00a6b1947bc0c
 msgid "Returns detailed server metrics."
-msgstr ""
+msgstr "Возвращает подробные метрики сервера."
 
-#: ../../docs/monitoring.rst:78 ad4fb843b711456f9955a091f508e813
+#: ../../monitoring.rst:78 1e1eeddc6b144f4b9f42b3cdb142779d
 msgid "**Response:**"
-msgstr ""
+msgstr "**Ответ:**"
 
-#: ../../docs/monitoring.rst:100 d11f6aaf3cd147d7a2c6c0b2be733daf
+#: ../../monitoring.rst:100 65d0da0ab5004959b92c78ecf11210b4
 msgid "Metrics"
-msgstr ""
+msgstr "{"
 
-#: ../../docs/monitoring.rst:103 07f0c505e8c44485b33b9831cfd858bf
+#: ../../monitoring.rst:103 5d7603f5b90d4ac8adda6ce8d3d42f82
 msgid "Counters"
-msgstr ""
+msgstr "\"status\": \"healthy\","
 
-#: ../../docs/monitoring.rst:105 484a7a0b365e4d45b927b2130453cd25
+#: ../../monitoring.rst:105 876b615014a54fb2b5751c4ffa9786b8
 msgid "Counters only increase and show accumulated values."
-msgstr ""
+msgstr "Счётчики только увеличиваются и показывают накопленные значения."
 
-#: ../../docs/monitoring.rst:108 d1a34f0306e74ca2b916d8c5b7ee94c4
+#: ../../monitoring.rst:108 7a3b377c22ad4abf9fe91db209c0ca97
 msgid "TotalMessagesPublished"
-msgstr ""
+msgstr "TotalMessagesPublished"
 
-#: ../../docs/monitoring.rst:110 ../../docs/monitoring.rst:122
-#: ../../docs/monitoring.rst:134 ../../docs/monitoring.rst:146
-#: ../../docs/monitoring.rst:158 ../../docs/monitoring.rst:170
-#: ../../docs/monitoring.rst:182 ../../docs/monitoring.rst:194
-#: ../../docs/monitoring.rst:248 04415ec85eb24bd2b2267c6111959bcf
-#: 168b61070e0944a4a494bebc51204f24 185f751ac62a49889c9d626950ce60d7
-#: 2e20127d6e8a444f8bb296cb6b359971 4a1b5b6765254334ab11ac2815f40a89
-#: 8264eb7ac1ef4bb2a94be44c78a931cf 953aa0bdd6e649a2a50cc4eee26891b6
-#: a77d76b50ebb4805a9446e3caf45dd68 cff866c3693e41d7ab44455e295672eb
+#: f3b29c564fb2457088e58d78349e9e21
 msgid "**Type:** ``long``"
-msgstr ""
+msgstr "\"memory_usage_mb\": 256"
 
-#: ../../docs/monitoring.rst:112 a868a82efde74beaa49dd740ce1d9fd1
+#: ../../monitoring.rst:112 ae568880b0ea49fdaac184ed9d1a0ca1
 msgid "**Description:** Total number of published messages."
-msgstr ""
+msgstr "**Описание:** Общее количество опубликованных сообщений."
 
-#: ../../docs/monitoring.rst:114 ../../docs/monitoring.rst:126
-#: ../../docs/monitoring.rst:138 ../../docs/monitoring.rst:150
-#: ../../docs/monitoring.rst:162 ../../docs/monitoring.rst:174
-#: ../../docs/monitoring.rst:186 ../../docs/monitoring.rst:198
-#: ../../docs/monitoring.rst:226 02b6e08c44e34497a98ea20b7a0a571f
-#: 0ada13d7191848a5a478c96ffd9d26c2 1c01b161de2245b5bb3b8d7f79177f0d
-#: 1cf0eb05770a421cae545f9b378de1c4 6b408f01663b4f86bdfca35216c5e87c
-#: 7111ebce8bdb43c5973875bfef1c9d45 c66497607b7c41a4a833a1f50a2a8416
-#: d9c10c233cb443358b7f88fc76f7b780 fb2a0abfa16b4efbae63a9875653f164
+#: cad500ae9fdd4af6a73c665bfee3734b
 msgid "**Usage:**"
-msgstr ""
+msgstr "**Ответ (503 Service Unavailable):**"
 
-#: ../../docs/monitoring.rst:116 fed78f1e5cee437a80e05842675ee03e
+#: ../../monitoring.rst:116 b38bcdbdf491464d990c24e1382d6272
 msgid "Track server load"
-msgstr ""
+msgstr "{"
 
-#: ../../docs/monitoring.rst:117 6a68167690e34692890c0a134c269281
+#: ../../monitoring.rst:117 847f005c265f4896a47859efa49e7ea9
 msgid "Calculate throughput (messages/sec)"
-msgstr ""
+msgstr "\"status\": \"unhealthy\","
 
-#: ../../docs/monitoring.rst:120 5f4e73c4d4fd46869d2927a198182cdc
+#: ../../monitoring.rst:120 c82121e401794f05a0e21ffe681d817f
 msgid "TotalMessagesDelivered"
-msgstr ""
+msgstr "TotalMessagesDelivered"
 
-#: ../../docs/monitoring.rst:124 ac8c614b837f4841a6621c2c36c7b0f1
+#: ../../monitoring.rst:124 a80281b27b5b4ee488a316180602fa34
 msgid "**Description:** Total number of delivered messages."
-msgstr ""
+msgstr "**Описание:** Общее количество доставленных сообщений."
 
-#: ../../docs/monitoring.rst:128 700bc0f12e154d78af890514968cd98f
+#: ../../monitoring.rst:128 f054ba51a93246efa7f2ece0488adeff
 msgid "Monitor delivery success rate"
-msgstr ""
+msgstr "\"memory_usage_mb\": 512"
 
-#: ../../docs/monitoring.rst:129 08ec3920b47747cd8374de144c8d02f7
+#: ../../monitoring.rst:129 8218d3bcdf6a409184410eb318653706
 msgid "Calculate percentage of successful deliveries"
-msgstr ""
+msgstr "}"
 
-#: ../../docs/monitoring.rst:132 8bf3318ad3ba45ef83abefee63b5a56f
+#: ../../monitoring.rst:132 f93735fcbebd41b49f6dcaab1c65152a
 msgid "TotalMessagesAcknowledged"
-msgstr ""
+msgstr "TotalMessagesAcknowledged"
 
-#: ../../docs/monitoring.rst:136 64027a843531452fa4bbe96078a2f6f8
+#: ../../monitoring.rst:136 f7af13e514cc4ac7b28322dd88e443ea
 msgid "**Description:** Total number of acknowledged messages."
-msgstr ""
+msgstr "**Описание:** Общее количество подтверждённых сообщений."
 
-#: ../../docs/monitoring.rst:140 797e874eaa8b48fcb81032af07a74443
+#: ../../monitoring.rst:140 8efdb5c8a2e14c83b763a9840a4f0265
 msgid "Verify ACK mechanism"
-msgstr ""
+msgstr "~~~~~~~~~~~~~"
 
-#: ../../docs/monitoring.rst:141 58d6f4b9f77d494e92642915796717f6
+#: ../../monitoring.rst:141 4aff47c834634e2b8804474d432f3e8e
 msgid "Identify acknowledgment issues"
-msgstr ""
+msgstr "Возвращает подробные метрики сервера."
 
-#: ../../docs/monitoring.rst:144 a67a6faff67f4a6d89e7c7be8f6cd158
+#: ../../monitoring.rst:144 c52db36b18cc4ac9a9aeb6d6884fe824
 msgid "TotalRetries"
-msgstr ""
+msgstr "TotalRetries"
 
-#: ../../docs/monitoring.rst:148 496d63059b24469f94622e3c293d2e3e
+#: ../../monitoring.rst:148 f462e333a526471aa53c4f44963acf61
 msgid "**Description:** Total number of delivery retries."
-msgstr ""
+msgstr "**Описание:** Общее количество повторных попыток доставки."
 
-#: ../../docs/monitoring.rst:152 c3a6a56106aa4b74ac4d30ec5e82d535
+#: ../../monitoring.rst:152 eaa23a1a917443a5b316e103aad05b90
 msgid "Identify delivery issues"
-msgstr ""
+msgstr "**Ответ:**"
 
-#: ../../docs/monitoring.rst:153 6d014436dcdf458bb4c46014c0176eb2
+#: ../../monitoring.rst:153 ce1ca412a8a24849848d094b271f7988
 msgid "Optimize timeouts"
-msgstr ""
+msgstr "{"
 
-#: ../../docs/monitoring.rst:156 2185e5973e88446db9c83d349ab33f07
+#: ../../monitoring.rst:156 76a1dd01a918411fabe23444b229b856
 msgid "TotalDeadLettered"
-msgstr ""
+msgstr "TotalDeadLettered"
 
-#: ../../docs/monitoring.rst:160 c410b7fbbfac4f55bc5795ae6e420bb3
+#: ../../monitoring.rst:160 8cd1605323e8408c9efb9ba52716654e
 msgid "**Description:** Number of messages in Dead Letter Queue."
-msgstr ""
+msgstr "**Описание:** Количество сообщений в Dead Letter Queue."
 
-#: ../../docs/monitoring.rst:164 562c7815500142a8b8d9ad4dd50a89b5
+#: ../../monitoring.rst:164 ed90d756d55d4bd28a4104396c12d9e9
 msgid "Monitor failed deliveries"
-msgstr ""
+msgstr "\"total_messages_acknowledged\": 124800,"
 
-#: ../../docs/monitoring.rst:165 9a5c5e762464448db1b98bc37609cd9f
+#: ../../monitoring.rst:165 dfefe7c2d4c9490dbc7427134c03629c
 msgid "Requires attention when growing"
-msgstr ""
+msgstr "\"total_retries\": 150,"
 
-#: ../../docs/monitoring.rst:168 53ff5e5b38db4fa19ac27f81e7bfc56f
+#: ../../monitoring.rst:168 36759d17f02141218fae4c678d7c87fc
 msgid "TotalErrors"
-msgstr ""
+msgstr "TotalErrors"
 
-#: ../../docs/monitoring.rst:172 e6142a30070542d6be4bbc33cd106d6c
+#: ../../monitoring.rst:172 4f7e9005cca74624b48fa3fb89a30c39
 msgid "**Description:** Total number of errors."
-msgstr ""
+msgstr "**Описание:** Общее количество ошибок."
 
-#: ../../docs/monitoring.rst:176 5efdda4c46de4086a4153c99adc0431c
+#: ../../monitoring.rst:176 4b3e377d18d34502b6120ff092d20cda
 msgid "Overall system health indicator"
-msgstr ""
+msgstr "\"total_connections_accepted\": 500,"
 
-#: ../../docs/monitoring.rst:177 66be185a09f24e15af09fa9850ed059f
+#: ../../monitoring.rst:177 24a08d9d0d3e46db995944ad20fd765b
 msgid "Requires investigation when growing"
-msgstr ""
+msgstr "\"total_connections_rejected\": 10,"
 
-#: ../../docs/monitoring.rst:180 889bb8739b4546c6859424bbca987c05
+#: ../../monitoring.rst:180 f45a61b0504c44608a3109f7004dfa16
 msgid "TotalConnectionsAccepted"
-msgstr ""
+msgstr "TotalConnectionsAccepted"
 
-#: ../../docs/monitoring.rst:184 10c2a4c16e7c4b22a108e8e5e1775808
+#: ../../monitoring.rst:184 6b3fee6c04344ebfb6f9a50680a97491
 msgid "**Description:** Number of accepted connections."
-msgstr ""
+msgstr "**Описание:** Количество принятых подключений."
 
-#: ../../docs/monitoring.rst:188 6fa7e2c4c57347108fcb7620af1ef90b
+#: ../../monitoring.rst:188 cb023e8b18514f628061a7d06bcc6be5
 msgid "Monitor server load"
-msgstr ""
+msgstr "\"in_flight_messages\": 42,"
 
-#: ../../docs/monitoring.rst:189 cd92752321bb4931954eb8cf3b4347ec
+#: ../../monitoring.rst:189 ae9bb3af1ad24fa4872411a3ae4bc47f
 msgid "Resource planning"
-msgstr ""
+msgstr "\"memory_usage_bytes\": 268435456,"
 
-#: ../../docs/monitoring.rst:192 65cc318e7ad44abcb000fa05302a9ae2
+#: ../../monitoring.rst:192 40f98b2f429e48ff8fac768404846355
 msgid "TotalConnectionsRejected"
-msgstr ""
+msgstr "TotalConnectionsRejected"
 
-#: ../../docs/monitoring.rst:196 c53ee6fd0bf041ed97b7e4a960138fed
+#: ../../monitoring.rst:196 6da9e22714574d6180922075e5b984f0
 msgid "**Description:** Number of rejected connections."
-msgstr ""
+msgstr "**Описание:** Количество отклонённых подключений."
 
-#: ../../docs/monitoring.rst:200 ff884045bdbe41d7ad34fc1a567fe109
+#: ../../monitoring.rst:200 7c20199aa10249e280fbe906706d6670
 msgid "Identify capacity issues"
-msgstr ""
+msgstr "}"
 
-#: ../../docs/monitoring.rst:201 3f0ef2c39de54e06b54020ef049cd9db
+#: ../../monitoring.rst:201 8f2c3fd440f84674be07b26bbf7bfef2
 msgid "Configure rate limiting"
-msgstr ""
+msgstr "Метрики"
 
-#: ../../docs/monitoring.rst:204 efce1442542049b9b41dc03f21c2643d
+#: ../../monitoring.rst:204 c99c89a5fb854120bc71da3e57ee3ba1
 msgid "Gauge Metrics"
-msgstr ""
+msgstr "Счётчики (Counters)"
 
-#: ../../docs/monitoring.rst:206 089f67f755d94bf79914b359a219aaed
+#: ../../monitoring.rst:206 1234b06aaf304108b9811ab752bf9478
 msgid "Gauge metrics can increase and decrease, showing current state."
-msgstr ""
+msgstr "Gauge-метрики могут увеличиваться и уменьшаться, показывая текущее состояние."
 
-#: ../../docs/monitoring.rst:209 bc2ac1f85dba42a8b1a95b146dbda311
+#: ../../monitoring.rst:209 9ff304c6debd455b9c90e40de56c8d22
 msgid "ActiveConnections"
-msgstr ""
+msgstr "ActiveConnections"
 
-#: ../../docs/monitoring.rst:211 ../../docs/monitoring.rst:222
-#: ../../docs/monitoring.rst:234 2cfc786dae504f4a834bcdb8faf4901e
-#: 354f4a7657264bbcbdf85c1b5a406713 af3a71ebe23f42559946df17cfc06084
+#: e2caaa4f31ea47aca6fe87b701c942b3
 msgid "**Type:** ``int``"
-msgstr ""
+msgstr "~~~~~~~~~~~~~~~~~~~~~~"
 
-#: ../../docs/monitoring.rst:213 f252cc8c41c54faeb7bf66b4f9bb4b91
+#: ../../monitoring.rst:213 8b81983fedd64b13a75442e216a80b58
 msgid "**Description:** Current number of active connections."
-msgstr ""
+msgstr "**Описание:** Текущее количество активных подключений."
 
-#: ../../docs/monitoring.rst:215 ../../docs/monitoring.rst:238
-#: 3172bcf27a32453e9d2cbafe9976d738 78e77c2d53144e6f969bb093af8079b2
+#: 058f77c07bc94d3c8309cd91517b1d19 c3dc5cfc6d844acc8f47f0692fa9ce44
 msgid "**Normal values:** Depends on load"
-msgstr ""
+msgstr "**Описание:** Общее количество опубликованных сообщений."
 
-#: ../../docs/monitoring.rst:217 da98f3831545461098f9359257f7ad7f
+#: ../../monitoring.rst:217 b4ed45c412ec4983b2070c978f23cf74
 msgid "**Alert:** Approaching ``MaxConnections``"
-msgstr ""
+msgstr "**Тревога:** Приближение к ``MaxConnections``"
 
-#: ../../docs/monitoring.rst:220 e62f6a9d2ee144a099d5acf0fcebf6a6
+#: ../../monitoring.rst:220 128850c205af4c96811cde4b19dfee8c
 msgid "ActiveQueues"
-msgstr ""
+msgstr "ActiveQueues"
 
-#: ../../docs/monitoring.rst:224 8c1f6e3b42c348cea3fcf11e7f6162d2
+#: ../../monitoring.rst:224 683380beea88400f833c30b5b8587107
 msgid "**Description:** Current number of active queues."
-msgstr ""
+msgstr "**Описание:** Текущее количество активных очередей."
 
-#: ../../docs/monitoring.rst:228 2b7173a075054f8ab16022810b57da61
+#: ../../monitoring.rst:228 5ba79620c34f45f889355f693335e812
 msgid "Monitor queue usage"
-msgstr ""
+msgstr "**Тип:** ``long``"
 
-#: ../../docs/monitoring.rst:229 c1812a36f63f4aeaa52ac390b9d2a41d
+#: ../../monitoring.rst:229 04ec2ee3032f4d83bad58e7a1b56054c
 msgid "Identify unused queues"
-msgstr ""
+msgstr "**Описание:** Общее количество доставленных сообщений."
 
-#: ../../docs/monitoring.rst:232 9656debc0ea7412e88272cac5c21a953
+#: ../../monitoring.rst:232 fb6d052976044b6588cc875361625e8b
 msgid "InFlightMessages"
-msgstr ""
+msgstr "InFlightMessages"
 
-#: ../../docs/monitoring.rst:236 269aa910fe49463592a765860a99274c
+#: ../../monitoring.rst:236 01c59f0782d64b10942546d96dca8ef2
 msgid "**Description:** Number of messages in processing (waiting for ACK)."
-msgstr ""
+msgstr "**Описание:** Количество сообщений в обработке (ожидающих ACK)."
 
-#: ../../docs/monitoring.rst:240 43996f54b3ca43a096f45d01202fbad8
+#: ../../monitoring.rst:240 e6957f3b3d1b4b7888e7ea1f3dd6b345
 msgid ""
 "**Alert:** High values may indicate: - Handler issues - Slow subscribers "
 "- Network problems"
-msgstr ""
+msgstr "**Тревога:** Высокие значения могут указывать на:"
 
-#: ../../docs/monitoring.rst:246 e6fc4632e9e94e71bd07ba1cce4d6ff1
+#: ../../monitoring.rst:246 a4ecc4880f7f4587b1c23e115b7ac2b5
 msgid "MemoryUsageBytes"
-msgstr ""
+msgstr "MemoryUsageBytes"
 
-#: ../../docs/monitoring.rst:250 0833a99150ae4f79b6d4e4937502620f
+#: ../../monitoring.rst:250 d244213c89f1482488a129ee05056f33
 msgid "**Description:** Current memory usage in bytes."
-msgstr ""
+msgstr "**Описание:** Текущее использование памяти в байтах."
 
-#: ../../docs/monitoring.rst:252 9e0455e2b72e4f76a52f511e17297d96
-#, python-format
+#: ../../monitoring.rst:252 d079af586bff4ad3b6e80e4731a83f9b
 msgid "**Normal values:** < 80% of available memory"
-msgstr ""
+msgstr "**Нормальные значения:** < 80% от доступной памяти"
 
-#: ../../docs/monitoring.rst:254 d508beaf6cbf4c9eaf824c32e64fad6c
+#: ../../monitoring.rst:254 8db6447b22204ba389f9f2f3a2f482d9
 msgid "**Alert:** > 90% — possible backpressure"
-msgstr ""
+msgstr "**Тревога:** > 90% — возможен backpressure"
 
-#: ../../docs/monitoring.rst:257 d7c5c8f7b3c74537a799ee0cb1f2b448
+#: ../../monitoring.rst:257 80834f26ba8940e9a639cbf8ba7f6f4b
 msgid "Latency"
-msgstr ""
+msgstr "~~~~~~~~~~~~"
 
-#: ../../docs/monitoring.rst:260 0f785a15dbf04dfc93e685351a39a686
+#: ../../monitoring.rst:260 2cea9c2a5a4044ddb2be52a8174f3ad5
 msgid "AverageDeliveryLatencyMs"
-msgstr ""
+msgstr "AverageDeliveryLatencyMs"
 
-#: ../../docs/monitoring.rst:262 0e3986cda1bf4b7bb6c5b8d9079deca1
+#: ../../monitoring.rst:262 ba29cb16c91e4b17b81044a7ea5eb73a
 msgid "**Type:** ``double``"
-msgstr ""
+msgstr "**Тип:** ``double``"
 
-#: ../../docs/monitoring.rst:264 1005cfabffcc48e39185510bd641b5b8
+#: ../../monitoring.rst:264 62628eb00a5840c790611903476ac935
 msgid "**Description:** Average message delivery latency (ms)."
-msgstr ""
+msgstr "**Описание:** Средняя задержка доставки сообщений (мс)."
 
-#: ../../docs/monitoring.rst:266 82a67804ad7c413e89ed6e04dee755dd
+#: ../../monitoring.rst:266 50f07338bfb244bb919694064929536c
 msgid "**Normal values:** < 10 ms"
-msgstr ""
+msgstr "**Нормальные значения:** < 10 мс"
 
-#: ../../docs/monitoring.rst:268 cf5e564845084e7b973aec924f65cb9a
+#: ../../monitoring.rst:268 5d7dcc2738b445d591a12b325df22712
 msgid "**Alert:** > 50 ms — requires optimization"
-msgstr ""
+msgstr "**Тревога:** > 50 мс — требует оптимизации"
 
-#: ../../docs/monitoring.rst:271 04d965197fd341e5b02a3e287ee4eb22
+#: ../../monitoring.rst:271 bee6f44f4e1d439797d151cdf8778223
 msgid "Monitoring with Prometheus"
-msgstr ""
+msgstr "**Тип:** ``long``"
 
-#: ../../docs/monitoring.rst:273 5fff630ac39c4378a719dd66894655bd
+#: ../../monitoring.rst:273 e01976349b304771968f9490d4e4a1a6
 msgid "Example metrics exporter:"
-msgstr ""
+msgstr "Пример экспортера метрик:"
 
-#: ../../docs/monitoring.rst:386 fb71bca6ed9a41a3b564cf9e13277ab1
+#: ../../monitoring.rst:386 d5ce79e4adcf401786a1e9fa68ac2814
 msgid "Registration:"
-msgstr ""
+msgstr "Регистрация:"
 
-#: ../../docs/monitoring.rst:397 a10c96c3379544af887f71dc58f91839
+#: ../../monitoring.rst:397 3515413b784341158567d8a2d2d07aee
 msgid "Grafana Dashboard"
-msgstr ""
+msgstr "TotalErrors"
 
-#: ../../docs/monitoring.rst:399 6fae3de842f34f66b0f051dad12b694c
+#: ../../monitoring.rst:399 494c7a540be04411b60a21efcbd5d62f
 msgid "Example JSON dashboard for Grafana:"
-msgstr ""
+msgstr "Пример JSON-дашборда для Grafana:"
 
-#: ../../docs/monitoring.rst:452 200a6de053664b46acad1e01ce7e7574
+#: ../../monitoring.rst:452 6285b6c2298644f3ba4f97656bbbebf2
 msgid "Logging"
-msgstr ""
+msgstr "**Тип:** ``long``"
 
-#: ../../docs/monitoring.rst:455 2d6da12732874e11ba3d36d5baba79a0
+#: ../../monitoring.rst:455 a634e68ed0d944309c0db4484103d95a
 msgid "Logging Configuration"
-msgstr ""
+msgstr "**Описание:** Общее количество ошибок."
 
-#: ../../docs/monitoring.rst:475 fbeeb828360c417080d140b3a33d5164
+#: ../../monitoring.rst:475 e4d8043afe984cba992f279bc0e4cfec
 msgid "Log Levels"
-msgstr ""
+msgstr "**Использование:**"
 
-#: ../../docs/monitoring.rst:477 987e69618d714655b09bf8c8307e1c13
+#: ../../monitoring.rst:477 6e1e538362214a61964fba0a3abbc988
 msgid "**Trace:**"
-msgstr ""
+msgstr "**Trace:**"
 
-#: ../../docs/monitoring.rst:479 2b256a85307f4a308349b78e20b6e1a8
+#: ../../monitoring.rst:479 cd691e0e002341eb9b2b8c66d05f93e6
 msgid "Detailed information about each message"
-msgstr ""
+msgstr "~~~~~~~~~~~~~~~~~~~~~~~~"
 
-#: ../../docs/monitoring.rst:480 ee0261dd133041bf98d80c1a4d91d198
+#: ../../monitoring.rst:480 ec333fa0b30b415a86b25e1f1f58ac8d
 msgid "For protocol debugging"
-msgstr ""
+msgstr "**Тип:** ``long``"
 
-#: ../../docs/monitoring.rst:482 5e393981b81e47b4923326e171d82bf3
+#: ../../monitoring.rst:482 823af530eeca45ff99958b7467604239
 msgid "**Debug:**"
-msgstr ""
+msgstr "**Debug:**"
 
-#: ../../docs/monitoring.rst:484 b7b848d3083c4bb39242914fdcd878c9
+#: ../../monitoring.rst:484 c8ab8cb2e76643a3a2f5c7b22790ad77
 msgid "Connection information"
-msgstr ""
+msgstr "**Использование:**"
 
-#: ../../docs/monitoring.rst:485 6d78d2394df84db7a53e314e170cceea
+#: ../../monitoring.rst:485 dc5e61e187b14aaf85d57c77dfaed20e
 msgid "Operation status"
-msgstr ""
+msgstr "TotalConnectionsRejected"
 
-#: ../../docs/monitoring.rst:487 79d7ad643f0d4867a0df2e0f72206a9a
+#: ../../monitoring.rst:487 351dbd22e9564b4f8208847f39f2ca3a
 msgid "**Information:**"
-msgstr ""
+msgstr "**Information:**"
 
-#: ../../docs/monitoring.rst:489 fb22019cd3b44725833b5611fd1a1601
+#: ../../monitoring.rst:489 aa2fcf873af649969c547c9aedb670e0
 msgid "Server start/stop"
-msgstr ""
+msgstr "**Тип:** ``long``"
 
-#: ../../docs/monitoring.rst:490 a6718232bef34c78b3ffc279571e481f
+#: ../../monitoring.rst:490 64f2c49431c543b9b5ecb2b4f0d286ec
 msgid "Queue creation/deletion"
-msgstr ""
+msgstr "**Описание:** Количество отклонённых подключений."
 
-#: ../../docs/monitoring.rst:491 6c1eedefca52477da1bcf76b40d58ee8
+#: ../../monitoring.rst:491 ca3f3dc50d33403f902c1dbc899dade0
 msgid "Authentication errors"
-msgstr ""
+msgstr "**Использование:**"
 
-#: ../../docs/monitoring.rst:493 32828cf000a14b1e8141a49d3b3e5ad6
+#: ../../monitoring.rst:493 97f74d269d1841baa6caa40ebc12667b
 msgid "**Warning:**"
-msgstr ""
+msgstr "**Warning:**"
 
-#: ../../docs/monitoring.rst:495 0501af066e9541ae846e4be788297093
+#: ../../monitoring.rst:495 12b293a81f4442e2950d838bb8a701a1
 msgid "Limit exceeded"
-msgstr ""
+msgstr "Gauge-метрики могут увеличиваться и уменьшаться, показывая текущее состояние."
 
-#: ../../docs/monitoring.rst:496 e561fb63889646b48431f23e6a4f2d3d
+#: ../../monitoring.rst:496 b46e1a8f984f4a1ba822e5416c1d98b3
 msgid "Delivery issues"
-msgstr ""
+msgstr "ActiveConnections"
 
-#: ../../docs/monitoring.rst:497 7058bc4d1e504f9a90139a3801b356ec
+#: ../../monitoring.rst:497 64c6e81f8cca40458b4564f2da04c6dd
 msgid "High memory usage"
-msgstr ""
+msgstr "~~~~~~~~~~~~~~~~~"
 
-#: ../../docs/monitoring.rst:499 2e7b0ecabc304d34a67b8c5c603a7a64
+#: ../../monitoring.rst:499 56923e512e364aa78a64a3c9b95e5ab2
 msgid "**Error:**"
-msgstr ""
+msgstr "**Error:**"
 
-#: ../../docs/monitoring.rst:501 34a25c555f7b45bb909c3e4e6c5cdb9c
+#: ../../monitoring.rst:501 754acb28308f4777ae84d9e727926914
 msgid "Message processing errors"
-msgstr ""
+msgstr "**Описание:** Текущее количество активных подключений."
 
-#: ../../docs/monitoring.rst:502 13ba414f8eaa46e581f0823cbb407139
+#: ../../monitoring.rst:502 fa14a1a03078421a9286cadf37ef03d1
 msgid "Connection errors"
-msgstr ""
+msgstr "**Нормальные значения:** Зависит от нагрузки"
 
-#: ../../docs/monitoring.rst:503 c6ea21820eef4b428021f725f3f70aca
+#: ../../monitoring.rst:503 5b71ea9aa9704abf8d1ff38d84776f89
 msgid "Handler exceptions"
-msgstr ""
+msgstr "**Тревога:** Приближение к ``MaxConnections``"
 
-#: ../../docs/monitoring.rst:505 979e2d29a7e8461fb28aea0daee17131
+#: ../../monitoring.rst:505 8b7054212f944be09352542223bd4b94
 msgid "**Critical:**"
-msgstr ""
+msgstr "**Critical:**"
 
-#: ../../docs/monitoring.rst:507 57ae98811c914ce2afc961fa5efe9821
+#: ../../monitoring.rst:507 c88adc322eaa4b6592738a4497286fa6
 msgid "Critical server errors"
-msgstr ""
+msgstr "~~~~~~~~~~~~"
 
-#: ../../docs/monitoring.rst:508 6cca9cca42864ce4b17aede630ce8413
+#: ../../monitoring.rst:508 6661f9ed563b4afd82fd31ff0bc9ef6e
 msgid "Unable to start"
-msgstr ""
+msgstr "**Тип:** ``int``"
 
-#: ../../docs/monitoring.rst:509 52234ae85af947c697e5ccc4911409dc
+#: ../../monitoring.rst:509 39cb5a6dbb894cc4b9fd42fac4dc37d1
 msgid "Data loss"
-msgstr ""
+msgstr "**Описание:** Текущее количество активных очередей."
 
-#: ../../docs/monitoring.rst:512 ef83c1f694d942e7b6cad2ac1c9eb1f5
+#: ../../monitoring.rst:512 042f3968dfd247e18e31f59704bce85b
 msgid "Log Examples"
-msgstr ""
+msgstr "**Использование:**"
 
-#: ../../docs/monitoring.rst:514 75f9a46d201e4ed69dadd54063225732
+#: ../../monitoring.rst:514 3072b419124c4d33b8895b6a120b54cf
 msgid "**Server startup:**"
-msgstr ""
+msgstr "**Запуск сервера:**"
 
-#: ../../docs/monitoring.rst:522 cd9b624070604f9a95cf397ad6175e36
+#: ../../monitoring.rst:522 1294b12e1c9144bd93e873e3835baab3
 msgid "**Client connection:**"
-msgstr ""
+msgstr "**Подключение клиента:**"
 
-#: ../../docs/monitoring.rst:530 5798d1eea4444b07bc0ef0883370be7f
+#: ../../monitoring.rst:530 c9c32fc60c4d44febb268b906c1fa79a
 msgid "**Message publishing:**"
-msgstr ""
+msgstr "**Публикация сообщения:**"
 
-#: ../../docs/monitoring.rst:538 85290f36341d48618ca86bc08188ef14
+#: ../../monitoring.rst:538 9a7c90d63c98428aadd091d13eb5ac8c
 msgid "**Warnings:**"
-msgstr ""
+msgstr "**Предупреждения:**"
 
-#: ../../docs/monitoring.rst:546 de100917203548a6891ad06eb42ac055
+#: ../../monitoring.rst:546 85cf53e44f9342b4973e06e094dc3a00
 msgid "**Errors:**"
-msgstr ""
+msgstr "**Ошибки:**"
 
-#: ../../docs/monitoring.rst:555 76fc7b04e7d7472c83d7d98c83ef3174
+#: ../../monitoring.rst:555 1f2051934af3497e8e3f631c41ca66e9
 msgid "Alerting"
-msgstr ""
+msgstr "**Тревога:** Высокие значения могут указывать на:"
 
-#: ../../docs/monitoring.rst:557 f60f9fb2ed574bfeab56a2e9fb571fe5
+#: ../../monitoring.rst:557 932fbbb6c17e42039a40064c8fbc0765
 msgid "Example rules for Prometheus Alertmanager:"
-msgstr ""
+msgstr "Примеры правил для Prometheus Alertmanager:"
 
-#: ../../docs/monitoring.rst:601 39213aaf1094404ea20cdea61e4f79a1
+#: ../../monitoring.rst:601 609547873cdb4b78bdc3cf7f57a24204
 msgid "Next Steps"
-msgstr ""
+msgstr "~~~~~~~~~~~~~~~~"
 
-#: ../../docs/monitoring.rst:603 98fa7ba32eef47c59bae06b729ed420d
+#: ../../monitoring.rst:603 1195b8a181f2491099103849ca64c802
 msgid ":doc:`server-setup` — server setup"
-msgstr ""
+msgstr "**Тип:** ``long``"
 
-#: ../../docs/monitoring.rst:604 ca1c334109764b0091a4cddac1a46521
+#: ../../monitoring.rst:604 749432ef865b40518414b24ff2e51626
 msgid ":doc:`troubleshooting` — troubleshooting"
-msgstr ""
+msgstr "**Описание:** Текущее использование памяти в байтах."
 
-#: ../../docs/monitoring.rst:605 01d76862575d410e8188c3515803b0aa
+#: ../../monitoring.rst:605 952b580dce064bee989f2eea528c6069
 msgid ":doc:`health-checks` — health checks for orchestrators"
-msgstr ""
+msgstr "**Нормальные значения:** < 80% от доступной памяти"
 

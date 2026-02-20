@@ -1,4 +1,4 @@
-using VibeMQ.Core.Models;
+using VibeMQ.Models;
 
 namespace VibeMQ.Server.Delivery;
 

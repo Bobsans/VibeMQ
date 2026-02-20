@@ -1,6 +1,6 @@
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
-using VibeMQ.Core.Configuration;
+using VibeMQ.Configuration;
 
 namespace VibeMQ.Server.Security;
 

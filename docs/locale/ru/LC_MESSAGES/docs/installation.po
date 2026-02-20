@@ -3,12 +3,11 @@
 # This file is distributed under the same license as the VibeMQ package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: VibeMQ 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-20 10:37+0300\n"
+"POT-Creation-Date: 2026-02-18 18:37+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ru\n"
@@ -20,247 +19,250 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.18.0\n"
 
-#: ../../docs/installation.rst:3 7fd0098f8cbe4d97865c4caa4e8c5ed2
+
+
+
+#: ../../installation.rst:3 0defa142853e4e01becf747f5f0973f1
 msgid "Installation"
-msgstr ""
+msgstr "Установка"
 
-#: ../../docs/installation.rst:5 f4377cb7d47a4f9aae24079d7cb743c9
+#: ../../installation.rst:5 802930e62fbe42f7bbabfb143880c94a
 msgid "This guide describes various ways to install VibeMQ."
-msgstr ""
+msgstr "Это руководство описывает различные способы установки VibeMQ."
 
-#: ../../docs/installation.rst:9 185efffc8c1549fb98b65c5141b1f32a
+#: ../../installation.rst:9 ec56839c25c44399813a96073ffb1621
 msgid "Contents"
-msgstr ""
+msgstr ":local:"
 
-#: ../../docs/installation.rst:12 451219ee6f744aca94a41b6796dd8bba
+#: ../../installation.rst:12 3ccd5850056f4e9da9fdc2352583eaef
 msgid "System Requirements"
-msgstr ""
+msgstr ":depth: 2"
 
-#: ../../docs/installation.rst:14 324ec54db6684443b89ee5932a010741
+#: ../../installation.rst:14 332dfa0ad089402fa5d8ca5df377957c
 msgid "**Minimum requirements:**"
-msgstr ""
+msgstr "**Минимальные требования:**"
 
-#: ../../docs/installation.rst:16 3e909f6f16594657b8870ceac723bbf4
+#: ../../installation.rst:16 786ded4ae7be44dc94371439d049bb19
 msgid "OS: Windows, Linux, macOS"
-msgstr ""
+msgstr "**Минимальные требования:**"
 
-#: ../../docs/installation.rst:17 ca3ed14da5fc477dbe78cb2339df13c3
+#: ../../installation.rst:17 8f2fd1d6f7fe43aa847f5e799b115a04
 msgid ".NET 8.0 SDK or higher"
-msgstr ""
+msgstr "**Для production:**"
 
-#: ../../docs/installation.rst:18 3ff2e0e2c2ad4e86a8be24be4afb0fe0
+#: ../../installation.rst:18 5207deb7577244ff86ee177dd3163e6a
 msgid "RAM: 512 MB (1 GB+ recommended)"
-msgstr ""
+msgstr "Установка через NuGet"
 
-#: ../../docs/installation.rst:19 458da957cc8d4658bd1b56d48f52ea4c
+#: ../../installation.rst:19 88d4dba50f1d4c6e943a5cd10b53ea21
 msgid "Disk space: 100 MB"
-msgstr ""
+msgstr "Базовые пакеты"
 
-#: ../../docs/installation.rst:21 221428562c1448e2b6d0c066044df7a5
+#: ../../installation.rst:21 0baeb4f644d64e4f8b29b02af6a75b66
 msgid "**For production:**"
-msgstr ""
+msgstr "**Для production:**"
 
-#: ../../docs/installation.rst:23 7d2492b695f940cebd081e7a6d1d5f06
+#: ../../installation.rst:23 fc3000032f574701a2d3f3b5e3a682e7
 msgid ".NET 8.0 Runtime or .NET 10.0"
-msgstr ""
+msgstr "dotnet add package VibeMQ.Server"
 
-#: ../../docs/installation.rst:24 43dd9d9b921a4bb3bffbb011756fd29f
+#: ../../installation.rst:24 4b7da53b442d47b6ac546a0f6e527f8d
 msgid "2+ GB RAM"
-msgstr ""
+msgstr "dotnet add package VibeMQ.Client"
 
-#: ../../docs/installation.rst:25 7dee409ba4ea4a54a7b3f703c01a666d
+#: ../../installation.rst:25 f01f37d4c3b647d29ad4112b6099952f
 msgid "SSD for better performance"
-msgstr ""
+msgstr "dotnet add package VibeMQ.Core"
 
-#: ../../docs/installation.rst:28 16bbb5510dd840deae21b58bad4fb1e5
+#: ../../installation.rst:28 dc1cfe07dd5d4529bd505bb58351a1c0
 msgid "NuGet Installation"
-msgstr ""
+msgstr "dotnet add package VibeMQ.Protocol"
 
-#: ../../docs/installation.rst:31 d4cb5ba8d3424e4d90e5ffda16336810
+#: ../../installation.rst:31 2e484752b5184a6b88dafd75574c09d4
 msgid "Basic Packages"
-msgstr ""
+msgstr "dotnet add package VibeMQ.Health"
 
-#: ../../docs/installation.rst:33 519d8e5b82da491dad31c620fd5dfc7c
+#: ../../installation.rst:33 82e5728c4ccb47529310ffb0fd038260
 msgid "To use VibeMQ in your project, add the required packages:"
-msgstr ""
+msgstr "Для использования VibeMQ в вашем проекте добавьте необходимые пакеты:"
 
-#: ../../docs/installation.rst:53 efc0810ba557481fb637c264d765be72
+#: ../../installation.rst:53 6c0229b47f1d4a2ba4e5af207ee5ea2f
 msgid "Dependency Injection Packages"
-msgstr ""
+msgstr "Для интеграции с Microsoft.Extensions.DependencyInjection:"
 
-#: ../../docs/installation.rst:55 e509d4b1d38e4cdd9efc6b0ec832e334
+#: ../../installation.rst:55 a66d14c980c942728bd0ed2813a13c21
 msgid "For integration with Microsoft.Extensions.DependencyInjection:"
-msgstr ""
+msgstr "Для интеграции с Microsoft.Extensions.DependencyInjection:"
 
-#: ../../docs/installation.rst:66 d0008510490848d6af7acba5ba64d305
+#: ../../installation.rst:66 45c9d221b50b4fb9a1d9d9d507158ff6
 msgid "All Packages at Once"
-msgstr ""
+msgstr "dotnet add package VibeMQ.Client.DependencyInjection"
 
-#: ../../docs/installation.rst:68 028e4a70ba18465780757681be9ef0d9
+#: ../../installation.rst:68 2b277812c8f0477b96381224c86780ce
 msgid "For quick addition of all components:"
-msgstr ""
+msgstr "Для быстрого добавления всех компонентов:"
 
-#: ../../docs/installation.rst:79 0e8179f6e1d446e09ac2a3028d3bbb53
+#: ../../installation.rst:79 3e7273dee6a3424cbf684fc66e17abaf
 msgid "Docker Installation"
-msgstr ""
+msgstr "Для быстрого добавления всех компонентов:"
 
-#: ../../docs/installation.rst:81 688b36a8eb9944b6b14ee2ad4e261f5e
+#: ../../installation.rst:81 05a224f93f79486cbca9d28e45017639
 msgid "VibeMQ can be run in a Docker container."
-msgstr ""
+msgstr "VibeMQ можно запустить в Docker-контейнере."
 
-#: ../../docs/installation.rst:84 8b470c2dde894eaabc84729be5e8595e
+#: ../../installation.rst:84 2477370d06ed42349899081f7d80ae4d
 msgid "Dockerfile"
-msgstr ""
+msgstr "Dockerfile"
 
-#: ../../docs/installation.rst:86 f49ceb2865d34060b7ae75cd0c84e89f
+#: ../../installation.rst:86 b1f99d31552548d1a7de57535f2d7293
 msgid "Create a ``Dockerfile`` in your project:"
-msgstr ""
+msgstr "Создайте ``Dockerfile`` в вашем проекте:"
 
-#: ../../docs/installation.rst:109 4ef8e7b057194c808c6a035e415d4768
+#: ../../installation.rst:109 034a13ae78ae4a4e96b31109409b79ac
 msgid "Build and run:"
-msgstr ""
+msgstr "Сборка и запуск:"
 
-#: ../../docs/installation.rst:117 dd1945e1621c45ff83c6211803ba1405
+#: ../../installation.rst:117 834ea129f73249b5a0d051e529a5a178
 msgid "Docker Compose"
-msgstr ""
+msgstr "Docker Compose"
 
-#: ../../docs/installation.rst:119 a9c06eab6deb425d87a6b8c61ba421ba
+#: ../../installation.rst:119 529ed4de36e94713a6e099387253ce35
 msgid "For deployment with other services, create a ``docker-compose.yml``:"
-msgstr ""
+msgstr "Для развёртывания с другими сервисами создайте ``docker-compose.yml``:"
 
-#: ../../docs/installation.rst:152 dfb77d6dd2b6454d8584925bdb835b1c
+#: ../../installation.rst:152 d8d1de13354744e2be7fb203670246c3
 msgid "Start:"
-msgstr ""
+msgstr "Запуск:"
 
-#: ../../docs/installation.rst:159 59bc9487bde6403d9bcdda402e185cfb
+#: ../../installation.rst:159 a64145aecbdb48f4945bf71691bf88c4
 msgid "Installation from Source Code"
-msgstr ""
+msgstr "Dockerfile"
 
-#: ../../docs/installation.rst:162 8b5aedc022684372844b54a8b9a2fe7b
+#: ../../installation.rst:162 1351e367d2ad4e22a3ff9fdb945f4dc8
 msgid "Clone the Repository"
-msgstr ""
+msgstr "Создайте ``Dockerfile`` в вашем проекте:"
 
-#: ../../docs/installation.rst:170 71dc7dd921214e1b9bb959552c11d528
+#: ../../installation.rst:170 4dd7832b0d784747bb6fcd88874add84
 msgid "Build the Project"
-msgstr ""
+msgstr "FROM mcr.microsoft.com/dotnet/runtime:8.0 AS base"
 
-#: ../../docs/installation.rst:184 2bfe3b069d9d4208ad88535a5c209a80
+#: ../../installation.rst:184 79a50d83e71a4705a89b3d912372be1b
 msgid "Local Package Installation"
-msgstr ""
+msgstr "WORKDIR /app"
 
-#: ../../docs/installation.rst:186 91dc87bcc6974c92bb08d4ed22bb7e21
+#: ../../installation.rst:186 f791cbdac7da4338a4a5b86e98d6782d
 msgid "To use a locally built version:"
-msgstr ""
+msgstr "Для использования локально собранной версии:"
 
-#: ../../docs/installation.rst:201 dd4333487a9945ab88039dfda57a1151
+#: ../../installation.rst:201 5e8633b68bed4053b6541e5ee4892847
 msgid "Integration into Existing Projects"
-msgstr ""
+msgstr "FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build"
 
-#: ../../docs/installation.rst:204 d0f8477cb27b4b75a0fbeea170f752e2
+#: ../../installation.rst:204 db2c521a2942412692d9f336faf3ae51
 msgid "ASP.NET Core Application"
-msgstr ""
+msgstr "WORKDIR /src"
 
-#: ../../docs/installation.rst:206 32623c35a33f4fcb87672050385d2993
+#: ../../installation.rst:206 ef4876f1ea16493480da2db6d175ea15
 msgid "For ASP.NET Core applications, use DI integration:"
-msgstr ""
+msgstr "Для ASP.NET Core приложений используйте DI-интеграцию:"
 
-#: ../../docs/installation.rst:233 682a3fc977a04210bdc21dbdc1530a18
+#: ../../installation.rst:233 89ef68880dd4408490a11e90dd6a92c6
 msgid "Worker Service"
-msgstr ""
+msgstr "Worker Service"
 
-#: ../../docs/installation.rst:235 15004ab4e47540e6844042a411a2c430
+#: ../../installation.rst:235 681162f6491948f9b5c99b52a3e4ce38
 msgid "For background services (.NET Worker):"
-msgstr ""
+msgstr "Для фоновых сервисов (.NET Worker):"
 
-#: ../../docs/installation.rst:254 bf154fbe07a34ded90fd8f41bdb48b72
+#: ../../installation.rst:254 436f6c305b1c4d618107cc321b445cc2
 msgid "Console Application"
-msgstr ""
+msgstr "RUN dotnet build -c Release -o /app/build"
 
-#: ../../docs/installation.rst:256 1262ad7b9c6a4218acd6ef0fb5e220c8
+#: ../../installation.rst:256 cb7bde94404d44b89ae6d548fe00e256
 msgid "For console applications, use direct invocation:"
-msgstr ""
+msgstr "Для консольных приложений используйте прямой вызов:"
 
-#: ../../docs/installation.rst:269 5c2621f3048a4252a99f0d6c3fc7c0f2
+#: ../../installation.rst:269 cfaa5d42e0c84e7ab0ae7f83ad184fa3
 msgid "Installation Verification"
-msgstr ""
+msgstr "RUN dotnet publish -c Release -o /app/publish"
 
-#: ../../docs/installation.rst:272 2c986b6555ae450bb29b80303da61b45
+#: ../../installation.rst:272 31343601d67b4adcb592798c9fa45878
 msgid "Server Verification"
-msgstr ""
+msgstr "FROM base AS final"
 
-#: ../../docs/installation.rst:274 4ee595f5ba184a629943482e3d49f691
+#: ../../installation.rst:274 ffdc7bcd2fee4353a92060e5b45cbc43
 msgid "After starting the server, check the health endpoint:"
-msgstr ""
+msgstr "После запуска сервера проверьте health check:"
 
-#: ../../docs/installation.rst:280 1236bef0122c40cbbbd9712c0f809593
+#: ../../installation.rst:280 2ebac2f31311499aa20c0a8bde48591a
 msgid "Response should be:"
-msgstr ""
+msgstr "Ответ должен быть:"
 
-#: ../../docs/installation.rst:292 523153b6a8a5468d9cf26205d8ef9005
+#: ../../installation.rst:292 e16f2bd2cbea4c7099cba08155b2f414
 msgid "Client Verification"
-msgstr ""
+msgstr "ENTRYPOINT [\"dotnet\", \"VibeMQ.Server.dll\"]"
 
-#: ../../docs/installation.rst:294 0dbea304e6a845ee935efdd8792e5ad8
+#: ../../installation.rst:294 9915c66eccbb4cfdae574ec1d1be4317
 msgid "Create a test script:"
-msgstr ""
+msgstr "Создайте тестовый скрипт:"
 
-#: ../../docs/installation.rst:309 1183449236054cea91317a3fa9afdbca
+#: ../../installation.rst:309 566f82d2c0d640bdbb60707d0fab9a63
 msgid "Troubleshooting"
-msgstr ""
+msgstr "docker build -t vibemq-server ."
 
-#: ../../docs/installation.rst:312 86a5331a0157490c97ecf1b3cb643666
+#: ../../installation.rst:312 f0e55b44afa442ca8857a31b2beac506
 msgid "Port Already in Use"
-msgstr ""
+msgstr "docker run -p 8080:8080 -p 8081:8081 vibemq-server"
 
-#: ../../docs/installation.rst:314 91573c39500b4e59a030a6333b9165f4
+#: ../../installation.rst:314 27c97a4df0664790990d5515b9edbf68
 msgid "**Error:** ``Address already in use``"
-msgstr ""
+msgstr "**Ошибка:** ``Address already in use``"
 
-#: ../../docs/installation.rst:316 70595fcf927d4706857f3f47c74b5285
+#: ../../installation.rst:316 e8d5ed354c764a219b98cc69ab8c7380
 msgid "**Solution:** Change the port in configuration:"
-msgstr ""
+msgstr "**Решение:** Измените порт в конфигурации:"
 
-#: ../../docs/installation.rst:325 6b639ebd6170487b89f16c84a16ef1a8
+#: ../../installation.rst:325 cebc4a759fdf4a0087de2704187e3686
 msgid "Authentication Error"
-msgstr ""
+msgstr "version: '3.8'"
 
-#: ../../docs/installation.rst:327 68d95afb3e06468991b37e7e319f9231
+#: ../../installation.rst:327 498692b1d8624c6b8f0ecf746bd1c1fc
 msgid "**Error:** ``Authentication failed``"
-msgstr ""
+msgstr "**Ошибка:** ``Authentication failed``"
 
-#: ../../docs/installation.rst:329 2f53183c00294d63845c5178f665c82d
+#: ../../installation.rst:329 6b68e48baffe497e8d47ec0db51c66ff
 msgid "**Solution:** Make sure tokens match:"
-msgstr ""
+msgstr "**Решение:** Убедитесь, что токены совпадают:"
 
-#: ../../docs/installation.rst:340 011997b1d2864ca2a0b0f51e65adb402
+#: ../../installation.rst:340 d93059e543e44896894cbb4c4256b457
 msgid "TLS/SSL Errors"
-msgstr ""
+msgstr "image: vibemq-server:latest"
 
-#: ../../docs/installation.rst:342 7910ebabd1364696a6d517f662c06424
+#: ../../installation.rst:342 378272b8472d4abdbd697329c70e0486
 msgid "**Error:** ``The remote certificate is invalid``"
-msgstr ""
+msgstr "**Ошибка:** ``The remote certificate is invalid``"
 
-#: ../../docs/installation.rst:344 972121ca622b42d1a48b4f199f9ed228
+#: ../../installation.rst:344 ead9b2fda6ce467e864cc4cc97d238bf
 msgid "**Solution:** For tests, disable validation:"
-msgstr ""
+msgstr "**Решение:** Для тестов отключите валидацию:"
 
-#: ../../docs/installation.rst:353 e70016ee10194138b364ea8538a24849
+#: ../../installation.rst:353 3dfa5a90173b4869be9c804165926045
 msgid "For production, use valid certificates."
-msgstr ""
+msgstr "Для production используйте валидные сертификаты."
 
-#: ../../docs/installation.rst:356 15ef03a53d2249629f5fd523aa077a4e
+#: ../../installation.rst:356 828b68ba369943268d3c5bf747850085
 msgid "Next Steps"
-msgstr ""
+msgstr "volumes:"
 
-#: ../../docs/installation.rst:358 c9a1b545ce114d71a51e0d2cf73824a4
+#: ../../installation.rst:358 3a5175464daf4950a4627753c22b24e3
 msgid ":doc:`getting-started` — quick start guide"
-msgstr ""
+msgstr "restart: unless-stopped"
 
-#: ../../docs/installation.rst:359 5dc10f9b0e93471fadbce1ca27cf4a56
+#: ../../installation.rst:359 8d6f06f535094dcbb69698aa84364c7e
 msgid ":doc:`server-setup` — server configuration"
-msgstr ""
+msgstr "my-app:"
 
-#: ../../docs/installation.rst:360 c870236bc7014e18938db5a1d87bcc36
+#: ../../installation.rst:360 17aecb0f3a8a46d1a1f66b676904eb54
 msgid ":doc:`configuration` — configuration parameters"
-msgstr ""
+msgstr "image: my-app:latest"
 

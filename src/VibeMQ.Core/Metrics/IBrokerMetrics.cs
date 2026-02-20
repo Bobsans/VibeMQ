@@ -1,4 +1,4 @@
-namespace VibeMQ.Core.Metrics;
+namespace VibeMQ.Metrics;
 
 /// <summary>
 /// Interface for collecting broker-wide metrics.

@@ -1,6 +1,7 @@
 using System.Text.Json.Serialization;
 using Microsoft.Extensions.Logging;
 using VibeMQ.Client;
+using VibeMQ.Interfaces;
 
 // ============================================================
 //  VibeMQ Example Client
@@ -48,6 +49,18 @@ await using var subscription = await client.SubscribeAsync<Notification>("notifi
 Console.WriteLine("Subscribed to 'notifications' queue.");
 Console.WriteLine();
 
+// Subscribe using class-based handler
+var classBasedMessageCount = 0;
+NotificationClassBasedHandler.OnHandled = notification => {
+    var count = Interlocked.Increment(ref classBasedMessageCount);
+    Console.WriteLine($"  [class:{count}] Received: {notification.Title} — {notification.Body} (priority: {notification.Priority})");
+};
+
+await using var classBasedSubscription = await client.SubscribeAsync<Notification, NotificationClassBasedHandler>("notifications.class-based");
+
+Console.WriteLine("Subscribed to 'notifications.class-based' queue (class-based handler).");
+Console.WriteLine();
+
 // Publish some messages
 Console.WriteLine("Publishing messages...");
 Console.WriteLine();
@@ -66,12 +79,20 @@ foreach (var notification in notifications) {
     await Task.Delay(500); // Small delay for readability
 }
 
+await client.PublishAsync("notifications.class-based", new Notification {
+    Title = "Class-based subscription",
+    Body = "This message was processed by NotificationClassBasedHandler.",
+    Priority = "normal",
+});
+Console.WriteLine("  Published: Class-based subscription");
+
 Console.WriteLine();
 Console.WriteLine("Waiting for messages to be delivered...");
 await Task.Delay(2000);
 
 Console.WriteLine();
 Console.WriteLine($"Total messages received: {messageCount}");
+Console.WriteLine($"Total class-based messages received: {classBasedMessageCount}");
 Console.WriteLine();
 Console.WriteLine("Disconnecting...");
 await client.DisconnectAsync();
@@ -88,4 +109,13 @@ public class Notification {
 
     [JsonPropertyName("priority")]
     public string Priority { get; set; } = "normal";
+}
+
+public sealed class NotificationClassBasedHandler : IMessageHandler<Notification> {
+    public static Action<Notification>? OnHandled { get; set; }
+
+    public Task HandleAsync(Notification message, CancellationToken cancellationToken) {
+        OnHandled?.Invoke(message);
+        return Task.CompletedTask;
+    }
 }

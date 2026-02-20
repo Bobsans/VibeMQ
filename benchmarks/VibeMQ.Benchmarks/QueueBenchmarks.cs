@@ -1,8 +1,8 @@
 using System.Text.Json;
 using BenchmarkDotNet.Attributes;
-using VibeMQ.Core.Configuration;
-using VibeMQ.Core.Enums;
-using VibeMQ.Core.Models;
+using VibeMQ.Configuration;
+using VibeMQ.Enums;
+using VibeMQ.Models;
 using VibeMQ.Server.Queues;
 
 namespace VibeMQ.Benchmarks;

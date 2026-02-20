@@ -227,6 +227,65 @@ Order Processing
 
    await host.RunAsync();
 
+Class-based Subscriptions
+-------------------------
+
+Using class-based handlers with automatic subscription:
+
+.. code-block:: csharp
+
+   using VibeMQ.Core.Attributes;
+   using VibeMQ.Core.Interfaces;
+   using VibeMQ.Client.DependencyInjection;
+
+   // Define message types
+   public class OrderCreated {
+       public string OrderId { get; set; }
+       public decimal Amount { get; set; }
+       public string CustomerId { get; set; }
+   }
+
+   // Define handler with Queue attribute
+   [Queue("orders.created")]
+   public class OrderHandler : IMessageHandler<OrderCreated> {
+       private readonly IOrderRepository _repository;
+       private readonly ILogger<OrderHandler> _logger;
+
+       public OrderHandler(IOrderRepository repository, ILogger<OrderHandler> logger) {
+           _repository = repository;
+           _logger = logger;
+       }
+
+       public async Task HandleAsync(OrderCreated message, CancellationToken cancellationToken) {
+           _logger.LogInformation("Processing order {OrderId}", message.OrderId);
+           
+           try {
+               await _repository.ProcessOrderAsync(message, cancellationToken);
+               _logger.LogInformation("Order {OrderId} processed successfully", message.OrderId);
+           } catch (Exception ex) {
+               _logger.LogError(ex, "Error processing order {OrderId}", message.OrderId);
+               throw;  // Retry delivery
+           }
+       }
+   }
+
+   // Register handler and enable automatic subscriptions
+   var host = Host.CreateDefaultBuilder(args)
+       .ConfigureServices(services => {
+           services.AddVibeMQClient(settings => {
+               settings.Host = "localhost";
+               settings.Port = 8080;
+               settings.ClientOptions.AuthToken = "my-token";
+           });
+
+           services.AddScoped<IOrderRepository, OrderRepository>();
+           services.AddMessageHandler<OrderCreated, OrderHandler>()
+               .AddMessageHandlerSubscriptions();  // Auto-subscribe on startup
+       })
+       .Build();
+
+   await host.RunAsync();
+
 Background Tasks with Priorities
 --------------------------------
 
@@ -243,12 +302,10 @@ Background Tasks with Priorities
        }
 
        public async Task EnqueueTaskAsync(TaskData task, MessagePriority priority) {
-           await _client.PublishAsync("tasks", task, options => {
-               options.Priority = priority;
-               options.Headers = new Dictionary<string, string> {
-                   ["task_type"] = task.Type,
-                   ["created_at"] = DateTime.UtcNow.ToString("O")
-               };
+           await _client.PublishAsync("tasks", task, new Dictionary<string, string> {
+               ["priority"] = priority.ToString(),
+               ["task_type"] = task.Type,
+               ["created_at"] = DateTime.UtcNow.ToString("O")
            });
        }
    }
@@ -289,7 +346,7 @@ EventBus Implementation
 
    public interface IEventBus {
        Task PublishAsync<T>(string eventType, T eventData, CancellationToken ct = default);
-       IDisposable SubscribeAsync<T>(string eventType, Func<T, Task> handler);
+       Task<IAsyncDisposable> SubscribeAsync<T>(string eventType, Func<T, Task> handler, CancellationToken ct = default);
    }
 
    public class VibeMQEventBus : IEventBus {
@@ -307,20 +364,28 @@ EventBus Implementation
        public async Task PublishAsync<T>(string eventType, T eventData, CancellationToken ct = default) {
            await using var client = await _clientFactory.CreateAsync(ct);
 
-           await client.PublishAsync($"events.{eventType}", eventData, options => {
-               options.Headers = new Dictionary<string, string> {
-                   ["event_type"] = eventType,
-                   ["timestamp"] = DateTime.UtcNow.ToString("O")
-               };
-           });
+           await client.PublishAsync($"events.{eventType}", eventData, new Dictionary<string, string> {
+               ["event_type"] = eventType,
+               ["timestamp"] = DateTime.UtcNow.ToString("O")
+           }, ct);
 
            _logger.LogInformation("Event {EventType} published", eventType);
        }
 
-       public IDisposable SubscribeAsync<T>(string eventType, Func<T, Task> handler) {
-           // Async subscription
-           var subscriptionTask = SubscribeInternalAsync<T>(eventType, handler);
-           return new AsyncDisposableWrapper(subscriptionTask);
+       public async Task<IAsyncDisposable> SubscribeAsync<T>(string eventType, Func<T, Task> handler, CancellationToken ct = default) {
+           var client = await _clientFactory.CreateAsync(ct);
+           
+           var subscription = await client.SubscribeAsync<T>(
+               $"events.{eventType}",
+               async eventData => {
+                   _logger.LogInformation("Received event {EventType}", eventType);
+                   await handler(eventData);
+               },
+               ct
+           );
+
+           _subscriptions.Add(subscription);
+           return subscription;
        }
 
        private async Task<IAsyncDisposable> SubscribeInternalAsync<T>(
@@ -342,24 +407,6 @@ EventBus Implementation
        }
    }
 
-   // Wrapper for async disposable
-   public class AsyncDisposableWrapper : IDisposable {
-       private readonly Task<IAsyncDisposable> _subscriptionTask;
-       private IAsyncDisposable? _subscription;
-
-       public AsyncDisposableWrapper(Task<IAsyncDisposable> subscriptionTask) {
-           _subscriptionTask = subscriptionTask;
-       }
-
-       public void Dispose() {
-           _ = Task.Run(async () => {
-               if (_subscription == null) {
-                   _subscription = await _subscriptionTask;
-               }
-               await _subscription.DisposeAsync();
-           });
-       }
-   }
 
 **Registration:**
 
@@ -394,10 +441,20 @@ EventBus Implementation
    }
 
    public class EmailService {
+       private IAsyncDisposable? _subscription;
+
        public EmailService(IEventBus eventBus) {
-           eventBus.SubscribeAsync<OrderCreated>("order.created", async order => {
-               await SendOrderConfirmationEmailAsync(order);
+           _ = Task.Run(async () => {
+               _subscription = await eventBus.SubscribeAsync<OrderCreated>("order.created", async order => {
+                   await SendOrderConfirmationEmailAsync(order);
+               });
            });
+       }
+
+       public async ValueTask DisposeAsync() {
+           if (_subscription != null) {
+               await _subscription.DisposeAsync();
+           }
        }
    }
 
@@ -499,11 +556,9 @@ CQRS with VibeMQ
        }
 
        public async Task SendAsync<T>(string commandName, T command) {
-           await _client.PublishAsync($"commands.{commandName}", command, options => {
-               options.Headers = new Dictionary<string, string> {
-                   ["command_type"] = typeof(T).Name,
-                   ["correlation_id"] = Guid.NewGuid().ToString()
-               };
+           await _client.PublishAsync($"commands.{commandName}", command, new Dictionary<string, string> {
+               ["command_type"] = typeof(T).Name,
+               ["correlation_id"] = Guid.NewGuid().ToString()
            });
        }
    }
@@ -535,11 +590,9 @@ CQRS with VibeMQ
            );
 
            // Send request
-           await _client.PublishAsync($"queries.{queryName}", query, options => {
-               options.Headers = new Dictionary<string, string> {
-                   ["correlation_id"] = correlationId,
-                   ["reply_to"] = $"queries.{queryName}.response"
-               };
+           await _client.PublishAsync($"queries.{queryName}", query, new Dictionary<string, string> {
+               ["correlation_id"] = correlationId,
+               ["reply_to"] = $"queries.{queryName}.response"
            });
 
            // Wait for response with timeout

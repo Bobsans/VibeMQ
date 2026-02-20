@@ -1,6 +1,6 @@
-using VibeMQ.Core.Models;
+using VibeMQ.Models;
 
-namespace VibeMQ.Core.Interfaces;
+namespace VibeMQ.Interfaces;
 
 /// <summary>
 /// Storage abstraction for broker messages (in-memory implementation for now).

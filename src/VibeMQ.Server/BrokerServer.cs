@@ -1,8 +1,8 @@
 using System.Net;
 using System.Net.Sockets;
 using Microsoft.Extensions.Logging;
-using VibeMQ.Core.Configuration;
-using VibeMQ.Core.Metrics;
+using VibeMQ.Configuration;
+using VibeMQ.Metrics;
 using VibeMQ.Protocol;
 using VibeMQ.Server.Connections;
 using VibeMQ.Server.Delivery;

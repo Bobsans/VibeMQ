@@ -142,12 +142,20 @@ Priority-based
 
    options.DefaultDeliveryMode = DeliveryMode.PriorityBased;
 
+**Publish message:**
+
+.. code-block:: csharp
+
+   await client.PublishAsync("alerts", message);
+
 **Publish with priority:**
 
 .. code-block:: csharp
 
-   await client.PublishAsync("alerts", message, options => {
-       options.Priority = MessagePriority.Critical;
+   using VibeMQ.Core.Enums;
+
+   await client.PublishAsync("alerts", message, new Dictionary<string, string> {
+       ["priority"] = MessagePriority.Critical.ToString()
    });
 
 Delivery Guarantees
@@ -311,21 +319,23 @@ VibeMQ supports message priorities for important deliveries.
        Critical = 3  // Critical
    }
 
-**Publish with priority:**
+**Publish messages:**
 
 .. code-block:: csharp
 
-   // Critical message
-   await client.PublishAsync("alerts", alertData, options => {
-       options.Priority = MessagePriority.Critical;
+   using VibeMQ.Core.Enums;
+
+   // Critical message with priority
+   await client.PublishAsync("alerts", alertData, new Dictionary<string, string> {
+       ["priority"] = MessagePriority.Critical.ToString()
    });
 
-   // High priority
-   await client.PublishAsync("notifications", data, options => {
-       options.Priority = MessagePriority.High;
+   // High priority notification
+   await client.PublishAsync("notifications", data, new Dictionary<string, string> {
+       ["priority"] = MessagePriority.High.ToString()
    });
 
-   // Normal priority (default)
+   // Normal priority (default) - no headers needed
    await client.PublishAsync("logs", logData);
 
 Keep-alive (PING/PONG)

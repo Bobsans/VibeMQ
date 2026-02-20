@@ -2,6 +2,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using VibeMQ.Client;
 using VibeMQ.Client.DependencyInjection;
+using VibeMQ.Interfaces;
 
 namespace VibeMQ.Tests.Unit.Client;
 
@@ -36,4 +37,24 @@ public class ClientDependencyInjectionTests {
 
         Assert.Same(first, second);
     }
+
+    [Fact]
+    public void AddMessageHandler_RegistersConcreteAndInterface() {
+        var services = new ServiceCollection();
+        services.AddMessageHandler<ClientDiMessage, ClientDiMessageHandler>();
+        var provider = services.BuildServiceProvider();
+
+        var concrete = provider.GetService<ClientDiMessageHandler>();
+        var byInterface = provider.GetService<IMessageHandler<ClientDiMessage>>();
+
+        Assert.NotNull(concrete);
+        Assert.NotNull(byInterface);
+        Assert.IsType<ClientDiMessageHandler>(byInterface);
+    }
+}
+
+public sealed class ClientDiMessage;
+
+public sealed class ClientDiMessageHandler : IMessageHandler<ClientDiMessage> {
+    public Task HandleAsync(ClientDiMessage message, CancellationToken cancellationToken) => Task.CompletedTask;
 }

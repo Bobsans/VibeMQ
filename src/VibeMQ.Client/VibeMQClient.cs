@@ -2,8 +2,12 @@ using System.Collections.Concurrent;
 using System.Net.Security;
 using System.Net.Sockets;
 using System.Text.Json;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
+using VibeMQ.Configuration;
+using VibeMQ.Interfaces;
+using VibeMQ.Models;
 using VibeMQ.Protocol;
 using VibeMQ.Protocol.Framing;
 
@@ -16,7 +20,8 @@ namespace VibeMQ.Client;
 public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
     private readonly ClientOptions _options;
     private readonly ILogger<VibeMQClient> _logger;
-    private readonly ConcurrentDictionary<string, Func<ProtocolMessage, Task>> _subscriptionHandlers = new();
+    private readonly IServiceProvider? _serviceProvider;
+    private readonly ConcurrentDictionary<string, SubscriptionRegistration> _subscriptionHandlers = new();
     private readonly ConcurrentDictionary<string, TaskCompletionSource<ProtocolMessage>> _pendingResponses = new();
     private readonly SemaphoreSlim _connectLock = new(1, 1);
 
@@ -30,9 +35,10 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
     private bool _disposed;
     private bool _isConnected;
 
-    private VibeMQClient(ClientOptions options, ILogger<VibeMQClient>? logger) {
+    private VibeMQClient(ClientOptions options, ILogger<VibeMQClient>? logger, IServiceProvider? serviceProvider = null) {
         _options = options;
         _logger = logger ?? NullLogger<VibeMQClient>.Instance;
+        _serviceProvider = serviceProvider;
     }
 
     /// <summary>
@@ -50,7 +56,21 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
         ILogger<VibeMQClient>? logger = null,
         CancellationToken cancellationToken = default
     ) {
-        var client = new VibeMQClient(options ?? new ClientOptions(), logger);
+        return await ConnectAsync(host, port, options, logger, serviceProvider: null, cancellationToken).ConfigureAwait(false);
+    }
+
+    /// <summary>
+    /// Connects to a VibeMQ broker and returns an initialized client with DI support.
+    /// </summary>
+    public static async Task<VibeMQClient> ConnectAsync(
+        string host,
+        int port,
+        ClientOptions? options,
+        ILogger<VibeMQClient>? logger,
+        IServiceProvider? serviceProvider,
+        CancellationToken cancellationToken
+    ) {
+        var client = new VibeMQClient(options ?? new ClientOptions(), logger, serviceProvider);
         client._host = host;
         client._port = port;
 
@@ -62,12 +82,20 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
     /// Publishes a message to the specified queue.
     /// </summary>
     public async Task PublishAsync<T>(string queueName, T payload, CancellationToken cancellationToken = default) {
+        await PublishAsync(queueName, payload, null, cancellationToken).ConfigureAwait(false);
+    }
+
+    /// <summary>
+    /// Publishes a message to the specified queue with custom headers.
+    /// </summary>
+    public async Task PublishAsync<T>(string queueName, T payload, Dictionary<string, string>? headers, CancellationToken cancellationToken = default) {
         var jsonPayload = JsonSerializer.SerializeToElement(payload, ProtocolSerializer.Options);
 
         var message = new ProtocolMessage {
             Type = CommandType.Publish,
             Queue = queueName,
             Payload = jsonPayload,
+            Headers = headers,
         };
 
         var response = await SendAndWaitAsync(message, cancellationToken).ConfigureAwait(false);
@@ -86,8 +114,11 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
         Func<T, Task> handler,
         CancellationToken cancellationToken = default
     ) {
-        // Register the handler
-        _subscriptionHandlers[queueName] = async protocolMessage => {
+        ArgumentException.ThrowIfNullOrWhiteSpace(queueName);
+        ArgumentNullException.ThrowIfNull(handler);
+
+        var registration = new SubscriptionRegistration(queueName, _ => ValueTask.CompletedTask);
+        registration.SetHandler(async (protocolMessage, deliveryCancellationToken) => {
             if (protocolMessage.Payload.HasValue) {
                 var payload = protocolMessage.Payload.Value.Deserialize<T>(ProtocolSerializer.Options);
 
@@ -100,8 +131,13 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
             await SendMessageAsync(new ProtocolMessage {
                 Id = protocolMessage.Id,
                 Type = CommandType.Ack,
-            }, cancellationToken).ConfigureAwait(false);
-        };
+            }, deliveryCancellationToken).ConfigureAwait(false);
+        });
+
+        if (!_subscriptionHandlers.TryAdd(queueName, registration)) {
+            await registration.DisposeAsync().ConfigureAwait(false);
+            throw new InvalidOperationException($"Queue '{queueName}' is already subscribed on this client.");
+        }
 
         // Send Subscribe command
         var message = new ProtocolMessage {
@@ -112,19 +148,137 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
         var response = await SendAndWaitAsync(message, cancellationToken).ConfigureAwait(false);
 
         if (response.Type == CommandType.Error) {
-            _subscriptionHandlers.TryRemove(queueName, out _);
+            if (_subscriptionHandlers.TryRemove(queueName, out var failedRegistration)) {
+                await failedRegistration.DisposeAsync().ConfigureAwait(false);
+            }
             throw new InvalidOperationException($"Subscribe failed: {response.ErrorMessage}");
         }
 
         LogSubscribed(queueName);
-        return new Subscription(this, queueName);
+        return new Subscription(this, queueName, registration.SubscriptionId);
+    }
+
+    /// <summary>
+    /// Subscribes to a queue using a class-based message handler.
+    /// Returns a disposable that unsubscribes when disposed.
+    /// </summary>
+    public async Task<IAsyncDisposable> SubscribeAsync<TMessage, THandler>(
+        string queueName,
+        CancellationToken cancellationToken = default
+    ) where THandler : IMessageHandler<TMessage> {
+        ArgumentException.ThrowIfNullOrWhiteSpace(queueName);
+
+        var registration = CreateClassBasedRegistration<TMessage, THandler>(queueName);
+        if (!_subscriptionHandlers.TryAdd(queueName, registration)) {
+            await registration.DisposeAsync().ConfigureAwait(false);
+            throw new InvalidOperationException($"Queue '{queueName}' is already subscribed on this client.");
+        }
+
+        // Send Subscribe command
+        var message = new ProtocolMessage {
+            Type = CommandType.Subscribe,
+            Queue = queueName,
+        };
+
+        var response = await SendAndWaitAsync(message, cancellationToken).ConfigureAwait(false);
+
+        if (response.Type == CommandType.Error) {
+            if (_subscriptionHandlers.TryRemove(queueName, out var failedRegistration)) {
+                await failedRegistration.DisposeAsync().ConfigureAwait(false);
+            }
+            throw new InvalidOperationException($"Subscribe failed: {response.ErrorMessage}");
+        }
+
+        LogSubscribed(queueName);
+        return new Subscription(this, queueName, registration.SubscriptionId);
+    }
+
+    private SubscriptionRegistration CreateClassBasedRegistration<TMessage, THandler>(string queueName)
+        where THandler : IMessageHandler<TMessage> {
+        if (_serviceProvider is null) {
+            THandler handlerInstance;
+            try {
+                handlerInstance = Activator.CreateInstance<THandler>();
+            } catch (Exception ex) {
+                throw new InvalidOperationException(
+                    $"Failed to create instance of {typeof(THandler).Name}. Ensure it has a parameterless constructor or is registered in DI.",
+                    ex
+                );
+            }
+
+            var registration = new SubscriptionRegistration(queueName, _ => DisposeResourceAsync(handlerInstance));
+            registration.SetHandler(async (protocolMessage, deliveryCancellationToken) => {
+                if (protocolMessage.Payload.HasValue) {
+                    var payload = protocolMessage.Payload.Value.Deserialize<TMessage>(ProtocolSerializer.Options);
+                    if (payload is not null) {
+                        await handlerInstance.HandleAsync(payload, deliveryCancellationToken).ConfigureAwait(false);
+                    }
+                }
+
+                await SendMessageAsync(new ProtocolMessage {
+                    Id = protocolMessage.Id,
+                    Type = CommandType.Ack,
+                }, deliveryCancellationToken).ConfigureAwait(false);
+            });
+            return registration;
+        }
+
+        try {
+            using var validationScope = _serviceProvider.CreateScope();
+            _ = ActivatorUtilities.GetServiceOrCreateInstance<THandler>(validationScope.ServiceProvider);
+        } catch (Exception ex) {
+            throw new InvalidOperationException(
+                $"Failed to create instance of {typeof(THandler).Name}. Ensure it has a parameterless constructor or is registered in DI.",
+                ex
+            );
+        }
+
+        var scopedRegistration = new SubscriptionRegistration(queueName, static _ => ValueTask.CompletedTask);
+        scopedRegistration.SetHandler(async (protocolMessage, deliveryCancellationToken) => {
+            if (protocolMessage.Payload.HasValue) {
+                var payload = protocolMessage.Payload.Value.Deserialize<TMessage>(ProtocolSerializer.Options);
+                if (payload is not null) {
+                    await using var scope = _serviceProvider.CreateAsyncScope();
+                    var scopedHandler = ActivatorUtilities.GetServiceOrCreateInstance<THandler>(scope.ServiceProvider);
+                    await scopedHandler.HandleAsync(payload, deliveryCancellationToken).ConfigureAwait(false);
+                }
+            }
+
+            await SendMessageAsync(new ProtocolMessage {
+                Id = protocolMessage.Id,
+                Type = CommandType.Ack,
+            }, deliveryCancellationToken).ConfigureAwait(false);
+        });
+        return scopedRegistration;
     }
 
     /// <summary>
     /// Unsubscribes from a queue.
     /// </summary>
     public async Task UnsubscribeAsync(string queueName, CancellationToken cancellationToken = default) {
-        _subscriptionHandlers.TryRemove(queueName, out _);
+        await UnsubscribeAsync(queueName, expectedSubscriptionId: null, cancellationToken).ConfigureAwait(false);
+    }
+
+    internal Task UnsubscribeAsync(string queueName, Guid expectedSubscriptionId, CancellationToken cancellationToken = default) {
+        return UnsubscribeAsync(queueName, (Guid?)expectedSubscriptionId, cancellationToken);
+    }
+
+    private async Task UnsubscribeAsync(
+        string queueName,
+        Guid? expectedSubscriptionId,
+        CancellationToken cancellationToken = default
+    ) {
+        ArgumentException.ThrowIfNullOrWhiteSpace(queueName);
+
+        if (expectedSubscriptionId is Guid subscriptionId &&
+            _subscriptionHandlers.TryGetValue(queueName, out var existingRegistration) &&
+            existingRegistration.SubscriptionId != subscriptionId) {
+            return;
+        }
+
+        if (_subscriptionHandlers.TryRemove(queueName, out var removedRegistration)) {
+            await removedRegistration.DisposeAsync().ConfigureAwait(false);
+        }
 
         if (!IsConnected) {
             return;
@@ -137,6 +291,111 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
 
         await SendAndWaitAsync(message, cancellationToken).ConfigureAwait(false);
         LogUnsubscribed(queueName);
+    }
+
+    private static ValueTask DisposeResourceAsync(object? resource) {
+        return resource switch {
+            IAsyncDisposable asyncDisposable => asyncDisposable.DisposeAsync(),
+            IDisposable disposable => DisposeSync(disposable),
+            _ => ValueTask.CompletedTask,
+        };
+    }
+
+    private static ValueTask DisposeSync(IDisposable disposable) {
+        disposable.Dispose();
+        return ValueTask.CompletedTask;
+    }
+
+    /// <summary>
+    /// Creates a queue with the specified name and options.
+    /// </summary>
+    public async Task CreateQueueAsync(string queueName, QueueOptions? options = null, CancellationToken cancellationToken = default) {
+        if (string.IsNullOrWhiteSpace(queueName)) {
+            throw new ArgumentException("Queue name cannot be null or empty.", nameof(queueName));
+        }
+
+        var message = new ProtocolMessage {
+            Type = CommandType.CreateQueue,
+            Queue = queueName,
+        };
+
+        // Serialize options to payload if provided
+        if (options is not null) {
+            message.Payload = JsonSerializer.SerializeToElement(options, ProtocolSerializer.Options);
+        }
+
+        var response = await SendAndWaitAsync(message, cancellationToken).ConfigureAwait(false);
+
+        if (response.Type == CommandType.Error) {
+            throw new InvalidOperationException($"CreateQueue failed: {response.ErrorMessage}");
+        }
+
+        LogQueueCreated(queueName);
+    }
+
+    /// <summary>
+    /// Deletes a queue by name.
+    /// </summary>
+    public async Task DeleteQueueAsync(string queueName, CancellationToken cancellationToken = default) {
+        ArgumentException.ThrowIfNullOrWhiteSpace(queueName);
+
+        var message = new ProtocolMessage {
+            Type = CommandType.DeleteQueue,
+            Queue = queueName,
+        };
+
+        var response = await SendAndWaitAsync(message, cancellationToken).ConfigureAwait(false);
+
+        if (response.Type == CommandType.Error) {
+            throw new InvalidOperationException($"DeleteQueue failed: {response.ErrorMessage}");
+        }
+
+        LogQueueDeleted(queueName);
+    }
+
+    /// <summary>
+    /// Returns metadata about a specific queue, or null if the queue does not exist.
+    /// </summary>
+    public async Task<QueueInfo?> GetQueueInfoAsync(string queueName, CancellationToken cancellationToken = default) {
+        ArgumentException.ThrowIfNullOrWhiteSpace(queueName);
+
+        var message = new ProtocolMessage {
+            Type = CommandType.QueueInfo,
+            Queue = queueName,
+        };
+
+        var response = await SendAndWaitAsync(message, cancellationToken).ConfigureAwait(false);
+
+        if (response.Type == CommandType.Error) {
+            throw new InvalidOperationException($"GetQueueInfo failed: {response.ErrorMessage}");
+        }
+
+        if (!response.Payload.HasValue) {
+            return null;
+        }
+
+        return response.Payload.Value.Deserialize<QueueInfo>(ProtocolSerializer.Options);
+    }
+
+    /// <summary>
+    /// Lists all queue names on the broker.
+    /// </summary>
+    public async Task<IReadOnlyList<string>> ListQueuesAsync(CancellationToken cancellationToken = default) {
+        var message = new ProtocolMessage {
+            Type = CommandType.ListQueues,
+        };
+
+        var response = await SendAndWaitAsync(message, cancellationToken).ConfigureAwait(false);
+
+        if (response.Type == CommandType.Error) {
+            throw new InvalidOperationException($"ListQueues failed: {response.ErrorMessage}");
+        }
+
+        if (!response.Payload.HasValue) {
+            return [];
+        }
+
+        return response.Payload.Value.Deserialize<List<string>>(ProtocolSerializer.Options) ?? [];
     }
 
     /// <summary>
@@ -267,9 +526,9 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
     private async Task HandleIncomingMessageAsync(ProtocolMessage message) {
         switch (message.Type) {
             case CommandType.Deliver:
-                if (message.Queue is not null && _subscriptionHandlers.TryGetValue(message.Queue, out var handler)) {
+                if (message.Queue is not null && _subscriptionHandlers.TryGetValue(message.Queue, out var registration)) {
                     try {
-                        await handler(message).ConfigureAwait(false);
+                        await registration.Handler(message, registration.CancellationToken).ConfigureAwait(false);
                     } catch (Exception ex) {
                         LogHandlerError(message.Queue, ex);
                     }
@@ -294,6 +553,10 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
             case CommandType.PublishAck:
             case CommandType.SubscribeAck:
             case CommandType.UnsubscribeAck:
+            case CommandType.CreateQueue:
+            case CommandType.DeleteQueue:
+            case CommandType.QueueInfo:
+            case CommandType.ListQueues:
             case CommandType.Error:
                 // Complete pending request
                 if (_pendingResponses.TryRemove(message.Id, out var tcs)) {
@@ -416,6 +679,12 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
     [LoggerMessage(Level = LogLevel.Debug, Message = "Unsubscribed from queue {queueName}.")]
     private partial void LogUnsubscribed(string queueName);
 
+    [LoggerMessage(Level = LogLevel.Debug, Message = "Created queue {queueName}.")]
+    private partial void LogQueueCreated(string queueName);
+
+    [LoggerMessage(Level = LogLevel.Debug, Message = "Deleted queue {queueName}.")]
+    private partial void LogQueueDeleted(string queueName);
+
     [LoggerMessage(Level = LogLevel.Error, Message = "Error in read loop.")]
     private partial void LogReadError(Exception exception);
 
@@ -439,6 +708,41 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
 
     [LoggerMessage(Level = LogLevel.Error, Message = "Reconnect gave up after {maxAttempts} attempts.")]
     private partial void LogReconnectGaveUp(int maxAttempts);
+
+    private sealed class SubscriptionRegistration : IAsyncDisposable {
+        private Func<ProtocolMessage, CancellationToken, Task> _handler;
+        private readonly Func<CancellationToken, ValueTask> _disposeResources;
+        private readonly CancellationTokenSource _subscriptionCts = new();
+        private int _disposed;
+
+        public SubscriptionRegistration(
+            string queueName,
+            Func<CancellationToken, ValueTask> disposeResources
+        ) {
+            QueueName = queueName;
+            _handler = static (_, _) => Task.CompletedTask;
+            _disposeResources = disposeResources;
+        }
+
+        public string QueueName { get; }
+        public Guid SubscriptionId { get; } = Guid.NewGuid();
+        public CancellationToken CancellationToken => _subscriptionCts.Token;
+        public Func<ProtocolMessage, CancellationToken, Task> Handler => _handler;
+
+        public void SetHandler(Func<ProtocolMessage, CancellationToken, Task> handler) {
+            _handler = handler ?? throw new ArgumentNullException(nameof(handler));
+        }
+
+        public async ValueTask DisposeAsync() {
+            if (Interlocked.Exchange(ref _disposed, 1) != 0) {
+                return;
+            }
+
+            await _subscriptionCts.CancelAsync().ConfigureAwait(false);
+            _subscriptionCts.Dispose();
+            await _disposeResources(CancellationToken.None).ConfigureAwait(false);
+        }
+    }
 }
 
 /// <summary>
@@ -447,13 +751,15 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
 file sealed class Subscription : IAsyncDisposable {
     private readonly VibeMQClient _client;
     private readonly string _queueName;
+    private readonly Guid _subscriptionId;
 
-    public Subscription(VibeMQClient client, string queueName) {
+    public Subscription(VibeMQClient client, string queueName, Guid subscriptionId) {
         _client = client;
         _queueName = queueName;
+        _subscriptionId = subscriptionId;
     }
 
     public async ValueTask DisposeAsync() {
-        await _client.UnsubscribeAsync(_queueName).ConfigureAwait(false);
+        await _client.UnsubscribeAsync(_queueName, _subscriptionId).ConfigureAwait(false);
     }
 }

@@ -1,4 +1,4 @@
-namespace VibeMQ.Core.Enums;
+namespace VibeMQ.Enums;
 
 /// <summary>
 /// Determines how messages are delivered to subscribers of a queue.

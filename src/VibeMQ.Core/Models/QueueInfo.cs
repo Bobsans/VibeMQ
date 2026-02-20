@@ -1,6 +1,6 @@
-using VibeMQ.Core.Enums;
+using VibeMQ.Enums;
 
-namespace VibeMQ.Core.Models;
+namespace VibeMQ.Models;
 
 /// <summary>
 /// Read-only snapshot of queue state.

@@ -1,7 +1,7 @@
-using VibeMQ.Core.Configuration;
-using VibeMQ.Core.Models;
+using VibeMQ.Configuration;
+using VibeMQ.Models;
 
-namespace VibeMQ.Core.Interfaces;
+namespace VibeMQ.Interfaces;
 
 /// <summary>
 /// Manages queues, subscriptions, and message routing.

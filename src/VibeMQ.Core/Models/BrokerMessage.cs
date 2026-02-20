@@ -1,7 +1,7 @@
 using System.Text.Json;
-using VibeMQ.Core.Enums;
+using VibeMQ.Enums;
 
-namespace VibeMQ.Core.Models;
+namespace VibeMQ.Models;
 
 /// <summary>
 /// Represents a message in the broker system.

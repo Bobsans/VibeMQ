@@ -1,4 +1,4 @@
-namespace VibeMQ.Core.Configuration;
+namespace VibeMQ.Configuration;
 
 /// <summary>
 /// Top-level configuration options for the VibeMQ broker server.

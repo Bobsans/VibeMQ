@@ -1,5 +1,5 @@
 using Microsoft.Extensions.Logging;
-using VibeMQ.Core.Interfaces;
+using VibeMQ.Interfaces;
 using VibeMQ.Protocol;
 using VibeMQ.Server.Connections;
 

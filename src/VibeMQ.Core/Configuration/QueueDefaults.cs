@@ -1,6 +1,6 @@
-using VibeMQ.Core.Enums;
+using VibeMQ.Enums;
 
-namespace VibeMQ.Core.Configuration;
+namespace VibeMQ.Configuration;
 
 /// <summary>
 /// Default settings applied to newly created queues.

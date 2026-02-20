@@ -1,5 +1,5 @@
 using System.Diagnostics;
-using VibeMQ.Core.Metrics;
+using VibeMQ.Metrics;
 
 namespace VibeMQ.Server.Metrics;
 

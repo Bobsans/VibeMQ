@@ -1,8 +1,8 @@
 using System.Text.Json;
 using Microsoft.Extensions.Logging;
-using VibeMQ.Core.Enums;
-using VibeMQ.Core.Interfaces;
-using VibeMQ.Core.Models;
+using VibeMQ.Enums;
+using VibeMQ.Interfaces;
+using VibeMQ.Models;
 using VibeMQ.Protocol;
 using VibeMQ.Server.Connections;
 

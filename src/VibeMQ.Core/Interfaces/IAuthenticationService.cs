@@ -1,4 +1,4 @@
-namespace VibeMQ.Core.Interfaces;
+namespace VibeMQ.Interfaces;
 
 /// <summary>
 /// Simple token-based authentication service.

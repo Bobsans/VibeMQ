@@ -102,34 +102,32 @@ Basic Publishing
        Timestamp = DateTime.Now
    });
 
-Publishing with Priority
-------------------------
+Publishing with Headers
+-----------------------
+
+You can attach custom headers to messages, including priority:
 
 .. code-block:: csharp
 
    using VibeMQ.Core.Enums;
 
-   // Critical message
-   await client.PublishAsync("alerts", alertData, options => {
-       options.Priority = MessagePriority.Critical;
+   // Publish with custom headers
+   await client.PublishAsync("orders", orderData, new Dictionary<string, string> {
+       ["correlationId"] = Guid.NewGuid().ToString(),
+       ["source"] = "order-service",
+       ["version"] = "1.0"
    });
 
-   // High priority
-   await client.PublishAsync("orders", orderData, options => {
-       options.Priority = MessagePriority.High;
+   // Publish with priority via headers
+   await client.PublishAsync("alerts", alertData, new Dictionary<string, string> {
+       ["priority"] = MessagePriority.Critical.ToString()
    });
 
-Publishing with Headers
------------------------
-
-.. code-block:: csharp
-
-   await client.PublishAsync("orders", orderData, options => {
-       options.Headers = new Dictionary<string, string> {
-           ["correlationId"] = Guid.NewGuid().ToString(),
-           ["source"] = "order-service",
-           ["version"] = "1.0"
-       };
+   // Publish with both priority and custom headers
+   await client.PublishAsync("orders", orderData, new Dictionary<string, string> {
+       ["priority"] = MessagePriority.High.ToString(),
+       ["correlationId"] = Guid.NewGuid().ToString(),
+       ["source"] = "order-service"
    });
 
 Typed Publishing
@@ -205,6 +203,39 @@ Subscription with Error Handling
        }
    );
 
+Class-based Subscriptions
+--------------------------
+
+Instead of using lambda handlers, you can create handler classes implementing ``IMessageHandler<T>``:
+
+.. code-block:: csharp
+
+   using VibeMQ.Core.Interfaces;
+
+   // Define message handler
+   public class OrderHandler : IMessageHandler<OrderCreated> {
+       private readonly ILogger<OrderHandler> _logger;
+
+       public OrderHandler(ILogger<OrderHandler> logger) {
+           _logger = logger;
+       }
+
+       public async Task HandleAsync(OrderCreated message, CancellationToken cancellationToken) {
+           _logger.LogInformation("Processing order {OrderId}", message.OrderId);
+           await ProcessOrderAsync(message, cancellationToken);
+       }
+
+       private Task ProcessOrderAsync(OrderCreated order, CancellationToken ct) {
+           // Process order
+           return Task.CompletedTask;
+       }
+   }
+
+   // Subscribe using handler class
+   await using var subscription = await client.SubscribeAsync<OrderCreated, OrderHandler>("orders.created");
+
+This approach provides better testability, dependency injection support, and cleaner code organization.
+
 Multiple Subscriptions
 ----------------------
 
@@ -268,55 +299,31 @@ Or via client method:
 
    await client.UnsubscribeAsync("notifications");
 
-Queue Management
+Creating Queues
 ================
 
-Creating a Queue
-----------------
+You can create queues explicitly before publishing or subscribing:
 
 .. code-block:: csharp
 
+   using VibeMQ.Core.Configuration;
    using VibeMQ.Core.Enums;
 
-   await client.CreateQueueAsync("my-queue", new QueueOptions {
-       DeliveryMode = DeliveryMode.RoundRobin,
-       MaxQueueSize = 10_000,
-       MessageTtl = TimeSpan.FromHours(1),
+   // Create queue with default options
+   await client.CreateQueueAsync("my-queue");
+
+   // Create queue with custom options
+   var options = new QueueOptions {
+       Mode = DeliveryMode.FanOutWithAck,
+       MaxQueueSize = 5000,
        EnableDeadLetterQueue = true,
-       MaxRetryAttempts = 3
-   });
+       MaxRetryAttempts = 5
+   };
+   await client.CreateQueueAsync("my-queue", options);
 
-Deleting a Queue
-----------------
+.. note::
 
-.. code-block:: csharp
-
-   await client.DeleteQueueAsync("my-queue");
-
-Getting Queue Information
--------------------------
-
-.. code-block:: csharp
-
-   var info = await client.GetQueueInfoAsync("my-queue");
-
-   if (info != null) {
-       Console.WriteLine($"Queue: {info.Name}");
-       Console.WriteLine($"Messages: {info.MessageCount}");
-       Console.WriteLine($"Subscribers: {info.SubscriberCount}");
-       Console.WriteLine($"Delivery Mode: {info.DeliveryMode}");
-   }
-
-List Queues
------------
-
-.. code-block:: csharp
-
-   var queues = await client.ListQueuesAsync();
-
-   foreach (var queueName in queues) {
-       Console.WriteLine(queueName);
-   }
+   Queue management methods (``DeleteQueueAsync``, ``GetQueueInfoAsync``, ``ListQueuesAsync``) are available on the server side via ``IQueueManager``, not on the client. Queues are typically created automatically when publishing to a non-existent queue (if ``EnableAutoCreate`` is enabled) or configured on the server side.
 
 Client Settings
 ===============
@@ -583,11 +590,9 @@ Event Bus for Microservices
        }
 
        public async Task PublishAsync<T>(string eventType, T eventData) {
-           await _client.PublishAsync($"events.{eventType}", eventData, options => {
-               options.Headers = new Dictionary<string, string> {
-                   ["event_type"] = eventType,
-                   ["timestamp"] = DateTime.UtcNow.ToString("O")
-               };
+           await _client.PublishAsync($"events.{eventType}", eventData, new Dictionary<string, string> {
+               ["event_type"] = eventType,
+               ["timestamp"] = DateTime.UtcNow.ToString("O")
            });
 
            _logger.LogInformation("Event {EventType} published", eventType);

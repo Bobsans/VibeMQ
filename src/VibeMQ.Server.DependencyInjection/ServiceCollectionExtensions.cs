@@ -2,7 +2,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using VibeMQ.Core.Configuration;
+using VibeMQ.Configuration;
 
 namespace VibeMQ.Server.DependencyInjection;
 

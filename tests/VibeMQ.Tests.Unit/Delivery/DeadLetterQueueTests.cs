@@ -1,7 +1,7 @@
 using System.Text.Json;
 using Microsoft.Extensions.Logging.Abstractions;
-using VibeMQ.Core.Enums;
-using VibeMQ.Core.Models;
+using VibeMQ.Enums;
+using VibeMQ.Models;
 using VibeMQ.Server.Delivery;
 
 namespace VibeMQ.Tests.Unit.Delivery;

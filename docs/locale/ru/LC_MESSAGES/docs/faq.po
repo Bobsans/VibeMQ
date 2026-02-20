@@ -3,12 +3,11 @@
 # This file is distributed under the same license as the VibeMQ package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: VibeMQ 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-20 10:37+0300\n"
+"POT-Creation-Date: 2026-02-18 18:37+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ru\n"
@@ -20,622 +19,614 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.18.0\n"
 
-#: ../../docs/faq.rst:3 9d394d4562fb4a1a9699739d8c4752db
+
+
+
+#: ../../faq.rst:3 d59b382128954f6f9fee3e3320a036f7
 msgid "Frequently Asked Questions"
-msgstr ""
+msgstr "Часто задаваемые вопросы"
 
-#: ../../docs/faq.rst:5 1f719f64ee564e0ba78310ccd643f918
+#: ../../faq.rst:5 4ff071e790e1417d85a11a9b0b3d5baf
 msgid "This guide answers common questions about VibeMQ."
-msgstr ""
+msgstr "Это руководство отвечает на распространённые вопросы о VibeMQ."
 
-#: ../../docs/faq.rst:9 9a27a85bb23c44e49a7de1e04fecaaac
+#: ../../faq.rst:9 6e227efd9884497dac3dcd0105443a95
 msgid "Contents"
-msgstr ""
+msgstr ":local:"
 
-#: ../../docs/faq.rst:12 5e08df8eaedd40eeb5c7527068bcfdf0
+#: ../../faq.rst:12 0ef822e13d8146708676ddbac08e23f2
 msgid "General Questions"
-msgstr ""
+msgstr ":depth: 2"
 
-#: ../../docs/faq.rst:15 7be124e0151c4b04b3177c86a0907839
+#: ../../faq.rst:15 05cdaeae153e48aa95fdc5ca92137e6a
 msgid "What is VibeMQ?"
-msgstr ""
+msgstr "Общие вопросы"
 
-#: ../../docs/faq.rst:17 042696d3990547b380eb13ea4e477337
+#: ../../faq.rst:17 88a902c8d09f4218a5001cc246861536
 msgid ""
 "**VibeMQ** is a simple but reliable message broker for .NET applications."
 " It supports:"
-msgstr ""
+msgstr "**VibeMQ** — это простой, но надёжный месседж-брокер для .NET приложений. Он поддерживает:"
 
-#: ../../docs/faq.rst:19 b6414bf821084ce081631153e3175e90
+#: ../../faq.rst:19 0c4db285595b4862b1c188a86a45534c
 msgid "Publish/subscribe (pub/sub)"
-msgstr ""
+msgstr "**VibeMQ** — это простой, но надёжный месседж-брокер для .NET приложений. Он поддерживает:"
 
-#: ../../docs/faq.rst:20 1da1b8be5a374375832d438dfa0cc183
+#: ../../faq.rst:20 133cddc3547f4602a2ec4c56757a5d0a
 msgid "Queues with delivery guarantees"
-msgstr ""
+msgstr "Чем VibeMQ отличается от RabbitMQ/Kafka?"
 
-#: ../../docs/faq.rst:21 55e1378e963c40238c2d00c608973253
+#: ../../faq.rst:21 b74cd7a5632c4ad0bfe1e1899aa54a24
 msgid "Automatic reconnections"
-msgstr ""
+msgstr "**VibeMQ vs RabbitMQ:**"
 
-#: ../../docs/faq.rst:22 c325a4c6e9974202abf2977c1960fd01
+#: ../../faq.rst:22 731ce05230034a1db5626d95db3c924c
 msgid "Token-based authentication"
-msgstr ""
+msgstr "**VibeMQ vs Kafka:**"
 
-#: ../../docs/faq.rst:23 b5bffffae43341fb96e3873f75f95c46
+#: ../../faq.rst:23 011e6035cd234efb8781feea579c45e0
 msgid "TLS/SSL encryption"
-msgstr ""
+msgstr "Когда использовать VibeMQ?"
 
-#: ../../docs/faq.rst:24 611602690ccd4458a60d60dd6ca1c0b5
+#: ../../faq.rst:24 c18bd1f0499a42dc82155b4eae951b08
 msgid "Health checks for orchestrators"
-msgstr ""
+msgstr "**Хорошие сценарии:**"
 
-#: ../../docs/faq.rst:27 09a7a039e1784aef810b228fe5b07314
+#: ../../faq.rst:27 328802c71b18476aaac21fa2b001b9d9
 msgid "How is VibeMQ different from RabbitMQ/Kafka?"
-msgstr ""
+msgstr "**Не подходит для:**"
 
-#: ../../docs/faq.rst:29 3da38854e1bb43119187c2c48f38ca8f
+#: ../../faq.rst:29 d7a007b361e74a2a86fac23d20747480
 msgid "**VibeMQ vs RabbitMQ:**"
-msgstr ""
+msgstr "**VibeMQ vs RabbitMQ:**"
 
-#: ../../docs/faq.rst:31 1ba6e78abb4444efab6aab85b68d2c0f
+#: ../../faq.rst:31 d5f67846b0ca41fca06f53b6d6e4efb9
 msgid "VibeMQ is simpler to configure and use"
-msgstr ""
+msgstr "Технические вопросы"
 
-#: ../../docs/faq.rst:32 4aa1823e78ea4322ac429d69199a6708
+#: ../../faq.rst:32 53152dcec0a24971ada09545fb3bf348
 msgid "Does not require external dependencies (databases, etc.)"
-msgstr ""
+msgstr "Как работает гарантия доставки?"
 
-#: ../../docs/faq.rst:33 19c9f9b9966e4bcbb92cca979f6088de
+#: ../../faq.rst:33 71f60ba5898643e3913819ab19611cb7
 msgid "Written in C# for .NET ecosystem"
-msgstr ""
+msgstr "VibeMQ использует механизм подтверждений (ACK):"
 
-#: ../../docs/faq.rst:34 dd0f78f0094d48989010e18e56bf4d02
+#: ../../faq.rst:34 46e7c29a31484ef0b39ca970ae42d206
 msgid "Less functionality, but sufficient for most scenarios"
-msgstr ""
+msgstr "1. Брокер отправляет сообщение подписчику"
 
-#: ../../docs/faq.rst:36 74df03cf71ba4513a1134dc718a3d3af
+#: ../../faq.rst:36 55b53e1782554437a3899e4ed7c66e59
 msgid "**VibeMQ vs Kafka:**"
-msgstr ""
+msgstr "**VibeMQ vs Kafka:**"
 
-#: ../../docs/faq.rst:38 7d5a5a1472b64504b29f76bed616c020
+#: ../../faq.rst:38 3e8d367dadd24d70a5529401f2ae519c
 msgid "VibeMQ is not a distributed event log"
-msgstr ""
+msgstr "3. Подписчик обрабатывает сообщение и отправляет ACK"
 
-#: ../../docs/faq.rst:39 55bbdd525ddc49038b69f51d44261ddf
+#: ../../faq.rst:39 1fde13a511944d609b8507da024900fd
 msgid "Does not support persistent storage (in current version)"
-msgstr ""
+msgstr "4. Если ACK не получен — повторная отправка"
 
-#: ../../docs/faq.rst:40 d35f63763d4648e0aa330527376b4bd9
+#: ../../faq.rst:40 fe1573baa727409b837780ddccbecd30
 msgid "Simpler to deploy and use"
-msgstr ""
+msgstr "5. После исчерпания попыток — Dead Letter Queue"
 
-#: ../../docs/faq.rst:41 d1e8b23c56284922a198928f241ece24
+#: ../../faq.rst:41 a65fb52ecd2b4f9681d6618758f9e8e1
 msgid "Better suited for task queues and real-time notifications"
-msgstr ""
+msgstr "Что происходит при перезапуске сервера?"
 
-#: ../../docs/faq.rst:44 437e5444e47a44dea7ee5232706a192e
+#: ../../faq.rst:44 18ff87caa0e7495985597c0a3b902d77
 msgid "When to use VibeMQ?"
-msgstr ""
+msgstr "**Текущая версия:**"
 
-#: ../../docs/faq.rst:46 df26150470034f258222bfed12b0adfe
+#: ../../faq.rst:46 fa8b3cba7b5d44909f5af1b1c1439852
 msgid "**Good scenarios:**"
-msgstr ""
+msgstr "**Хорошие сценарии:**"
 
-#: ../../docs/faq.rst:48 8cca9b8f9d634f9b818933245df89958
+#: ../../faq.rst:48 721393e302dd41eab67e82ac49ffe82b
 msgid "Task queues for background processing"
-msgstr ""
+msgstr "Как масштабировать VibeMQ?"
 
-#: ../../docs/faq.rst:49 6d1e1fc60d8b42fb8d08efb5de7bb5af
+#: ../../faq.rst:49 4f42c90deda04371a8abaf5e5475f77b
 msgid "Notifications between microservices"
-msgstr ""
+msgstr "**Горизонтальное масштабирование:**"
 
-#: ../../docs/faq.rst:50 40b3622f56ac47cb89a30dc91fc4d5e9
+#: ../../faq.rst:50 e188280d5f944d7d83032e6499220df7
 msgid "Real-time updates"
-msgstr ""
+msgstr "1. Запустите несколько экземпляров сервера"
 
-#: ../../docs/faq.rst:51 ddf7d4917d404a95bd25f394d015256b
+#: ../../faq.rst:51 4727644df0674dfc8bbf8eb54bb47ba8
 msgid "Event-driven architecture"
-msgstr ""
+msgstr "2. Используйте балансировщик нагрузки"
 
-#: ../../docs/faq.rst:52 215ff43b7aca4f55b9a5a24f58d84db2
+#: ../../faq.rst:52 a1eda266373d4aa6aa2d9eaec877e9d8
 msgid "Distributed systems on .NET"
-msgstr ""
+msgstr "3. Клиенты подключаются к ближайшему серверу"
 
-#: ../../docs/faq.rst:54 4374ac3cf24b447092c5ec943f0d2a94
+#: ../../faq.rst:54 34e9233d6b2b4960807e504cf46f6009
 msgid "**Not suitable for:**"
-msgstr ""
+msgstr "**Не подходит для:**"
 
-#: ../../docs/faq.rst:56 2cfe29c1f39c46b598f5fee73c3ab96d
+#: ../../faq.rst:56 f235560499c94be8bbfc36346b07584f
 msgid "Storing large volumes of data"
-msgstr ""
+msgstr "**Планируется:**"
 
-#: ../../docs/faq.rst:57 3b8a4db1fd9a4f3bb5bd231ec42727a1
+#: ../../faq.rst:57 f46ba0393cba4834848c3e8488df4a72
 msgid "Real-time streaming (use Kafka)"
-msgstr ""
+msgstr "Как обеспечить безопасность?"
 
-#: ../../docs/faq.rst:58 165b63563c5b43d5af26d180fb63a1ed
+#: ../../faq.rst:58 2ad5b7782fb74719bb7f9e942c001683
 msgid "Complex message routing (use RabbitMQ)"
-msgstr ""
+msgstr "**Аутентификация:**"
 
-#: ../../docs/faq.rst:59 05b9d6e7e33d40d993dc9cd4a7d8c928
+#: ../../faq.rst:59 f09d31aba0994388822b3c78baf44fb7
 msgid "Transactional messages"
-msgstr ""
+msgstr ".UseAuthentication(\"my-secret-token\")"
 
-#: ../../docs/faq.rst:62 1cc0ed1194d64f9bbeeb9f65e249855c
+#: ../../faq.rst:62 64620edb93b9415fb178ca492e0e44a4
 msgid "What .NET versions are supported?"
-msgstr ""
+msgstr "**TLS шифрование:**"
 
-#: ../../docs/faq.rst:64 cbd7534469364edcad8c841df84e2bd5
+#: ../../faq.rst:64 feab536b7fae458381362419db721d33
 msgid "**.NET 8.0** (main target platform)"
-msgstr ""
+msgstr ".UseTls(options => {"
 
-#: ../../docs/faq.rst:65 d63ea96ae40d4d45b3ab58257905d41a
+#: ../../faq.rst:65 ae6ee0e0d30147ee8051cecbe5c1f9c1
 msgid "**.NET 10.0** (support planned)"
-msgstr ""
+msgstr "options.Enabled = true;"
 
-#: ../../docs/faq.rst:68 7945e62502784dc3a4ab74d684fb0b45
+#: ../../faq.rst:68 44429951e1184449a17936cc3d7726f8
 msgid "Technical Questions"
-msgstr ""
+msgstr "options.CertificatePath = \"/path/to/cert.pfx\";"
 
-#: ../../docs/faq.rst:71 f8fcbe27a30a4d209b4aedbb921f955f
+#: ../../faq.rst:71 b7e7887fd3cf4736bee0772d395f1872
 msgid "How does delivery guarantee work?"
-msgstr ""
+msgstr "})"
 
-#: ../../docs/faq.rst:73 5a541d08d1e34f58b7a5ee5111278f6e
+#: ../../faq.rst:73 564c749f55d04201937f8148bca4a25c
 msgid "VibeMQ uses acknowledgment (ACK) mechanism:"
-msgstr ""
+msgstr "VibeMQ использует механизм подтверждений (ACK):"
 
-#: ../../docs/faq.rst:75 48f34f275fd340d8baf386faa95aeb56
+#: ../../faq.rst:75 6a721ff48480472c9486b4b491aa756d
 msgid "Broker sends message to subscriber"
-msgstr ""
+msgstr "1. Брокер отправляет сообщение подписчику"
 
-#: ../../docs/faq.rst:76 07edeb26ae1a4eb5b1514b98fd349a4b
+#: ../../faq.rst:76 eea24864e2584e3f9378edc6b23520f7
 msgid "ACK wait timer starts"
-msgstr ""
+msgstr "2. Запускается таймер ожидания ACK"
 
-#: ../../docs/faq.rst:77 9309be6a64e047e9ac0b3ac73085ac29
+#: ../../faq.rst:77 c52d41ea267e497ea632fae79ef29ce1
 msgid "Subscriber processes message and sends ACK"
-msgstr ""
+msgstr "3. Подписчик обрабатывает сообщение и отправляет ACK"
 
-#: ../../docs/faq.rst:78 3260d1108d574df3a885d7b6e1005fda
+#: ../../faq.rst:78 fad2d29c332944f199c00473ce2f4421
 msgid "If ACK not received — retry delivery"
-msgstr ""
+msgstr "4. Если ACK не получен — повторная отправка"
 
-#: ../../docs/faq.rst:79 f4b0c1d622594308a9333594cf3a36e7
+#: ../../faq.rst:79 fdb2115aff2e4a9baa53f8475b5c5f84
 msgid "After exhausting attempts — Dead Letter Queue"
-msgstr ""
+msgstr "5. После исчерпания попыток — Dead Letter Queue"
 
-#: ../../docs/faq.rst:82 e0d892aeb9d74d0cae28cc97b307a9ec
+#: ../../faq.rst:82 99465347e4ad4a898a5a951c40801596
 msgid "What happens when server restarts?"
-msgstr ""
+msgstr "Как работает Dead Letter Queue?"
 
-#: ../../docs/faq.rst:84 ee9e0a00835f4d03859a4481dcebb9f1
+#: ../../faq.rst:84 9b0be37b21e94c6daa62f545087e7046
 msgid "**Current version:**"
-msgstr ""
+msgstr "**Текущая версия:**"
 
-#: ../../docs/faq.rst:86 5e81cc54c26944ffa427fa1beb5900f6
+#: ../../faq.rst:86 e33cdc0930fc413098f8e01e92b1d34c
 msgid "Messages in queues are lost (in-memory storage)"
-msgstr ""
+msgstr ".ConfigureQueues(options => {"
 
-#: ../../docs/faq.rst:87 7ea92baa6c004ce485296ba1bdc32e3b
+#: ../../faq.rst:87 c2fb2af7b79c4482b33c664b3957eb93
 msgid "Connections must be restored"
-msgstr ""
+msgstr "options.EnableDeadLetterQueue = true;"
 
-#: ../../docs/faq.rst:89 ../../docs/faq.rst:108 ../../docs/faq.rst:401
-#: 57e0196a781b4ac28c71caf847bbcc0c bda7fa194c584522ab96254b6b6a4471
-#: ca1d2dfee11d46ff88708ab330502c7d
+#: 9922e85cca6348fea0bd9de433a38e40
 msgid "**Planned:**"
-msgstr ""
+msgstr "options.MaxRetryAttempts = 3;"
 
-#: ../../docs/faq.rst:91 7617180ba8034665bb423c31fc9b0177
+#: ../../faq.rst:91 e8f9a4dd2e8240d5b6680806ef214c54
 msgid "Persistence layer for message storage"
-msgstr ""
+msgstr "});"
 
-#: ../../docs/faq.rst:92 81bc4f4311244fdf88883036ce3bf9e9
+#: ../../faq.rst:92 5231fdd1a2954997b9f184668c28704d
 msgid "State recovery after restart"
-msgstr ""
+msgstr "**Причины попадания в DLQ:**"
 
-#: ../../docs/faq.rst:95 e63c610c546f401d9207e91b1eda0d92
+#: ../../faq.rst:95 87bc9ef429c9466e93948b9f4fccc33a
 msgid "How to scale VibeMQ?"
-msgstr ""
+msgstr "Развёртывание"
 
-#: ../../docs/faq.rst:97 99313ed619a34ce2ad37325448f14f1b
+#: ../../faq.rst:97 ecd68894173b407aac31169b15456091
 msgid "**Horizontal scaling:**"
-msgstr ""
+msgstr "**Горизонтальное масштабирование:**"
 
-#: ../../docs/faq.rst:99 05b4b59aa05f4e6384effb9e57507aa0
+#: ../../faq.rst:99 08bf1a1e84e84e52959c10bcc0c98b3d
 msgid "Run multiple server instances"
-msgstr ""
+msgstr "1. Запустите несколько экземпляров сервера"
 
-#: ../../docs/faq.rst:100 c118a96220e943e5b317f42522ee9208
+#: ../../faq.rst:100 b4f9005c2c614a8f95fc836d78ebb9bb
 msgid "Use load balancer"
-msgstr ""
+msgstr "2. Используйте балансировщик нагрузки"
 
-#: ../../docs/faq.rst:101 21b64b84898342d98c42ea3c8972d991
+#: ../../faq.rst:101 9e62de803a8f463fa31daadfb358fabd
 msgid "Clients connect to nearest server"
-msgstr ""
+msgstr "3. Клиенты подключаются к ближайшему серверу"
 
-#: ../../docs/faq.rst:103 3b14010ef09a45ee90ebfbbae2471215
+#: ../../faq.rst:103 4c48e36bc5eb445e82bb38eab5e6e887
 msgid "**Vertical scaling:**"
-msgstr ""
+msgstr "**Вертикальное масштабирование:**"
 
-#: ../../docs/faq.rst:105 07430e0d72394a88b418f7f597132b3a
+#: ../../faq.rst:105 f721919fc9674caeaf94ebf9a02bc020
 msgid "Increase limits (MaxConnections, MaxQueueSize)"
-msgstr ""
+msgstr "COPY . ."
 
-#: ../../docs/faq.rst:106 f412d49e61004833b4413094076e1948
+#: ../../faq.rst:106 2c825b53fa844585a8faff330c89df79
 msgid "Add resources (CPU, RAM)"
-msgstr ""
+msgstr "ENTRYPOINT [\"dotnet\", \"VibeMQ.Server.dll\"]"
 
-#: ../../docs/faq.rst:110 0e71690ef398479fad8b6bf5937a2baa
+#: ../../faq.rst:110 44c2fd4dcd40482d9c1ea76901ca43cd
 msgid "Clustering for automatic scaling"
-msgstr ""
+msgstr "**Запуск:**"
 
-#: ../../docs/faq.rst:113 baa5ecd5343f45238b23ca01ffdab34a
+#: ../../faq.rst:113 8a6f97046ec24536a67ae2bfd8fde644
 msgid "How to ensure security?"
-msgstr ""
+msgstr "docker build -t vibemq-server ."
 
-#: ../../docs/faq.rst:115 49666cc9268b4e869b7716b9729e7ab1
+#: ../../faq.rst:115 a7ffe87d325749adb1d68c23c48c4e4f
 msgid "**Authentication:**"
-msgstr ""
+msgstr "**Аутентификация:**"
 
-#: ../../docs/faq.rst:121 947ef973de24459fbddd577c9e100f95
+#: ../../faq.rst:121 c6274a6451b745bd88f459e5be478dff
 msgid "**TLS encryption:**"
-msgstr ""
+msgstr "**TLS шифрование:**"
 
-#: ../../docs/faq.rst:130 ../../docs/faq.rst:334
-#: 8b0af3fe9ddd4398bdc428c711423d76 ab1129b2470d45b6b081fc46aa717627
+#: fb7b4652c946492e97c15011f3eda589
 msgid "**Rate limiting:**"
-msgstr ""
+msgstr "**Rate limiting:**"
 
-#: ../../docs/faq.rst:140 28e053e6de95400a961027c45cd38ad8
+#: ../../faq.rst:140 9653b30e70a14796b63cf4fe5ee41078
 msgid "What delivery modes are supported?"
-msgstr ""
+msgstr "apiVersion: apps/v1"
 
-#: ../../docs/faq.rst:142 f5992860f2bc4c9d8f23371342e2beeb
+#: ../../faq.rst:142 1c88982d9f3c451e9a7fa3ab69cb857f
 msgid "**Round-robin** — to each subscriber in turn"
-msgstr ""
+msgstr "kind: Deployment"
 
-#: ../../docs/faq.rst:143 2bef219376264f4589042ab76aafee5f
+#: ../../faq.rst:143 c33fa06de527493b8b3aa26a3f93800f
 msgid "**Fan-out with ACK** — to all with acknowledgment"
-msgstr ""
+msgstr "metadata:"
 
-#: ../../docs/faq.rst:144 f02fc65fe4464128978be980edf324b3
+#: ../../faq.rst:144 245c4e3b45bf4de78a61c30acc5a646e
 msgid "**Fan-out without ACK** — to all without acknowledgment"
-msgstr ""
+msgstr "name: vibemq"
 
-#: ../../docs/faq.rst:145 01ce8abdb8de4da48ab24a4bc282aa8e
+#: ../../faq.rst:145 571068811b764dca9ca25a82c2601f5a
 msgid "**Priority-based** — by priority"
-msgstr ""
+msgstr "spec:"
 
-#: ../../docs/faq.rst:148 0ab2da71820748d5b954a258ec404f9f
+#: ../../faq.rst:148 d711592e787d4551b62e09326c014c76
 msgid "How does Dead Letter Queue work?"
-msgstr ""
+msgstr "replicas: 3"
 
-#: ../../docs/faq.rst:150 d8cbfc4b310c406c87b82a5b8922d40b
+#: ../../faq.rst:150 85444b1643024a3f980db3ea5b487580
 msgid "DLQ stores messages that could not be delivered:"
-msgstr ""
+msgstr "DLQ хранит сообщения, которые не удалось доставить:"
 
-#: ../../docs/faq.rst:159 542f69720ed447ad9de12c4ba217a9df
+#: ../../faq.rst:159 5981d77315ca4b30998139b0b27bb3f7
 msgid "**Reasons for DLQ:**"
-msgstr ""
+msgstr "**Причины попадания в DLQ:**"
 
-#: ../../docs/faq.rst:161 5ec914eadbfa4a1f8d7300f1f0cef86c
+#: ../../faq.rst:161 05173306138d4969b058d4ee8efa1c5a
 msgid "Exceeded delivery attempt count"
-msgstr ""
+msgstr "app: vibemq"
 
-#: ../../docs/faq.rst:162 ../../docs/faq.rst:415
-#: 2ddf6f9c7ab14f74b6a519c7f9bd2232 a21caa83ca054558b8b10d63536eeca8
+#: ef1ce9e5115b4c74ac3ddb37148912cf
 msgid "Message TTL expired"
-msgstr ""
+msgstr "template:"
 
-#: ../../docs/faq.rst:163 8fd663d8df634eddaf383f865f4a4c48
+#: ../../faq.rst:163 659e53495f09484283ca2d9913162ae4
 msgid "Deserialization error"
-msgstr ""
+msgstr "spec:"
 
-#: ../../docs/faq.rst:164 10a45a31e80940ef9a84f1be3eb54164
+#: ../../faq.rst:164 647062ca8c544fb3a666c15222781207
 msgid "Exception in handler"
-msgstr ""
+msgstr "containers:"
 
-#: ../../docs/faq.rst:167 f0a3e02de3a84a13ab887d48542297ce
+#: ../../faq.rst:167 7771aa54a5d64ca793665f0fd77461a3
 msgid "Deployment"
-msgstr ""
+msgstr "image: vibemq-server:latest"
 
-#: ../../docs/faq.rst:170 8751ff46fd3d4eb2a8e2c7506aa68ef7
+#: ../../faq.rst:170 13eb4a3d1ed34dcaa7ad1c736258bbf4
 msgid "How to run in Docker?"
-msgstr ""
+msgstr "ports:"
 
-#: ../../docs/faq.rst:172 5b8e1406a62d4276a7ee0dd1147cec05
+#: ../../faq.rst:172 241fbc679c3a48a2bca32be598ee5008
 msgid "**Dockerfile:**"
-msgstr ""
+msgstr "**Dockerfile:**"
 
-#: ../../docs/faq.rst:182 b7d992e03eb84ba2bca451c726de6dd1
+#: ../../faq.rst:182 3ae7783cb0034b36985485c488bfeb14
 msgid "**Run:**"
-msgstr ""
+msgstr "**Запуск:**"
 
-#: ../../docs/faq.rst:190 066c00552b2f42a5aa358cfff774642b
+#: ../../faq.rst:190 8df22d2b529140f4a4af2193193ff888
 msgid "How to use with Kubernetes?"
-msgstr ""
+msgstr "path: /health/"
 
-#: ../../docs/faq.rst:192 67df728dae044cf7acdca80f7082d209
+#: ../../faq.rst:192 a4e7f96dce5f4cc8a1ddc9101365c631
 msgid "**Deployment:**"
-msgstr ""
+msgstr "**Deployment:**"
 
-#: ../../docs/faq.rst:221 d9ff5c5d9aee4fbfa9d9db617486a6fe
+#: ../../faq.rst:221 e6de172da3ea4deeaa38c61199e75058
 msgid "How to configure for production?"
-msgstr ""
+msgstr "initialDelaySeconds: 10"
 
-#: ../../docs/faq.rst:223 ../../docs/faq.rst:305
-#: 7b62beb8315b425e9101e2744838e113 da986b1a55b54b208c0d24ddea417a30
+#: acdb464f729e43a7a8f1d2d88542c460
 msgid "**Recommendations:**"
-msgstr ""
+msgstr "periodSeconds: 10"
 
-#: ../../docs/faq.rst:253 ef20801b05904c2bbe022b47f2963c02
+#: ../../faq.rst:253 8b4b811e11ca45fba50c83613bb842c9
 msgid "Performance"
-msgstr ""
+msgstr "Как настроить для production?"
 
-#: ../../docs/faq.rst:256 9520ceba7aa0415080dbf783ddcb5722
+#: ../../faq.rst:256 3ed18e239af44973bfd872f6d3a9aa89
 msgid "What is VibeMQ performance?"
-msgstr ""
+msgstr "**Рекомендации:**"
 
-#: ../../docs/faq.rst:258 2568fd2ca0f049deb5cf4ce8001d053c
+#: ../../faq.rst:258 a273d643234a4f898cf2a3e3ed052538
 msgid "**Benchmarks:**"
-msgstr ""
+msgstr "**Бенчмарки:**"
 
-#: ../../docs/faq.rst:260 340ad6d36943418d8e18f7d32e98c853
+#: ../../faq.rst:260 2625289a7f0543c59bcafd253916d0ae
 msgid "10,000+ messages/sec on single node"
-msgstr ""
+msgstr ".UsePort(8080)"
 
-#: ../../docs/faq.rst:261 f903d4428a084b99ab3b5b141f0da3d0
-#, python-format
+#: ../../faq.rst:261 328c015e50994cac82f44c68b562d410
 msgid "Latency < 10ms for 95% of messages"
-msgstr ""
+msgstr ".UseAuthentication(Environment.GetEnvironmentVariable(\"VIBEMQ_TOKEN\"))"
 
-#: ../../docs/faq.rst:262 cce61fd8b0534d6e922d9b25bef6f095
+#: ../../faq.rst:262 0635b6d9522c4526a97bdbe3ab6feaa2
 msgid "Support for 1000+ simultaneous connections"
-msgstr ""
+msgstr ".UseMaxConnections(5000)"
 
-#: ../../docs/faq.rst:264 dad7a431767640d8bf1f956cc0637bde
+#: ../../faq.rst:264 396482507cbc4b6db149363c9fd4699c
 msgid "**Factors affecting performance:**"
-msgstr ""
+msgstr "**Факторы, влияющие на производительность:**"
 
-#: ../../docs/faq.rst:266 273a09751b4d4590b267ad3d5b9d8418
+#: ../../faq.rst:266 de46b181d86740dca422a7acd96b4e87
 msgid "Message size"
-msgstr ""
+msgstr "options.DefaultDeliveryMode = DeliveryMode.FanOutWithAck;"
 
-#: ../../docs/faq.rst:267 23c5c5afba7d4f29bb5a95ac0a27485c
+#: ../../faq.rst:267 601fd75875384ff8a5cd0cf51bd7b131
 msgid "Number of subscribers"
-msgstr ""
+msgstr "options.MaxQueueSize = 100_000;"
 
-#: ../../docs/faq.rst:268 75bfe2324c684625a521aabf830d70f6
+#: ../../faq.rst:268 707b625460544d0eaca1e1e3d1310ad3
 msgid "Delivery mode"
-msgstr ""
+msgstr "options.EnableDeadLetterQueue = true;"
 
-#: ../../docs/faq.rst:269 d0e3374da407452b84106e5fdd7c0912
+#: ../../faq.rst:269 24be666c708f42a6b2a3d3a888c8614c
 msgid "Network latency"
-msgstr ""
+msgstr "options.MaxRetryAttempts = 5;"
 
-#: ../../docs/faq.rst:272 c0274e4ae7764eb4b9a06c125cc563de
+#: ../../faq.rst:272 175bcc2ced5247f19a97b20b4388855f
 msgid "How to optimize performance?"
-msgstr ""
+msgstr "})"
 
-#: ../../docs/faq.rst:274 8537b2ae3677494488881efe853a5fe7
+#: ../../faq.rst:274 7a5ef4424b254773a3485cf9e185c6dc
 msgid "**On server:**"
-msgstr ""
+msgstr "**На сервере:**"
 
-#: ../../docs/faq.rst:284 d00bd70195564eacb970b26f1e7c0b9e
+#: ../../faq.rst:284 effe042b440d441085f180d9f2ac8996
 msgid "**On client:**"
-msgstr ""
+msgstr "**На клиенте:**"
 
-#: ../../docs/faq.rst:293 bc1deb6fbf1847d8ae01de823443e4dc
+#: ../../faq.rst:293 182888cf30a740e99c60be2f12bf7847
 msgid "**General recommendations:**"
-msgstr ""
+msgstr "**Общие рекомендации:**"
 
-#: ../../docs/faq.rst:295 4012248731e74da88587ac681ab37019
+#: ../../faq.rst:295 dfb2c48b6d724bb781deca90dd66042f
 msgid "Use batching for publishing"
-msgstr ""
+msgstr "options.MaxMessagesPerClientPerSecond = 5000;"
 
-#: ../../docs/faq.rst:296 b920e7d81f564e9b8ccf7b9aedccd5e4
+#: ../../faq.rst:296 f569a8e6be01450caea6c7a321eaa27d
 msgid "Optimize message handlers"
-msgstr ""
+msgstr "})"
 
-#: ../../docs/faq.rst:297 770e84660bbc4da3a3bd3507714597c0
+#: ../../faq.rst:297 68a71a75e6104049b96fd8f2f05eb0f1
 msgid "Monitor performance metrics"
-msgstr ""
+msgstr ".UseTls(options => {"
 
-#: ../../docs/faq.rst:300 94fc53a9cdf948d4a8f247b831d85c12
+#: ../../faq.rst:300 e8ae4c3f66c2429d982f51cbc33e3054
 msgid "Security"
-msgstr ""
+msgstr "options.Enabled = true;"
 
-#: ../../docs/faq.rst:303 c8aa57213fd7423e97150aa26a47ef7c
+#: ../../faq.rst:303 6480d872d61f4c0c8c6f571f865fa62b
 msgid "How secure is token authentication?"
-msgstr ""
+msgstr "options.CertificatePath = \"/etc/ssl/vibemq.pfx\";"
 
-#: ../../docs/faq.rst:307 9d7600e2ebdc4db2986b79f5419a62bb
+#: ../../faq.rst:307 bc5ff8641e14431792135c212b2eb9a3
 msgid "Use complex tokens (32+ characters)"
-msgstr ""
+msgstr "})"
 
-#: ../../docs/faq.rst:308 e75972c1a8244fca9c9b0a45d7187c00
+#: ../../faq.rst:308 bb8f75322698485e91ec170acb4b10d0
 msgid "Store tokens in secure location (Key Vault, Secrets Manager)"
-msgstr ""
+msgstr ".ConfigureHealthChecks(options => {"
 
-#: ../../docs/faq.rst:309 7fefc31aaa5e4a9dacb412ba2f645bc2
+#: ../../faq.rst:309 43989bd27c324c6fbe8f936e5da46c62
 msgid "Rotate tokens periodically"
-msgstr ""
+msgstr "options.Enabled = true;"
 
-#: ../../docs/faq.rst:310 d3a58533646748559bf0c2fa1da69777
+#: ../../faq.rst:310 c506d70108194d1d9a2d082505b6eafb
 msgid "Use different tokens for different environments"
-msgstr ""
+msgstr "options.Port = 8081;"
 
-#: ../../docs/faq.rst:314 0284489d395f4711a50c6a32620d5da2
+#: ../../faq.rst:314 e5f4c1dcfda042499ab62207cd22c688
 msgid ""
 "Token authentication is suitable for internal security. For public APIs "
 "use OAuth2/OIDC."
-msgstr ""
+msgstr "Токен-аутентификация подходит для внутренней безопасности."
 
-#: ../../docs/faq.rst:318 b225070f0f4d4352b7922c4abcf0e61f
+#: ../../faq.rst:318 134d4f076e174065a72a2ba97339b4d6
 msgid "Do I need to use TLS?"
-msgstr ""
+msgstr ".Build();"
 
-#: ../../docs/faq.rst:320 66f3addc05494837aae504301761b435
+#: ../../faq.rst:320 6f4f7620a6594738a894ed8ea89ad8a6
 msgid "**Yes, if:**"
-msgstr ""
+msgstr "**Да, если:**"
 
-#: ../../docs/faq.rst:322 905552c868e44970b202ad418d67dd45
+#: ../../faq.rst:322 1b7ee6696ebf45a19a73c512445247f6
 msgid "Messages contain sensitive data"
-msgstr ""
+msgstr "Какая производительность VibeMQ?"
 
-#: ../../docs/faq.rst:323 d1aaa643b9ee415aace1033c3ddc955f
+#: ../../faq.rst:323 583f5ff751eb41938af818049a3ef6f5
 msgid "Network is untrusted"
-msgstr ""
+msgstr "**Бенчмарки:**"
 
-#: ../../docs/faq.rst:324 15783fd1025548dab2999883e8097904
+#: ../../faq.rst:324 1a7c34d0eafa421aa8ed92d77a50c1e5
 msgid "Security compliance required"
-msgstr ""
+msgstr "**Факторы, влияющие на производительность:**"
 
-#: ../../docs/faq.rst:326 03bede36c04c4d1f84c02666dff572cb
+#: ../../faq.rst:326 1baf923c922e4fb4a06070c70376f100
 msgid "**No, if:**"
-msgstr ""
+msgstr "**Нет, если:**"
 
-#: ../../docs/faq.rst:328 e7565424c6014807ab8b936c65a57bfc
+#: ../../faq.rst:328 f0e7723c37c0451ba706534e727c7da5
 msgid "All services in trusted network"
-msgstr ""
+msgstr "**На сервере:**"
 
-#: ../../docs/faq.rst:329 8e4bb119b0ce43268503944feaf8f417
+#: ../../faq.rst:329 1367226469ef4a179cdb9addd6c0e709
 msgid "TLS terminates at load balancer level"
-msgstr ""
+msgstr ".UseMaxConnections(5000)  // Увеличьте лимит"
 
-#: ../../docs/faq.rst:332 4fb5cc67af5140aa8734b63ce84b34ed
+#: ../../faq.rst:332 66cb0242e2a24ac3978f88b2f7dec3f2
 msgid "How to protect against DDoS?"
-msgstr ""
+msgstr ".ConfigureQueues(options => {"
 
-#: ../../docs/faq.rst:344 6b3fc0f92c534c38b2e25c93c7c19d02
+#: ../../faq.rst:344 20334508381c483795752e277b620d75
 msgid "**Additionally:**"
-msgstr ""
+msgstr "**Дополнительно:**"
 
-#: ../../docs/faq.rst:346 1db0993c98224eeb9467b202dea394fc
+#: ../../faq.rst:346 61a65d4c62d646de93fda5b650345b4f
 msgid "Use firewall"
-msgstr ""
+msgstr "options.OverflowStrategy = OverflowStrategy.DropOldest;  // Быстрая стратегия"
 
-#: ../../docs/faq.rst:347 6c5424808bcf4b119fd229cf706e8e03
+#: ../../faq.rst:347 3b864635642f4a2d869f60d484ac97f3
 msgid "Limit number of connections"
-msgstr ""
+msgstr "})"
 
-#: ../../docs/faq.rst:348 c07d0ad7c5a04088998ee5eb7d4265e1
+#: ../../faq.rst:348 cc777007e3464603bdafa39a54cb9e00
 msgid "Monitor anomalies"
-msgstr ""
+msgstr "**На клиенте:**"
 
-#: ../../docs/faq.rst:351 4fe82a680729442e98d79916e9755c30
+#: ../../faq.rst:351 11f80a7938bb46e9a19d87a1e9f3a784
 msgid "Integration"
-msgstr ""
+msgstr "new ClientOptions {"
 
-#: ../../docs/faq.rst:354 9460abf42ae54b288877d73328d9d48c
+#: ../../faq.rst:354 e37d607dfc114e74bead86985be53529
 msgid "How to use with ASP.NET Core?"
-msgstr ""
+msgstr "KeepAliveInterval = TimeSpan.FromSeconds(60),  // Реже PING"
 
-#: ../../docs/faq.rst:378 0d6cffc89d214520b9373be7280a2944
+#: ../../faq.rst:378 0c42cb905b9840cb90e5019251e8ae0a
 msgid "How to use with Worker Service?"
-msgstr ""
+msgstr "CommandTimeout = TimeSpan.FromSeconds(5)  // Меньше таймаут"
 
-#: ../../docs/faq.rst:397 6074b72d9e1145f3bfb88315f8f6818e
+#: ../../faq.rst:397 542c2112fe294233a1757efeb7eaf133
 msgid "Can I use with other languages?"
-msgstr ""
+msgstr "}"
 
-#: ../../docs/faq.rst:399 c4abf374e7614063b53adda75aafc0f8
+#: ../../faq.rst:399 06a2e93bde894905981caf057ad2eb96
 msgid "**Current version:** Only .NET clients"
-msgstr ""
+msgstr "**Текущая версия:** Только .NET клиенты"
 
-#: ../../docs/faq.rst:403 a9d2612ea33a4dda893046fbb7a4b883
+#: ../../faq.rst:403 2a431ce4fe664c8e8ffab0d03e529a8a
 msgid "Clients for Java, Python, Node.js"
-msgstr ""
+msgstr "Безопасность"
 
-#: ../../docs/faq.rst:404 5b7ef4e67d4f4d23895905d65c31e45d
+#: ../../faq.rst:404 d7538442a81b4bdb9476be9021bbe7c1
 msgid "AMQP/MQTT protocol support"
-msgstr ""
+msgstr "Насколько безопасна аутентификация по токену?"
 
-#: ../../docs/faq.rst:407 9930ad0a99f04bdfa3ace01ff6ec7d6d
+#: ../../faq.rst:407 fede384edde2443dac7ba269e7a7a218
 msgid "Troubleshooting"
-msgstr ""
+msgstr "**Рекомендации:**"
 
-#: ../../docs/faq.rst:410 7c70fdb14aed45e8945e788aa23da40a
+#: ../../faq.rst:410 90384a86367c43b38246ae9a9fa7544c
 msgid "Why are messages lost?"
-msgstr ""
+msgstr "Токен-аутентификация подходит для внутренней безопасности."
 
-#: ../../docs/faq.rst:412 ../../docs/faq.rst:431 ../../docs/faq.rst:446
-#: 4f2ba3ea3dbd40ae9ada544678f1efd1 e5122abca40843f4a6a3552038374405
-#: f2bb48ac1e884b02acd909da93e4b584
+#: 917d2b1c0f3d41c5bd1bf95dd5fe5a00
 msgid "**Causes:**"
-msgstr ""
+msgstr "Для публичных API используйте OAuth2/OIDC."
 
-#: ../../docs/faq.rst:414 e8de611e1cdc40a28e5a3b33daa3911c
+#: ../../faq.rst:414 a4e1cc9f4829483f8042fadf322be1b0
 msgid "Server restarted (in-memory storage)"
-msgstr ""
+msgstr "Нужно ли использовать TLS?"
 
-#: ../../docs/faq.rst:416 9aa1bde770794fae89fbde78ecb7fa22
+#: ../../faq.rst:416 2fd560d518d54fdcbac4093e1e780433
 msgid "Queue size exceeded"
-msgstr ""
+msgstr "**Да, если:**"
 
-#: ../../docs/faq.rst:418 ../../docs/faq.rst:437 ../../docs/faq.rst:452
-#: 6feba331bf474a8a97cc32c0d53acbf9 afc9116152224965bd74cb031050639c
-#: c04b09349ca6493498afbfbd35940002
+#: bbf5de0da2164784bb30bcd075a14136
 msgid "**Solution:**"
-msgstr ""
+msgstr "**Нет, если:**"
 
-#: ../../docs/faq.rst:429 0477d74013944b309aefab5b542dc2d5
+#: ../../faq.rst:429 26142b7a5d064b9ba7802246bbe0a906
 msgid "Why high latency?"
-msgstr ""
+msgstr "Как защитить от DDoS?"
 
-#: ../../docs/faq.rst:433 cd50bd6cf5d04600b5067f96a8832acd
+#: ../../faq.rst:433 deb96c34958e43bd8d16febf6400f7c0
 msgid "Server overload"
-msgstr ""
+msgstr "**Rate limiting:**"
 
-#: ../../docs/faq.rst:434 5451a08239d24710a2176627295cd4c9
+#: ../../faq.rst:434 d2acce1405fb48cfa2b649ca0ad814de
 msgid "Slow handlers"
-msgstr ""
+msgstr ".ConfigureRateLimiting(options => {"
 
-#: ../../docs/faq.rst:435 ../../docs/faq.rst:448
-#: b746349915434429bb76589fe1628fa2 ccddc4ef32004e0c931ad6496278af42
+#: 7fa592e8952a40a7a5bfec81b45b1da0
 msgid "Network issues"
-msgstr ""
+msgstr "options.Enabled = true;"
 
-#: ../../docs/faq.rst:439 5031cdcedec64bc697f1152ebd64eed0
+#: ../../faq.rst:439 a411e76121b34ae1985b47d0d2a044f8
 msgid "Optimize handlers"
-msgstr ""
+msgstr "options.MaxConnectionsPerIpPerWindow = 50;"
 
-#: ../../docs/faq.rst:440 0762a115acbe4946bef78491bf994206
+#: ../../faq.rst:440 a0dd4e3983cf4e87afdede410aeedaa6
 msgid "Increase server resources"
-msgstr ""
+msgstr "options.MaxMessagesPerClientPerSecond = 100;"
 
-#: ../../docs/faq.rst:441 919e0afff98245f486242cc597faac54
+#: ../../faq.rst:441 be942aa51e3c4ca292b3658662d43e5b
 msgid "Check network"
-msgstr ""
+msgstr "})"
 
-#: ../../docs/faq.rst:444 4410f9dbb0ef4c8f931d589d4dbba7ef
+#: ../../faq.rst:444 fc11ee1c8bfb4071aca42ed966ea30e4
 msgid "Why frequent disconnections?"
-msgstr ""
+msgstr "**Дополнительно:**"
 
-#: ../../docs/faq.rst:449 a08ac696a8a7497289ae75c8f82c9f19
+#: ../../faq.rst:449 2c31cb96600a4eeb9fbd117327b6cc51
 msgid "Keep-alive timeout"
-msgstr ""
+msgstr "Интеграция"
 
-#: ../../docs/faq.rst:450 1960ee83b3724c14b12868ae0cc3fb94
+#: ../../faq.rst:450 4c93df924b504107ba6c231434728ea5
 msgid "Server restarting"
-msgstr ""
+msgstr "Как использовать с ASP.NET Core?"
 
-#: ../../docs/faq.rst:465 04624413781a44698d7cba05107e8b78
+#: ../../faq.rst:465 b6eca7118f644737bf1163241082ee09
 msgid "Next Steps"
-msgstr ""
+msgstr "using VibeMQ.Server.DependencyInjection;"
 
-#: ../../docs/faq.rst:467 10f3e5288c9e4b9ab9ba4be849a02784
+#: ../../faq.rst:467 9ef354e1f7144e03b4fe3ec1b13452bd
 msgid ":doc:`getting-started` — quick start"
-msgstr ""
+msgstr "using VibeMQ.Client.DependencyInjection;"
 
-#: ../../docs/faq.rst:468 eaaeb532f340455b8e606f450ed935a6
+#: ../../faq.rst:468 93254f24158f429daa07762d68e9cf0f
 msgid ":doc:`troubleshooting` — troubleshooting"
-msgstr ""
+msgstr "var builder = WebApplication.CreateBuilder(args);"
 
-#: ../../docs/faq.rst:469 1a57cc96eba741aba7b753b83d99a300
+#: ../../faq.rst:469 38b757f030ee4f64a495eb73e23776e8
 msgid ":doc:`examples` — usage examples"
-msgstr ""
+msgstr "// Сервер"
 

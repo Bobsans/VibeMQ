@@ -1,5 +1,5 @@
 using System.Text.Json;
-using VibeMQ.Core.Models;
+using VibeMQ.Models;
 using VibeMQ.Server.Delivery;
 
 namespace VibeMQ.Tests.Unit.Delivery;

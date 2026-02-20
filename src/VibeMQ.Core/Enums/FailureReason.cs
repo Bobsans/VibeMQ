@@ -1,4 +1,4 @@
-namespace VibeMQ.Core.Enums;
+namespace VibeMQ.Enums;
 
 /// <summary>
 /// Reason why a message was moved to the Dead Letter Queue.

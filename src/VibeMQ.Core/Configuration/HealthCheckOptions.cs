@@ -1,4 +1,4 @@
-namespace VibeMQ.Core.Configuration;
+namespace VibeMQ.Configuration;
 
 /// <summary>
 /// Configuration for the lightweight HTTP health check server.

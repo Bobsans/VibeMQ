@@ -1,5 +1,5 @@
 using Microsoft.Extensions.Logging.Abstractions;
-using VibeMQ.Core.Configuration;
+using VibeMQ.Configuration;
 using VibeMQ.Server.Security;
 
 namespace VibeMQ.Tests.Unit.Security;

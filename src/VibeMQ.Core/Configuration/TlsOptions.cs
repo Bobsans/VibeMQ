@@ -1,6 +1,6 @@
 using System.Security.Authentication;
 
-namespace VibeMQ.Core.Configuration;
+namespace VibeMQ.Configuration;
 
 /// <summary>
 /// TLS/SSL configuration for the broker transport layer.

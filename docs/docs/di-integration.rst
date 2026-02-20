@@ -403,6 +403,72 @@ Background service registration:
 
    services.AddHostedService<OrderProcessor>();
 
+Class-based Subscriptions with Automatic Registration
+------------------------------------------------------
+
+You can use class-based message handlers with automatic subscription on application start:
+
+.. code-block:: csharp
+
+   using VibeMQ.Core.Attributes;
+   using VibeMQ.Core.Interfaces;
+   using VibeMQ.Client.DependencyInjection;
+
+   // Define handler with Queue attribute
+   [Queue("orders.created")]
+   public class OrderHandler : IMessageHandler<OrderCreated> {
+       private readonly ILogger<OrderHandler> _logger;
+
+       public OrderHandler(ILogger<OrderHandler> logger) {
+           _logger = logger;
+       }
+
+       public async Task HandleAsync(OrderCreated message, CancellationToken cancellationToken) {
+           _logger.LogInformation("Processing order {OrderId}", message.OrderId);
+           // Process order
+       }
+   }
+
+   // Register handler and enable automatic subscriptions
+   services.AddVibeMQClient(settings => {
+       settings.Host = "localhost";
+       settings.Port = 8080;
+   })
+   .AddMessageHandler<OrderCreated, OrderHandler>()  // Register handler
+   .AddMessageHandlerSubscriptions();  // Enable automatic subscription on startup
+
+Alternatively, scan assembly for all handlers:
+
+.. code-block:: csharp
+
+   services.AddVibeMQClient(settings => { ... })
+       .AddMessageHandlers(Assembly.GetExecutingAssembly())  // Scan and register all handlers
+       .AddMessageHandlerSubscriptions();  // Auto-subscribe on startup
+
+Handlers are resolved from DI container, so you can inject dependencies:
+
+.. code-block:: csharp
+
+   [Queue("orders.created")]
+   public class OrderHandler : IMessageHandler<OrderCreated> {
+       private readonly IOrderRepository _repository;
+       private readonly ILogger<OrderHandler> _logger;
+
+       public OrderHandler(IOrderRepository repository, ILogger<OrderHandler> logger) {
+           _repository = repository;
+           _logger = logger;
+       }
+
+       public async Task HandleAsync(OrderCreated message, CancellationToken cancellationToken) {
+           await _repository.SaveAsync(message);
+           _logger.LogInformation("Order {OrderId} saved", message.OrderId);
+       }
+   }
+
+   // Register dependencies
+   services.AddScoped<IOrderRepository, OrderRepository>();
+   services.AddMessageHandler<OrderCreated, OrderHandler>();
+
 Event Bus with DI
 -----------------
 

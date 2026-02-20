@@ -1,13 +1,13 @@
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
-using VibeMQ.Core.Configuration;
-using VibeMQ.Core.Enums;
-using VibeMQ.Core.Interfaces;
+using VibeMQ.Configuration;
+using VibeMQ.Enums;
+using VibeMQ.Interfaces;
 using VibeMQ.Server.Auth;
 using VibeMQ.Server.Connections;
 using VibeMQ.Server.Delivery;
 using VibeMQ.Server.Handlers;
-using VibeMQ.Core.Metrics;
+using VibeMQ.Metrics;
 using VibeMQ.Server.Queues;
 using VibeMQ.Server.Security;
 
@@ -166,6 +166,10 @@ public sealed class BrokerBuilder {
             new SubscribeHandler(queueManager, _loggerFactory.CreateLogger<SubscribeHandler>()),
             new UnsubscribeHandler(_loggerFactory.CreateLogger<UnsubscribeHandler>()),
             new AckHandler(queueManager, _loggerFactory.CreateLogger<AckHandler>()),
+            new CreateQueueHandler(queueManager, _loggerFactory.CreateLogger<CreateQueueHandler>()),
+            new DeleteQueueHandler(queueManager, _loggerFactory.CreateLogger<DeleteQueueHandler>()),
+            new QueueInfoHandler(queueManager, _loggerFactory.CreateLogger<QueueInfoHandler>()),
+            new ListQueuesHandler(queueManager, _loggerFactory.CreateLogger<ListQueuesHandler>()),
         };
 
         var dispatcher = new CommandDispatcher(handlers, _loggerFactory.CreateLogger<CommandDispatcher>());

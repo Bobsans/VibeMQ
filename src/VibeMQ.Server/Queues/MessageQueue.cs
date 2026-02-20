@@ -1,7 +1,7 @@
 using System.Collections.Concurrent;
-using VibeMQ.Core.Configuration;
-using VibeMQ.Core.Enums;
-using VibeMQ.Core.Models;
+using VibeMQ.Configuration;
+using VibeMQ.Enums;
+using VibeMQ.Models;
 
 namespace VibeMQ.Server.Queues;
 

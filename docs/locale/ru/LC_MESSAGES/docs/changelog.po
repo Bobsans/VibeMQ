@@ -3,456 +3,484 @@
 # This file is distributed under the same license as the VibeMQ package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: VibeMQ 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-20 10:37+0300\n"
+"POT-Creation-Date: 2026-02-18 18:37+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language: ru\n"
 "Language-Team: ru <LL@li.org>\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "Generated-By: Babel 2.18.0\n"
 
-#: ../../docs/changelog.rst:3 8a05069fc2b34ae583a9fe96cdcd7265
+#: ../../changelog.rst:3 a08d178400ff4a30b60d5c439303c750
 msgid "Changelog"
-msgstr ""
+msgstr "Changelog"
 
-#: ../../docs/changelog.rst:5 3930f31af45246a78fdf5937369d5f44
+#: ../../changelog.rst:5 40a254493f1d479596ff47c812edc9d4
 msgid "VibeMQ project change history."
-msgstr ""
+msgstr "История изменений проекта VibeMQ."
 
-#: ../../docs/changelog.rst:9 63faa03effa74fca8f3a5bbaabb183e7
+#: ../../changelog.rst:9 6f6f857d10be4017933f447f31661760
 msgid "Contents"
-msgstr ""
+msgstr ":depth: 2"
 
-#: ../../docs/changelog.rst:12 41d0979f096945d3ba90c60d71e9e773
+#: ../../changelog.rst:12 5f5889fd3b2e4386b30204804ba092d1
 msgid "Planned Versions"
-msgstr ""
+msgstr ":depth: 2"
 
-#: ../../docs/changelog.rst:15 d66d22f8d9f64be9851a5640062d3d79
+#: ../../changelog.rst:15 7ec3a719025b496d9ad795a804acd50b
 msgid "Version 1.0.0 (In Development)"
-msgstr ""
+msgstr "Планируемые версии"
 
-#: ../../docs/changelog.rst:17 66fa0e81767e4a8185c4ca1de7cb2a20
+#: ../../changelog.rst:17 a589895700be4d01b07ae64a2c168736
 msgid "**Date:** Q2 2026"
-msgstr ""
+msgstr "**Дата:** Q2 2026"
 
-#: ../../docs/changelog.rst:19 239470b92a074bc5ad4d03b5b17c64e3
+#: ../../changelog.rst:19 4c63f9c13bed4617806533a96c1b74a1
 msgid "**Status:** Current Stable Version"
-msgstr ""
+msgstr "**Новые возможности:**"
 
-#: ../../docs/changelog.rst:21 165dd5d926454388bcb5192b32095f72
+#: ../../changelog.rst:21 f59ae75639964c4e920e4f8a9e3156f2
 msgid "**New features:**"
-msgstr ""
+msgstr "**Новые возможности:**"
 
-#: ../../docs/changelog.rst:23 de58b95e01e044fd8e512a008c4427df
+#: ../../changelog.rst:23 8268d62398094d04a49b26c996c3cc52
 msgid "Basic message broker functionality"
-msgstr ""
+msgstr "**Компоненты:**"
 
-#: ../../docs/changelog.rst:24 ef809a110bf146d197719ca9a4acbfc7
+#: ../../changelog.rst:24 7f9ab4fd99ed46e99eae7cc03502e50c
 msgid "Pub/Sub with queues"
-msgstr ""
+msgstr "**Документация:**"
 
-#: ../../docs/changelog.rst:25 3cdb7dad72d04bd7b37d6d4be78410b6
+#: ../../changelog.rst:25 3f609bde04da4350bcd4a0a299a27a9d
 msgid "Delivery guarantees via acknowledgments (ACK)"
-msgstr ""
+msgstr "Бэклог (Версия 2.0+)"
 
-#: ../../docs/changelog.rst:26 7d595a9b98604eeca8cd2227e8048313
+#: ../../changelog.rst:26 8c19f02b2ba4422697f5cb45c7962456
 msgid "Keep-alive (PING/PONG) and automatic reconnections"
-msgstr ""
+msgstr "**Планируемые возможности:**"
 
-#: ../../docs/changelog.rst:27 ad53d38e18da4c61be94b9794aa1c2dd
+#: ../../changelog.rst:27 fe515810eb5a4a4486606bf80f4aaf38
 msgid "Support for delivery modes (round-robin, fan-out)"
-msgstr ""
+msgstr "Архив версий"
 
-#: ../../docs/changelog.rst:28 56f739124a0044a7802cc0d7187a33a8
+#: ../../changelog.rst:28 f89aa98b04e543af80d65179b226f5ad
 msgid "Token-based authentication"
-msgstr ""
+msgstr "Версия 0.1.0 (Альфа)"
 
-#: ../../docs/changelog.rst:29 85878e9489e34096936abb81fae2a17e
+#: ../../changelog.rst:29 e285f55f8a7d4092bd64f05159e27cd9
 msgid "Graceful shutdown"
-msgstr ""
+msgstr "**Дата:** Февраль 2026"
 
-#: ../../docs/changelog.rst:30 ad335c85ef9f48038ee5fbb1fcb1bae6
+#: ../../changelog.rst:30 da51b226d4234332856121daef8f3d6b
 msgid "Health checks for orchestrators"
-msgstr ""
+msgstr "**Статус:** Альфа-версия для тестирования"
 
-#: ../../docs/changelog.rst:31 d8b8531c02da4325b95564b544ddf473
+#: ../../changelog.rst:31 1172eefda74e4803bed18c293e9f7c84
 msgid "Performance metrics collection"
-msgstr ""
+msgstr "**Компоненты:**"
 
-#: ../../docs/changelog.rst:32 2835cc6d44e94a02bff58b7c1964ae6a
-msgid ""
-"**Custom binary protocol** for improved performance: - Fixed field order "
-"for unambiguous parsing - Payload stored as JSON in UTF-8 for easy "
-"debugging and UI display - Zero external dependencies - Protocol version "
-"support for backward compatibility"
-msgstr ""
-
-#: ../../docs/changelog.rst:38 4ba9a81097384f9193494ea30e1e3154
+#: ../../changelog.rst:33 b90d60573e00488b95c9c7a2f242103b
 msgid "**Components:**"
-msgstr ""
+msgstr "**Известные ограничения:**"
 
-#: ../../docs/changelog.rst:40 9b11fc4b776c4d2c82c8503346187da5
+#: ../../changelog.rst:35 8a46bd82696e420b856d97f3cb9c7757
 msgid "``VibeMQ.Core`` — system core"
-msgstr ""
+msgstr "Формат версий"
 
-#: ../../docs/changelog.rst:41 96f83fc9229f4317b496c34c10df6b2e
+#: ../../changelog.rst:36 27a6cb7b7024407d8c4bdde41838ac41
 msgid "``VibeMQ.Server`` — broker server"
 msgstr ""
+"VibeMQ использует `SemVer 2.0 <https://semver.org/lang/ru/>`_ для "
+"версионирования:"
 
-#: ../../docs/changelog.rst:42 67269e76b031442aaa5876c7b745bac3
+#: ../../changelog.rst:37 89909124b3c04a30a1c933cb20c4f867
 msgid "``VibeMQ.Client`` — client for connection"
-msgstr ""
+msgstr "**Формат:** ``MAJOR.MINOR.PATCH``"
 
-#: ../../docs/changelog.rst:43 d82cc0743ce648a0bbcce65d9e52775b
+#: ../../changelog.rst:38 9f93ab121bcf44a78f44d4cbb4a75f73
 msgid "``VibeMQ.Protocol`` — message exchange protocol"
-msgstr ""
+msgstr "**Примеры:**"
 
-#: ../../docs/changelog.rst:44 f713d2a034cf472999f362b6f4319779
+#: ../../changelog.rst:39 29bcde38643f422c99aeaf1e6efb5f1a
 msgid "``VibeMQ.Health`` — HTTP health check server"
-msgstr ""
+msgstr "Предрелизные версии:"
 
-#: ../../docs/changelog.rst:45 654ab8c0897b41148f74f3e4fd711cee
+#: ../../changelog.rst:40 c10a87361c3740b798ea4fbab26bd32b
 msgid "``VibeMQ.Server.DependencyInjection`` — server DI integration"
-msgstr ""
+msgstr "Политика версионирования"
 
-#: ../../docs/changelog.rst:46 8c7dd12cb42d4dfb8200685c3159343f
+#: ../../changelog.rst:41 5d55a6fd66864df08ca7526a9dbc4dbf
 msgid "``VibeMQ.Client.DependencyInjection`` — client DI integration"
-msgstr ""
+msgstr "**Документация:**"
 
-#: ../../docs/changelog.rst:48 9280444174fb43178b4b155669add63b
+#: ../../changelog.rst:43 0e925194741845369f41c42140af32ce
 msgid "**Documentation:**"
-msgstr ""
+msgstr "График релизов"
 
-#: ../../docs/changelog.rst:50 ee1415932c41459f98f6d8a0af4e8d66
+#: ../../changelog.rst:45 816a2b3ad81642759d1d0c17ae171d8b
 msgid "Full documentation on ReadTheDocs"
-msgstr ""
+msgstr "Уведомления об изменениях"
 
-#: ../../docs/changelog.rst:51 17eb9c366aea44729ee8555ac54f9d0e
+#: ../../changelog.rst:46 5fbf143d3854414082d81244feed447b
 msgid "Usage examples"
-msgstr ""
+msgstr "**Breaking changes** анонсируются:"
 
-#: ../../docs/changelog.rst:52 3c72f9855ccd407e8af2e92dfc790f10
+#: ../../changelog.rst:47 9e88c5b5cfa44352b59a98178e0f4313
 msgid "Deployment guides"
-msgstr ""
+msgstr "Бэклог (Версия 2.0+)"
 
-#: ../../docs/changelog.rst:55 4324e656182c48aa98ea178cad89b849
+#: ../../changelog.rst:50 8cd306c2311048249d9fac1c4b4eafd4
 msgid "Backlog (Version 2.0+)"
-msgstr ""
+msgstr "**Планируемые возможности:**"
 
-#: ../../docs/changelog.rst:57 5c3d86597bdd4c428fd637f93cb7b45a
+#: ../../changelog.rst:52 a52e3d2da3a3455dbec4ce74bb9f9ca6
 msgid "**Planned features:**"
-msgstr ""
+msgstr "1. Создайте issue на GitHub с описанием функции"
 
-#: ../../docs/changelog.rst:59 9dceea559d9a45cb9cde761fc5792b1d
+#: ../../changelog.rst:54 11e70c1f065142e0b506412a91257e3a
 msgid "Persistence layer for message storage"
-msgstr ""
+msgstr "2. Обсудите с maintainers целесообразность"
 
-#: ../../docs/changelog.rst:60 b3cd160c5a374365a88866964a36fb77
+#: ../../changelog.rst:55 950393df2b13416bb5007184ed0c0a55
 msgid "Clustering for horizontal scaling"
-msgstr ""
+msgstr "3. Если одобрено — создайте pull request"
 
-#: ../../docs/changelog.rst:61 221b0317438b41148c0a1b678dfbcebc
+#: ../../changelog.rst:56 cffc55f1cb054337a596acfa995be053
 msgid "Support for other protocols (AMQP, MQTT, HTTP)"
-msgstr ""
+msgstr "Как сообщить о баге"
 
-#: ../../docs/changelog.rst:62 c83eadf199b040eaa6b533df0769bab3
+#: ../../changelog.rst:57 1bad9572008b4941a8da01d06b5c2c5d
 msgid "Advanced monitoring (Prometheus, Grafana)"
-msgstr ""
+msgstr "1. Проверьте существующие issues"
 
-#: ../../docs/changelog.rst:63 0c2898f4a9814e85b160639f9d2b796d
+#: ../../changelog.rst:58 1cd0ac1ca9db44f9bf6cf4ca6bb0f627
 msgid "Web management interface"
-msgstr ""
+msgstr "2. Создайте новое issue с описанием:"
 
-#: ../../docs/changelog.rst:64 616dd23a4f1143efa5e9cccc43fbce68
+#: ../../changelog.rst:59 23cb49c95d744190aca9b1c787557766
 msgid ".NET 10 support"
-msgstr ""
+msgstr "Как внести вклад в документацию"
 
-#: ../../docs/changelog.rst:65 6eb2059a749944d4b8eb19ca25ff93d2
+#: ../../changelog.rst:60 e16fe63901d64c0b932f8ad55264fecc
 msgid "Protocol-level compression"
-msgstr ""
+msgstr "1. Найдите проблему в документации"
 
-#: ../../docs/changelog.rst:66 71667eb7463842f781161bce4813b0dd
+#: ../../changelog.rst:61 3d21b8dc3b8841bf907f2eabb5be03bd
 msgid "Granular authorization"
-msgstr ""
+msgstr "2. Создайте issue или pull request"
 
-#: ../../docs/changelog.rst:67 a83dc5306b0e4600b6847171bfbf9816
+#: ../../changelog.rst:62 8f3092621eaa4d67b4688dfb64d295a5
+msgid "Binary protocol (MessagePack/Protobuf)"
+msgstr "3. Опишите предлагаемые изменения"
+
+#: ../../changelog.rst:63 4b79d5f6e9d244688a4ba1422880cdcf
 msgid "Class-based subscriptions"
-msgstr ""
+msgstr "Ссылки"
 
-#: ../../docs/changelog.rst:68 6633740c67e24d85ab0a4cca47b19f9e
+#: ../../changelog.rst:64 0093f9e89ef64ae4b77bd3b509499061
 msgid "Delayed messages"
-msgstr ""
+msgstr "Последнее обновление: Февраль 2026"
 
-#: ../../docs/changelog.rst:69 74e4029bdb3449319545a6980a1af6d7
+#: ../../changelog.rst:65 49baaae34b3c46648f636c8a47e3b991
 msgid "Transactional messages"
-msgstr ""
+msgstr "Архив версий"
 
-#: ../../docs/changelog.rst:72 f922ad798cff488fbd6829baf69d4b04
+#: ../../changelog.rst:68 4f8105fac6f94af1b4f8f16758822df5
 msgid "Version Archive"
-msgstr ""
+msgstr "Версия 0.1.0 (Альфа)"
 
-#: ../../docs/changelog.rst:75 db3527f8a7b64ff2b24ca02b0701f835
+#: ../../changelog.rst:71 8f3a50851bce4507a30e581e62c6d14e
 msgid "Version 0.1.0 (Alpha)"
-msgstr ""
+msgstr "**Дата:** Февраль 2026"
 
-#: ../../docs/changelog.rst:77 48040739cf0241228c01d4c230c4f8d2
+#: ../../changelog.rst:73 6fb4f12d74704f9c9f72d2459251f7f4
 msgid "**Date:** February 2026"
-msgstr ""
+msgstr "**Статус:** Альфа-версия для тестирования"
 
-#: ../../docs/changelog.rst:79 6efbef8aea384cf6b9700ceb79d4a0b3
+#: ../../changelog.rst:75 1a1b0add44674f898f585913a3365bc9
 msgid "**Status:** Alpha version for testing"
-msgstr ""
+msgstr "**Включает:**"
 
-#: ../../docs/changelog.rst:81 72e863da59224ea7a8668b0a2d632403
+#: ../../changelog.rst:77 155a0045d9f54e9b9348a54c245858f1
 msgid "**Includes:**"
-msgstr ""
+msgstr "**Включает:**"
 
-#: ../../docs/changelog.rst:83 a17f213026cd4e158579ef77d0305ccf
+#: ../../changelog.rst:79 52cda2fbda6a4ee5bd426120409bb23f
 msgid "Basic project architecture"
-msgstr ""
+msgstr "Базовая архитектура проекта"
 
-#: ../../docs/changelog.rst:84 12b14b91651c4927b9f1b6752ef7140a
+#: ../../changelog.rst:80 1d6c7071d6e441c4a70707cde5283a4f
 msgid "Communication protocol prototype"
-msgstr ""
+msgstr "Прототип протокола связи"
 
-#: ../../docs/changelog.rst:85 a1181255adc64c00a7adc9455f9a99af
+#: ../../changelog.rst:81 fbfd2fcdd0da4e91b69f837691746675
 msgid "Simple queue implementation"
-msgstr ""
+msgstr "Простая реализация очереди"
 
-#: ../../docs/changelog.rst:86 5675daa4465e454caeb22d607ee13ec7
+#: ../../changelog.rst:82 473c28573eb343e1aa06138845542ef7
 msgid "Basic client and server"
-msgstr ""
+msgstr "**Известные ограничения:**"
 
-#: ../../docs/changelog.rst:88 b9ba9b70c19e4278bcc99240640bc481
+#: ../../changelog.rst:84 964017ce1230471cb8fdd9d19de3c76c
 msgid "**Known limitations:**"
-msgstr ""
+msgstr "**Известные ограничения:**"
 
-#: ../../docs/changelog.rst:90 8978d0d4735549de9a7c6c5faca60952
+#: ../../changelog.rst:86 50ffb9f8a991418ab6d2f964860c95af
 msgid "No delivery guarantees"
-msgstr ""
+msgstr "Никаких гарантий доставки"
 
-#: ../../docs/changelog.rst:91 af7305b07ed04a61b192f7a698a60a44
+#: ../../changelog.rst:87 57fadde55e414d818a4689c10938c7e7
 msgid "No persistent storage"
-msgstr ""
+msgstr "Нет постоянного хранилища"
 
-#: ../../docs/changelog.rst:92 21d8b7862dc3482088f1681ec9eb758d
+#: ../../changelog.rst:88 3fc835966a77425790ba4c508562bd83
 msgid "Limited documentation"
-msgstr ""
+msgstr "Ограниченная документация"
 
-#: ../../docs/changelog.rst:93 cab0e5a9135d4cf4a3ac7ca9de282213
+#: ../../changelog.rst:89 ce78744d82134f3c9a5ffe0aad665398
 msgid "API may change"
-msgstr ""
+msgstr "Формат версий"
 
-#: ../../docs/changelog.rst:96 33b94124c1a243f18de29c379ceae5e2
+#: ../../changelog.rst:92 015a5c7bfc1440a8a307a8e82b4440ac
 msgid "Version Format"
-msgstr ""
+msgstr "Формат версий"
 
-#: ../../docs/changelog.rst:98 3a6887f7c85940b1863388af86b3e4be
+#: ../../changelog.rst:98
 msgid ""
-"VibeMQ uses `SemVer 2.0 <https://semver.org/>`_ with version set from the"
-" repository tag in the Release pipeline (passed as MSBuild property "
+"VibeMQ uses `SemVer 2.0 <https://semver.org/>`_ with version set from the "
+"repository tag in the Release pipeline (passed as MSBuild property "
 "``Version``):"
 msgstr ""
+"VibeMQ использует `SemVer 2.0 <https://semver.org/lang/ru/>`_ с версией из "
+"тега репозитория, передаваемой в Release pipeline как свойство MSBuild "
+"``Version``:"
 
-#: ../../docs/changelog.rst:100 d3af232b0b4344c88e9aa57f60367c5c
+#: ../../changelog.rst:100
 msgid "**Format:** ``MAJOR.MINOR.PATCH``"
-msgstr ""
+msgstr "**Формат:** ``MAJOR.MINOR.PATCH``"
 
-#: ../../docs/changelog.rst:102 1ba8534533ac4e38948ffc31a634e48c
-msgid "**MAJOR** — incompatible API changes (set via release tag)"
-msgstr ""
+#: ../../changelog.rst:102
+msgid "- **MAJOR** — incompatible API changes (set via release tag)"
+msgstr "- **MAJOR** — несовместимые изменения API (задаётся тегом релиза)"
 
-#: ../../docs/changelog.rst:103 10503d4444c5450b914b146216a82451
-msgid "**MINOR** — new functionality, backward compatible (set via release tag)"
+#: ../../changelog.rst:103
+msgid ""
+"- **MINOR** — new functionality, backward compatible (set via release tag)"
 msgstr ""
+"- **MINOR** — новая функциональность, обратно совместимая (задаётся тегом "
+"релиза)"
 
-#: ../../docs/changelog.rst:104 53d7155ce9364d48ade8855bbe4aa0e0
-msgid "**PATCH** — bug fixes (set via release tag)"
-msgstr ""
+#: ../../changelog.rst:104
+msgid "- **PATCH** — bug fixes (set via release tag)"
+msgstr "- **PATCH** — исправления багов (задаётся тегом релиза)"
 
-#: ../../docs/changelog.rst:106 2ef076bbb0b8475e839718e431f8b7cf
+#: ../../changelog.rst:106
 msgid "**Versioning:**"
-msgstr ""
+msgstr "**Версионирование:**"
 
-#: ../../docs/changelog.rst:108 20128db82c494a968ab1b7c0a3cc8b08
+#: ../../changelog.rst:108
 msgid ""
-"**Releases:** version is taken from the git tag (e.g. ``v1.0.0``) and "
-"passed directly into the pipeline (``-p:Version=...``); no version file "
-"in the repo."
+"- **Releases:** version is taken from the git tag (e.g. ``v1.0.0``) and "
+"passed directly into the pipeline (``-p:Version=...``); no version file in "
+"the repo."
 msgstr ""
+"- **Релизы:** версия берётся из git-тега (например, ``v1.0.0``) и передаётся"
+" в пайплайн (``-p:Version=...``); файла версии в репозитории нет."
 
-#: ../../docs/changelog.rst:109 73bc6e4bcb8844238e7774d478c2102d
-msgid "**Local builds:** default ``1.0.0`` (or pass ``-p:Version=1.2.3``)."
+#: ../../changelog.rst:109
+msgid "- **Local builds:** default ``1.0.0`` (or pass ``-p:Version=1.2.3``)."
 msgstr ""
+"- **Локальные сборки:** по умолчанию ``1.0.0`` (или передать "
+"``-p:Version=1.2.3``)."
 
-#: ../../docs/changelog.rst:111 55be39430f1b4235a5b3a07150942e67
+#: ../../changelog.rst:111
 msgid "**Examples:**"
-msgstr ""
+msgstr "**Примеры:**"
 
-#: ../../docs/changelog.rst:113 95e687d04e0c48edbc6b2cddc75e8977
-msgid "``1.0.0`` — release from tag ``v1.0.0``"
-msgstr ""
+#: ../../changelog.rst:113
+msgid "- ``1.0.0`` — release from tag ``v1.0.0``"
+msgstr "- ``1.0.0`` — релиз из тега ``v1.0.0``"
 
-#: ../../docs/changelog.rst:114 e6d07dc852824679af2962c3c9625b75
-msgid "``1.1.0`` — release from tag ``v1.1.0``"
-msgstr ""
+#: ../../changelog.rst:114
+msgid "- ``1.1.0`` — release from tag ``v1.1.0``"
+msgstr "- ``1.1.0`` — релиз из тега ``v1.1.0``"
 
-#: ../../docs/changelog.rst:115 08e18285c0e74a4385c0c39103a7b142
-msgid "``2.0.0`` — breaking changes release from tag ``v2.0.0``"
-msgstr ""
+#: ../../changelog.rst:115
+msgid "- ``2.0.0`` — breaking changes release from tag ``v2.0.0``"
+msgstr "- ``2.0.0`` — релиз с breaking changes из тега ``v2.0.0``"
 
-#: ../../docs/changelog.rst:117 9e3ad9a9f53147b0988f60997a6ddc21
+#: ../../changelog.rst:104 0ea7dbd122b741ed84646f0cc2d9248a
+msgid "``1.0.0`` — first stable release"
+msgstr "``1.0.0`` — первый стабильный релиз"
+
+#: ../../changelog.rst:105 9cd0d37707f24159834134fccb97ad3f
+msgid "``1.1.0`` — new functionality"
+msgstr "``1.1.0`` — новая функциональность"
+
+#: ../../changelog.rst:106 ee01ea024f844dc48e08cca747ea233e
+msgid "``1.1.1`` — bug fixes"
+msgstr "``1.1.1`` — исправления багов"
+
+#: ../../changelog.rst:107 fdb1e7ee01664ba9875d7bdf4a3d9c1a
+msgid "``2.0.0`` — breaking changes"
+msgstr "``2.0.0`` — breaking changes"
+
+#: ../../changelog.rst:121
 msgid "Pre-release versions:"
-msgstr ""
+msgstr "Предрелизные версии:"
 
-#: ../../docs/changelog.rst:119 5c11ecc396564f0191710b86a00a1bcb
+#: ../../changelog.rst:123
+msgid "- ``1.0.0-alpha.1`` — alpha version"
+msgstr "- ``1.0.0-alpha.1`` — alpha версия"
+
+#: ../../changelog.rst:111 3750ae598314467281bb6b287b6bcd2d
 msgid "``1.0.0-alpha.1`` — alpha version"
-msgstr ""
+msgstr "``1.0.0-alpha.1`` — alpha версия"
 
-#: ../../docs/changelog.rst:120 9cae7c8f6e5c4ba79370cff5b2b7fda4
+#: ../../changelog.rst:112 147dc7879df544eb84b63e0a0a1ed4c8
 msgid "``1.0.0-beta.1`` — beta version"
-msgstr ""
+msgstr "``1.0.0-beta.1`` — бета-версия"
 
-#: ../../docs/changelog.rst:121 06df0b4888b84d6ca8efae6499597055
+#: ../../changelog.rst:113 434782fc6353495f83ff1d914eaa2a55
 msgid "``1.0.0-rc.1`` — release candidate"
-msgstr ""
+msgstr "Политика версионирования"
 
-#: ../../docs/changelog.rst:124 c0276e412cdf4cccba690c21da6b58bf
+#: ../../changelog.rst:116 0ee64f15fe4b450493234eb067cd9f42
 msgid "Versioning Policy"
-msgstr ""
+msgstr "Поддержка версий"
 
-#: ../../docs/changelog.rst:127 68871c3d63a04e39a516dcd5be21be12
+#: ../../changelog.rst:119 782714d08d0a4cb28ebf7b6c4e2a3200
 msgid "Version Support"
-msgstr ""
+msgstr "Поддержка версий"
 
-#: ../../docs/changelog.rst:129 c2c42081bfd1474585ff75a7184d97e9
+#: ../../changelog.rst:121 fbe4a9f80b7c4762953acbed14788a4c
 msgid "**Current version** — full support"
-msgstr ""
+msgstr "3. Если одобрено — создайте pull request"
 
-#: ../../docs/changelog.rst:130 e4692e58ae254a98a9913efebcca8f53
+#: ../../changelog.rst:122 e8474f3c2c0241c081a44f7b34e9aaec
 msgid "**Previous MINOR** — security patch support"
-msgstr ""
+msgstr "3. Если одобрено — создайте pull request"
 
-#: ../../docs/changelog.rst:131 5ff8f1554aa6439a85a02550645102d6
+#: ../../changelog.rst:123 66b904b68c054421a59f0946fd5eb0cd
 msgid "**Older versions** — not supported"
-msgstr ""
+msgstr "График релизов"
 
-#: ../../docs/changelog.rst:134 30a892d4b65b4c3e8a2c9305cade6569
+#: ../../changelog.rst:126 f1b55e9c8af8407ebbc687b9a2387142
 msgid "Release Schedule"
-msgstr ""
+msgstr "График релизов"
 
-#: ../../docs/changelog.rst:136 7ce66b8fb0994928a2cd9cbc8fee2c92
+#: ../../changelog.rst:128 e1cf33de098848ecb7226164ad0c3bd4
 msgid "**MAJOR releases** — as breaking changes accumulate"
-msgstr ""
+msgstr "3. Если одобрено — создайте pull request"
 
-#: ../../docs/changelog.rst:137 eb877aa7e42b4d2b914948a12aa91477
+#: ../../changelog.rst:129 9ccb5f3313304970970a453b0adc513a
 msgid "**MINOR releases** — quarterly"
-msgstr ""
+msgstr "**МАЛЫЕ выпуски** — ежеквартально."
 
-#: ../../docs/changelog.rst:138 5f121716fe1445abae69b428cd3ded9e
+#: ../../changelog.rst:130 bd58a211f3a84e78b5172f712ed2eaea
 msgid "**PATCH releases** — as needed"
-msgstr ""
+msgstr "Уведомления об изменениях"
 
-#: ../../docs/changelog.rst:141 cac2f6e376514c99b8605c595fff2cd0
+#: ../../changelog.rst:133 fa4180d869c344d2ab5e50853c3cf52c
 msgid "Change Notifications"
-msgstr ""
+msgstr "**Breaking changes** анонсируются:"
 
-#: ../../docs/changelog.rst:143 2fb0aa7abaac43af891c6d39ade66fbc
+#: ../../changelog.rst:135 af9a8a33c7174a598f341aa582aa6195
 msgid "**Breaking changes** are announced:"
-msgstr ""
+msgstr "**Breaking changes** анонсируются:"
 
-#: ../../docs/changelog.rst:145 ac012dfb9fa0488eb2d3254224317897
+#: ../../changelog.rst:137 5b5cca6ba281480ca2775b3ca4832b63
 msgid "In changelog"
-msgstr ""
+msgstr "Changelog"
 
-#: ../../docs/changelog.rst:146 8eb12b46705c4bac958f69d13a04301b
+#: ../../changelog.rst:138 2682620e05f84182878cf08026ac1804
 msgid "In release notes on GitHub"
-msgstr ""
+msgstr "В примечаниях к выпуску на GitHub"
 
-#: ../../docs/changelog.rst:147 58d9459754614753882576c7f6ae3cfc
+#: ../../changelog.rst:139 218509a600dc43389ed2ae1e069aaf5c
 msgid "One month before new MAJOR version release"
-msgstr ""
+msgstr "Вклад в проект"
 
-#: ../../docs/changelog.rst:150 de4c47af74dc4b77b44cb758ce921088
+#: ../../changelog.rst:142 5564f3488c124189b4142d1ac726cfee
 msgid "Contributing to the Project"
-msgstr ""
+msgstr "Как предложить улучшение"
 
-#: ../../docs/changelog.rst:153 5790efe6d65c403884fc86ff665a13d0
+#: ../../changelog.rst:145 b0ac8e2c35224c74922c125db69c00bc
 msgid "How to Suggest an Improvement"
-msgstr ""
+msgstr "1. Создайте issue на GitHub с описанием функции"
 
-#: ../../docs/changelog.rst:155 9ae8ae390d1e49a9a6a83dae39f46336
+#: ../../changelog.rst:147 13cdd66200164736927da38c775355c4
 msgid "Create an issue on GitHub with feature description"
-msgstr ""
+msgstr "3. Если одобрено — создайте pull request"
 
-#: ../../docs/changelog.rst:156 eb759c64816f45ed8bd9e82b98995960
+#: ../../changelog.rst:148 ae7787613c53408281d957a5a56d5736
 msgid "Discuss feasibility with maintainers"
-msgstr ""
+msgstr "2. Обсудите с maintainers целесообразность"
 
-#: ../../docs/changelog.rst:157 5287596b6ece4721a967128952758f82
+#: ../../changelog.rst:149 6d0d41568e494db79f6a645a65f86c70
 msgid "If approved — create a pull request"
-msgstr ""
+msgstr "Как сообщить о баге"
 
-#: ../../docs/changelog.rst:160 21a2b2f367f34e67baeb070375a5537b
+#: ../../changelog.rst:152 8f331a15b05e438faa6185d103b7f817
 msgid "How to Report a Bug"
-msgstr ""
+msgstr "1. Проверьте существующие issues"
 
-#: ../../docs/changelog.rst:162 e8b6b8c903674b77b7b072e986b53cc9
+#: ../../changelog.rst:154 583b5aa8bc504607a7f1bd43d728e6bc
 msgid "Check existing issues"
-msgstr ""
+msgstr "1. Проверьте существующие issues"
 
-#: ../../docs/changelog.rst:163 8d97de6339dd4b209bc82d8c7c32b372
+#: ../../changelog.rst:155 3dfd724f139e4392914f66b27e5ccb99
 msgid ""
-"Create a new issue with description: - VibeMQ version - Steps to "
-"reproduce - Expected behavior - Actual behavior - Logs and errors"
+"Create a new issue with description: - VibeMQ version - Steps to reproduce -"
+" Expected behavior - Actual behavior - Logs and errors"
 msgstr ""
+"Создайте новую задачу с описанием: - Версия VibeMQ - Действия по "
+"воспроизведению - Ожидаемое поведение - Фактическое поведение - Журналы и "
+"ошибки"
 
-#: ../../docs/changelog.rst:171 fa6c6e9dee0f4db0a5ab43f11bf924cc
+#: ../../changelog.rst:163 2588da67a75d4a8c9d6ea74e1503f011
 msgid "How to Contribute to Documentation"
-msgstr ""
+msgstr "1. Найдите проблему в документации"
 
-#: ../../docs/changelog.rst:173 858df323b0f243f3b482f402e215bedd
+#: ../../changelog.rst:165 de45bbc306904a3e8848568b0f8a0db5
 msgid "Find a documentation issue"
-msgstr ""
+msgstr "3. Опишите предлагаемые изменения"
 
-#: ../../docs/changelog.rst:174 b2ef6c8379824810bfb74ab8ee4680f5
+#: ../../changelog.rst:166 b1f838adce0e4408a10d520207efaa88
 msgid "Create an issue or pull request"
-msgstr ""
+msgstr "1. Создайте issue на GitHub с описанием функции"
 
-#: ../../docs/changelog.rst:175 bb150a1077e3435984d2e79d04c96773
+#: ../../changelog.rst:167 dd7c84cb88504b13b4f4fed67bc201dd
 msgid "Describe proposed changes"
-msgstr ""
+msgstr "Ссылки"
 
-#: ../../docs/changelog.rst:178 cd44e693e8c14b9ca50ef999e5994ba0
+#: ../../changelog.rst:170 75905380e75346e9a0b2f71187286035
 msgid "Links"
-msgstr ""
+msgstr "Ссылки"
 
-#: ../../docs/changelog.rst:180 9a6803feafe746ae94f373ea28260e34
+#: ../../changelog.rst:172 17ee8b6728b84760b1cc4290b0cf1a9c
 msgid "`GitHub Repository <https://github.com/DarkBoy/VibeMQ>`_"
-msgstr ""
+msgstr "`GitHub Repository <https://github.com/DarkBoy/VibeMQ>`_"
 
-#: ../../docs/changelog.rst:181 dadf012cb91343419b53378e865edf63
+#: ../../changelog.rst:173 ab31a6cfd5f3449d866b9bf3f63757aa
 msgid "`NuGet Packages <https://www.nuget.org/packages?q=VibeMQ>`_"
-msgstr ""
+msgstr "`NuGet Packages <https://www.nuget.org/packages?q=VibeMQ>`_"
 
-#: ../../docs/changelog.rst:182 d84df8554271490696c4810f85ecb617
+#: ../../changelog.rst:174 858a8106c2244f1fb598dc470c0bbd03
 msgid "`Issues <https://github.com/DarkBoy/VibeMQ/issues>`_"
-msgstr ""
+msgstr "1. Проверьте существующие issues"
 
-#: ../../docs/changelog.rst:183 5a3734eda0974cbb8af7137f38d6f00d
+#: ../../changelog.rst:175 cdb66d9e882b4334b27a5b2413433764
 msgid "`Discussions <https://github.com/DarkBoy/VibeMQ/discussions>`_"
-msgstr ""
+msgstr "Последнее обновление: Февраль 2026"
 
-#: ../../docs/changelog.rst:185 1ac4b8b45578429eafebd5ac9fa39fed
-msgid "Last updated: February 19, 2026"
-msgstr ""
-
+#: ../../changelog.rst:177 86227a12f25043cbbd3054e8a159e498
+msgid "Last updated: February 2026"
+msgstr "**Дата:** Q2 2026"

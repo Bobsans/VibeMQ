@@ -2,8 +2,8 @@ using System.Net;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.Extensions.Logging;
-using VibeMQ.Core.Configuration;
-using VibeMQ.Core.Metrics;
+using VibeMQ.Configuration;
+using VibeMQ.Metrics;
 
 namespace VibeMQ.Health;
 

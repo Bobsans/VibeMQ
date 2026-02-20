@@ -1,5 +1,5 @@
 using Microsoft.Extensions.Logging;
-using VibeMQ.Core.Enums;
+using VibeMQ.Enums;
 using VibeMQ.Server;
 
 // ============================================================

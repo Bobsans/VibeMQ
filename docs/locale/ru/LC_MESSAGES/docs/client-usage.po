@@ -3,12 +3,11 @@
 # This file is distributed under the same license as the VibeMQ package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: VibeMQ 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-20 10:37+0300\n"
+"POT-Creation-Date: 2026-02-18 18:37+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ru\n"
@@ -20,352 +19,328 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.18.0\n"
 
-#: ../../docs/client-usage.rst:3 c120561f7a684160ae3c2dc5d18e3ad0
+
+
+
+#: ../../client-usage.rst:3 00c14bbe0f72449c9b1c2fd324064d21
 msgid "Client Usage"
 msgstr "Использование клиента"
 
-#: ../../docs/client-usage.rst:5 20642c3c894c4d94895478d2c4413b34
+#: ../../client-usage.rst:5 16a979f32ae34a6289ff4c1190067ac2
 msgid "This guide describes various ways to use the VibeMQ client."
-msgstr "В этом руководстве описаны различные способы использования клиента VibeMQ."
+msgstr "Это руководство описывает различные способы использования клиента VibeMQ."
 
-#: ../../docs/client-usage.rst:9 e00164d223f344609563e4dee1b62051
+#: ../../client-usage.rst:9 db9eb0656b9b459b8c38cd307e544803
 msgid "Contents"
-msgstr "Содержание"
+msgstr ":local:"
 
-#: ../../docs/client-usage.rst:12 3e8815bc679e4bad9bd8d7bf827eab9a
-msgid "Using with Dependency Injection (IVibeMQClient)"
-msgstr "Использование с Dependency Injection (IVibeMQClient)"
-
-#: ../../docs/client-usage.rst:14 cad7dbb5c0334d12becfd0b09232cbf3
-msgid ""
-"In ASP.NET Core or Worker Service you can inject **``IVibeMQClient``** "
-"and use it without calling ``ConnectAsync`` or managing disposal. The "
-"client is shared (Singleton) and connects lazily on first "
-"``PublishAsync`` or ``SubscribeAsync``. See :doc:`di-integration` for "
-"registration and examples."
-msgstr ""
-"В ASP.NET Core или Worker Service можно внедрить **``IVibeMQClient``** и "
-"использовать его без вызова ``ConnectAsync`` и без ручного освобождения. "
-"Клиент общий (Singleton) и подключается лениво при первом ``PublishAsync`` "
-"или ``SubscribeAsync``. Регистрация и примеры — в :doc:`di-integration`."
-
-#: ../../docs/client-usage.rst:39 215e1bdbc8024c778e481cd24a61b214
-msgid ""
-"The concrete type ``VibeMQClient`` implements ``IVibeMQClient``. For "
-"manual connection and full control, use ``VibeMQClient.ConnectAsync`` as "
-"in the sections below."
-msgstr ""
-"Конкретный тип ``VibeMQClient`` реализует ``IVibeMQClient``. Для ручного "
-"подключения и полного контроля используйте ``VibeMQClient.ConnectAsync``, "
-"как в разделах ниже."
-
-#: ../../docs/client-usage.rst:42 6f9fe400c32f451aaa3a6b31690ed2d1
+#: ../../client-usage.rst:12 e148c1e0a00148c9a61bbce171afcc62
 msgid "Connecting to Server"
+msgstr ":depth: 2"
+
+#: ../../client-usage.rst:15 0d47fd253ffb4112bcec9a892846b6d4
+msgid "Basic Connection"
 msgstr "Подключение к серверу"
 
-#: ../../docs/client-usage.rst:45 1cc539a058664247b0094b74f5a1fce3
-msgid "Basic Connection"
+#: ../../client-usage.rst:29 1748470ac7174defbb228e54c49c5c0e
+msgid "Connection with Authentication"
 msgstr "Базовое подключение"
 
-#: ../../docs/client-usage.rst:59 bf655984a6b74a0baf10821186ad9830
-msgid "Connection with Authentication"
-msgstr ""
-
-#: ../../docs/client-usage.rst:72 f282192dc5a640bfb1f6715f6a522b86
+#: ../../client-usage.rst:42 27b3731e6c454a8a86504d89c67137af
 msgid "Connection with Logging"
-msgstr ""
+msgstr "using VibeMQ.Client;"
 
-#: ../../docs/client-usage.rst:92 0dca3f2c4b264db1a65dca3ce8b3e37d
+#: ../../client-usage.rst:62 02b11c71a93c496eba312b075b037ffc
 msgid "Publishing Messages"
-msgstr ""
+msgstr "await using var client = await VibeMQClient.ConnectAsync("
 
-#: ../../docs/client-usage.rst:95 e7675ac58c6f4152ace4390d3c27eb7b
+#: ../../client-usage.rst:65 d6d13a29c2aa4bf79f1baa5d294ad445
 msgid "Basic Publishing"
-msgstr ""
+msgstr "\"localhost\","
 
-#: ../../docs/client-usage.rst:106 1bade9aea9384f9abaff7aa28fb05884
+#: ../../client-usage.rst:76 38bd7357e4e54869bd8f475ce4077e8a
 msgid "Publishing with Priority"
-msgstr ""
+msgstr "8080"
 
-#: ../../docs/client-usage.rst:123 3ba8b179c4014e9384f056a730d19d2d
+#: ../../client-usage.rst:93 66b966a8f1ec467bb5f35a8fa7655284
 msgid "Publishing with Headers"
-msgstr ""
+msgstr ");"
 
-#: ../../docs/client-usage.rst:136 3e5af34949b148119158972608629bd7
+#: ../../client-usage.rst:106 b5c04f8c1fd441d783da49cc74d202a6
 msgid "Typed Publishing"
-msgstr ""
+msgstr "Console.WriteLine($\"Подключено: {client.IsConnected}\");"
 
-#: ../../docs/client-usage.rst:138 60563af4132f4269bc5645a1aa600a2a
+#: ../../client-usage.rst:108 8f6656d385cf41ea92fda26ff65ca5bc
 msgid "Create a class for the message:"
-msgstr ""
+msgstr "Создайте класс для сообщения:"
 
-#: ../../docs/client-usage.rst:148 23bb5a1945f14a9d83dd22835b331ad4
+#: ../../client-usage.rst:118 bea3e1e245c145f6a5eb944b6268f739
 msgid "Use it:"
-msgstr ""
+msgstr "Используйте его:"
 
-#: ../../docs/client-usage.rst:159 c732072d8d564942a4ea70168ad60016
+#: ../../client-usage.rst:129 6a276c5909074f7d97f4ab6fe16e5941
 msgid "Subscribing to Messages"
-msgstr ""
+msgstr "\"localhost\","
 
-#: ../../docs/client-usage.rst:162 a0fb99e969dc45a4bda2f694792c73d5
+#: ../../client-usage.rst:132 6495cd3cb3ba480aab3553bfb0f5b808
 msgid "Basic Subscription"
-msgstr ""
+msgstr "8080,"
 
-#: ../../docs/client-usage.rst:174 96bd6e1830b548c4a3d9f7ff98499580
+#: ../../client-usage.rst:144 82a7859b919d440cbd3704516b2896fe
 msgid "Typed Subscription"
-msgstr ""
+msgstr "new ClientOptions {"
 
-#: ../../docs/client-usage.rst:192 8e0a5d4acb4046d487e82e545f10dbd7
+#: ../../client-usage.rst:162 50898ab6ff16417e8bb9f458e42bfc8b
 msgid "Subscription with Error Handling"
-msgstr ""
+msgstr "AuthToken = \"my-secret-token\""
 
-#: ../../docs/client-usage.rst:209 3d174ec5aeb54b16981977a7d9fc814a
+#: ../../client-usage.rst:179 3b35c6e93f65400582f55668450c7aaf
 msgid "Multiple Subscriptions"
-msgstr ""
+msgstr "}"
 
-#: ../../docs/client-usage.rst:237 b75d4b44067e47d096927b6043cadabc
+#: ../../client-usage.rst:207 383fbec310dc4af2bdd23b1e6f982f0e
 msgid "Unsubscribing from Queue"
-msgstr ""
+msgstr ");"
 
-#: ../../docs/client-usage.rst:240 aa31a3a7c989485f9bc4c656386c242f
+#: ../../client-usage.rst:210 a2c66a12395a477596be094ea6bc127a
 msgid "Automatic Unsubscribe"
-msgstr ""
+msgstr "Подключение с логированием"
 
-#: ../../docs/client-usage.rst:242 66eb5b1f902048d0a9e47972a6e57f24
+#: ../../client-usage.rst:212 d7e348922acf44488404f6f1ba8b2627
 msgid "When using ``await using``, unsubscription happens automatically:"
-msgstr ""
+msgstr "При использовании ``await using`` отписка происходит автоматически:"
 
-#: ../../docs/client-usage.rst:253 e1b06919bd0c4d53b3a615071679942c
+#: ../../client-usage.rst:223 012abababe3145daa337cf14d8961b50
 msgid "Manual Unsubscribe"
-msgstr ""
+msgstr "using var loggerFactory = LoggerFactory.Create(builder => {"
 
-#: ../../docs/client-usage.rst:265 6064dc319fdb40399aaf64a780e696d7
+#: ../../client-usage.rst:235 e6324779362748aeb261d5ca4a9c2df8
 msgid "Or via client method:"
-msgstr ""
+msgstr "Или через метод клиента:"
 
-#: ../../docs/client-usage.rst:272 6f351419e6284b75a9b541dcb52d3cff
+#: ../../client-usage.rst:242 565aea35a12b44ee8d315e14abf12712
 msgid "Queue Management"
-msgstr ""
+msgstr "});"
 
-#: ../../docs/client-usage.rst:275 8dd44e13e906495297f6ce6e205a5ce6
+#: ../../client-usage.rst:245 b2aec449c43b4ae9a6eaa1976a64cf3b
 msgid "Creating a Queue"
-msgstr ""
+msgstr "var logger = loggerFactory.CreateLogger<VibeMQClient>();"
 
-#: ../../docs/client-usage.rst:290 3a26e9ba4c2a465ab20e9aa1d21566cc
+#: ../../client-usage.rst:260 cae9cb3a87e945d0bf59a8c239fa2579
 msgid "Deleting a Queue"
-msgstr ""
+msgstr "var client = await VibeMQClient.ConnectAsync("
 
-#: ../../docs/client-usage.rst:297 538fa531407f431baa1fcd3573ae36e8
+#: ../../client-usage.rst:267 673dc90cfde143f1b4cb88f838712d95
 msgid "Getting Queue Information"
-msgstr ""
+msgstr "\"localhost\","
 
-#: ../../docs/client-usage.rst:311 b0124957897d413299d33ceb9e9ab950
+#: ../../client-usage.rst:281 a096578f4dd04f52a7c066ca0d577051
 msgid "List Queues"
-msgstr ""
+msgstr "8080,"
 
-#: ../../docs/client-usage.rst:322 be742bb0c27445b0a9c35a6daa3807e7
+#: ../../client-usage.rst:292 88cdb25e5a3243fc9a39a26e2f000fbc
 msgid "Client Settings"
-msgstr ""
+msgstr "new ClientOptions { AuthToken = \"my-token\" },"
 
-#: ../../docs/client-usage.rst:325 59f46245067a4668bddc289bd4fca16f
+#: ../../client-usage.rst:295 1df277fb1239443cb6115479b2c671f9
 msgid "ClientOptions"
-msgstr ""
+msgstr "ClientOptions"
 
-#: ../../docs/client-usage.rst:353 13c0aefc09e446b7a19006f15013e39d
+#: ../../client-usage.rst:323 a786e01325a84184bc36b56ee387e1a6
 msgid "ReconnectPolicy"
-msgstr ""
+msgstr "ReconnectPolicy"
 
-#: ../../docs/client-usage.rst:355 c7c03f104a2e4c9d95e23e244b193eb7
+#: ../../client-usage.rst:325 ba6af8df1cd0448fbf6068590d841f9c
 msgid "Configure reconnection policy:"
-msgstr ""
+msgstr "Настройка политики переподключения:"
 
-#: ../../docs/client-usage.rst:366 616122d94e8c4b32bf755c6772b8ae3c
+#: ../../client-usage.rst:336 4af0884a38ca4b43bcff321d57a7cb37
 msgid "**How it works:**"
-msgstr ""
+msgstr "**Как работает:**"
 
-#: ../../docs/client-usage.rst:368 6304ba98c1444e9fa6934df5a91ad379
+#: ../../client-usage.rst:338 fb678dc43cfe43cbb38caeb283f21b5a
 msgid "Attempt 1: immediately"
-msgstr ""
+msgstr "await client.PublishAsync(\"notifications\", new {"
 
-#: ../../docs/client-usage.rst:369 17e4d22c65b24674b92c645a3548b363
+#: ../../client-usage.rst:339 e686ead0ce964fa3814c1e97e86096cc
 msgid "Attempt 2: after 1s"
-msgstr ""
+msgstr "Title = \"Привет\","
 
-#: ../../docs/client-usage.rst:370 e803d86d0dd547a69cc656b9387eadfe
+#: ../../client-usage.rst:340 50819f462d3e4d3a91de90ba96afac41
 msgid "Attempt 3: after 2s"
-msgstr ""
+msgstr "Body = \"Это тестовое сообщение\","
 
-#: ../../docs/client-usage.rst:371 5e145266093048ec93e17fe8a6846142
+#: ../../client-usage.rst:341 64fe478847c4492d8ace4253479b8142
 msgid "Attempt 4: after 4s"
-msgstr ""
+msgstr "Timestamp = DateTime.Now"
 
-#: ../../docs/client-usage.rst:372 6820cf1ea7024b649b93736052aef92d
+#: ../../client-usage.rst:342 7a102655b2f8472699a064cbfd45b803
 msgid "Attempt 5: after 8s"
-msgstr ""
+msgstr "});"
 
-#: ../../docs/client-usage.rst:373 66a9368f9ab842b0bfa95027dab1347c
+#: ../../client-usage.rst:343 556e63a9b23744ca9d0ce1c171200533
 msgid "..."
-msgstr ""
+msgstr "Публикация с приоритетом"
 
-#: ../../docs/client-usage.rst:374 a935b8dfe90b4bc78e2f0bf89cd6a52f
+#: ../../client-usage.rst:344 e54e0bc2da5d466eb829e5f2885861ce
 msgid "Attempt N: after 5min (maximum)"
-msgstr ""
+msgstr "using VibeMQ.Core.Enums;"
 
-#: ../../docs/client-usage.rst:377 b6bde56867c14f26aa4c10f676de5ff3
+#: ../../client-usage.rst:347 a74229911e3845f090e9f946f6a243c4
 msgid "TLS/SSL Connection"
-msgstr ""
+msgstr "// Критическое сообщение"
 
-#: ../../docs/client-usage.rst:379 1fa600f4e1934585b6a74d82922924ad
+#: ../../client-usage.rst:349 cfe8bfcf40ec4e15984d8d43741b7fdf
 msgid "Connection with TLS:"
-msgstr ""
+msgstr "Подключение с TLS:"
 
-#: ../../docs/client-usage.rst:394 36cab545e0bc43a58536451f35593549
+#: ../../client-usage.rst:364 fc49ca30785441b98799f01313846b42
 msgid ""
 "For production, use valid certificates. ``SkipCertificateValidation = "
 "true`` only for tests!"
-msgstr ""
+msgstr "Для production используйте валидные сертификаты."
 
-#: ../../docs/client-usage.rst:398 3448eebd0cba4c0d89c13d0e13cf7043
+#: ../../client-usage.rst:368 3df2d310a2a441969b82f5a2bb211136
 msgid "Handling Disconnections"
-msgstr ""
+msgstr "});"
 
-#: ../../docs/client-usage.rst:401 48e4120970fd468bbdb886692cc80842
+#: ../../client-usage.rst:371 74844c8d394a47388736cbd1dbea263f
 msgid "Automatic Reconnection"
-msgstr ""
+msgstr "// Высокий приоритет"
 
-#: ../../docs/client-usage.rst:403 98da75c00ff74a99ba980aaa02759618
+#: ../../client-usage.rst:373 61da12c09ad646db81aa461ba4a60e6f
 msgid "Client automatically reconnects on connection loss:"
-msgstr ""
+msgstr "Клиент автоматически переподключается при разрыве:"
 
-#: ../../docs/client-usage.rst:425 491867957b8a4885b924c0edbf6ea4f4
+#: ../../client-usage.rst:395 8733687ddb8a4da9aff0b48645eb20d4
 msgid "Status Check"
-msgstr ""
+msgstr "options.Priority = MessagePriority.High;"
 
-#: ../../docs/client-usage.rst:436 42c5e2a38c594515b69e9b2536187c3b
+#: ../../client-usage.rst:406 c90804de893f41c5b66245dc7b1dbdf2
 msgid "Events (Optional)"
-msgstr ""
+msgstr "});"
 
-#: ../../docs/client-usage.rst:438 999ba6b4d19e445fac0e4f08246db080
+#: ../../client-usage.rst:408 7cfca207d43646deb439dd38eb30749f
 msgid "For status tracking, you can use periodic checks:"
-msgstr ""
+msgstr "Для отслеживания состояния можно использовать периодическую проверку:"
 
-#: ../../docs/client-usage.rst:450 aa81442e5d034010a395b054e68298ac
+#: ../../client-usage.rst:420 69ae3649b3e74195bfc7bbe85e4089a7
 msgid "Disconnecting"
-msgstr ""
+msgstr "await client.PublishAsync(\"orders\", orderData, options => {"
 
-#: ../../docs/client-usage.rst:453 0a52fdd2090e4e028448d2625fdb232d
+#: ../../client-usage.rst:423 69cd88eb0f694b3ca197b9cbff6dbebf
 msgid "Graceful Disconnect"
-msgstr ""
+msgstr "options.Headers = new Dictionary<string, string> {"
 
-#: ../../docs/client-usage.rst:460 f6e84e28c9404a6d83150dd94c5245ff
+#: ../../client-usage.rst:430 4836036a39604a3bbb408e7a644aa67d
 msgid "Using Using"
-msgstr ""
+msgstr "[\"correlationId\"] = Guid.NewGuid().ToString(),"
 
-#: ../../docs/client-usage.rst:470 f7a602d5dcf94b5da4d389fa7100d8b1
+#: ../../client-usage.rst:440 dae01ebd8ff74e68abba16129a982d44
 msgid "Full resource release:"
-msgstr ""
+msgstr "[\"source\"] = \"order-service\","
 
-#: ../../docs/client-usage.rst:477 d6d142d6011a40d794582d9e7032e0da
+#: ../../client-usage.rst:447 d9320e5bd5884984a1648200fbc62fdf
 msgid "Usage Examples"
-msgstr ""
+msgstr "[\"version\"] = \"1.0\""
 
-#: ../../docs/client-usage.rst:480 05a6106708ec4286bcd8191acf4c6589
+#: ../../client-usage.rst:450 7c86b65a08a14bb5936b31ae36e96dde
 msgid "Simple Publisher"
-msgstr ""
+msgstr "};"
 
-#: ../../docs/client-usage.rst:505 663c65679f4a43bc925b930d69cc4da9
+#: ../../client-usage.rst:475 45329a7252854a5aa422cc0220f160d6
 msgid "Simple Subscriber"
-msgstr ""
+msgstr "});"
 
-#: ../../docs/client-usage.rst:526 854ea04f7df741aeb7e4f17f6d3a687f
+#: ../../client-usage.rst:496 bc3a609672f344c1b6c046335a51dedd
 msgid "Task Processing Worker"
-msgstr ""
+msgstr "Типизированная публикация"
 
-#: ../../docs/client-usage.rst:570 6c140e5a55c84c3594dcb9bb95cbfcd5
+#: ../../client-usage.rst:540 c594e95943e4404a82f9d23c8873f48e
 msgid "Event Bus for Microservices"
-msgstr ""
+msgstr "Создайте класс для сообщения:"
 
-#: ../../docs/client-usage.rst:608 bd4191a676674181b332c1da58a6bb5e
+#: ../../client-usage.rst:578 250feb5820314eaf91e18b522659b1ee
 msgid "Troubleshooting"
-msgstr ""
+msgstr "public class OrderCreated {"
 
-#: ../../docs/client-usage.rst:611 0967b4843a0e48c39ed19122112d4c06
+#: ../../client-usage.rst:581 90de94aa49264acfa6f875d051197def
 msgid "Connection Error"
-msgstr ""
+msgstr "public string OrderId { get; set; }"
 
-#: ../../docs/client-usage.rst:613 5e8c9fcccc7f4dd6b06f5cda21b33f07
+#: ../../client-usage.rst:583 32664544a17a4fdaba2c7d3c10ca04eb
 msgid "**Error:** ``Connection refused``"
-msgstr ""
+msgstr "public decimal Amount { get; set; }"
 
-#: ../../docs/client-usage.rst:615 71232498471244c384cf891672d6cf0a
+#: ../../client-usage.rst:585 98f160f9127c41358d6c4e0349fe3613
 msgid "**Causes:**"
-msgstr ""
+msgstr "public DateTime CreatedAt { get; set; }"
 
-#: ../../docs/client-usage.rst:617 b4ed80efa947467b8b81962ac7dbda4d
+#: ../../client-usage.rst:587 beb962a0fdbd427d89b57b0f9524131c
 msgid "Server not running"
-msgstr ""
+msgstr "}"
 
-#: ../../docs/client-usage.rst:618 075b0a0884004486a9cbbf2ff8b469e0
+#: ../../client-usage.rst:588 ac041d8bbe544c83b1ca0055658a837f
 msgid "Wrong port"
-msgstr ""
+msgstr "Используйте его:"
 
-#: ../../docs/client-usage.rst:619 15cd7811baae486a83bf6a8fd6f0037a
+#: ../../client-usage.rst:589 35c9f97504c345ea97bccdf2b6ae5f91
 msgid "Firewall blocking connection"
-msgstr ""
+msgstr "await client.PublishAsync(\"orders.created\", new OrderCreated {"
 
-#: ../../docs/client-usage.rst:621 605987d96fe04b93adb4c3f8281a4244
+#: ../../client-usage.rst:591 9c50ccd1d8894ebe8f3a57b3ee4a7170
 msgid "**Solution:**"
-msgstr ""
+msgstr "OrderId = \"ORD-123\","
 
-#: ../../docs/client-usage.rst:633 8c356e15ee4840b293bc333dc6ea6d4a
+#: ../../client-usage.rst:603 011e6777a290452dbbfd70343c61c848
 msgid "Authentication Error"
-msgstr ""
+msgstr "Amount = 99.99m,"
 
-#: ../../docs/client-usage.rst:635 9076f942799c4bf2aaf0c494e93bdb29
+#: ../../client-usage.rst:605 76599c48ade84b01b22758bd8efbb7bd
 msgid "**Error:** ``Authentication failed``"
-msgstr ""
+msgstr "CreatedAt = DateTime.UtcNow"
 
-#: ../../docs/client-usage.rst:637 baf2760906894563830a33a57c194602
+#: ../../client-usage.rst:607 b5ec45de9b2e45f3955dc9fe39ea6ace
 msgid "**Solution:** Make sure tokens match:"
-msgstr ""
+msgstr "});"
 
-#: ../../docs/client-usage.rst:648 22c4b14480744e7e9f734bb6d007b5b3
+#: ../../client-usage.rst:618 37d9059cb94e4c4e9e7d9413d67e179e
 msgid "Connection Timeout"
-msgstr ""
+msgstr "Подписка на сообщения"
 
-#: ../../docs/client-usage.rst:650 d80ad01ea303495b913b2d9b2fe805fa
+#: ../../client-usage.rst:620 6d46e744926449b5990fddf529e17006
 msgid "**Error:** ``Connection timeout``"
-msgstr ""
+msgstr "Базовая подписка"
 
-#: ../../docs/client-usage.rst:652 b559af3f1c9540a6bdaba76a59cf5227
+#: ../../client-usage.rst:622 b6784b82ab06482585fe547c7cc8dd19
 msgid "**Solution:** Increase timeout:"
-msgstr ""
+msgstr "await using var subscription = await client.SubscribeAsync<dynamic>("
 
-#: ../../docs/client-usage.rst:661 4476ebbfc9ff450c90ea3aff61666245
+#: ../../client-usage.rst:631 24ce333ebac5494e81621bb912635296
 msgid "Frequent Disconnections"
-msgstr ""
+msgstr "\"notifications\","
 
-#: ../../docs/client-usage.rst:663 d909094cb92f4a758adab0f50f53f750
+#: ../../client-usage.rst:633 f6509e2c717747679f02cfe67dfc05b4
 msgid "**Cause:** Network or server issues"
-msgstr ""
+msgstr "async msg => {"
 
-#: ../../docs/client-usage.rst:665 68ec121271404b5d98f298b91cb02439
+#: ../../client-usage.rst:635 b38ef854952549e4bad610605d50fd42
 msgid "**Solution:** Configure reconnect policy:"
-msgstr ""
+msgstr "Console.WriteLine($\"Получено: {msg.Title} - {msg.Body}\");"
 
-#: ../../docs/client-usage.rst:678 10f56f99fc434d1397a8ed8343af6b8a
+#: ../../client-usage.rst:648 c14a3e49852c4828838729588bff4e93
 msgid "Next Steps"
-msgstr ""
+msgstr "}"
 
-#: ../../docs/client-usage.rst:680 6074eddc9d1846e2b9aa2231391b3fc1
+#: ../../client-usage.rst:650 bb5981dd1662411da6937e7823f7dd76
 msgid ":doc:`server-setup` — server configuration"
-msgstr ""
+msgstr ");"
 
-#: ../../docs/client-usage.rst:681 92bedaa7f99547d1a5025a59d35b9126
+#: ../../client-usage.rst:651 8fd3d59811554403a22bb26fe6b621bd
 msgid ":doc:`configuration` — configuration parameters"
-msgstr ""
+msgstr "Типизированная подписка"
 
-#: ../../docs/client-usage.rst:682 58218257b6bf413aadead949b21fbe53
+#: ../../client-usage.rst:652 6569f6a6f1c24198a89082261749a561
 msgid ":doc:`di-integration` — DI integration"
-msgstr ""
+msgstr "public class Notification {"
 

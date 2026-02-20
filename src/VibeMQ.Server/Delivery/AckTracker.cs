@@ -1,6 +1,6 @@
 using System.Collections.Concurrent;
 using Microsoft.Extensions.Logging;
-using VibeMQ.Core.Models;
+using VibeMQ.Models;
 
 namespace VibeMQ.Server.Delivery;
 

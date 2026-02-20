@@ -1,4 +1,4 @@
-using VibeMQ.Core.Interfaces;
+using VibeMQ.Interfaces;
 
 namespace VibeMQ.Server.Auth;
 

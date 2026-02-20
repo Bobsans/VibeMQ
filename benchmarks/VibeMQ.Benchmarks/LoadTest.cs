@@ -3,7 +3,7 @@ using System.Net;
 using System.Net.Sockets;
 using Microsoft.Extensions.Logging.Abstractions;
 using VibeMQ.Client;
-using VibeMQ.Core.Enums;
+using VibeMQ.Enums;
 using VibeMQ.Server;
 
 namespace VibeMQ.Benchmarks;

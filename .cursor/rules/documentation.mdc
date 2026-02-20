@@ -1,5 +1,47 @@
 ---
+description: 
 alwaysApply: true
 ---
 
-Always update the documentation and translations when you make any changes.
+# Documentation Update Rules
+
+When making any changes to the codebase, always update the documentation and translations accordingly.
+
+## Documentation Updates
+
+1. **Update source documentation**: Modify `.rst` files in `docs/docs/` to reflect code changes
+2. **Update changelog**: Add entries to `docs/docs/changelog.rst` for significant changes
+
+## Translation Workflow
+
+1. **Generate translation templates**: Run `make gettext` in `docs/` directory to generate `.pot` files
+2. **Update translation files**: Run `make update-po` to update `.po` files in `docs/locale/ru/LC_MESSAGES/`
+3. **Translate new strings**: Update Russian translations in `.po` files for any new or modified strings
+4. **Compile translations**: Ensure `.mo` files are generated (usually done automatically during build)
+
+## Cleanup After Testing
+
+After building or testing documentation, always remove build artifacts:
+
+- **Remove build directory**: Delete `docs/_build/` directory (contains HTML, gettext artifacts, doctrees)
+- **Use make clean**: Run `make clean` in `docs/` directory to remove all build artifacts
+- **Check git status**: Verify no build artifacts are staged or committed
+
+## Workflow Example
+
+```bash
+# 1. Make code changes
+# 2. Update documentation source files
+# 3. Generate/update translations
+cd docs
+make gettext
+make update-po
+# 4. Update .po files with translations
+# 5. Test documentation build
+make html-all
+# 6. Clean up artifacts
+make clean
+cd ..
+```
+
+**Important**: Never commit `docs/_build/` directory or its contents. Always clean build artifacts before committing changes.

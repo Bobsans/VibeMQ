@@ -1,4 +1,4 @@
-namespace VibeMQ.Core.Configuration;
+namespace VibeMQ.Configuration;
 
 /// <summary>
 /// Rate limiting configuration for connections and messages.

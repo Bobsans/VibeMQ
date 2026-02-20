@@ -8,15 +8,56 @@ VibeMQ project change history.
    :local:
    :depth: 2
 
-Planned Versions
+Version History
 ================
 
-Version 1.0.0 (In Development)
-------------------------------
+Version 1.2.0
+-------------
+
+**Date:** February 2026
+
+**Status:** Current Stable Version
+
+**New features:**
+
+- **Class-based subscriptions** — subscribe using ``IMessageHandler<T>`` interface instead of lambda handlers
+- **Automatic subscription** — handlers with ``[Queue]`` attribute are automatically subscribed on application start via ``AddMessageHandlerSubscriptions()``
+- **CreateQueueAsync** — client method to explicitly create queues with custom options
+- **Message handler registration** — ``AddMessageHandler<TMessage, THandler>()`` and ``AddMessageHandlers(Assembly)`` for DI integration
+
+**Improvements:**
+
+- Better testability with class-based handlers
+- Improved code organization and dependency injection support
+- Updated documentation with class-based subscription examples
+
+Version 1.1.0
+-------------
+
+**Date:** February 2026
+
+**Status:** Stable
+
+**New features:**
+
+- **IVibeMQClient interface** — injectable client interface for dependency injection
+- **ManagedVibeMQClient** — shared, lazily-connected client registered as Singleton in DI
+- Single call to ``AddVibeMQClient()`` now registers both ``IVibeMQClientFactory`` and ``IVibeMQClient``
+- Client connects automatically on first ``PublishAsync`` or ``SubscribeAsync`` call
+- Graceful shutdown with sync-over-async dispose and timeout
+
+**Improvements:**
+
+- Updated documentation with DI usage examples
+- Added Russian translations for new sections
+- Unit tests for DI client registration
+
+Version 1.0.0
+-------------
 
 **Date:** Q2 2026
 
-**Status:** Current Stable Version
+**Status:** Stable
 
 **New features:**
 
@@ -64,7 +105,6 @@ Backlog (Version 2.0+)
 - .NET 10 support
 - Protocol-level compression
 - Granular authorization
-- Class-based subscriptions
 - Delayed messages
 - Transactional messages
 
@@ -182,4 +222,4 @@ Links
 - `Issues <https://github.com/DarkBoy/VibeMQ/issues>`_
 - `Discussions <https://github.com/DarkBoy/VibeMQ/discussions>`_
 
-Last updated: February 19, 2026
+Last updated: February 20, 2026

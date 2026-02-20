@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <RootNamespace>VibeMQ.Core</RootNamespace>
+    <RootNamespace>VibeMQ</RootNamespace>
     <Description>Core models, enums, interfaces, protocol implementation, and health check server for VibeMQ message broker. Unified package that includes VibeMQ.Core, VibeMQ.Protocol, and VibeMQ.Health.</Description>
     <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>

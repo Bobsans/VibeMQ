@@ -1,4 +1,4 @@
-namespace VibeMQ.Core.Metrics;
+namespace VibeMQ.Metrics;
 
 /// <summary>
 /// Immutable point-in-time snapshot of all broker metrics.
