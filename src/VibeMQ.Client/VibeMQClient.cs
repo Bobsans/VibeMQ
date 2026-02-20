@@ -13,7 +13,7 @@ namespace VibeMQ.Client;
 /// Client for connecting to a VibeMQ message broker.
 /// Handles connection, publish/subscribe, keep-alive, reconnection, and graceful disconnect.
 /// </summary>
-public sealed partial class VibeMQClient : IAsyncDisposable {
+public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
     private readonly ClientOptions _options;
     private readonly ILogger<VibeMQClient> _logger;
     private readonly ConcurrentDictionary<string, Func<ProtocolMessage, Task>> _subscriptionHandlers = new();

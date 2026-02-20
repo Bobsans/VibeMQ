@@ -1,0 +1,427 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2026, Darkboy
+# This file is distributed under the same license as the VibeMQ package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: VibeMQ 1.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-02-20 10:37+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: ru\n"
+"Language-Team: ru <LL@li.org>\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../docs/troubleshooting.rst:3 36e487fc17a943e9ab7fa759fa4c1448
+msgid "Troubleshooting"
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:5 922cd454ea9e4eec9740dec301f15e38
+msgid "This guide will help solve common problems when using VibeMQ."
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:9 031a0984385a46468b5c5ac644fc6602
+msgid "Contents"
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:12 0ae3eae1d69b47e58446857caacb0df1
+msgid "Connection Issues"
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:15 f3e094ef5b1a4856a202801ae8d50ee7
+msgid "\"Connection refused\""
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:17 ../../docs/troubleshooting.rst:57
+#: ../../docs/troubleshooting.rst:84 ../../docs/troubleshooting.rst:119
+#: ../../docs/troubleshooting.rst:152 ../../docs/troubleshooting.rst:178
+#: ../../docs/troubleshooting.rst:209 ../../docs/troubleshooting.rst:296
+#: ../../docs/troubleshooting.rst:333 ../../docs/troubleshooting.rst:417
+#: ../../docs/troubleshooting.rst:451 ../../docs/troubleshooting.rst:490
+#: ../../docs/troubleshooting.rst:523 ../../docs/troubleshooting.rst:547
+#: 262e0d70ffb64f06bf78690041f80e5b 48b9ad8d4de54d3290fc078b987e0349
+#: 7ea76e2ebac741d6b3c6e061261b80fd 963be720003e4d288ee1e6d772013c23
+#: 9c2bd442c6c14c1dbd82d63215712d60 a300c3f06c8342bf86d8b5e81291f96e
+#: a46a3eb1e41c4a1d8bc7728556cbeb2b cc1be747f119400b997e11bd06d017a0
+#: d5ea8e12f32f4391936710e6cd5d7f06 da4f4d6ce5754160a21eb0beca4d5cff
+#: e3ff14bcf12f423686936b8c743c252c ed86c811a5f841029cc0f5b90417dc00
+#: fe0b62f3a39b49f3bb8e9c4dc1482739 fef1c2af9a3949f681fdfc887c95d2f7
+msgid "**Error:**"
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:23 ../../docs/troubleshooting.rst:63
+#: ../../docs/troubleshooting.rst:90 ../../docs/troubleshooting.rst:184
+#: ../../docs/troubleshooting.rst:265 ../../docs/troubleshooting.rst:339
+#: ../../docs/troubleshooting.rst:390 ../../docs/troubleshooting.rst:457
+#: ../../docs/troubleshooting.rst:496 22b6524639744979836cdcebfc0b465a
+#: 28f7e3eec58d4152a1700f9b9956a7cd 2eaf907a67ee459ca258d5ac7fdb3a71
+#: 32f14bf61f1c425fa04b7cc3dd37eba1 4579fab300b44ef3bb7c1396584b28e3
+#: 5b7eaedd6e434d288763fd11896a0342 5ec36994a58646dd8f148386646dd034
+#: 5f364efc86b64534a33a4320f5374997 a46e1f0525f345489bb7bcc8da2d37d7
+msgid "**Causes:**"
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:25 0869eac880844dbbb28806e5a27c947d
+msgid "Server not running"
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:26 58de0cce57b0497c9e912d698025e63e
+msgid "Wrong port"
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:27 74fd317d6a444cf3941040395e305f9a
+msgid "Firewall blocking connection"
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:28 8aacfa5b6e8f4281b46a790436c04951
+msgid "Server listening only on localhost"
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:30 ../../docs/troubleshooting.rst:69
+#: ../../docs/troubleshooting.rst:96 ../../docs/troubleshooting.rst:127
+#: ../../docs/troubleshooting.rst:160 ../../docs/troubleshooting.rst:217
+#: ../../docs/troubleshooting.rst:241 ../../docs/troubleshooting.rst:271
+#: ../../docs/troubleshooting.rst:304 ../../docs/troubleshooting.rst:345
+#: ../../docs/troubleshooting.rst:372 ../../docs/troubleshooting.rst:396
+#: ../../docs/troubleshooting.rst:425 ../../docs/troubleshooting.rst:501
+#: ../../docs/troubleshooting.rst:531 ../../docs/troubleshooting.rst:555
+#: 0507ee1820ed4a2499d8524043d77ff6 0f6bb8adccc3437087a20c6288390776
+#: 1b528d2eb76e48b8859a861f86cf8827 2f3e2e74bd6b4bbeb20be38c2c00723a
+#: 4f88f1abafdf4309b1de8730a09735f2 6602b09152c840b1b1094105f7dd5593
+#: 6bd5abb072d74281a8b2c81784f8deb6 6f9e369d99b0443285db78cbfbd21002
+#: 7684d8a1ca5045a08df3b662b09f6ef7 7a6259d290974f4d83ee4407e07042e0
+#: 914e5fe2a2b74a8eaaa64afd03d5613f 9ac95b6e36d945c1bddb109ef208725f
+#: a4d7a83788a540569513b362f222eb02 bc8e664d0fb54e0ab14d2f39cfe23df1
+#: d17cdbc2a0d242d6a419679c0a66d7d2 de74714ccb7345a6a02c87494892b48c
+msgid "**Solution:**"
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:44 ../../docs/troubleshooting.rst:253
+#: 5165f5529496497d86cd2762349c44de 597bc51044d648e7b96bba1f85c0c1c3
+msgid "**Check:**"
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:55 ab97b2e8939f4e4db2a4eb36488f8766
+msgid "\"Connection timeout\""
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:65 6965219294ca415dabbc60655e4a593e
+msgid "Network latency"
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:66 aefad6a127954123996e26cfb7ff82bf
+msgid "Server overloaded"
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:67 258dcd55f5f54d9abf466c9c4e15aa43
+msgid "Wrong timeout"
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:82 8acad9972d8a4063b36bc660182a0f78
+msgid "\"Host unreachable\""
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:92 48dbd86bee0448e58f713ca62c3faa18
+msgid "Wrong host"
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:93 ../../docs/troubleshooting.rst:239
+#: ../../docs/troubleshooting.rst:392 7011282f3b214b20a1721a0511e5cbd6
+#: 8d9c6ed56f3d4c0a920676603a8078f1 9d77253efa0b41a98b435ddb0c9812ac
+msgid "Network issues"
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:94 c4d84d9289e04adb82caa160f540b4e2
+msgid "DNS not resolving"
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:106 40dbdac16872482e84ebcc3d50f49e13
+msgid "**DNS check:**"
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:114 5969d1a8dc3c43fb9eb4ffb78fa8461a
+msgid "Authentication Issues"
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:117 c067011c79e844e38efd1cd74b78d217
+msgid "\"Authentication failed\""
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:125 d88a44fd29b04062ac1e1ec3b5386a47
+msgid "**Cause:** Tokens on server and client do not match."
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:147 9f81b647bd9d4dffa8a1643615582278
+msgid "Tokens are case-sensitive!"
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:150 c6b7614ee3414f1280a9c458cd4a6785
+msgid "\"Authentication required\""
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:158 f8cc7049e670476681e8a4abade7487b
+msgid ""
+"**Cause:** Server requires authentication, but client did not provide "
+"token."
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:173 8612d9dbc01c41ef9dc0c354684f3383
+msgid "Queue Issues"
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:176 5ccb1210867b4fe3921c885694d83bf9
+msgid "\"Queue not found\""
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:186 752ed938210245e88bd8a345d3f33f6b
+msgid "Queue does not exist"
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:187 76f3bcf439414636a6d9caca59a601c4
+msgid "Auto-create disabled"
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:189 a9122a4faf6c45c7ba08babfbd40f0c0
+msgid "**Solution 1:** Enable auto-create:"
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:197 36648bc8192543d88a76246929e5b932
+msgid "**Solution 2:** Create queue manually:"
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:207 1ba8994afe3545cd869d58d8a4db6540
+msgid "\"Queue already exists\""
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:215 b11d656997974ad583e7811bd61100c4
+msgid "**Cause:** Attempting to create existing queue."
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:228 481a5f2e8d264e3bb1587570610aff94
+msgid "Message Delivery Issues"
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:231 34dd50d62287469c9b15a8f9ce92a08d
+msgid "Messages Not Delivered"
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:233 02cb2642153045e58e4cbe378cd2f698
+msgid "**Problem:** Messages are published but subscribers do not receive them."
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:235 1b08a3aaebc34a2db8a4283d40da97f5
+msgid "**Possible causes:**"
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:237 9c2e79cbcd2f45b2a457be31ae378485
+msgid "Subscriber not subscribed to queue"
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:238 0090312ee88e443abb7e746b0d8c0b74
+msgid "Wrong queue name"
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:261 86f9bffa12304967b50dd7925401cd14
+msgid "Slow Message Delivery"
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:263 c39d2669cc8c487a83448f0b31b64077
+msgid "**Problem:** High delivery latency."
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:267 d49f974533164a7488ec4c5a813d9c93
+msgid "Server overload"
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:268 f2aac63c2580478e8b954390bcbf0917
+msgid "Slow handlers"
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:269 1a46981aa3314aafbb8f1cfe3f9f8b92
+msgid "Network delays"
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:287 be2b1fac185d4b0999826c85b409dae6
+msgid "**Monitor latency:**"
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:294 d3faa8b3f2a047c2b391fabd2d105930
+msgid "\"Message timeout\""
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:302 bbe0f3b21df34f8cb5001df9648b2519
+msgid "**Cause:** Subscriber did not send ACK within timeout."
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:328 1e6557dbbc914924aa7d5d092176085d
+msgid "Memory Issues"
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:331 ba33a2459e394c379ef7feeba4df33ab
+msgid "\"Out of memory\""
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:341 8db83c85a8cf456badaf09d7cbb1db74
+msgid "Queues too large"
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:342 639d0f333a0a4f28a04b91bbdf2738b1
+msgid "Many unacknowledged messages"
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:343 10102a2c2280422591667b8d3a35bae5
+msgid "Memory leaks"
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:359 87533e2c80a6433199137cc247b105df
+msgid "**Monitor memory:**"
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:366 36bd610fe8bc48ef9d8eea3e1bd12558
+msgid "Backpressure"
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:368 1baf9b1393e9411882611e8f52acefd2
+msgid "**Problem:** Publications are blocked."
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:370 27ad52b28a294a66a58a7bc961d5957a
+msgid "**Cause:** Backpressure enabled due to high memory usage."
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:383 74e1b641b8514bbea02106a5bfcf8e6a
+msgid "Reconnection Issues"
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:386 a95638e87f4d4101ac7151bfa1ae2d9a
+msgid "Frequent Disconnections"
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:388 3d2aec190ff344d7a3e28b13eca21c68
+msgid "**Problem:** Client frequently disconnects."
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:393 78bbf41775164a67817d6195ec19bfdf
+msgid "Server restarting"
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:394 94d46cd0889f42088b476107aa9b2dcc
+msgid "Keep-alive timeout"
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:415 1ab951df70da43c6b34dbfa0c2bd4813
+msgid "\"Max reconnect attempts exceeded\""
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:423 455de99f945442d08a97ca14999b1faf
+msgid "**Cause:** Reconnection attempts exhausted."
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:446 a1ba3b22890744bf984e441aa503de4b
+msgid "TLS/SSL Issues"
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:449 aa51a91ae07d4236a8e81bd294ced01a
+msgid "\"Certificate validation failed\""
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:459 6a47ac97482a4761a99828e82fe3672b
+msgid "Self-signed certificate"
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:460 b9fec5ed26eb4adb958475b2bd0eab99
+msgid "Certificate expired"
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:461 637ec7b7e35241b983801eb8bd8d2c0f
+msgid "Wrong hostname"
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:463 0d1005473cc3488a8d93c68dd14f1585
+msgid "**Solution (tests only):**"
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:476 047619f1b9da4f65aed33442c85e3fdf
+msgid "**Solution (production):**"
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:485 a24dc382c10b48848595d480fdf40303
+msgid "Do not use ``SkipCertificateValidation = true`` in production!"
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:488 41bb5292ba8941e7b3eb9ba5b09035df
+msgid "\"TLS handshake failed\""
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:498 6f68a30476754f3582c5d20d26adf12a
+msgid "Server not configured for TLS"
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:499 41691415b6dc4ad79d99f4974bede69c
+msgid "Wrong certificate"
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:518 3f9eb7ae0d384321bd7f9248e9049dc4
+msgid "Rate Limiting Issues"
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:521 20891c3c0aa24c41a8ec86e754fcd7b6
+msgid "\"Rate limit exceeded\""
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:529 96d495ba0ae94dc885b886c3f7d60a34
+msgid "**Cause:** Message limit exceeded."
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:545 3b1a031091df47d59ce42b0d091ab89a
+msgid "\"Too many connections\""
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:553 a39fa0116d8e45f2af5343dab2cefd5e
+msgid "**Cause:** Connection limit exceeded."
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:565 4955760b541c4912b78f4b903f023a66
+msgid "Diagnostics"
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:568 2317539131ad4acfa78e144171709fb7
+msgid "Enabling Verbose Logging"
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:587 4960dd5771e74f08bfd649472c67be28
+msgid "Health Check"
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:598 e0e5cc11a912441bb18167c50cbd92eb
+msgid "Queue Check"
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:610 29599e57278d4a3a80b7ae618a82cf4d
+msgid "Connection Check"
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:618 a062f237dea24b36bac894f05042df2d
+msgid "Next Steps"
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:620 6b6123b5b9684a4fad949796e34a4abc
+msgid ":doc:`monitoring` — monitoring"
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:621 25fe4056f8144fda815a4c8bb93bd2b7
+msgid ":doc:`health-checks` — health checks"
+msgstr ""
+
+#: ../../docs/troubleshooting.rst:622 8bacac7aad12448aba398e3c15980e53
+msgid ":doc:`configuration` — configuration"
+msgstr ""
+

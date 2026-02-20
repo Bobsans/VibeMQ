@@ -1,0 +1,371 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2026, Darkboy
+# This file is distributed under the same license as the VibeMQ package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: VibeMQ 1.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-02-20 10:37+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: ru\n"
+"Language-Team: ru <LL@li.org>\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../docs/client-usage.rst:3 c120561f7a684160ae3c2dc5d18e3ad0
+msgid "Client Usage"
+msgstr "Использование клиента"
+
+#: ../../docs/client-usage.rst:5 20642c3c894c4d94895478d2c4413b34
+msgid "This guide describes various ways to use the VibeMQ client."
+msgstr "В этом руководстве описаны различные способы использования клиента VibeMQ."
+
+#: ../../docs/client-usage.rst:9 e00164d223f344609563e4dee1b62051
+msgid "Contents"
+msgstr "Содержание"
+
+#: ../../docs/client-usage.rst:12 3e8815bc679e4bad9bd8d7bf827eab9a
+msgid "Using with Dependency Injection (IVibeMQClient)"
+msgstr "Использование с Dependency Injection (IVibeMQClient)"
+
+#: ../../docs/client-usage.rst:14 cad7dbb5c0334d12becfd0b09232cbf3
+msgid ""
+"In ASP.NET Core or Worker Service you can inject **``IVibeMQClient``** "
+"and use it without calling ``ConnectAsync`` or managing disposal. The "
+"client is shared (Singleton) and connects lazily on first "
+"``PublishAsync`` or ``SubscribeAsync``. See :doc:`di-integration` for "
+"registration and examples."
+msgstr ""
+"В ASP.NET Core или Worker Service можно внедрить **``IVibeMQClient``** и "
+"использовать его без вызова ``ConnectAsync`` и без ручного освобождения. "
+"Клиент общий (Singleton) и подключается лениво при первом ``PublishAsync`` "
+"или ``SubscribeAsync``. Регистрация и примеры — в :doc:`di-integration`."
+
+#: ../../docs/client-usage.rst:39 215e1bdbc8024c778e481cd24a61b214
+msgid ""
+"The concrete type ``VibeMQClient`` implements ``IVibeMQClient``. For "
+"manual connection and full control, use ``VibeMQClient.ConnectAsync`` as "
+"in the sections below."
+msgstr ""
+"Конкретный тип ``VibeMQClient`` реализует ``IVibeMQClient``. Для ручного "
+"подключения и полного контроля используйте ``VibeMQClient.ConnectAsync``, "
+"как в разделах ниже."
+
+#: ../../docs/client-usage.rst:42 6f9fe400c32f451aaa3a6b31690ed2d1
+msgid "Connecting to Server"
+msgstr "Подключение к серверу"
+
+#: ../../docs/client-usage.rst:45 1cc539a058664247b0094b74f5a1fce3
+msgid "Basic Connection"
+msgstr "Базовое подключение"
+
+#: ../../docs/client-usage.rst:59 bf655984a6b74a0baf10821186ad9830
+msgid "Connection with Authentication"
+msgstr ""
+
+#: ../../docs/client-usage.rst:72 f282192dc5a640bfb1f6715f6a522b86
+msgid "Connection with Logging"
+msgstr ""
+
+#: ../../docs/client-usage.rst:92 0dca3f2c4b264db1a65dca3ce8b3e37d
+msgid "Publishing Messages"
+msgstr ""
+
+#: ../../docs/client-usage.rst:95 e7675ac58c6f4152ace4390d3c27eb7b
+msgid "Basic Publishing"
+msgstr ""
+
+#: ../../docs/client-usage.rst:106 1bade9aea9384f9abaff7aa28fb05884
+msgid "Publishing with Priority"
+msgstr ""
+
+#: ../../docs/client-usage.rst:123 3ba8b179c4014e9384f056a730d19d2d
+msgid "Publishing with Headers"
+msgstr ""
+
+#: ../../docs/client-usage.rst:136 3e5af34949b148119158972608629bd7
+msgid "Typed Publishing"
+msgstr ""
+
+#: ../../docs/client-usage.rst:138 60563af4132f4269bc5645a1aa600a2a
+msgid "Create a class for the message:"
+msgstr ""
+
+#: ../../docs/client-usage.rst:148 23bb5a1945f14a9d83dd22835b331ad4
+msgid "Use it:"
+msgstr ""
+
+#: ../../docs/client-usage.rst:159 c732072d8d564942a4ea70168ad60016
+msgid "Subscribing to Messages"
+msgstr ""
+
+#: ../../docs/client-usage.rst:162 a0fb99e969dc45a4bda2f694792c73d5
+msgid "Basic Subscription"
+msgstr ""
+
+#: ../../docs/client-usage.rst:174 96bd6e1830b548c4a3d9f7ff98499580
+msgid "Typed Subscription"
+msgstr ""
+
+#: ../../docs/client-usage.rst:192 8e0a5d4acb4046d487e82e545f10dbd7
+msgid "Subscription with Error Handling"
+msgstr ""
+
+#: ../../docs/client-usage.rst:209 3d174ec5aeb54b16981977a7d9fc814a
+msgid "Multiple Subscriptions"
+msgstr ""
+
+#: ../../docs/client-usage.rst:237 b75d4b44067e47d096927b6043cadabc
+msgid "Unsubscribing from Queue"
+msgstr ""
+
+#: ../../docs/client-usage.rst:240 aa31a3a7c989485f9bc4c656386c242f
+msgid "Automatic Unsubscribe"
+msgstr ""
+
+#: ../../docs/client-usage.rst:242 66eb5b1f902048d0a9e47972a6e57f24
+msgid "When using ``await using``, unsubscription happens automatically:"
+msgstr ""
+
+#: ../../docs/client-usage.rst:253 e1b06919bd0c4d53b3a615071679942c
+msgid "Manual Unsubscribe"
+msgstr ""
+
+#: ../../docs/client-usage.rst:265 6064dc319fdb40399aaf64a780e696d7
+msgid "Or via client method:"
+msgstr ""
+
+#: ../../docs/client-usage.rst:272 6f351419e6284b75a9b541dcb52d3cff
+msgid "Queue Management"
+msgstr ""
+
+#: ../../docs/client-usage.rst:275 8dd44e13e906495297f6ce6e205a5ce6
+msgid "Creating a Queue"
+msgstr ""
+
+#: ../../docs/client-usage.rst:290 3a26e9ba4c2a465ab20e9aa1d21566cc
+msgid "Deleting a Queue"
+msgstr ""
+
+#: ../../docs/client-usage.rst:297 538fa531407f431baa1fcd3573ae36e8
+msgid "Getting Queue Information"
+msgstr ""
+
+#: ../../docs/client-usage.rst:311 b0124957897d413299d33ceb9e9ab950
+msgid "List Queues"
+msgstr ""
+
+#: ../../docs/client-usage.rst:322 be742bb0c27445b0a9c35a6daa3807e7
+msgid "Client Settings"
+msgstr ""
+
+#: ../../docs/client-usage.rst:325 59f46245067a4668bddc289bd4fca16f
+msgid "ClientOptions"
+msgstr ""
+
+#: ../../docs/client-usage.rst:353 13c0aefc09e446b7a19006f15013e39d
+msgid "ReconnectPolicy"
+msgstr ""
+
+#: ../../docs/client-usage.rst:355 c7c03f104a2e4c9d95e23e244b193eb7
+msgid "Configure reconnection policy:"
+msgstr ""
+
+#: ../../docs/client-usage.rst:366 616122d94e8c4b32bf755c6772b8ae3c
+msgid "**How it works:**"
+msgstr ""
+
+#: ../../docs/client-usage.rst:368 6304ba98c1444e9fa6934df5a91ad379
+msgid "Attempt 1: immediately"
+msgstr ""
+
+#: ../../docs/client-usage.rst:369 17e4d22c65b24674b92c645a3548b363
+msgid "Attempt 2: after 1s"
+msgstr ""
+
+#: ../../docs/client-usage.rst:370 e803d86d0dd547a69cc656b9387eadfe
+msgid "Attempt 3: after 2s"
+msgstr ""
+
+#: ../../docs/client-usage.rst:371 5e145266093048ec93e17fe8a6846142
+msgid "Attempt 4: after 4s"
+msgstr ""
+
+#: ../../docs/client-usage.rst:372 6820cf1ea7024b649b93736052aef92d
+msgid "Attempt 5: after 8s"
+msgstr ""
+
+#: ../../docs/client-usage.rst:373 66a9368f9ab842b0bfa95027dab1347c
+msgid "..."
+msgstr ""
+
+#: ../../docs/client-usage.rst:374 a935b8dfe90b4bc78e2f0bf89cd6a52f
+msgid "Attempt N: after 5min (maximum)"
+msgstr ""
+
+#: ../../docs/client-usage.rst:377 b6bde56867c14f26aa4c10f676de5ff3
+msgid "TLS/SSL Connection"
+msgstr ""
+
+#: ../../docs/client-usage.rst:379 1fa600f4e1934585b6a74d82922924ad
+msgid "Connection with TLS:"
+msgstr ""
+
+#: ../../docs/client-usage.rst:394 36cab545e0bc43a58536451f35593549
+msgid ""
+"For production, use valid certificates. ``SkipCertificateValidation = "
+"true`` only for tests!"
+msgstr ""
+
+#: ../../docs/client-usage.rst:398 3448eebd0cba4c0d89c13d0e13cf7043
+msgid "Handling Disconnections"
+msgstr ""
+
+#: ../../docs/client-usage.rst:401 48e4120970fd468bbdb886692cc80842
+msgid "Automatic Reconnection"
+msgstr ""
+
+#: ../../docs/client-usage.rst:403 98da75c00ff74a99ba980aaa02759618
+msgid "Client automatically reconnects on connection loss:"
+msgstr ""
+
+#: ../../docs/client-usage.rst:425 491867957b8a4885b924c0edbf6ea4f4
+msgid "Status Check"
+msgstr ""
+
+#: ../../docs/client-usage.rst:436 42c5e2a38c594515b69e9b2536187c3b
+msgid "Events (Optional)"
+msgstr ""
+
+#: ../../docs/client-usage.rst:438 999ba6b4d19e445fac0e4f08246db080
+msgid "For status tracking, you can use periodic checks:"
+msgstr ""
+
+#: ../../docs/client-usage.rst:450 aa81442e5d034010a395b054e68298ac
+msgid "Disconnecting"
+msgstr ""
+
+#: ../../docs/client-usage.rst:453 0a52fdd2090e4e028448d2625fdb232d
+msgid "Graceful Disconnect"
+msgstr ""
+
+#: ../../docs/client-usage.rst:460 f6e84e28c9404a6d83150dd94c5245ff
+msgid "Using Using"
+msgstr ""
+
+#: ../../docs/client-usage.rst:470 f7a602d5dcf94b5da4d389fa7100d8b1
+msgid "Full resource release:"
+msgstr ""
+
+#: ../../docs/client-usage.rst:477 d6d142d6011a40d794582d9e7032e0da
+msgid "Usage Examples"
+msgstr ""
+
+#: ../../docs/client-usage.rst:480 05a6106708ec4286bcd8191acf4c6589
+msgid "Simple Publisher"
+msgstr ""
+
+#: ../../docs/client-usage.rst:505 663c65679f4a43bc925b930d69cc4da9
+msgid "Simple Subscriber"
+msgstr ""
+
+#: ../../docs/client-usage.rst:526 854ea04f7df741aeb7e4f17f6d3a687f
+msgid "Task Processing Worker"
+msgstr ""
+
+#: ../../docs/client-usage.rst:570 6c140e5a55c84c3594dcb9bb95cbfcd5
+msgid "Event Bus for Microservices"
+msgstr ""
+
+#: ../../docs/client-usage.rst:608 bd4191a676674181b332c1da58a6bb5e
+msgid "Troubleshooting"
+msgstr ""
+
+#: ../../docs/client-usage.rst:611 0967b4843a0e48c39ed19122112d4c06
+msgid "Connection Error"
+msgstr ""
+
+#: ../../docs/client-usage.rst:613 5e8c9fcccc7f4dd6b06f5cda21b33f07
+msgid "**Error:** ``Connection refused``"
+msgstr ""
+
+#: ../../docs/client-usage.rst:615 71232498471244c384cf891672d6cf0a
+msgid "**Causes:**"
+msgstr ""
+
+#: ../../docs/client-usage.rst:617 b4ed80efa947467b8b81962ac7dbda4d
+msgid "Server not running"
+msgstr ""
+
+#: ../../docs/client-usage.rst:618 075b0a0884004486a9cbbf2ff8b469e0
+msgid "Wrong port"
+msgstr ""
+
+#: ../../docs/client-usage.rst:619 15cd7811baae486a83bf6a8fd6f0037a
+msgid "Firewall blocking connection"
+msgstr ""
+
+#: ../../docs/client-usage.rst:621 605987d96fe04b93adb4c3f8281a4244
+msgid "**Solution:**"
+msgstr ""
+
+#: ../../docs/client-usage.rst:633 8c356e15ee4840b293bc333dc6ea6d4a
+msgid "Authentication Error"
+msgstr ""
+
+#: ../../docs/client-usage.rst:635 9076f942799c4bf2aaf0c494e93bdb29
+msgid "**Error:** ``Authentication failed``"
+msgstr ""
+
+#: ../../docs/client-usage.rst:637 baf2760906894563830a33a57c194602
+msgid "**Solution:** Make sure tokens match:"
+msgstr ""
+
+#: ../../docs/client-usage.rst:648 22c4b14480744e7e9f734bb6d007b5b3
+msgid "Connection Timeout"
+msgstr ""
+
+#: ../../docs/client-usage.rst:650 d80ad01ea303495b913b2d9b2fe805fa
+msgid "**Error:** ``Connection timeout``"
+msgstr ""
+
+#: ../../docs/client-usage.rst:652 b559af3f1c9540a6bdaba76a59cf5227
+msgid "**Solution:** Increase timeout:"
+msgstr ""
+
+#: ../../docs/client-usage.rst:661 4476ebbfc9ff450c90ea3aff61666245
+msgid "Frequent Disconnections"
+msgstr ""
+
+#: ../../docs/client-usage.rst:663 d909094cb92f4a758adab0f50f53f750
+msgid "**Cause:** Network or server issues"
+msgstr ""
+
+#: ../../docs/client-usage.rst:665 68ec121271404b5d98f298b91cb02439
+msgid "**Solution:** Configure reconnect policy:"
+msgstr ""
+
+#: ../../docs/client-usage.rst:678 10f56f99fc434d1397a8ed8343af6b8a
+msgid "Next Steps"
+msgstr ""
+
+#: ../../docs/client-usage.rst:680 6074eddc9d1846e2b9aa2231391b3fc1
+msgid ":doc:`server-setup` — server configuration"
+msgstr ""
+
+#: ../../docs/client-usage.rst:681 92bedaa7f99547d1a5025a59d35b9126
+msgid ":doc:`configuration` — configuration parameters"
+msgstr ""
+
+#: ../../docs/client-usage.rst:682 58218257b6bf413aadead949b21fbe53
+msgid ":doc:`di-integration` — DI integration"
+msgstr ""
+

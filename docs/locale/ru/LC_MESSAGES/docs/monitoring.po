@@ -1,0 +1,529 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2026, Darkboy
+# This file is distributed under the same license as the VibeMQ package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: VibeMQ 1.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-02-20 10:37+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: ru\n"
+"Language-Team: ru <LL@li.org>\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../docs/monitoring.rst:3 f01d25b9c32645b095e3ba33f14817d5
+msgid "Monitoring"
+msgstr ""
+
+#: ../../docs/monitoring.rst:5 5416c11862fe4720a656b15371f6ce6d
+msgid "This guide describes monitoring capabilities and health checks in VibeMQ."
+msgstr ""
+
+#: ../../docs/monitoring.rst:9 74015c6e24e34579b5b6b35c04fed68a
+msgid "Contents"
+msgstr ""
+
+#: ../../docs/monitoring.rst:12 f069e408b9a74a7d83bf3610d70dffdf
+msgid "Health Checks"
+msgstr ""
+
+#: ../../docs/monitoring.rst:14 103966133ab24fdfbe431418f2ae3855
+msgid "VibeMQ provides HTTP endpoints for health checks and metrics."
+msgstr ""
+
+#: ../../docs/monitoring.rst:17 5eb6eafe97ef4b8fb36b789bdd5fc004
+msgid "Enabling Health Checks"
+msgstr ""
+
+#: ../../docs/monitoring.rst:27 e3caac5e06d14c3ea63e11fc12902675
+msgid "Endpoints"
+msgstr ""
+
+#: ../../docs/monitoring.rst:30 604824babd274ca998fb9f56ff0fc3c3
+msgid "GET /health/"
+msgstr ""
+
+#: ../../docs/monitoring.rst:32 554db7fc3ac8405daea6d996497d8258
+msgid "Returns server health status."
+msgstr ""
+
+#: ../../docs/monitoring.rst:34 ../../docs/monitoring.rst:72
+#: af13eaa826344b3c9d87234570a03538 d5781bef1e75410e8b2b646de7313f72
+msgid "**Request:**"
+msgstr ""
+
+#: ../../docs/monitoring.rst:40 7657a76ae7c84c7e8589fa5c058ffe43
+msgid "**Response (200 OK):**"
+msgstr ""
+
+#: ../../docs/monitoring.rst:51 364bcd4e3c2a469f94b5e9a1e939a28c
+msgid "**Response (503 Service Unavailable):**"
+msgstr ""
+
+#: ../../docs/monitoring.rst:62 3ac271d2e4b6420a936ac1bb3333d278
+msgid "**Status codes:**"
+msgstr ""
+
+#: ../../docs/monitoring.rst:64 32941ac59e104e9688b1b2d944b4f28f
+msgid "``200 OK`` — server healthy"
+msgstr ""
+
+#: ../../docs/monitoring.rst:65 f824b34ad3644827a0ab1a06de92e5ad
+msgid "``503 Service Unavailable`` — server unhealthy (critical memory usage)"
+msgstr ""
+
+#: ../../docs/monitoring.rst:68 a503181fc7d14befbd9eeee9c4e0bc6c
+msgid "GET /metrics/"
+msgstr ""
+
+#: ../../docs/monitoring.rst:70 be363f654f2a44f7a05dfab20e908665
+msgid "Returns detailed server metrics."
+msgstr ""
+
+#: ../../docs/monitoring.rst:78 ad4fb843b711456f9955a091f508e813
+msgid "**Response:**"
+msgstr ""
+
+#: ../../docs/monitoring.rst:100 d11f6aaf3cd147d7a2c6c0b2be733daf
+msgid "Metrics"
+msgstr ""
+
+#: ../../docs/monitoring.rst:103 07f0c505e8c44485b33b9831cfd858bf
+msgid "Counters"
+msgstr ""
+
+#: ../../docs/monitoring.rst:105 484a7a0b365e4d45b927b2130453cd25
+msgid "Counters only increase and show accumulated values."
+msgstr ""
+
+#: ../../docs/monitoring.rst:108 d1a34f0306e74ca2b916d8c5b7ee94c4
+msgid "TotalMessagesPublished"
+msgstr ""
+
+#: ../../docs/monitoring.rst:110 ../../docs/monitoring.rst:122
+#: ../../docs/monitoring.rst:134 ../../docs/monitoring.rst:146
+#: ../../docs/monitoring.rst:158 ../../docs/monitoring.rst:170
+#: ../../docs/monitoring.rst:182 ../../docs/monitoring.rst:194
+#: ../../docs/monitoring.rst:248 04415ec85eb24bd2b2267c6111959bcf
+#: 168b61070e0944a4a494bebc51204f24 185f751ac62a49889c9d626950ce60d7
+#: 2e20127d6e8a444f8bb296cb6b359971 4a1b5b6765254334ab11ac2815f40a89
+#: 8264eb7ac1ef4bb2a94be44c78a931cf 953aa0bdd6e649a2a50cc4eee26891b6
+#: a77d76b50ebb4805a9446e3caf45dd68 cff866c3693e41d7ab44455e295672eb
+msgid "**Type:** ``long``"
+msgstr ""
+
+#: ../../docs/monitoring.rst:112 a868a82efde74beaa49dd740ce1d9fd1
+msgid "**Description:** Total number of published messages."
+msgstr ""
+
+#: ../../docs/monitoring.rst:114 ../../docs/monitoring.rst:126
+#: ../../docs/monitoring.rst:138 ../../docs/monitoring.rst:150
+#: ../../docs/monitoring.rst:162 ../../docs/monitoring.rst:174
+#: ../../docs/monitoring.rst:186 ../../docs/monitoring.rst:198
+#: ../../docs/monitoring.rst:226 02b6e08c44e34497a98ea20b7a0a571f
+#: 0ada13d7191848a5a478c96ffd9d26c2 1c01b161de2245b5bb3b8d7f79177f0d
+#: 1cf0eb05770a421cae545f9b378de1c4 6b408f01663b4f86bdfca35216c5e87c
+#: 7111ebce8bdb43c5973875bfef1c9d45 c66497607b7c41a4a833a1f50a2a8416
+#: d9c10c233cb443358b7f88fc76f7b780 fb2a0abfa16b4efbae63a9875653f164
+msgid "**Usage:**"
+msgstr ""
+
+#: ../../docs/monitoring.rst:116 fed78f1e5cee437a80e05842675ee03e
+msgid "Track server load"
+msgstr ""
+
+#: ../../docs/monitoring.rst:117 6a68167690e34692890c0a134c269281
+msgid "Calculate throughput (messages/sec)"
+msgstr ""
+
+#: ../../docs/monitoring.rst:120 5f4e73c4d4fd46869d2927a198182cdc
+msgid "TotalMessagesDelivered"
+msgstr ""
+
+#: ../../docs/monitoring.rst:124 ac8c614b837f4841a6621c2c36c7b0f1
+msgid "**Description:** Total number of delivered messages."
+msgstr ""
+
+#: ../../docs/monitoring.rst:128 700bc0f12e154d78af890514968cd98f
+msgid "Monitor delivery success rate"
+msgstr ""
+
+#: ../../docs/monitoring.rst:129 08ec3920b47747cd8374de144c8d02f7
+msgid "Calculate percentage of successful deliveries"
+msgstr ""
+
+#: ../../docs/monitoring.rst:132 8bf3318ad3ba45ef83abefee63b5a56f
+msgid "TotalMessagesAcknowledged"
+msgstr ""
+
+#: ../../docs/monitoring.rst:136 64027a843531452fa4bbe96078a2f6f8
+msgid "**Description:** Total number of acknowledged messages."
+msgstr ""
+
+#: ../../docs/monitoring.rst:140 797e874eaa8b48fcb81032af07a74443
+msgid "Verify ACK mechanism"
+msgstr ""
+
+#: ../../docs/monitoring.rst:141 58d6f4b9f77d494e92642915796717f6
+msgid "Identify acknowledgment issues"
+msgstr ""
+
+#: ../../docs/monitoring.rst:144 a67a6faff67f4a6d89e7c7be8f6cd158
+msgid "TotalRetries"
+msgstr ""
+
+#: ../../docs/monitoring.rst:148 496d63059b24469f94622e3c293d2e3e
+msgid "**Description:** Total number of delivery retries."
+msgstr ""
+
+#: ../../docs/monitoring.rst:152 c3a6a56106aa4b74ac4d30ec5e82d535
+msgid "Identify delivery issues"
+msgstr ""
+
+#: ../../docs/monitoring.rst:153 6d014436dcdf458bb4c46014c0176eb2
+msgid "Optimize timeouts"
+msgstr ""
+
+#: ../../docs/monitoring.rst:156 2185e5973e88446db9c83d349ab33f07
+msgid "TotalDeadLettered"
+msgstr ""
+
+#: ../../docs/monitoring.rst:160 c410b7fbbfac4f55bc5795ae6e420bb3
+msgid "**Description:** Number of messages in Dead Letter Queue."
+msgstr ""
+
+#: ../../docs/monitoring.rst:164 562c7815500142a8b8d9ad4dd50a89b5
+msgid "Monitor failed deliveries"
+msgstr ""
+
+#: ../../docs/monitoring.rst:165 9a5c5e762464448db1b98bc37609cd9f
+msgid "Requires attention when growing"
+msgstr ""
+
+#: ../../docs/monitoring.rst:168 53ff5e5b38db4fa19ac27f81e7bfc56f
+msgid "TotalErrors"
+msgstr ""
+
+#: ../../docs/monitoring.rst:172 e6142a30070542d6be4bbc33cd106d6c
+msgid "**Description:** Total number of errors."
+msgstr ""
+
+#: ../../docs/monitoring.rst:176 5efdda4c46de4086a4153c99adc0431c
+msgid "Overall system health indicator"
+msgstr ""
+
+#: ../../docs/monitoring.rst:177 66be185a09f24e15af09fa9850ed059f
+msgid "Requires investigation when growing"
+msgstr ""
+
+#: ../../docs/monitoring.rst:180 889bb8739b4546c6859424bbca987c05
+msgid "TotalConnectionsAccepted"
+msgstr ""
+
+#: ../../docs/monitoring.rst:184 10c2a4c16e7c4b22a108e8e5e1775808
+msgid "**Description:** Number of accepted connections."
+msgstr ""
+
+#: ../../docs/monitoring.rst:188 6fa7e2c4c57347108fcb7620af1ef90b
+msgid "Monitor server load"
+msgstr ""
+
+#: ../../docs/monitoring.rst:189 cd92752321bb4931954eb8cf3b4347ec
+msgid "Resource planning"
+msgstr ""
+
+#: ../../docs/monitoring.rst:192 65cc318e7ad44abcb000fa05302a9ae2
+msgid "TotalConnectionsRejected"
+msgstr ""
+
+#: ../../docs/monitoring.rst:196 c53ee6fd0bf041ed97b7e4a960138fed
+msgid "**Description:** Number of rejected connections."
+msgstr ""
+
+#: ../../docs/monitoring.rst:200 ff884045bdbe41d7ad34fc1a567fe109
+msgid "Identify capacity issues"
+msgstr ""
+
+#: ../../docs/monitoring.rst:201 3f0ef2c39de54e06b54020ef049cd9db
+msgid "Configure rate limiting"
+msgstr ""
+
+#: ../../docs/monitoring.rst:204 efce1442542049b9b41dc03f21c2643d
+msgid "Gauge Metrics"
+msgstr ""
+
+#: ../../docs/monitoring.rst:206 089f67f755d94bf79914b359a219aaed
+msgid "Gauge metrics can increase and decrease, showing current state."
+msgstr ""
+
+#: ../../docs/monitoring.rst:209 bc2ac1f85dba42a8b1a95b146dbda311
+msgid "ActiveConnections"
+msgstr ""
+
+#: ../../docs/monitoring.rst:211 ../../docs/monitoring.rst:222
+#: ../../docs/monitoring.rst:234 2cfc786dae504f4a834bcdb8faf4901e
+#: 354f4a7657264bbcbdf85c1b5a406713 af3a71ebe23f42559946df17cfc06084
+msgid "**Type:** ``int``"
+msgstr ""
+
+#: ../../docs/monitoring.rst:213 f252cc8c41c54faeb7bf66b4f9bb4b91
+msgid "**Description:** Current number of active connections."
+msgstr ""
+
+#: ../../docs/monitoring.rst:215 ../../docs/monitoring.rst:238
+#: 3172bcf27a32453e9d2cbafe9976d738 78e77c2d53144e6f969bb093af8079b2
+msgid "**Normal values:** Depends on load"
+msgstr ""
+
+#: ../../docs/monitoring.rst:217 da98f3831545461098f9359257f7ad7f
+msgid "**Alert:** Approaching ``MaxConnections``"
+msgstr ""
+
+#: ../../docs/monitoring.rst:220 e62f6a9d2ee144a099d5acf0fcebf6a6
+msgid "ActiveQueues"
+msgstr ""
+
+#: ../../docs/monitoring.rst:224 8c1f6e3b42c348cea3fcf11e7f6162d2
+msgid "**Description:** Current number of active queues."
+msgstr ""
+
+#: ../../docs/monitoring.rst:228 2b7173a075054f8ab16022810b57da61
+msgid "Monitor queue usage"
+msgstr ""
+
+#: ../../docs/monitoring.rst:229 c1812a36f63f4aeaa52ac390b9d2a41d
+msgid "Identify unused queues"
+msgstr ""
+
+#: ../../docs/monitoring.rst:232 9656debc0ea7412e88272cac5c21a953
+msgid "InFlightMessages"
+msgstr ""
+
+#: ../../docs/monitoring.rst:236 269aa910fe49463592a765860a99274c
+msgid "**Description:** Number of messages in processing (waiting for ACK)."
+msgstr ""
+
+#: ../../docs/monitoring.rst:240 43996f54b3ca43a096f45d01202fbad8
+msgid ""
+"**Alert:** High values may indicate: - Handler issues - Slow subscribers "
+"- Network problems"
+msgstr ""
+
+#: ../../docs/monitoring.rst:246 e6fc4632e9e94e71bd07ba1cce4d6ff1
+msgid "MemoryUsageBytes"
+msgstr ""
+
+#: ../../docs/monitoring.rst:250 0833a99150ae4f79b6d4e4937502620f
+msgid "**Description:** Current memory usage in bytes."
+msgstr ""
+
+#: ../../docs/monitoring.rst:252 9e0455e2b72e4f76a52f511e17297d96
+#, python-format
+msgid "**Normal values:** < 80% of available memory"
+msgstr ""
+
+#: ../../docs/monitoring.rst:254 d508beaf6cbf4c9eaf824c32e64fad6c
+msgid "**Alert:** > 90% — possible backpressure"
+msgstr ""
+
+#: ../../docs/monitoring.rst:257 d7c5c8f7b3c74537a799ee0cb1f2b448
+msgid "Latency"
+msgstr ""
+
+#: ../../docs/monitoring.rst:260 0f785a15dbf04dfc93e685351a39a686
+msgid "AverageDeliveryLatencyMs"
+msgstr ""
+
+#: ../../docs/monitoring.rst:262 0e3986cda1bf4b7bb6c5b8d9079deca1
+msgid "**Type:** ``double``"
+msgstr ""
+
+#: ../../docs/monitoring.rst:264 1005cfabffcc48e39185510bd641b5b8
+msgid "**Description:** Average message delivery latency (ms)."
+msgstr ""
+
+#: ../../docs/monitoring.rst:266 82a67804ad7c413e89ed6e04dee755dd
+msgid "**Normal values:** < 10 ms"
+msgstr ""
+
+#: ../../docs/monitoring.rst:268 cf5e564845084e7b973aec924f65cb9a
+msgid "**Alert:** > 50 ms — requires optimization"
+msgstr ""
+
+#: ../../docs/monitoring.rst:271 04d965197fd341e5b02a3e287ee4eb22
+msgid "Monitoring with Prometheus"
+msgstr ""
+
+#: ../../docs/monitoring.rst:273 5fff630ac39c4378a719dd66894655bd
+msgid "Example metrics exporter:"
+msgstr ""
+
+#: ../../docs/monitoring.rst:386 fb71bca6ed9a41a3b564cf9e13277ab1
+msgid "Registration:"
+msgstr ""
+
+#: ../../docs/monitoring.rst:397 a10c96c3379544af887f71dc58f91839
+msgid "Grafana Dashboard"
+msgstr ""
+
+#: ../../docs/monitoring.rst:399 6fae3de842f34f66b0f051dad12b694c
+msgid "Example JSON dashboard for Grafana:"
+msgstr ""
+
+#: ../../docs/monitoring.rst:452 200a6de053664b46acad1e01ce7e7574
+msgid "Logging"
+msgstr ""
+
+#: ../../docs/monitoring.rst:455 2d6da12732874e11ba3d36d5baba79a0
+msgid "Logging Configuration"
+msgstr ""
+
+#: ../../docs/monitoring.rst:475 fbeeb828360c417080d140b3a33d5164
+msgid "Log Levels"
+msgstr ""
+
+#: ../../docs/monitoring.rst:477 987e69618d714655b09bf8c8307e1c13
+msgid "**Trace:**"
+msgstr ""
+
+#: ../../docs/monitoring.rst:479 2b256a85307f4a308349b78e20b6e1a8
+msgid "Detailed information about each message"
+msgstr ""
+
+#: ../../docs/monitoring.rst:480 ee0261dd133041bf98d80c1a4d91d198
+msgid "For protocol debugging"
+msgstr ""
+
+#: ../../docs/monitoring.rst:482 5e393981b81e47b4923326e171d82bf3
+msgid "**Debug:**"
+msgstr ""
+
+#: ../../docs/monitoring.rst:484 b7b848d3083c4bb39242914fdcd878c9
+msgid "Connection information"
+msgstr ""
+
+#: ../../docs/monitoring.rst:485 6d78d2394df84db7a53e314e170cceea
+msgid "Operation status"
+msgstr ""
+
+#: ../../docs/monitoring.rst:487 79d7ad643f0d4867a0df2e0f72206a9a
+msgid "**Information:**"
+msgstr ""
+
+#: ../../docs/monitoring.rst:489 fb22019cd3b44725833b5611fd1a1601
+msgid "Server start/stop"
+msgstr ""
+
+#: ../../docs/monitoring.rst:490 a6718232bef34c78b3ffc279571e481f
+msgid "Queue creation/deletion"
+msgstr ""
+
+#: ../../docs/monitoring.rst:491 6c1eedefca52477da1bcf76b40d58ee8
+msgid "Authentication errors"
+msgstr ""
+
+#: ../../docs/monitoring.rst:493 32828cf000a14b1e8141a49d3b3e5ad6
+msgid "**Warning:**"
+msgstr ""
+
+#: ../../docs/monitoring.rst:495 0501af066e9541ae846e4be788297093
+msgid "Limit exceeded"
+msgstr ""
+
+#: ../../docs/monitoring.rst:496 e561fb63889646b48431f23e6a4f2d3d
+msgid "Delivery issues"
+msgstr ""
+
+#: ../../docs/monitoring.rst:497 7058bc4d1e504f9a90139a3801b356ec
+msgid "High memory usage"
+msgstr ""
+
+#: ../../docs/monitoring.rst:499 2e7b0ecabc304d34a67b8c5c603a7a64
+msgid "**Error:**"
+msgstr ""
+
+#: ../../docs/monitoring.rst:501 34a25c555f7b45bb909c3e4e6c5cdb9c
+msgid "Message processing errors"
+msgstr ""
+
+#: ../../docs/monitoring.rst:502 13ba414f8eaa46e581f0823cbb407139
+msgid "Connection errors"
+msgstr ""
+
+#: ../../docs/monitoring.rst:503 c6ea21820eef4b428021f725f3f70aca
+msgid "Handler exceptions"
+msgstr ""
+
+#: ../../docs/monitoring.rst:505 979e2d29a7e8461fb28aea0daee17131
+msgid "**Critical:**"
+msgstr ""
+
+#: ../../docs/monitoring.rst:507 57ae98811c914ce2afc961fa5efe9821
+msgid "Critical server errors"
+msgstr ""
+
+#: ../../docs/monitoring.rst:508 6cca9cca42864ce4b17aede630ce8413
+msgid "Unable to start"
+msgstr ""
+
+#: ../../docs/monitoring.rst:509 52234ae85af947c697e5ccc4911409dc
+msgid "Data loss"
+msgstr ""
+
+#: ../../docs/monitoring.rst:512 ef83c1f694d942e7b6cad2ac1c9eb1f5
+msgid "Log Examples"
+msgstr ""
+
+#: ../../docs/monitoring.rst:514 75f9a46d201e4ed69dadd54063225732
+msgid "**Server startup:**"
+msgstr ""
+
+#: ../../docs/monitoring.rst:522 cd9b624070604f9a95cf397ad6175e36
+msgid "**Client connection:**"
+msgstr ""
+
+#: ../../docs/monitoring.rst:530 5798d1eea4444b07bc0ef0883370be7f
+msgid "**Message publishing:**"
+msgstr ""
+
+#: ../../docs/monitoring.rst:538 85290f36341d48618ca86bc08188ef14
+msgid "**Warnings:**"
+msgstr ""
+
+#: ../../docs/monitoring.rst:546 de100917203548a6891ad06eb42ac055
+msgid "**Errors:**"
+msgstr ""
+
+#: ../../docs/monitoring.rst:555 76fc7b04e7d7472c83d7d98c83ef3174
+msgid "Alerting"
+msgstr ""
+
+#: ../../docs/monitoring.rst:557 f60f9fb2ed574bfeab56a2e9fb571fe5
+msgid "Example rules for Prometheus Alertmanager:"
+msgstr ""
+
+#: ../../docs/monitoring.rst:601 39213aaf1094404ea20cdea61e4f79a1
+msgid "Next Steps"
+msgstr ""
+
+#: ../../docs/monitoring.rst:603 98fa7ba32eef47c59bae06b729ed420d
+msgid ":doc:`server-setup` — server setup"
+msgstr ""
+
+#: ../../docs/monitoring.rst:604 ca1c334109764b0091a4cddac1a46521
+msgid ":doc:`troubleshooting` — troubleshooting"
+msgstr ""
+
+#: ../../docs/monitoring.rst:605 01d76862575d410e8188c3515803b0aa
+msgid ":doc:`health-checks` — health checks for orchestrators"
+msgstr ""
+

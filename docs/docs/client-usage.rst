@@ -8,6 +8,36 @@ This guide describes various ways to use the VibeMQ client.
    :local:
    :depth: 2
 
+Using with Dependency Injection (IVibeMQClient)
+================================================
+
+In ASP.NET Core or Worker Service you can inject **``IVibeMQClient``** and use it without calling ``ConnectAsync`` or managing disposal. The client is shared (Singleton) and connects lazily on first ``PublishAsync`` or ``SubscribeAsync``. See :doc:`di-integration` for registration and examples.
+
+.. code-block:: csharp
+
+   using VibeMQ.Client;
+   using VibeMQ.Client.DependencyInjection;
+
+   // Registration (e.g. in Program.cs)
+   services.AddLogging();
+   services.AddVibeMQClient(settings => {
+       settings.Host = "localhost";
+       settings.Port = 8080;
+       settings.ClientOptions.AuthToken = "my-token";
+   });
+
+   // In any service
+   public class MyService {
+       private readonly IVibeMQClient _vibeMQ;
+       public MyService(IVibeMQClient vibeMQ) => _vibeMQ = vibeMQ;
+
+       public async Task SendAsync() {
+           await _vibeMQ.PublishAsync("queue", new { Text = "Hello" });
+       }
+   }
+
+The concrete type ``VibeMQClient`` implements ``IVibeMQClient``. For manual connection and full control, use ``VibeMQClient.ConnectAsync`` as in the sections below.
+
 Connecting to Server
 ====================
 

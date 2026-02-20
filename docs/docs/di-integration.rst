@@ -157,11 +157,18 @@ Advanced Configuration
 Client Integration
 ==================
 
+A single call to ``AddVibeMQClient`` registers:
+
+- **``IVibeMQClient``** — a shared, lazily-connected client (Singleton). Inject it into any service and use ``PublishAsync`` / ``SubscribeAsync``; the connection is established on first use. No need to call ``ConnectAsync`` or dispose the client yourself; the host manages its lifecycle.
+
+- **``IVibeMQClientFactory``** — use when you need a dedicated client instance that you create and dispose yourself (e.g. ``await using var client = await factory.CreateAsync()``).
+
 Basic Registration
 -------------------
 
 .. code-block:: csharp
 
+   using VibeMQ.Client;
    using VibeMQ.Client.DependencyInjection;
 
    var host = Host.CreateDefaultBuilder(args)
@@ -170,8 +177,14 @@ Basic Registration
        })
        .Build();
 
+   // Option A: inject IVibeMQClient (shared client, connects on first use)
+   var client = host.Services.GetRequiredService<IVibeMQClient>();
+   await client.PublishAsync("queue", new { Message = "Hello" });
+
+   // Option B: create a dedicated client (you dispose it)
    var factory = host.Services.GetRequiredService<IVibeMQClientFactory>();
-   await using var client = await factory.CreateAsync();
+   await using var dedicatedClient = await factory.CreateAsync();
+   await dedicatedClient.PublishAsync("queue", new { Message = "Hello" });
 
 Registration with Configuration
 -------------------------------
@@ -265,8 +278,46 @@ Advanced Client Configuration
 Using in Services
 =================
 
-Publishing Messages from Service
---------------------------------
+Publishing Messages from Service (IVibeMQClient)
+-------------------------------------------------
+
+The simplest approach is to inject ``IVibeMQClient``. The client connects lazily on first use; no manual ``ConnectAsync`` or disposal in your service.
+
+.. code-block:: csharp
+
+   using VibeMQ.Client;
+   using VibeMQ.Client.DependencyInjection;
+
+   public class OrderService {
+       private readonly IVibeMQClient _vibeMQ;
+       private readonly ILogger<OrderService> _logger;
+
+       public OrderService(IVibeMQClient vibeMQ, ILogger<OrderService> logger) {
+           _vibeMQ = vibeMQ;
+           _logger = logger;
+       }
+
+       public async Task CreateOrderAsync(Order order) {
+           await _vibeMQ.PublishAsync("orders.created", new {
+               OrderId = order.Id,
+               Amount = order.Amount,
+               CustomerId = order.CustomerId,
+               CreatedAt = DateTime.UtcNow
+           });
+           _logger.LogInformation("Order {OrderId} created", order.Id);
+       }
+   }
+
+Service registration:
+
+.. code-block:: csharp
+
+   services.AddScoped<OrderService>();
+
+Publishing with IVibeMQClientFactory (dedicated client)
+--------------------------------------------------------
+
+If you prefer a dedicated client instance per operation (you create and dispose it):
 
 .. code-block:: csharp
 
@@ -285,46 +336,39 @@ Publishing Messages from Service
 
        public async Task CreateOrderAsync(Order order) {
            await using var client = await _clientFactory.CreateAsync();
-           
            await client.PublishAsync("orders.created", new {
                OrderId = order.Id,
                Amount = order.Amount,
                CustomerId = order.CustomerId,
                CreatedAt = DateTime.UtcNow
            });
-           
            _logger.LogInformation("Order {OrderId} created", order.Id);
        }
    }
-
-Service registration:
-
-.. code-block:: csharp
 
    services.AddScoped<OrderService>();
 
 Subscribing to Messages in Background Service
 ----------------------------------------------
 
+You can use either ``IVibeMQClient`` (shared, lazy-connected) or ``IVibeMQClientFactory``. Example with ``IVibeMQClient``:
+
 .. code-block:: csharp
 
+   using VibeMQ.Client;
    using VibeMQ.Client.DependencyInjection;
 
    public class OrderProcessor : BackgroundService {
-       private readonly IVibeMQClientFactory _clientFactory;
+       private readonly IVibeMQClient _vibeMQ;
        private readonly ILogger<OrderProcessor> _logger;
 
-       public OrderProcessor(
-           IVibeMQClientFactory clientFactory,
-           ILogger<OrderProcessor> logger) {
-           _clientFactory = clientFactory;
+       public OrderProcessor(IVibeMQClient vibeMQ, ILogger<OrderProcessor> logger) {
+           _vibeMQ = vibeMQ;
            _logger = logger;
        }
 
        protected override async Task ExecuteAsync(CancellationToken stoppingToken) {
-           await using var client = await _clientFactory.CreateAsync(stoppingToken);
-           
-           await using var subscription = await client.SubscribeAsync<OrderCreated>(
+           await using var subscription = await _vibeMQ.SubscribeAsync<OrderCreated>(
                "orders.created",
                async order => {
                    _logger.LogInformation("Processing order {OrderId}", order.OrderId);
@@ -334,7 +378,6 @@ Subscribing to Messages in Background Service
            );
 
            _logger.LogInformation("OrderProcessor started");
-           
            try {
                await Task.Delay(Timeout.Infinite, stoppingToken);
            } catch (OperationCanceledException) {
@@ -343,7 +386,6 @@ Subscribing to Messages in Background Service
        }
 
        private Task ProcessOrderAsync(OrderCreated order, CancellationToken ct) {
-           // Order processing
            return Task.CompletedTask;
        }
    }
@@ -364,43 +406,34 @@ Background service registration:
 Event Bus with DI
 -----------------
 
+A thin event-bus wrapper around ``IVibeMQClient`` (shared client, lazy connection):
+
 .. code-block:: csharp
 
+   using VibeMQ.Client;
    using VibeMQ.Client.DependencyInjection;
 
    public interface IEventBus {
        Task PublishAsync<T>(string eventType, T eventData, CancellationToken ct = default);
-       Task SubscribeAsync<T>(string eventType, Func<T, Task> handler, CancellationToken ct = default);
+       Task<IAsyncDisposable> SubscribeAsync<T>(string eventType, Func<T, Task> handler, CancellationToken ct = default);
    }
 
    public class VibeMQEventBus : IEventBus {
-       private readonly IVibeMQClientFactory _clientFactory;
+       private readonly IVibeMQClient _client;
        private readonly ILogger<VibeMQEventBus> _logger;
 
-       public VibeMQEventBus(
-           IVibeMQClientFactory clientFactory,
-           ILogger<VibeMQEventBus> logger) {
-           _clientFactory = clientFactory;
+       public VibeMQEventBus(IVibeMQClient client, ILogger<VibeMQEventBus> logger) {
+           _client = client;
            _logger = logger;
        }
 
        public async Task PublishAsync<T>(string eventType, T eventData, CancellationToken ct = default) {
-           await using var client = await _clientFactory.CreateAsync(ct);
-           
-           await client.PublishAsync($"events.{eventType}", eventData, options => {
-               options.Headers = new Dictionary<string, string> {
-                   ["event_type"] = eventType,
-                   ["timestamp"] = DateTime.UtcNow.ToString("O")
-               };
-           });
-           
+           await _client.PublishAsync($"events.{eventType}", eventData, ct);
            _logger.LogInformation("Event {EventType} published", eventType);
        }
 
-       public async Task SubscribeAsync<T>(string eventType, Func<T, Task> handler, CancellationToken ct = default) {
-           var client = await _clientFactory.CreateAsync(ct);
-           
-           await client.SubscribeAsync<T>(
+       public async Task<IAsyncDisposable> SubscribeAsync<T>(string eventType, Func<T, Task> handler, CancellationToken ct = default) {
+           return await _client.SubscribeAsync<T>(
                $"events.{eventType}",
                async eventData => {
                    _logger.LogInformation("Received event {EventType}", eventType);
@@ -429,10 +462,7 @@ Usage:
        }
 
        public async Task CreateOrderAsync(Order order) {
-           // Save order to database
            await SaveOrderAsync(order);
-           
-           // Publish event
            await _eventBus.PublishAsync("order.created", new {
                OrderId = order.Id,
                Amount = order.Amount
@@ -471,46 +501,10 @@ Server + Client in One Application
 
    await host.RunAsync();
 
-Multiple Clients
+Multiple brokers
 ----------------
 
-To connect to multiple brokers:
-
-.. code-block:: csharp
-
-   using VibeMQ.Client.DependencyInjection;
-
-   var host = Host.CreateDefaultBuilder(args)
-       .ConfigureServices(services => {
-           // Client for primary broker
-           services.AddVibeMQClient(settings => {
-               settings.Host = "vibemq-primary";
-               settings.Port = 8080;
-           });
-           
-           // Client for backup broker
-           services.AddKeyedVibeMQClient("backup", settings => {
-               settings.Host = "vibemq-backup";
-               settings.Port = 8080;
-           });
-       })
-       .Build();
-
-Usage:
-
-.. code-block:: csharp
-
-   public class MultiBrokerService {
-       private readonly IVibeMQClientFactory _primaryFactory;
-       private readonly IVibeMQClientFactory _backupFactory;
-
-       public MultiBrokerService(
-           IVibeMQClientFactory primaryFactory,
-           [FromKeyedServices("vibemq-client-backup")] IVibeMQClientFactory backupFactory) {
-           _primaryFactory = primaryFactory;
-           _backupFactory = backupFactory;
-       }
-   }
+To use multiple brokers, register multiple named configurations and resolve the appropriate factory or client by name (e.g. via a custom factory or keyed services if your app supports them). By default, one ``AddVibeMQClient`` call registers a single shared ``IVibeMQClient`` and one ``IVibeMQClientFactory`` for that configuration.
 
 Configuration via Environment Variables
 ======================================
@@ -593,13 +587,12 @@ Error: "Unable to connect"
 
 **Cause:** Server is not started yet when creating client.
 
-**Solution:** Create client after host starts:
+**Solution:** When using ``IVibeMQClient``, the client connects lazily on first use (e.g. first ``PublishAsync`` or ``SubscribeAsync``), so ensure the broker is running by then. When using ``IVibeMQClientFactory``, create the client after the host (and broker) have started:
 
 .. code-block:: csharp
 
-   await host.RunAsync();  // Server started
+   await host.StartAsync();  // Server started
    
-   // Now clients can be created
    var factory = host.Services.GetRequiredService<IVibeMQClientFactory>();
    await using var client = await factory.CreateAsync();
 

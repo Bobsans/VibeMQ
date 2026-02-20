@@ -1,0 +1,458 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2026, Darkboy
+# This file is distributed under the same license as the VibeMQ package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: VibeMQ 1.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-02-20 10:37+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: ru\n"
+"Language-Team: ru <LL@li.org>\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../docs/changelog.rst:3 8a05069fc2b34ae583a9fe96cdcd7265
+msgid "Changelog"
+msgstr ""
+
+#: ../../docs/changelog.rst:5 3930f31af45246a78fdf5937369d5f44
+msgid "VibeMQ project change history."
+msgstr ""
+
+#: ../../docs/changelog.rst:9 63faa03effa74fca8f3a5bbaabb183e7
+msgid "Contents"
+msgstr ""
+
+#: ../../docs/changelog.rst:12 41d0979f096945d3ba90c60d71e9e773
+msgid "Planned Versions"
+msgstr ""
+
+#: ../../docs/changelog.rst:15 d66d22f8d9f64be9851a5640062d3d79
+msgid "Version 1.0.0 (In Development)"
+msgstr ""
+
+#: ../../docs/changelog.rst:17 66fa0e81767e4a8185c4ca1de7cb2a20
+msgid "**Date:** Q2 2026"
+msgstr ""
+
+#: ../../docs/changelog.rst:19 239470b92a074bc5ad4d03b5b17c64e3
+msgid "**Status:** Current Stable Version"
+msgstr ""
+
+#: ../../docs/changelog.rst:21 165dd5d926454388bcb5192b32095f72
+msgid "**New features:**"
+msgstr ""
+
+#: ../../docs/changelog.rst:23 de58b95e01e044fd8e512a008c4427df
+msgid "Basic message broker functionality"
+msgstr ""
+
+#: ../../docs/changelog.rst:24 ef809a110bf146d197719ca9a4acbfc7
+msgid "Pub/Sub with queues"
+msgstr ""
+
+#: ../../docs/changelog.rst:25 3cdb7dad72d04bd7b37d6d4be78410b6
+msgid "Delivery guarantees via acknowledgments (ACK)"
+msgstr ""
+
+#: ../../docs/changelog.rst:26 7d595a9b98604eeca8cd2227e8048313
+msgid "Keep-alive (PING/PONG) and automatic reconnections"
+msgstr ""
+
+#: ../../docs/changelog.rst:27 ad53d38e18da4c61be94b9794aa1c2dd
+msgid "Support for delivery modes (round-robin, fan-out)"
+msgstr ""
+
+#: ../../docs/changelog.rst:28 56f739124a0044a7802cc0d7187a33a8
+msgid "Token-based authentication"
+msgstr ""
+
+#: ../../docs/changelog.rst:29 85878e9489e34096936abb81fae2a17e
+msgid "Graceful shutdown"
+msgstr ""
+
+#: ../../docs/changelog.rst:30 ad335c85ef9f48038ee5fbb1fcb1bae6
+msgid "Health checks for orchestrators"
+msgstr ""
+
+#: ../../docs/changelog.rst:31 d8b8531c02da4325b95564b544ddf473
+msgid "Performance metrics collection"
+msgstr ""
+
+#: ../../docs/changelog.rst:32 2835cc6d44e94a02bff58b7c1964ae6a
+msgid ""
+"**Custom binary protocol** for improved performance: - Fixed field order "
+"for unambiguous parsing - Payload stored as JSON in UTF-8 for easy "
+"debugging and UI display - Zero external dependencies - Protocol version "
+"support for backward compatibility"
+msgstr ""
+
+#: ../../docs/changelog.rst:38 4ba9a81097384f9193494ea30e1e3154
+msgid "**Components:**"
+msgstr ""
+
+#: ../../docs/changelog.rst:40 9b11fc4b776c4d2c82c8503346187da5
+msgid "``VibeMQ.Core`` — system core"
+msgstr ""
+
+#: ../../docs/changelog.rst:41 96f83fc9229f4317b496c34c10df6b2e
+msgid "``VibeMQ.Server`` — broker server"
+msgstr ""
+
+#: ../../docs/changelog.rst:42 67269e76b031442aaa5876c7b745bac3
+msgid "``VibeMQ.Client`` — client for connection"
+msgstr ""
+
+#: ../../docs/changelog.rst:43 d82cc0743ce648a0bbcce65d9e52775b
+msgid "``VibeMQ.Protocol`` — message exchange protocol"
+msgstr ""
+
+#: ../../docs/changelog.rst:44 f713d2a034cf472999f362b6f4319779
+msgid "``VibeMQ.Health`` — HTTP health check server"
+msgstr ""
+
+#: ../../docs/changelog.rst:45 654ab8c0897b41148f74f3e4fd711cee
+msgid "``VibeMQ.Server.DependencyInjection`` — server DI integration"
+msgstr ""
+
+#: ../../docs/changelog.rst:46 8c7dd12cb42d4dfb8200685c3159343f
+msgid "``VibeMQ.Client.DependencyInjection`` — client DI integration"
+msgstr ""
+
+#: ../../docs/changelog.rst:48 9280444174fb43178b4b155669add63b
+msgid "**Documentation:**"
+msgstr ""
+
+#: ../../docs/changelog.rst:50 ee1415932c41459f98f6d8a0af4e8d66
+msgid "Full documentation on ReadTheDocs"
+msgstr ""
+
+#: ../../docs/changelog.rst:51 17eb9c366aea44729ee8555ac54f9d0e
+msgid "Usage examples"
+msgstr ""
+
+#: ../../docs/changelog.rst:52 3c72f9855ccd407e8af2e92dfc790f10
+msgid "Deployment guides"
+msgstr ""
+
+#: ../../docs/changelog.rst:55 4324e656182c48aa98ea178cad89b849
+msgid "Backlog (Version 2.0+)"
+msgstr ""
+
+#: ../../docs/changelog.rst:57 5c3d86597bdd4c428fd637f93cb7b45a
+msgid "**Planned features:**"
+msgstr ""
+
+#: ../../docs/changelog.rst:59 9dceea559d9a45cb9cde761fc5792b1d
+msgid "Persistence layer for message storage"
+msgstr ""
+
+#: ../../docs/changelog.rst:60 b3cd160c5a374365a88866964a36fb77
+msgid "Clustering for horizontal scaling"
+msgstr ""
+
+#: ../../docs/changelog.rst:61 221b0317438b41148c0a1b678dfbcebc
+msgid "Support for other protocols (AMQP, MQTT, HTTP)"
+msgstr ""
+
+#: ../../docs/changelog.rst:62 c83eadf199b040eaa6b533df0769bab3
+msgid "Advanced monitoring (Prometheus, Grafana)"
+msgstr ""
+
+#: ../../docs/changelog.rst:63 0c2898f4a9814e85b160639f9d2b796d
+msgid "Web management interface"
+msgstr ""
+
+#: ../../docs/changelog.rst:64 616dd23a4f1143efa5e9cccc43fbce68
+msgid ".NET 10 support"
+msgstr ""
+
+#: ../../docs/changelog.rst:65 6eb2059a749944d4b8eb19ca25ff93d2
+msgid "Protocol-level compression"
+msgstr ""
+
+#: ../../docs/changelog.rst:66 71667eb7463842f781161bce4813b0dd
+msgid "Granular authorization"
+msgstr ""
+
+#: ../../docs/changelog.rst:67 a83dc5306b0e4600b6847171bfbf9816
+msgid "Class-based subscriptions"
+msgstr ""
+
+#: ../../docs/changelog.rst:68 6633740c67e24d85ab0a4cca47b19f9e
+msgid "Delayed messages"
+msgstr ""
+
+#: ../../docs/changelog.rst:69 74e4029bdb3449319545a6980a1af6d7
+msgid "Transactional messages"
+msgstr ""
+
+#: ../../docs/changelog.rst:72 f922ad798cff488fbd6829baf69d4b04
+msgid "Version Archive"
+msgstr ""
+
+#: ../../docs/changelog.rst:75 db3527f8a7b64ff2b24ca02b0701f835
+msgid "Version 0.1.0 (Alpha)"
+msgstr ""
+
+#: ../../docs/changelog.rst:77 48040739cf0241228c01d4c230c4f8d2
+msgid "**Date:** February 2026"
+msgstr ""
+
+#: ../../docs/changelog.rst:79 6efbef8aea384cf6b9700ceb79d4a0b3
+msgid "**Status:** Alpha version for testing"
+msgstr ""
+
+#: ../../docs/changelog.rst:81 72e863da59224ea7a8668b0a2d632403
+msgid "**Includes:**"
+msgstr ""
+
+#: ../../docs/changelog.rst:83 a17f213026cd4e158579ef77d0305ccf
+msgid "Basic project architecture"
+msgstr ""
+
+#: ../../docs/changelog.rst:84 12b14b91651c4927b9f1b6752ef7140a
+msgid "Communication protocol prototype"
+msgstr ""
+
+#: ../../docs/changelog.rst:85 a1181255adc64c00a7adc9455f9a99af
+msgid "Simple queue implementation"
+msgstr ""
+
+#: ../../docs/changelog.rst:86 5675daa4465e454caeb22d607ee13ec7
+msgid "Basic client and server"
+msgstr ""
+
+#: ../../docs/changelog.rst:88 b9ba9b70c19e4278bcc99240640bc481
+msgid "**Known limitations:**"
+msgstr ""
+
+#: ../../docs/changelog.rst:90 8978d0d4735549de9a7c6c5faca60952
+msgid "No delivery guarantees"
+msgstr ""
+
+#: ../../docs/changelog.rst:91 af7305b07ed04a61b192f7a698a60a44
+msgid "No persistent storage"
+msgstr ""
+
+#: ../../docs/changelog.rst:92 21d8b7862dc3482088f1681ec9eb758d
+msgid "Limited documentation"
+msgstr ""
+
+#: ../../docs/changelog.rst:93 cab0e5a9135d4cf4a3ac7ca9de282213
+msgid "API may change"
+msgstr ""
+
+#: ../../docs/changelog.rst:96 33b94124c1a243f18de29c379ceae5e2
+msgid "Version Format"
+msgstr ""
+
+#: ../../docs/changelog.rst:98 3a6887f7c85940b1863388af86b3e4be
+msgid ""
+"VibeMQ uses `SemVer 2.0 <https://semver.org/>`_ with version set from the"
+" repository tag in the Release pipeline (passed as MSBuild property "
+"``Version``):"
+msgstr ""
+
+#: ../../docs/changelog.rst:100 d3af232b0b4344c88e9aa57f60367c5c
+msgid "**Format:** ``MAJOR.MINOR.PATCH``"
+msgstr ""
+
+#: ../../docs/changelog.rst:102 1ba8534533ac4e38948ffc31a634e48c
+msgid "**MAJOR** — incompatible API changes (set via release tag)"
+msgstr ""
+
+#: ../../docs/changelog.rst:103 10503d4444c5450b914b146216a82451
+msgid "**MINOR** — new functionality, backward compatible (set via release tag)"
+msgstr ""
+
+#: ../../docs/changelog.rst:104 53d7155ce9364d48ade8855bbe4aa0e0
+msgid "**PATCH** — bug fixes (set via release tag)"
+msgstr ""
+
+#: ../../docs/changelog.rst:106 2ef076bbb0b8475e839718e431f8b7cf
+msgid "**Versioning:**"
+msgstr ""
+
+#: ../../docs/changelog.rst:108 20128db82c494a968ab1b7c0a3cc8b08
+msgid ""
+"**Releases:** version is taken from the git tag (e.g. ``v1.0.0``) and "
+"passed directly into the pipeline (``-p:Version=...``); no version file "
+"in the repo."
+msgstr ""
+
+#: ../../docs/changelog.rst:109 73bc6e4bcb8844238e7774d478c2102d
+msgid "**Local builds:** default ``1.0.0`` (or pass ``-p:Version=1.2.3``)."
+msgstr ""
+
+#: ../../docs/changelog.rst:111 55be39430f1b4235a5b3a07150942e67
+msgid "**Examples:**"
+msgstr ""
+
+#: ../../docs/changelog.rst:113 95e687d04e0c48edbc6b2cddc75e8977
+msgid "``1.0.0`` — release from tag ``v1.0.0``"
+msgstr ""
+
+#: ../../docs/changelog.rst:114 e6d07dc852824679af2962c3c9625b75
+msgid "``1.1.0`` — release from tag ``v1.1.0``"
+msgstr ""
+
+#: ../../docs/changelog.rst:115 08e18285c0e74a4385c0c39103a7b142
+msgid "``2.0.0`` — breaking changes release from tag ``v2.0.0``"
+msgstr ""
+
+#: ../../docs/changelog.rst:117 9e3ad9a9f53147b0988f60997a6ddc21
+msgid "Pre-release versions:"
+msgstr ""
+
+#: ../../docs/changelog.rst:119 5c11ecc396564f0191710b86a00a1bcb
+msgid "``1.0.0-alpha.1`` — alpha version"
+msgstr ""
+
+#: ../../docs/changelog.rst:120 9cae7c8f6e5c4ba79370cff5b2b7fda4
+msgid "``1.0.0-beta.1`` — beta version"
+msgstr ""
+
+#: ../../docs/changelog.rst:121 06df0b4888b84d6ca8efae6499597055
+msgid "``1.0.0-rc.1`` — release candidate"
+msgstr ""
+
+#: ../../docs/changelog.rst:124 c0276e412cdf4cccba690c21da6b58bf
+msgid "Versioning Policy"
+msgstr ""
+
+#: ../../docs/changelog.rst:127 68871c3d63a04e39a516dcd5be21be12
+msgid "Version Support"
+msgstr ""
+
+#: ../../docs/changelog.rst:129 c2c42081bfd1474585ff75a7184d97e9
+msgid "**Current version** — full support"
+msgstr ""
+
+#: ../../docs/changelog.rst:130 e4692e58ae254a98a9913efebcca8f53
+msgid "**Previous MINOR** — security patch support"
+msgstr ""
+
+#: ../../docs/changelog.rst:131 5ff8f1554aa6439a85a02550645102d6
+msgid "**Older versions** — not supported"
+msgstr ""
+
+#: ../../docs/changelog.rst:134 30a892d4b65b4c3e8a2c9305cade6569
+msgid "Release Schedule"
+msgstr ""
+
+#: ../../docs/changelog.rst:136 7ce66b8fb0994928a2cd9cbc8fee2c92
+msgid "**MAJOR releases** — as breaking changes accumulate"
+msgstr ""
+
+#: ../../docs/changelog.rst:137 eb877aa7e42b4d2b914948a12aa91477
+msgid "**MINOR releases** — quarterly"
+msgstr ""
+
+#: ../../docs/changelog.rst:138 5f121716fe1445abae69b428cd3ded9e
+msgid "**PATCH releases** — as needed"
+msgstr ""
+
+#: ../../docs/changelog.rst:141 cac2f6e376514c99b8605c595fff2cd0
+msgid "Change Notifications"
+msgstr ""
+
+#: ../../docs/changelog.rst:143 2fb0aa7abaac43af891c6d39ade66fbc
+msgid "**Breaking changes** are announced:"
+msgstr ""
+
+#: ../../docs/changelog.rst:145 ac012dfb9fa0488eb2d3254224317897
+msgid "In changelog"
+msgstr ""
+
+#: ../../docs/changelog.rst:146 8eb12b46705c4bac958f69d13a04301b
+msgid "In release notes on GitHub"
+msgstr ""
+
+#: ../../docs/changelog.rst:147 58d9459754614753882576c7f6ae3cfc
+msgid "One month before new MAJOR version release"
+msgstr ""
+
+#: ../../docs/changelog.rst:150 de4c47af74dc4b77b44cb758ce921088
+msgid "Contributing to the Project"
+msgstr ""
+
+#: ../../docs/changelog.rst:153 5790efe6d65c403884fc86ff665a13d0
+msgid "How to Suggest an Improvement"
+msgstr ""
+
+#: ../../docs/changelog.rst:155 9ae8ae390d1e49a9a6a83dae39f46336
+msgid "Create an issue on GitHub with feature description"
+msgstr ""
+
+#: ../../docs/changelog.rst:156 eb759c64816f45ed8bd9e82b98995960
+msgid "Discuss feasibility with maintainers"
+msgstr ""
+
+#: ../../docs/changelog.rst:157 5287596b6ece4721a967128952758f82
+msgid "If approved — create a pull request"
+msgstr ""
+
+#: ../../docs/changelog.rst:160 21a2b2f367f34e67baeb070375a5537b
+msgid "How to Report a Bug"
+msgstr ""
+
+#: ../../docs/changelog.rst:162 e8b6b8c903674b77b7b072e986b53cc9
+msgid "Check existing issues"
+msgstr ""
+
+#: ../../docs/changelog.rst:163 8d97de6339dd4b209bc82d8c7c32b372
+msgid ""
+"Create a new issue with description: - VibeMQ version - Steps to "
+"reproduce - Expected behavior - Actual behavior - Logs and errors"
+msgstr ""
+
+#: ../../docs/changelog.rst:171 fa6c6e9dee0f4db0a5ab43f11bf924cc
+msgid "How to Contribute to Documentation"
+msgstr ""
+
+#: ../../docs/changelog.rst:173 858df323b0f243f3b482f402e215bedd
+msgid "Find a documentation issue"
+msgstr ""
+
+#: ../../docs/changelog.rst:174 b2ef6c8379824810bfb74ab8ee4680f5
+msgid "Create an issue or pull request"
+msgstr ""
+
+#: ../../docs/changelog.rst:175 bb150a1077e3435984d2e79d04c96773
+msgid "Describe proposed changes"
+msgstr ""
+
+#: ../../docs/changelog.rst:178 cd44e693e8c14b9ca50ef999e5994ba0
+msgid "Links"
+msgstr ""
+
+#: ../../docs/changelog.rst:180 9a6803feafe746ae94f373ea28260e34
+msgid "`GitHub Repository <https://github.com/DarkBoy/VibeMQ>`_"
+msgstr ""
+
+#: ../../docs/changelog.rst:181 dadf012cb91343419b53378e865edf63
+msgid "`NuGet Packages <https://www.nuget.org/packages?q=VibeMQ>`_"
+msgstr ""
+
+#: ../../docs/changelog.rst:182 d84df8554271490696c4810f85ecb617
+msgid "`Issues <https://github.com/DarkBoy/VibeMQ/issues>`_"
+msgstr ""
+
+#: ../../docs/changelog.rst:183 5a3734eda0974cbb8af7137f38d6f00d
+msgid "`Discussions <https://github.com/DarkBoy/VibeMQ/discussions>`_"
+msgstr ""
+
+#: ../../docs/changelog.rst:185 1ac4b8b45578429eafebd5ac9fa39fed
+msgid "Last updated: February 19, 2026"
+msgstr ""
+

@@ -1,0 +1,386 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2026, Darkboy
+# This file is distributed under the same license as the VibeMQ package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: VibeMQ 1.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-02-20 10:37+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: ru\n"
+"Language-Team: ru <LL@li.org>\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../docs/protocol.rst:3 07df940b5d5d486b917762efc8e75e70
+msgid "Communication Protocol"
+msgstr ""
+
+#: ../../docs/protocol.rst:5 a3296e388bba41bdbebfcadd34cbd28d
+msgid "This guide describes the VibeMQ message exchange protocol."
+msgstr ""
+
+#: ../../docs/protocol.rst:9 8f62a6ccc8c5441082b73bf3a073f52d
+msgid "Contents"
+msgstr ""
+
+#: ../../docs/protocol.rst:12 523e3ea39b6847f6b94ef2aa1e838543
+msgid "Overview"
+msgstr ""
+
+#: ../../docs/protocol.rst:14 2cb3312f0e61409b876494e61708cd6d
+msgid ""
+"VibeMQ uses TCP as transport and a custom binary format for message "
+"serialization. The protocol is designed for simplicity and performance. "
+"Payload data is stored as JSON in UTF-8 for easy debugging and UI "
+"display, while the protocol message structure uses a compact binary "
+"format."
+msgstr ""
+
+#: ../../docs/protocol.rst:17 660b5ea86bbe4ee1804861868c7d7556
+msgid "Protocol Layers"
+msgstr ""
+
+#: ../../docs/protocol.rst:30 f872c9fd3b3d4435a3490764e2840db5
+msgid "Framing"
+msgstr ""
+
+#: ../../docs/protocol.rst:32 fabb5d39b47f453f873dc641a83b3f86
+msgid "**Length-prefix** approach is used to separate messages in TCP stream:"
+msgstr ""
+
+#: ../../docs/protocol.rst:39 0200f259c2c54da985cd1bc70bab755c
+msgid "Length Format"
+msgstr ""
+
+#: ../../docs/protocol.rst:41 4c44566d57374a61a17ce1851092a89f
+msgid ""
+"First 4 bytes of each frame contain message body length encoded as Big "
+"Endian:"
+msgstr ""
+
+#: ../../docs/protocol.rst:55 9642121f59db44bdaba858ccbfcf58bb
+msgid "Frame Example"
+msgstr ""
+
+#: ../../docs/protocol.rst:63 74cb6a3cf82d4319bd9c1d3f9b454095
+msgid "Message Format"
+msgstr ""
+
+#: ../../docs/protocol.rst:66 9fbcbd908b6e42b7baee7ded7cc754e2
+msgid "Binary Protocol Structure"
+msgstr ""
+
+#: ../../docs/protocol.rst:68 f8028761926e49398df335f349e48281
+msgid ""
+"All protocol messages are serialized in a custom binary format with fixed"
+" field order:"
+msgstr ""
+
+#: ../../docs/protocol.rst:77 a7b986aa389e44c1a60ea8dbdda60af8
+msgid ""
+"All lengths are encoded as Big Endian. Length 0 means the field is "
+"absent/null."
+msgstr ""
+
+#: ../../docs/protocol.rst:79 2e6aacbbbbbd45a4b7377a8dedd19c48
+msgid ""
+"**Important:** Payload is stored as JSON in UTF-8 for easy debugging and "
+"UI display, but the protocol message structure itself uses binary "
+"encoding for optimal performance."
+msgstr ""
+
+#: ../../docs/protocol.rst:82 428981d41ad9472eb2848652714f73dd
+msgid "Logical Structure"
+msgstr ""
+
+#: ../../docs/protocol.rst:84 18b6e18785f34b19a1456c38a7cc03d1
+msgid "The logical structure of messages (shown as JSON for clarity):"
+msgstr ""
+
+#: ../../docs/protocol.rst:100 0f77ed4d79a846c99de20e321d1a933e
+msgid "Message Fields"
+msgstr ""
+
+#: ../../docs/protocol.rst:123 ebd75b0c21b845248706f8ad1d8cf558
+msgid "Command Types (CommandType)"
+msgstr ""
+
+#: ../../docs/protocol.rst:160 820467a297e342a0bc02a0bb4204c142
+msgid "Command Descriptions"
+msgstr ""
+
+#: ../../docs/protocol.rst:163 e087393df0a94bd59fe25e4ba7a5b019
+msgid "Connection Management"
+msgstr ""
+
+#: ../../docs/protocol.rst:166 2837bc0ac42e423684ba707cee5894cf
+msgid "Connect"
+msgstr ""
+
+#: ../../docs/protocol.rst:168 ../../docs/protocol.rst:204
+#: ../../docs/protocol.rst:221 ../../docs/protocol.rst:252
+#: ../../docs/protocol.rst:294 ../../docs/protocol.rst:327
+#: ../../docs/protocol.rst:385 ../../docs/protocol.rst:405
+#: ../../docs/protocol.rst:425 1d2b574c05d14caeaa9459e9aea722fe
+#: 23af96b8c0bd49618109fcbb754f5e78 344be6df3c734d00b26a470459bbf694
+#: 6e9e8eea2cdc43c79ef1fbde81abad2f 96e96edf9306444897f2034c8574b4fd
+#: 9fc426c1957a4e4ab029f9d3e3554e45 ab34cdeb1510464588805ce96980d4e5
+#: ae32475b6da645bcba097616dd184711 f4bd62de173e444895148cbdf22a078f
+msgid "**Direction:** Client → Server"
+msgstr ""
+
+#: ../../docs/protocol.rst:170 4c6bb686bfb34b2285c171149e281fbc
+msgid "**Description:** Connection request."
+msgstr ""
+
+#: ../../docs/protocol.rst:184 2b62d71d51cf40d49b1e51bac459b4fc
+msgid "ConnectAck"
+msgstr ""
+
+#: ../../docs/protocol.rst:186 ../../docs/protocol.rst:235
+#: ../../docs/protocol.rst:276 ../../docs/protocol.rst:309
+#: ../../docs/protocol.rst:342 ../../docs/protocol.rst:359
+#: ../../docs/protocol.rst:504 13d35f7118dd4268a5f14d7f2f3d47dd
+#: 57f398ee249c4aafae45464f5386bb2a 7cfb76326ac94084b2a398bf8d2a255d
+#: a98f11dd2bf1493a84fce8e62a9ded4c e6509bb66fa343c48359a1fa95b27140
+#: f25c270ae36644558e3bddf4a42b786b f7851dc7d9184340a32e75bae620235b
+msgid "**Direction:** Server → Client"
+msgstr ""
+
+#: ../../docs/protocol.rst:188 9da11207185541ec96733bda5eba657a
+msgid "**Description:** Connection acknowledgment."
+msgstr ""
+
+#: ../../docs/protocol.rst:202 b13025d3aaff465080cb4bfa88559b8b
+msgid "Disconnect"
+msgstr ""
+
+#: ../../docs/protocol.rst:206 6b91d2b0c6684c5bb9b632abe290d28b
+msgid "**Description:** Disconnection request."
+msgstr ""
+
+#: ../../docs/protocol.rst:216 ../../docs/protocol.rst:671
+#: 68766e61245b460c892e25295a21502d 94e88347aa31462789243cfcd864bf7c
+msgid "Keep-alive"
+msgstr ""
+
+#: ../../docs/protocol.rst:219 f28c57e1dea247388595f1dc38885572
+msgid "Ping"
+msgstr ""
+
+#: ../../docs/protocol.rst:223 0ba2baa4ef6a49549bfd5822302e3cfa
+msgid "**Description:** Connection keep-alive check."
+msgstr ""
+
+#: ../../docs/protocol.rst:233 3633610e3417494e9d1e23f921aaeea8
+msgid "Pong"
+msgstr ""
+
+#: ../../docs/protocol.rst:237 d62fa69324774b3e95750a1fe19188f1
+msgid "**Description:** Response to Ping."
+msgstr ""
+
+#: ../../docs/protocol.rst:247 bfdcfc652b114271b32d090153b49f43
+msgid "Publish/Subscribe"
+msgstr ""
+
+#: ../../docs/protocol.rst:250 f71f52ddbb604891a763dfb7b37d736e
+msgid "Publish"
+msgstr ""
+
+#: ../../docs/protocol.rst:254 7137bad969ca4ef8842a07b9b4fc97c5
+msgid "**Description:** Publish message to queue."
+msgstr ""
+
+#: ../../docs/protocol.rst:274 a194b756619f402bb168760cba514fd6
+msgid "PublishAck"
+msgstr ""
+
+#: ../../docs/protocol.rst:278 eed8bbdc1aa049b0b9419e38283bfd2b
+msgid "**Description:** Publish acknowledgment."
+msgstr ""
+
+#: ../../docs/protocol.rst:292 d5237975af9d4cf1b06c90f717f4a126
+msgid "Subscribe"
+msgstr ""
+
+#: ../../docs/protocol.rst:296 a9e313d922b8483f8c13a5d00e277a49
+msgid "**Description:** Subscribe to queue."
+msgstr ""
+
+#: ../../docs/protocol.rst:307 4ee432aaef9e4fceac6d5ef698ae83d7
+msgid "SubscribeAck"
+msgstr ""
+
+#: ../../docs/protocol.rst:311 858a3dcf18894d2987afedab65987735
+msgid "**Description:** Subscription acknowledgment."
+msgstr ""
+
+#: ../../docs/protocol.rst:325 a930ae5a6fb24c5298dc8dcb5e79e4c4
+msgid "Unsubscribe"
+msgstr ""
+
+#: ../../docs/protocol.rst:329 3d2489f775164d2cbff7ed289f58639e
+msgid "**Description:** Unsubscribe from queue."
+msgstr ""
+
+#: ../../docs/protocol.rst:340 56ed73f51e2a4455a29c3d512c4654f0
+msgid "UnsubscribeAck"
+msgstr ""
+
+#: ../../docs/protocol.rst:344 4a7eb038fc1d441ebc2da84e6acf900e
+msgid "**Description:** Unsubscription acknowledgment."
+msgstr ""
+
+#: ../../docs/protocol.rst:357 97ac90f387fd47abab5ae8760e7b4954
+msgid "Deliver"
+msgstr ""
+
+#: ../../docs/protocol.rst:361 a42932753b254b9bb77744eb98d3598d
+msgid "**Description:** Message delivery to subscriber."
+msgstr ""
+
+#: ../../docs/protocol.rst:380 072b62d0e8d34c0ba4e18952ea2d5952
+msgid "Acknowledgment"
+msgstr ""
+
+#: ../../docs/protocol.rst:383 879d4bac7f1c4c6eb452b41978979e76
+msgid "Ack"
+msgstr ""
+
+#: ../../docs/protocol.rst:387 c3ee1f1023a54961a1d3efe02fc1d6cb
+msgid "**Description:** Message receipt acknowledgment."
+msgstr ""
+
+#: ../../docs/protocol.rst:400 adc1c168a7eb46c6988689e5f61a6aea
+msgid "Queue Management"
+msgstr ""
+
+#: ../../docs/protocol.rst:403 1bcaad37be464b818ab24eb7a88d8ef3
+msgid "CreateQueue"
+msgstr ""
+
+#: ../../docs/protocol.rst:407 766acc63fbae4e5cb34d02d3217830d3
+msgid "**Description:** Create queue."
+msgstr ""
+
+#: ../../docs/protocol.rst:423 1b25ee7255d8429e9ba8c6e675d29fde
+msgid "DeleteQueue"
+msgstr ""
+
+#: ../../docs/protocol.rst:427 db2e03d61bf64c248a76e7f2f7b2a519
+msgid "**Description:** Delete queue."
+msgstr ""
+
+#: ../../docs/protocol.rst:438 fbd102ac97d245deb8a3590218f1c3c8
+msgid "QueueInfo"
+msgstr ""
+
+#: ../../docs/protocol.rst:440 ../../docs/protocol.rst:475
+#: 4c1e060ca9c442d4b6f1a826645bf614 54f1c1fdcc7f440694878efb23bd61a0
+msgid "**Direction:** Client → Server, Server → Client"
+msgstr ""
+
+#: ../../docs/protocol.rst:442 57878347111a459490b35e566aa6db10
+msgid "**Description:** Queue information request/response."
+msgstr ""
+
+#: ../../docs/protocol.rst:444 ../../docs/protocol.rst:479
+#: 682364c86efe484baa0a71a5e5c4157a 6c7640aefda6462e999f8b5eac585513
+msgid "**Request:**"
+msgstr ""
+
+#: ../../docs/protocol.rst:454 ../../docs/protocol.rst:488
+#: 00fbd97bb8164735a85ec23f094b3ccd c333db78fd724e268a298aed3940ca44
+msgid "**Response:**"
+msgstr ""
+
+#: ../../docs/protocol.rst:473 417b1c5919e245aba7848aa802cd1630
+msgid "ListQueues"
+msgstr ""
+
+#: ../../docs/protocol.rst:477 4eae9a6ea5104ae090ad75b8bd465057
+msgid "**Description:** Queue list request/response."
+msgstr ""
+
+#: ../../docs/protocol.rst:499 0e89bbd373914c578f7e2776663e3b24
+msgid "Errors"
+msgstr ""
+
+#: ../../docs/protocol.rst:502 b61822a669a8428e9c76b0ffb4e1ce7d
+msgid "Error"
+msgstr ""
+
+#: ../../docs/protocol.rst:506 8971f31a08aa458e9bc0a12298b1b4ab
+msgid "**Description:** Error message."
+msgstr ""
+
+#: ../../docs/protocol.rst:518 ce14872de2dc47078b584087bf2bf6d5
+msgid "Error Codes"
+msgstr ""
+
+#: ../../docs/protocol.rst:537 219a96941ce1496caab26b2a6033571e
+msgid "Headers"
+msgstr ""
+
+#: ../../docs/protocol.rst:540 34fe62ee6ee841b688ab3c4ae577eb7c
+msgid "Common Headers"
+msgstr ""
+
+#: ../../docs/protocol.rst:555 72a59814c6db4090bfbe1e558203b2ac
+msgid "Message Headers"
+msgstr ""
+
+#: ../../docs/protocol.rst:577 54f7f58c480340c4b03864f8d4d8743a
+msgid "Queue Headers"
+msgstr ""
+
+#: ../../docs/protocol.rst:594 dda3769394fe49f8bb3e53a569517fee
+msgid "Exchange Examples"
+msgstr ""
+
+#: ../../docs/protocol.rst:597 4d04fa9b632e451e8d50df45b31903c2
+msgid "Connection Establishment"
+msgstr ""
+
+#: ../../docs/protocol.rst:620 6a90713922964fe5986cb7ec70578ade
+msgid "Message Publishing"
+msgstr ""
+
+#: ../../docs/protocol.rst:646 b4eb55ddba1e4e66a34d641ec4ac6439
+msgid "Message Delivery"
+msgstr ""
+
+#: ../../docs/protocol.rst:688 359c7c81518347edafb86080b3fa83bd
+msgid "Protocol Versions"
+msgstr ""
+
+#: ../../docs/protocol.rst:690 5943cba7d29a4a44bd7ee59e1fc13025
+msgid "Current version: **1.0**"
+msgstr ""
+
+#: ../../docs/protocol.rst:699 d65d7f813aee4f648b3f5fb73a5f91a1
+msgid "Next Steps"
+msgstr ""
+
+#: ../../docs/protocol.rst:701 5e219d5ed61046c394f8a4202ca95b9c
+msgid ":doc:`architecture` — system architecture"
+msgstr ""
+
+#: ../../docs/protocol.rst:702 7ab49a3ee86f4233bc6ce474aed13e1d
+msgid ":doc:`features` — VibeMQ capabilities"
+msgstr ""
+
+#: ../../docs/protocol.rst:703 10a96bebce6442aca43b61cef8387919
+msgid ":doc:`monitoring` — monitoring"
+msgstr ""
+

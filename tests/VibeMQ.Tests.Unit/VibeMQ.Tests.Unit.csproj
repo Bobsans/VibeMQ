@@ -12,6 +12,8 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.*" />
     <PackageReference Include="xunit" Version="2.*" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.*" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.*" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="8.*" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.*" />
   </ItemGroup>
 
@@ -19,6 +21,7 @@
     <ProjectReference Include="..\..\src\VibeMQ.Core\VibeMQ.Core.csproj" />
     <ProjectReference Include="..\..\src\VibeMQ.Server\VibeMQ.Server.csproj" />
     <ProjectReference Include="..\..\src\VibeMQ.Client\VibeMQ.Client.csproj" />
+    <ProjectReference Include="..\..\src\VibeMQ.Client.DependencyInjection\VibeMQ.Client.DependencyInjection.csproj" />
   </ItemGroup>
 
   <ItemGroup>

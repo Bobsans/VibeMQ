@@ -1,0 +1,587 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2026, Darkboy
+# This file is distributed under the same license as the VibeMQ package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: VibeMQ 1.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-02-20 10:37+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: ru\n"
+"Language-Team: ru <LL@li.org>\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../docs/configuration.rst:3 01cdf04157354f6d9e2b8be43b381ab5
+msgid "Configuration"
+msgstr ""
+
+#: ../../docs/configuration.rst:5 7163dbea911d4e3f808708c97f00890f
+msgid "This guide describes all configuration parameters for VibeMQ."
+msgstr ""
+
+#: ../../docs/configuration.rst:9 e731986bb0424cc09f56f418b5811959
+msgid "Contents"
+msgstr ""
+
+#: ../../docs/configuration.rst:12 3c61ed37f4ab4ec2a3484d9b4af86103
+msgid "Server Configuration"
+msgstr ""
+
+#: ../../docs/configuration.rst:15 061d5515e24b4693beca48f752ccfbf4
+msgid "BrokerOptions"
+msgstr ""
+
+#: ../../docs/configuration.rst:17 9bea48c20eea48db87b8a6208a825ceb
+msgid "Main server configuration class:"
+msgstr ""
+
+#: ../../docs/configuration.rst:33 f853b20d27cb4c69885a8aa5fa2f463b
+msgid "Basic Parameters"
+msgstr ""
+
+#: ../../docs/configuration.rst:36 ../../docs/configuration.rst:579
+#: 8b5a414eae034f3b98a11a83cd66bb83 a96c6b9a99cc42249bac20da032e0102
+msgid "Port"
+msgstr ""
+
+#: ../../docs/configuration.rst:38 ../../docs/configuration.rst:55
+#: ../../docs/configuration.rst:72 ../../docs/configuration.rst:157
+#: ../../docs/configuration.rst:250 ../../docs/configuration.rst:348
+#: ../../docs/configuration.rst:361 ../../docs/configuration.rst:374
+#: ../../docs/configuration.rst:501 ../../docs/configuration.rst:581
+#: 0c18df9b7fc94684a7adce19e4fc4b6f 1cd53426e95d48c8a0b012d12e177b9e
+#: 1e82b54bf06f42c0a3cade5ecd6fefa3 3877204172f542d3bafcbe1f17eaa170
+#: 4e1d9d3cf2b347bbbed9bf3f9d3dbead 84444391653a4deaaac7d2907bb63ada
+#: 98edba555fb942b29149a8a274408c70 a40a7d4bb356457689541f2c2f9fb519
+#: b15a82ba24f8464f860f5d9d8f163238 f0b41fe808944e96864134eebae7e9a1
+msgid "**Type:** ``int``"
+msgstr ""
+
+#: ../../docs/configuration.rst:40 4beb39e90cfa4038ad57f63a8c6e4978
+msgid "**Default:** ``8080``"
+msgstr ""
+
+#: ../../docs/configuration.rst:42 b37f762945484d43ae046137a87e0ba1
+msgid "TCP port for client connections:"
+msgstr ""
+
+#: ../../docs/configuration.rst:50 7e58a7affba4488a8bc6f574d7418394
+msgid "Make sure the port is not occupied by other applications."
+msgstr ""
+
+#: ../../docs/configuration.rst:53 159136fbfda346b89b18f8aea7533bab
+msgid "MaxConnections"
+msgstr ""
+
+#: ../../docs/configuration.rst:57 ../../docs/configuration.rst:376
+#: 7909bd5ee5684c6383ecdf07790c5952 acd32629ece5435d842b67e5e2eeb47c
+msgid "**Default:** ``1000``"
+msgstr ""
+
+#: ../../docs/configuration.rst:59 87b1f59a2d884bde83082a9a303dbc13
+msgid "Maximum number of simultaneous connections:"
+msgstr ""
+
+#: ../../docs/configuration.rst:67 5406f2ae34e14dd890556ce2853d4716
+msgid "Increase for high-load scenarios."
+msgstr ""
+
+#: ../../docs/configuration.rst:70 e9caafa3a30849e7b4a1898f29f24ea2
+msgid "MaxMessageSize"
+msgstr ""
+
+#: ../../docs/configuration.rst:74 33ae2ddfd955418cb43083d52e9f5c77
+msgid "**Default:** ``1_048_576`` (1 MB)"
+msgstr ""
+
+#: ../../docs/configuration.rst:76 a929cfe180cd450dad21cdd946677b04
+msgid "Maximum message size in bytes:"
+msgstr ""
+
+#: ../../docs/configuration.rst:84 4d8088aef9104d19bfb5044fe84228af
+msgid "Large messages increase memory usage."
+msgstr ""
+
+#: ../../docs/configuration.rst:87 a4ca369b08ac43be83c2c006bd199152
+msgid "EnableAuthentication"
+msgstr ""
+
+#: ../../docs/configuration.rst:89 ../../docs/configuration.rst:170
+#: ../../docs/configuration.rst:204 ../../docs/configuration.rst:276
+#: ../../docs/configuration.rst:333 ../../docs/configuration.rst:459
+#: ../../docs/configuration.rst:472 ../../docs/configuration.rst:540
+#: ../../docs/configuration.rst:566 09bb8a40c4a24609a8f8aef6fb4b292f
+#: 46cda4f754d5443a9af212a79d6494b5 4f12006355c74bd2859ece40c2c093ff
+#: 64a37bee3b0945a98adf73b2fb5aa79d 6a312ebd50144f69b1b7fd6b472c01fc
+#: 7f500a8193dc48fb86745b8dab0be5af de3784e127284b58a2e0a4a264f8a289
+#: e270f764878c4c68a485e3820f0dd29e ea18038e030345e58c88c272154ba186
+msgid "**Type:** ``bool``"
+msgstr ""
+
+#: ../../docs/configuration.rst:91 ../../docs/configuration.rst:206
+#: ../../docs/configuration.rst:278 ../../docs/configuration.rst:335
+#: ../../docs/configuration.rst:461 ../../docs/configuration.rst:474
+#: 6fdb10dfbd954216ad1e89d3cc9d75b2 84ab2afba9374ef58d623d94d87f929a
+#: 8f7695b2a4524f08ba0e89e7d5a696fc 93f55c11713549928261fc9cc66addc0
+#: a4f8d46ddf1444caaa892ed796753d7e df7e4146ba1f40798a3ac9bfbaf3d289
+msgid "**Default:** ``false``"
+msgstr ""
+
+#: ../../docs/configuration.rst:93 32819efd35ae4ca6840361a3fadbbc9c
+msgid "Enable authentication:"
+msgstr ""
+
+#: ../../docs/configuration.rst:100 ../../docs/configuration.rst:402
+#: 7df4816b9e7c4bb5bb2756d0687d530e 85ebfe180ca04ba0b76e28a8963cbf5a
+msgid "AuthToken"
+msgstr ""
+
+#: ../../docs/configuration.rst:102 ../../docs/configuration.rst:217
+#: ../../docs/configuration.rst:293 ../../docs/configuration.rst:306
+#: ../../docs/configuration.rst:404 157b6b08c42c43d69dc0485fee3349a3
+#: 2e417314b9e34414902064474af2a1cd 73e25ffe79d7439d911c809412951c1f
+#: 75961ce76a6a445aa6f4bdf82d8bfd6b d1b9a8b01d3d48f388a3dc7ef6cabb19
+msgid "**Type:** ``string?``"
+msgstr ""
+
+#: ../../docs/configuration.rst:104 ../../docs/configuration.rst:295
+#: ../../docs/configuration.rst:308 ../../docs/configuration.rst:406
+#: 3e0e28de6276440f9e2a291ea226d9e1 8a6d8aad276c4266830f9fb687d21be2
+#: 91a70036a42440cc9ea6bb6be13fbb2f f9a6d583369548c0b5da1f2285b6f3fe
+msgid "**Default:** ``null``"
+msgstr ""
+
+#: ../../docs/configuration.rst:106 2d2444d262864c66a2eeeb1829a8881d
+msgid "Token for client authentication:"
+msgstr ""
+
+#: ../../docs/configuration.rst:114 26e4094665ec477c9a4a82331e9a5811
+msgid "Use complex tokens (32+ characters) in production."
+msgstr ""
+
+#: ../../docs/configuration.rst:117 1e74c68bf2a54ba5a3fd2d06e41d1809
+msgid "QueueDefaults"
+msgstr ""
+
+#: ../../docs/configuration.rst:119 02e744580622499e88a0df279baf28a1
+msgid "Default queue settings:"
+msgstr ""
+
+#: ../../docs/configuration.rst:135 49427c06ff8540ea8460f1a9c5039f09
+msgid "DefaultDeliveryMode"
+msgstr ""
+
+#: ../../docs/configuration.rst:137 211dd2b260da465dbcbfbe473830ecf3
+msgid "**Type:** ``DeliveryMode``"
+msgstr ""
+
+#: ../../docs/configuration.rst:139 9ff94154bf4749259078d247bf7711b7
+msgid "**Default:** ``RoundRobin``"
+msgstr ""
+
+#: ../../docs/configuration.rst:141 59a8422e99ae4921b769e789f607b7ba
+msgid "Default delivery mode:"
+msgstr ""
+
+#: ../../docs/configuration.rst:147 ../../docs/configuration.rst:240
+#: 2bfe1446413145a3bc329ef3ec5681ba d7621cf6576a4d128ff8e91a242754d0
+msgid "**Possible values:**"
+msgstr ""
+
+#: ../../docs/configuration.rst:149 032df1b0555b4476a433dba01d75fef2
+msgid "``RoundRobin`` — round-robin delivery to one subscriber"
+msgstr ""
+
+#: ../../docs/configuration.rst:150 24aa96f38e1b4d9489e7fc9ff68c7fcc
+msgid "``FanOutWithAck`` — to all with acknowledgment"
+msgstr ""
+
+#: ../../docs/configuration.rst:151 220e2c1e380a4ebb86c968f1aec7b740
+msgid "``FanOutWithoutAck`` — to all without acknowledgment"
+msgstr ""
+
+#: ../../docs/configuration.rst:152 89d8bc38372940af9427af02667851b7
+msgid "``PriorityBased`` — by priority"
+msgstr ""
+
+#: ../../docs/configuration.rst:155 d5a02016f794409db4eb8c9f9a792bbb
+msgid "MaxQueueSize"
+msgstr ""
+
+#: ../../docs/configuration.rst:159 57954c857fa44a5bbfe601876207319a
+msgid "**Default:** ``10_000``"
+msgstr ""
+
+#: ../../docs/configuration.rst:161 5543e70da28d4aad844c9afed1e33983
+msgid "Maximum number of messages in queue:"
+msgstr ""
+
+#: ../../docs/configuration.rst:168 449bdfb68176470ebb646c2c408e7e14
+msgid "EnableAutoCreate"
+msgstr ""
+
+#: ../../docs/configuration.rst:172 ../../docs/configuration.rst:542
+#: ../../docs/configuration.rst:568 11cd880658f2443b851c9560cec99f08
+#: a518133b1abd4e2cb75a4a20d3c72a1e ad45f3a5ac2548cca9e2d3e4e155181b
+msgid "**Default:** ``true``"
+msgstr ""
+
+#: ../../docs/configuration.rst:174 3d05f9ed95aa4f95bb8ecaa49d6c5e6d
+msgid "Automatically create queues on first publish:"
+msgstr ""
+
+#: ../../docs/configuration.rst:182 93563466baf94b0492ba5370f19c5601
+msgid "Disable for strict queue control."
+msgstr ""
+
+#: ../../docs/configuration.rst:185 ac7dd6363d27451897a11c6bb5054942
+msgid "MessageTtl"
+msgstr ""
+
+#: ../../docs/configuration.rst:187 75c9a4fa38684f0d8b0de6b9f0401acb
+msgid "**Type:** ``TimeSpan?``"
+msgstr ""
+
+#: ../../docs/configuration.rst:189 96a9ad06b4244c48b3f4ca8cc2e91825
+msgid "**Default:** ``null`` (no limit)"
+msgstr ""
+
+#: ../../docs/configuration.rst:191 1a4c4daf6d0a4b429a56a449c98855ea
+msgid "Message time-to-live:"
+msgstr ""
+
+#: ../../docs/configuration.rst:199 b620bec095ed41f7b6a900727a7aa258
+msgid "Expired messages are automatically removed."
+msgstr ""
+
+#: ../../docs/configuration.rst:202 c6944143dcec4a34800939f27bb2d161
+msgid "EnableDeadLetterQueue"
+msgstr ""
+
+#: ../../docs/configuration.rst:208 a7ebc3350235423db87419c095159364
+msgid "Enable Dead Letter Queue:"
+msgstr ""
+
+#: ../../docs/configuration.rst:215 f6b9987162d1463188f079cd49aa7b21
+msgid "DeadLetterQueueName"
+msgstr ""
+
+#: ../../docs/configuration.rst:219 2eb8c4d5c14b4b27bd658b17d7b7fe35
+msgid "**Default:** ``null`` (auto-name)"
+msgstr ""
+
+#: ../../docs/configuration.rst:221 891374549c0d4529b29fa27eef772eee
+msgid "Dead Letter Queue name:"
+msgstr ""
+
+#: ../../docs/configuration.rst:228 cd21df48f756479e8a781274c0dc4a6d
+msgid "OverflowStrategy"
+msgstr ""
+
+#: ../../docs/configuration.rst:230 eb63bf473d0d42599e735f4af625323b
+msgid "**Type:** ``OverflowStrategy``"
+msgstr ""
+
+#: ../../docs/configuration.rst:232 24af0f9fd14f4f23a90b649f6ad96180
+msgid "**Default:** ``DropOldest``"
+msgstr ""
+
+#: ../../docs/configuration.rst:234 b684d6e6cfc0428584a094b551d92fbf
+msgid "Queue overflow strategy:"
+msgstr ""
+
+#: ../../docs/configuration.rst:242 9a80ce730b574079b7a38317947dcf18
+msgid "``DropOldest`` — remove oldest message"
+msgstr ""
+
+#: ../../docs/configuration.rst:243 0b499969871e47149c94742a7b5588f0
+msgid "``DropNewest`` — reject new message"
+msgstr ""
+
+#: ../../docs/configuration.rst:244 d3685ef5129e4509be9a54fd4276375b
+msgid "``BlockPublisher`` — block publisher"
+msgstr ""
+
+#: ../../docs/configuration.rst:245 596e3cf48293410ea7f6f904b33a2ff8
+msgid "``RedirectToDlq`` — redirect to DLQ"
+msgstr ""
+
+#: ../../docs/configuration.rst:248 4a21240a5a304c3095e7ba6493fa6667
+msgid "MaxRetryAttempts"
+msgstr ""
+
+#: ../../docs/configuration.rst:252 36254aede02547c9b814fc16e4d39c97
+msgid "**Default:** ``3``"
+msgstr ""
+
+#: ../../docs/configuration.rst:254 a28967c2696444fc812244b8493ab8fc
+msgid "Maximum number of delivery attempts:"
+msgstr ""
+
+#: ../../docs/configuration.rst:261 b990e9488b4f4c53b2874be0a7331b4b
+msgid "TlsOptions"
+msgstr ""
+
+#: ../../docs/configuration.rst:263 791af68f6ac640a9b52032fccce4ae2a
+msgid "TLS/SSL settings:"
+msgstr ""
+
+#: ../../docs/configuration.rst:274 ../../docs/configuration.rst:331
+#: ../../docs/configuration.rst:564 3667a9b206654c19809f188dd04646ba
+#: 7f78a80ae57147efb7603b3668db30a6 c5876e49c82d4e6a93c53b4778ca0c4c
+msgid "Enabled"
+msgstr ""
+
+#: ../../docs/configuration.rst:280 16da5816f41042658213c56c33de304d
+msgid "Enable TLS:"
+msgstr ""
+
+#: ../../docs/configuration.rst:291 324efb5c9d0e4ec59e9d22edca88513c
+msgid "CertificatePath"
+msgstr ""
+
+#: ../../docs/configuration.rst:297 63037088c0a14bf89df081a624ec28d2
+msgid "Path to PFX certificate:"
+msgstr ""
+
+#: ../../docs/configuration.rst:304 dcb19bf7ae474edfb9600e1077c10074
+msgid "CertificatePassword"
+msgstr ""
+
+#: ../../docs/configuration.rst:310 aa6adaa41fcb4cafb4d78fb04ac1b73b
+msgid "Certificate password:"
+msgstr ""
+
+#: ../../docs/configuration.rst:317 2ac40f3bd7bd479b836b32b3cb13d2e2
+msgid "RateLimitOptions"
+msgstr ""
+
+#: ../../docs/configuration.rst:319 10225b7f59ad4d9a99a7fe729c3fe4cf
+msgid "Rate limiting settings:"
+msgstr ""
+
+#: ../../docs/configuration.rst:337 694062da69564f4683889da0db357e40
+msgid "Enable rate limiting:"
+msgstr ""
+
+#: ../../docs/configuration.rst:346 49377c6abf3e4eb4ad607122b695b585
+msgid "MaxConnectionsPerIpPerWindow"
+msgstr ""
+
+#: ../../docs/configuration.rst:350 54beaca76be84e0a9813dc13637d9d98
+msgid "**Default:** ``100``"
+msgstr ""
+
+#: ../../docs/configuration.rst:352 b013fd84c8b54824aaba0f7910d0f17b
+msgid "Maximum number of connections from one IP per time window:"
+msgstr ""
+
+#: ../../docs/configuration.rst:359 0530868e0a6d4f3f9e21c918e1d0d459
+msgid "ConnectionWindowSeconds"
+msgstr ""
+
+#: ../../docs/configuration.rst:363 ce8041d4406b411e97cbc7ff4db6e7b5
+msgid "**Default:** ``60``"
+msgstr ""
+
+#: ../../docs/configuration.rst:365 a821146426a348c785e24e9b2bfbfc7c
+msgid "Time window for connection limiting (seconds):"
+msgstr ""
+
+#: ../../docs/configuration.rst:372 67deb2627fdd4128b7cd195cfd92e2eb
+msgid "MaxMessagesPerClientPerSecond"
+msgstr ""
+
+#: ../../docs/configuration.rst:378 04c300d1485d4bca9da4bb4af3e02950
+msgid "Maximum number of messages from client per second:"
+msgstr ""
+
+#: ../../docs/configuration.rst:385 f7e1ef28acdf4901b715fbc6193a7c48
+msgid "Client Configuration"
+msgstr ""
+
+#: ../../docs/configuration.rst:388 a3a95011744c4e458de803726bdbce85
+msgid "ClientOptions"
+msgstr ""
+
+#: ../../docs/configuration.rst:408 f6b4598a23424f40a09152b1d019be72
+msgid "Token for authentication:"
+msgstr ""
+
+#: ../../docs/configuration.rst:415 ../../docs/configuration.rst:487
+#: 301177e73d4647109f302a2eb9207aea e7a86ecb65664b2fa0256a905941442a
+msgid "ReconnectPolicy"
+msgstr ""
+
+#: ../../docs/configuration.rst:417 f038fd1851ca41f5ad0053dd5060011f
+msgid "**Type:** ``ReconnectPolicy``"
+msgstr ""
+
+#: ../../docs/configuration.rst:419 3e44d41de64542b588f3e237ef06654c
+msgid "Reconnection policy:"
+msgstr ""
+
+#: ../../docs/configuration.rst:431 096c937d24ba4ce1a39401cffd28a760
+msgid "KeepAliveInterval"
+msgstr ""
+
+#: ../../docs/configuration.rst:433 ../../docs/configuration.rst:446
+#: ../../docs/configuration.rst:514 ../../docs/configuration.rst:527
+#: 39cad94c4c2e4aa6a209323a60823969 8cc9450b7cb04905a6a918964bf42392
+#: 9136455c441c4a0fb3c721eb2b2b3ac7 ef80980ea2914c698bf73b6e2de046c8
+msgid "**Type:** ``TimeSpan``"
+msgstr ""
+
+#: ../../docs/configuration.rst:435 9d05e9db48f2452783719beaac625b32
+msgid "**Default:** ``30 seconds``"
+msgstr ""
+
+#: ../../docs/configuration.rst:437 a6b34d7d95244272ab7d441cc5e21323
+msgid "PING send interval:"
+msgstr ""
+
+#: ../../docs/configuration.rst:444 6eb9e7bbd3f54539af068482ed646f07
+msgid "CommandTimeout"
+msgstr ""
+
+#: ../../docs/configuration.rst:448 f1cd749a09924ac993c25946c2e1faa7
+msgid "**Default:** ``10 seconds``"
+msgstr ""
+
+#: ../../docs/configuration.rst:450 7e400dc16e3540d0a8945a87570c7e56
+msgid "Command timeout:"
+msgstr ""
+
+#: ../../docs/configuration.rst:457 cb8eff4935da4910a6776c0d2b924251
+msgid "UseTls"
+msgstr ""
+
+#: ../../docs/configuration.rst:463 cb52a179628647589fbbe82095211b16
+msgid "Use TLS:"
+msgstr ""
+
+#: ../../docs/configuration.rst:470 843b577462fd4adcb5f264f3ab53d6ae
+msgid "SkipCertificateValidation"
+msgstr ""
+
+#: ../../docs/configuration.rst:476 e2a1f2bfc4164ab6957ab6b9431ec209
+msgid "Skip certificate validation:"
+msgstr ""
+
+#: ../../docs/configuration.rst:484 c4c35bf31f19457192c2590824dcdd23
+msgid "Do not use in production!"
+msgstr ""
+
+#: ../../docs/configuration.rst:499 2c4eaafbd07a41d3a8cc93e1bc86342d
+msgid "MaxAttempts"
+msgstr ""
+
+#: ../../docs/configuration.rst:503 810e551f3c3f464e90e8ec326e9f51fb
+msgid "**Default:** ``int.MaxValue``"
+msgstr ""
+
+#: ../../docs/configuration.rst:505 e3533f691e96478583dbed8b6a5e19f0
+msgid "Maximum number of attempts:"
+msgstr ""
+
+#: ../../docs/configuration.rst:512 cd72b5006e5c482186ab5d25b5df0c8a
+msgid "InitialDelay"
+msgstr ""
+
+#: ../../docs/configuration.rst:516 717a0e0d33014829a72491f62460333f
+msgid "**Default:** ``1 second``"
+msgstr ""
+
+#: ../../docs/configuration.rst:518 5d82dace0bdf4b899481ac6a6af45a71
+msgid "Initial delay between attempts:"
+msgstr ""
+
+#: ../../docs/configuration.rst:525 140901e263514437828e899392c4cd7a
+msgid "MaxDelay"
+msgstr ""
+
+#: ../../docs/configuration.rst:529 3b7b9079abc6424ca1b1315ddc65455f
+msgid "**Default:** ``5 minutes``"
+msgstr ""
+
+#: ../../docs/configuration.rst:531 540213119b57405ba1845bdcbdd8d930
+msgid "Maximum delay:"
+msgstr ""
+
+#: ../../docs/configuration.rst:538 792e1db7f613463ba29cca7922f64642
+msgid "UseExponentialBackoff"
+msgstr ""
+
+#: ../../docs/configuration.rst:544 5bf861c9dab640509fc66a3b243397fd
+msgid "Use exponential backoff:"
+msgstr ""
+
+#: ../../docs/configuration.rst:551 fb3cf2e7515b4f81b766d65ab37d527d
+msgid "Health Check Configuration"
+msgstr ""
+
+#: ../../docs/configuration.rst:554 bc30cbc1d0534e96b0b664be29248c70
+msgid "HealthCheckOptions"
+msgstr ""
+
+#: ../../docs/configuration.rst:570 a89588f105624d27b89e107391a691b0
+msgid "Enable health check server:"
+msgstr ""
+
+#: ../../docs/configuration.rst:583 c63bdc33d50e488cba628844af210622
+msgid "**Default:** ``8081``"
+msgstr ""
+
+#: ../../docs/configuration.rst:585 4e431f286b5143a19d280df9137e598b
+msgid "HTTP port for health checks:"
+msgstr ""
+
+#: ../../docs/configuration.rst:594 f915b120837548818c6f843871cf5459
+msgid "Configuration Examples"
+msgstr ""
+
+#: ../../docs/configuration.rst:597 806ef696367b4ba490bf8c7952a7793b
+msgid "Minimal"
+msgstr ""
+
+#: ../../docs/configuration.rst:606 2dfad2dcd85a4abaad2ba231da671a56
+msgid "Development"
+msgstr ""
+
+#: ../../docs/configuration.rst:621 c8f787fc82fc413ca9d772d3debb3795
+msgid "Production"
+msgstr ""
+
+#: ../../docs/configuration.rst:654 75b1f4833abf4546afd8c876f16b34de
+msgid "IoT Scenario"
+msgstr ""
+
+#: ../../docs/configuration.rst:675 030060855e994b7a976859801681902f
+msgid "Microservices"
+msgstr ""
+
+#: ../../docs/configuration.rst:695 7d24dba40a7d4029ac393b07ed953995
+msgid "Next Steps"
+msgstr ""
+
+#: ../../docs/configuration.rst:697 d578077643fb4f1aa51a9096e30bbade
+msgid ":doc:`server-setup` — server setup"
+msgstr ""
+
+#: ../../docs/configuration.rst:698 e252cc7acbd742b29aead3e303acc20e
+msgid ":doc:`di-integration` — DI integration"
+msgstr ""
+
+#: ../../docs/configuration.rst:699 f9513ef65f86448b98250d5d806b52ad
+msgid ":doc:`monitoring` — monitoring"
+msgstr ""
+

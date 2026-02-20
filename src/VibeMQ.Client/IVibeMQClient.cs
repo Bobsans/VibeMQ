@@ -1,0 +1,30 @@
+namespace VibeMQ.Client;
+
+/// <summary>
+/// Abstraction for a VibeMQ client that can publish and subscribe.
+/// Implemented by <see cref="VibeMQClient"/> and by the DI-managed client when using AddVibeMQClient (VibeMQ.Client.DependencyInjection).
+/// </summary>
+public interface IVibeMQClient {
+    /// <summary>
+    /// Publishes a message to the specified queue.
+    /// </summary>
+    /// <param name="queueName">Target queue name.</param>
+    /// <param name="payload">Message payload (serialized as JSON).</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    Task PublishAsync<T>(string queueName, T payload, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Subscribes to a queue and invokes the handler for each received message.
+    /// Returns a disposable that unsubscribes when disposed.
+    /// </summary>
+    /// <param name="queueName">Queue to subscribe to.</param>
+    /// <param name="handler">Handler invoked for each message.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>An <see cref="IAsyncDisposable"/> that unsubscribes when disposed.</returns>
+    Task<IAsyncDisposable> SubscribeAsync<T>(string queueName, Func<T, Task> handler, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Whether the client is currently connected to the broker.
+    /// </summary>
+    bool IsConnected { get; }
+}

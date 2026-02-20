@@ -1,0 +1,693 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2026, Darkboy
+# This file is distributed under the same license as the VibeMQ package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: VibeMQ 1.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-02-20 10:37+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: ru\n"
+"Language-Team: ru <LL@li.org>\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../docs/features.rst:3 7cfb1ffffd8741a1bc4474e0fd6a5de6
+msgid "Features"
+msgstr ""
+
+#: ../../docs/features.rst:5 acda652354eb488badcf77825d76a35f
+msgid "This guide describes all capabilities and features of VibeMQ."
+msgstr ""
+
+#: ../../docs/features.rst:9 69c381d3936841e4bd5a1305df1ff63f
+msgid "Contents"
+msgstr ""
+
+#: ../../docs/features.rst:12 67977f2ed7b84095b45ce373fab2fff5
+msgid "Publish/Subscribe (Pub/Sub)"
+msgstr ""
+
+#: ../../docs/features.rst:14 0cd7328f46be4b449ee907c5766bb5df
+msgid "VibeMQ implements the publish/subscribe pattern through message queues."
+msgstr ""
+
+#: ../../docs/features.rst:16 a1e2607127ad435ab3adc492f951e02f
+msgid "**Basic concepts:**"
+msgstr ""
+
+#: ../../docs/features.rst:18 2e4c0fa7552f4a52b138f38897ec4966
+msgid "**Publisher** — client sending messages"
+msgstr ""
+
+#: ../../docs/features.rst:19 4e1053d1c1804786abdcb84a68956a28
+msgid "**Subscriber** — client receiving messages"
+msgstr ""
+
+#: ../../docs/features.rst:20 bc2321ecda7f4a90a3dd969b14f3c0b8
+msgid "**Queue** — buffer for storing messages"
+msgstr ""
+
+#: ../../docs/features.rst:21 c31c23e5eaa643fbaed00e1e222c9f8e
+msgid "**Broker** — server managing queues"
+msgstr ""
+
+#: ../../docs/features.rst:23 8515419f9b8f48e8bd2837ac318d17ce
+msgid "**Basic example:**"
+msgstr ""
+
+#: ../../docs/features.rst:42 97716356727f40a1bbe073eb4a531101
+msgid "Delivery Modes"
+msgstr ""
+
+#: ../../docs/features.rst:44 3402f7ed69354469ae431b61a5448b3e
+msgid "VibeMQ supports four message delivery modes:"
+msgstr ""
+
+#: ../../docs/features.rst:47 a66961c5fdd84ee8820da27d74ddfee2
+msgid "Round-robin"
+msgstr ""
+
+#: ../../docs/features.rst:49 73938f3d25f3445d94cd72b9bd4f3cb5
+msgid "**Description:** Each message is delivered to one subscriber cyclically."
+msgstr ""
+
+#: ../../docs/features.rst:57 ../../docs/features.rst:80
+#: ../../docs/features.rst:104 ../../docs/features.rst:139
+#: ../../docs/features.rst:199 ../../docs/features.rst:454
+#: 364e79502c284f97baf62b2d7f256158 53aeb317a8d64176a039b9dffa32f87e
+#: a1db1ea17a3a492697ef0fcf65c77593 c55904e392934d278da00477dd70caf4
+#: f6583e445bc2427e81c953b3ae96cd99 fc03bc7f86db480ebc82b1229eb2d637
+msgid "**Configuration:**"
+msgstr ""
+
+#: ../../docs/features.rst:63 ../../docs/features.rst:87
+#: ../../docs/features.rst:110 cb79a3b08f01482a84c60a75aaf0b79d
+#: cfb5174a0a064e1d9488fd7f85bebb96 e1ecea38e2d1427fa61d995417d87d7f
+msgid "**Use cases:**"
+msgstr ""
+
+#: ../../docs/features.rst:65 ae3a534794624828a8107b0c86730d25
+msgid "Task processing by multiple workers"
+msgstr ""
+
+#: ../../docs/features.rst:66 9a5417922ed3403bae4449d5a74f011f
+msgid "Load balancing"
+msgstr ""
+
+#: ../../docs/features.rst:67 12b31fb23f584efeaa1c43fe8ad0b7b1
+msgid "Task queues"
+msgstr ""
+
+#: ../../docs/features.rst:70 b8835e63dd8e43828dd775878d862ea3
+msgid "Fan-out with Acknowledgment"
+msgstr ""
+
+#: ../../docs/features.rst:72 9c6a3f4929b34591b36caf4d23ad3895
+msgid ""
+"**Description:** Message is delivered to all subscribers, each must "
+"acknowledge receipt."
+msgstr ""
+
+#: ../../docs/features.rst:89 43b7fe4a04144f6fac5410ce61d6a734
+msgid "Notification broadcasting"
+msgstr ""
+
+#: ../../docs/features.rst:90 2808686251c04eab95acacb7fd199b30
+msgid "Data replication"
+msgstr ""
+
+#: ../../docs/features.rst:91 4f0576cb388b4afd9a0eb92230ecf98c
+msgid "Audit and logging"
+msgstr ""
+
+#: ../../docs/features.rst:94 90d2af52b44f4da6a3dcab2ff35b854c
+msgid "Fan-out without Acknowledgment"
+msgstr ""
+
+#: ../../docs/features.rst:96 2cab42a696944fe0a1c33e541a290ced
+msgid ""
+"**Description:** Message is delivered to all subscribers without "
+"confirmation."
+msgstr ""
+
+#: ../../docs/features.rst:112 87537df5fedc48b5ba359f7a9f40bf57
+msgid "Broadcast messages"
+msgstr ""
+
+#: ../../docs/features.rst:113 e4d04fd3faf145098d12ab2f095238f7
+msgid "Real-time updates"
+msgstr ""
+
+#: ../../docs/features.rst:114 6c4f9b5a2d884592a06ad12ecc12b9ea
+msgid "Data streaming"
+msgstr ""
+
+#: ../../docs/features.rst:117 1d572bfdfee4415aaee8878da2d53a10
+msgid "Priority-based"
+msgstr ""
+
+#: ../../docs/features.rst:119 7f4acacb69d44a43aca2108cbf41ad64
+msgid "**Description:** Messages are delivered by priority."
+msgstr ""
+
+#: ../../docs/features.rst:125 f5dcf7ab29db46449c5775b1876df5d2
+msgid "**Priorities:**"
+msgstr ""
+
+#: ../../docs/features.rst:128 8c621ada39854419ae7499927a3600af
+msgid "Priority"
+msgstr ""
+
+#: ../../docs/features.rst:128 163ea6544311427b8acb8f2d61cf86bb
+msgid "Value"
+msgstr ""
+
+#: ../../docs/features.rst:128 ../../docs/features.rst:381
+#: ../../docs/features.rst:468 79df5083eda3487f8df60f59f949cd3b
+#: f174873377f9465da0bd50fbb0e930ef f3922a2d3f444c77935d3392436b1ff4
+msgid "Description"
+msgstr ""
+
+#: ../../docs/features.rst:130 4a12c61cf3f948f8b9706590c18440cb
+msgid "Critical"
+msgstr ""
+
+#: ../../docs/features.rst:130 0b3b2a93f46041eaa8ba93803cf64bbe
+msgid "3"
+msgstr ""
+
+#: ../../docs/features.rst:130 3de4a6022b004e889215946b848449cf
+msgid "Critical, delivered first"
+msgstr ""
+
+#: ../../docs/features.rst:132 376df05603b34143937ffea7556cbdf3
+msgid "High"
+msgstr ""
+
+#: ../../docs/features.rst:132 5711c16ddba74a05b583505a7fa5c0c3
+msgid "2"
+msgstr ""
+
+#: ../../docs/features.rst:132 947afb6d17dd4c29a1711072bd3ff265
+msgid "High priority"
+msgstr ""
+
+#: ../../docs/features.rst:134 6e2f97485937404198fab3f87cfcb870
+msgid "Normal"
+msgstr ""
+
+#: ../../docs/features.rst:134 2c5c159bfed1455e9944166a91a7f37b
+msgid "1"
+msgstr ""
+
+#: ../../docs/features.rst:134 183351a6c91d47f7b7dba9811106d07b
+msgid "Normal (default)"
+msgstr ""
+
+#: ../../docs/features.rst:136 59515b059dc94211bf16c3cb8c28009c
+msgid "Low"
+msgstr ""
+
+#: ../../docs/features.rst:136 21128d9029df419d8e63b8289d0517c5
+msgid "0"
+msgstr ""
+
+#: ../../docs/features.rst:136 1e7b6fa7f14249abb43732cb5e4e8c88
+msgid "Low, delivered last"
+msgstr ""
+
+#: ../../docs/features.rst:145 ../../docs/features.rst:314
+#: 0aa251bd22a34a3bace4edb8d425cdf1 1eabda3e7b504e82b2b2a2d4809d22d5
+msgid "**Publish with priority:**"
+msgstr ""
+
+#: ../../docs/features.rst:154 4ce6403fdd0748e39c6303c5af6c4bc3
+msgid "Delivery Guarantees"
+msgstr ""
+
+#: ../../docs/features.rst:157 5cbbdaab72454274a005346a185d4eda
+msgid "Acknowledgments (ACK)"
+msgstr ""
+
+#: ../../docs/features.rst:159 b7987d8de6d24ee9bd9624ecb810ed92
+msgid "VibeMQ uses an acknowledgment mechanism for delivery guarantees:"
+msgstr ""
+
+#: ../../docs/features.rst:169 a9215b33ecd84c0a97dd1f011c183183
+msgid "**How it works:**"
+msgstr ""
+
+#: ../../docs/features.rst:171 b68f020e911649fe8a311e6106773372
+msgid "Broker sends message to client"
+msgstr ""
+
+#: ../../docs/features.rst:172 174ef26bbd694fdf9642723e2392fd3a
+msgid "ACK wait timer starts"
+msgstr ""
+
+#: ../../docs/features.rst:173 441b775ab1e54ac889c7cb3bef585ed2
+msgid "Client processes message and sends ACK"
+msgstr ""
+
+#: ../../docs/features.rst:174 17745fed79344d668faa0c0b759bdd5e
+msgid "Broker receives ACK and marks message as delivered"
+msgstr ""
+
+#: ../../docs/features.rst:176 9df59b0a821a4a38bcd7241c67c76448
+msgid "**Automatic ACKs:**"
+msgstr ""
+
+#: ../../docs/features.rst:178 e41033230e9f4393bb434d38263009c4
+msgid ""
+"By default, the client automatically sends ACK after successful "
+"processing:"
+msgstr ""
+
+#: ../../docs/features.rst:191 f5da67745db54cbf916fb1e61af9f558
+msgid "Retry Attempts"
+msgstr ""
+
+#: ../../docs/features.rst:193 f18be0dad76c41919df93d0712611737
+msgid "If ACK is not received within the timeout, the message is resent:"
+msgstr ""
+
+#: ../../docs/features.rst:205 c8bdf3790f94466d9137d00cedddefd8
+msgid "**Exponential backoff:**"
+msgstr ""
+
+#: ../../docs/features.rst:207 eade06fc1fd84f2fb7128a97a3b17dc4
+msgid "Exponential delay is used between attempts:"
+msgstr ""
+
+#: ../../docs/features.rst:209 6ef84809736149c8828b10187195a1e6
+msgid "Attempt 1: immediately"
+msgstr ""
+
+#: ../../docs/features.rst:210 6deb789d9aac4b9da2cec98ec5caba89
+msgid "Attempt 2: after 1s"
+msgstr ""
+
+#: ../../docs/features.rst:211 a1b8d9f3a08c45aeb76d904146e432b5
+msgid "Attempt 3: after 2s"
+msgstr ""
+
+#: ../../docs/features.rst:212 ab3b1eef30b748acb98638636438e85d
+msgid "Attempt 4: after 4s"
+msgstr ""
+
+#: ../../docs/features.rst:213 9933865a99994e7a8d2bddb4c2922016
+msgid "..."
+msgstr ""
+
+#: ../../docs/features.rst:216 82dc7696a6204e7687958e6c43c34f64
+msgid "Dead Letter Queue (DLQ)"
+msgstr ""
+
+#: ../../docs/features.rst:218 c83a2478493d4bedb3aca70a2dcf2c42
+msgid ""
+"Messages that fail to deliver after all attempts are moved to Dead Letter"
+" Queue:"
+msgstr ""
+
+#: ../../docs/features.rst:226 d1c493193fc34be884b5423bd51b6a48
+msgid "**Reasons for DLQ:**"
+msgstr ""
+
+#: ../../docs/features.rst:228 7cd38d0f9f1743bd8a719f7ef55664f3
+msgid "Maximum delivery attempts exceeded"
+msgstr ""
+
+#: ../../docs/features.rst:229 bb73ef230fa04b4ebd2f51ce71cafc6e
+msgid "Message TTL expired"
+msgstr ""
+
+#: ../../docs/features.rst:230 6c465844426a4057a6ed87450fcbbad7
+msgid "Deserialization error"
+msgstr ""
+
+#: ../../docs/features.rst:231 11694d6ee26d4d3bab2e183aa562cf3e
+msgid "Exception in handler"
+msgstr ""
+
+#: ../../docs/features.rst:233 1999c60ddaf84d199b0d235277091339
+msgid "**DLQ processing:**"
+msgstr ""
+
+#: ../../docs/features.rst:245 5b8cfac177704dc7bdeb0200fdaa7f77
+msgid "Queue Management"
+msgstr ""
+
+#: ../../docs/features.rst:248 9198366ca0464518bbcf10b01c92288a
+msgid "Creating a Queue"
+msgstr ""
+
+#: ../../docs/features.rst:250 1aa9292ef6ba4fffb43378d1dbfa4cad
+msgid "**Automatic creation:**"
+msgstr ""
+
+#: ../../docs/features.rst:252 86c20336bd564c6a82cc90624431595d
+msgid "When publishing to a non-existent queue, it's created automatically:"
+msgstr ""
+
+#: ../../docs/features.rst:258 cd396f2b219f483b98e6b0c79e8da756
+msgid "**Manual creation:**"
+msgstr ""
+
+#: ../../docs/features.rst:269 608d49012e064a908d68b46a45e14af1
+msgid "Deleting a Queue"
+msgstr ""
+
+#: ../../docs/features.rst:276 c5f709c393dc4b6ab100a29d4b8d0047
+msgid "Getting Information"
+msgstr ""
+
+#: ../../docs/features.rst:288 abf3fd53d654414795112dee72aee6ba
+msgid "List Queues"
+msgstr ""
+
+#: ../../docs/features.rst:299 f21d86e9e5bc44588c3344cc35e90414
+msgid "Message Priorities"
+msgstr ""
+
+#: ../../docs/features.rst:301 e67888be552f4bc0bd386a79ead27de0
+msgid "VibeMQ supports message priorities for important deliveries."
+msgstr ""
+
+#: ../../docs/features.rst:303 256bd99218eb40298186b7d0f4ea670c
+msgid "**Priority levels:**"
+msgstr ""
+
+#: ../../docs/features.rst:332 f7689e0a8cb14ab8bebe93a1c5e69d33
+msgid "Keep-alive (PING/PONG)"
+msgstr ""
+
+#: ../../docs/features.rst:334 b24e7ba91c9a46ddaec76afcaaaebf22
+msgid "Active connections are maintained using the keep-alive mechanism:"
+msgstr ""
+
+#: ../../docs/features.rst:344 b1b1ffc596974a9eb4960547a19f44a1
+msgid "**Client configuration:**"
+msgstr ""
+
+#: ../../docs/features.rst:357 da805fe013c0496b8187c2bdad60ed22
+msgid "Automatic Reconnections"
+msgstr ""
+
+#: ../../docs/features.rst:359 5c56709c653e465bbc6b14184ee1b983
+msgid "The client automatically reconnects when the connection is lost."
+msgstr ""
+
+#: ../../docs/features.rst:361 a1ad9bdcfed64da2863f2a7246b49684
+msgid "**Reconnect policy configuration:**"
+msgstr ""
+
+#: ../../docs/features.rst:378 ../../docs/features.rst:465
+#: ca0adb25f32a49fb9e0998ad0f32721d e332d9885107459cb36ba0d79d530c08
+msgid "**Parameters:**"
+msgstr ""
+
+#: ../../docs/features.rst:381 ../../docs/features.rst:468
+#: 2b7d9004ce6f4b5c9d50ab4c69908f50 4ff0ea91cd39477fb54f3b1e49e3a4ce
+msgid "Parameter"
+msgstr ""
+
+#: ../../docs/features.rst:381 ../../docs/features.rst:468
+#: c28142c7354c4b4b82632fa595254988 f30d2247cce4470a92543ce934de2e35
+msgid "Default"
+msgstr ""
+
+#: ../../docs/features.rst:383 2467f9c41f34406b85c200193590ba0a
+msgid "``MaxAttempts``"
+msgstr ""
+
+#: ../../docs/features.rst:383 f2784e8d94fe4e709f2355bd0ef2335d
+msgid "int.MaxValue"
+msgstr ""
+
+#: ../../docs/features.rst:383 8cbc9947a299478f90e19f50531ef6a7
+msgid "Maximum number of attempts"
+msgstr ""
+
+#: ../../docs/features.rst:385 78ebeff3d43046bb933957cd92178d00
+msgid "``InitialDelay``"
+msgstr ""
+
+#: ../../docs/features.rst:385 d250bf51c6b04a3e8a102b27709ce0e9
+msgid "1s"
+msgstr ""
+
+#: ../../docs/features.rst:385 b8b580f9e0554dfdbe569a4811c49a2c
+msgid "Initial delay"
+msgstr ""
+
+#: ../../docs/features.rst:387 dac4e4750da14579894bfa5efbd5d09a
+msgid "``MaxDelay``"
+msgstr ""
+
+#: ../../docs/features.rst:387 3cae016a02a64bd3bb71c32c37284b49
+msgid "5min"
+msgstr ""
+
+#: ../../docs/features.rst:387 5a4583556b46412fbf3010b5f6a90f00
+msgid "Maximum delay"
+msgstr ""
+
+#: ../../docs/features.rst:389 eb7530df88cd476cbc45a51f75f291c6
+msgid "``UseExponentialBackoff`` | true"
+msgstr ""
+
+#: ../../docs/features.rst:389 7be4cdd86c2a4f56b9ee608cea129704
+msgid "Exponential increase"
+msgstr ""
+
+#: ../../docs/features.rst:393 e7f1f950f16b4b87910c2ea7b9d62a6f
+msgid "Authentication"
+msgstr ""
+
+#: ../../docs/features.rst:395 607fd7b5ab1f4764a689229fa1d30a0b
+msgid "Token-based authentication:"
+msgstr ""
+
+#: ../../docs/features.rst:397 ../../docs/features.rst:426
+#: 21d1b5ac64074c40b08475926db6162c c855b57b15d144cd90a131c9b427fe8e
+msgid "**On server:**"
+msgstr ""
+
+#: ../../docs/features.rst:405 ../../docs/features.rst:436
+#: 52aef46d6a2f42ff9533e49e87c882b7 80067a42ac694f6aa8bba6569b4b20f4
+msgid "**On client:**"
+msgstr ""
+
+#: ../../docs/features.rst:419 d356e761481241049590f89774d2d957
+msgid "Use complex tokens (32+ characters) and store them in a secure location."
+msgstr ""
+
+#: ../../docs/features.rst:422 1eb2f99c686c45309c81c7b5269c91a4
+msgid "TLS/SSL Encryption"
+msgstr ""
+
+#: ../../docs/features.rst:424 4f70034d45a7497fa913b75285eb8729
+msgid "Transport encryption support:"
+msgstr ""
+
+#: ../../docs/features.rst:450 4c0b1a14047b45eaab1828c0e31f8aa3
+msgid "Rate Limiting"
+msgstr ""
+
+#: ../../docs/features.rst:452 7700708281f14428b943562d878bbe16
+msgid "Overload protection:"
+msgstr ""
+
+#: ../../docs/features.rst:470 261b4ac761f94162869f6baad7338a2a
+msgid "``Enabled``"
+msgstr ""
+
+#: ../../docs/features.rst:470 2343fab3f4f2441b8941504665146da4
+msgid "false"
+msgstr ""
+
+#: ../../docs/features.rst:470 b7821bfc67094393b9e429d9399192ab
+msgid "Enable rate limiting"
+msgstr ""
+
+#: ../../docs/features.rst:472 974ed4405a0c46f6b0c1142b463ba329
+msgid "``MaxConnectionsPerIpPerWindow`` | 100"
+msgstr ""
+
+#: ../../docs/features.rst:472 e225d21141884e53bf299ef17f710e18
+msgid "Max connections per IP per window"
+msgstr ""
+
+#: ../../docs/features.rst:474 53cca90a85774269889073b4e45cab4b
+msgid "``ConnectionWindowSeconds`` | 60"
+msgstr ""
+
+#: ../../docs/features.rst:474 66c9328c8ede4b7abd70e8c8fefa13f9
+msgid "Time window (seconds)"
+msgstr ""
+
+#: ../../docs/features.rst:476 73ff8b700fc24c609672cfe4c92ba374
+msgid "``MaxMessagesPerClientPerSecond`` | 1000"
+msgstr ""
+
+#: ../../docs/features.rst:476 5dc7685bc9e7449e8341b6cbf1b54947
+msgid "Max messages per second per client"
+msgstr ""
+
+#: ../../docs/features.rst:480 4f1bdf6857af4e3bb9267abdfdea7441
+msgid "Graceful Shutdown"
+msgstr ""
+
+#: ../../docs/features.rst:482 f6639bb67817455b8c035688b5d115b0
+msgid "Correct server shutdown without message loss:"
+msgstr ""
+
+#: ../../docs/features.rst:495 8587b52f366a4a798270a0645b05844d
+msgid "**Shutdown stages:**"
+msgstr ""
+
+#: ../../docs/features.rst:497 991bdaa46c9240f8813a9ae4c7cece36
+msgid "Stop accepting new connections"
+msgstr ""
+
+#: ../../docs/features.rst:498 7db5e362703048b488af874d5bba90ef
+msgid "Notify clients about shutdown"
+msgstr ""
+
+#: ../../docs/features.rst:499 b484784fadcb48c3b70a6ec3087f8f96
+msgid "Wait for in-flight message processing (up to 30s)"
+msgstr ""
+
+#: ../../docs/features.rst:500 3606e3a84238436cb466dd01cbc1deed
+msgid "Close all connections"
+msgstr ""
+
+#: ../../docs/features.rst:501 a06d2cb28aea49818a278ccd01eac2e2
+msgid "Clean up resources"
+msgstr ""
+
+#: ../../docs/features.rst:504 290eafd0ad02409293afce2fcdbcaacc
+msgid "Health Checks"
+msgstr ""
+
+#: ../../docs/features.rst:506 c16d56b248d940db8e348928231214d3
+msgid "HTTP endpoints for monitoring:"
+msgstr ""
+
+#: ../../docs/features.rst:508 2b180ace488340e389746dc9e9760841
+msgid "**Enable:**"
+msgstr ""
+
+#: ../../docs/features.rst:517 2ab1401d0c604da88911cd12501d3990
+msgid "**Endpoints:**"
+msgstr ""
+
+#: ../../docs/features.rst:519 7d1021409ac744e9813d4029f3148180
+msgid "``GET /health/`` — health status (200 OK or 503)"
+msgstr ""
+
+#: ../../docs/features.rst:520 ede03af66394406a9d3417354160f8a1
+msgid "``GET /metrics/`` — broker metrics (JSON)"
+msgstr ""
+
+#: ../../docs/features.rst:522 0e0e45bb20064f5b88c3148fd6346645
+msgid "**Example /health/ response:**"
+msgstr ""
+
+#: ../../docs/features.rst:533 01d16586d6ab4ea4836d2f167d681cf9
+msgid "**Example /metrics/ response:**"
+msgstr ""
+
+#: ../../docs/features.rst:548 573a269202ea499ab8b92bb0a8f62f11
+msgid "Metrics"
+msgstr ""
+
+#: ../../docs/features.rst:550 f7129265ff6242688292d70461ede85f
+msgid "**Counters:**"
+msgstr ""
+
+#: ../../docs/features.rst:552 667db181aedc4f9f8ff3b20f2905547f
+msgid "``TotalMessagesPublished`` — total published"
+msgstr ""
+
+#: ../../docs/features.rst:553 74d2351007da4337934d01db6cde3f45
+msgid "``TotalMessagesDelivered`` — total delivered"
+msgstr ""
+
+#: ../../docs/features.rst:554 3cb2cf6a41ef4f16a2a9d37067cf0b6d
+msgid "``TotalMessagesAcknowledged`` — total acknowledged"
+msgstr ""
+
+#: ../../docs/features.rst:555 cf4682fcb1b1424885b1d592c5c5917a
+msgid "``TotalRetries`` — retry attempts"
+msgstr ""
+
+#: ../../docs/features.rst:556 4f4be772fe8d4a1abb29cb900a139316
+msgid "``TotalDeadLettered`` — in DLQ"
+msgstr ""
+
+#: ../../docs/features.rst:557 4d62c97e70094d0a95c95cc695401aaa
+msgid "``TotalErrors`` — errors"
+msgstr ""
+
+#: ../../docs/features.rst:558 73f5e9cc8c544900a7c3a550a267c43f
+msgid "``TotalConnectionsAccepted`` — connections accepted"
+msgstr ""
+
+#: ../../docs/features.rst:559 51dc2050619948fd816474d8c506035f
+msgid "``TotalConnectionsRejected`` — connections rejected"
+msgstr ""
+
+#: ../../docs/features.rst:561 59924a6d0b2d4218b4b35d6153782530
+msgid "**Gauge metrics:**"
+msgstr ""
+
+#: ../../docs/features.rst:563 8801a3062fbb4e3291928dd24d40308b
+msgid "``ActiveConnections`` — active connections"
+msgstr ""
+
+#: ../../docs/features.rst:564 e26e5c72beab48368d67c11389502b60
+msgid "``ActiveQueues`` — active queues"
+msgstr ""
+
+#: ../../docs/features.rst:565 e67ae49f9c1346b8a9f3ef07fcf23d11
+msgid "``InFlightMessages`` — in flight"
+msgstr ""
+
+#: ../../docs/features.rst:566 fcc35c346f674bb8be4524f9687f567e
+msgid "``MemoryUsageBytes`` — memory usage"
+msgstr ""
+
+#: ../../docs/features.rst:568 95b181ad9e294bd3805d1ccd38370720
+msgid "**Latency:**"
+msgstr ""
+
+#: ../../docs/features.rst:570 0b1770813cfe42bebed84f434a28f3e4
+msgid "``AverageDeliveryLatencyMs`` — average delivery latency"
+msgstr ""
+
+#: ../../docs/features.rst:573 03682ebac68a47fc8d81a4002dc852e4
+msgid "Next Steps"
+msgstr ""
+
+#: ../../docs/features.rst:575 309779422a5449e1a800d5bd32a46b27
+msgid ":doc:`server-setup` — server configuration"
+msgstr ""
+
+#: ../../docs/features.rst:576 0149457c3f0e4aed8ec81b5915061f89
+msgid ":doc:`client-usage` — client usage"
+msgstr ""
+
+#: ../../docs/features.rst:577 550eef3a2bd24a2189a93ef25131bf01
+msgid ":doc:`monitoring` — monitoring"
+msgstr ""
+

@@ -1,0 +1,152 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2026, Darkboy
+# This file is distributed under the same license as the VibeMQ package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: VibeMQ 1.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-02-20 10:37+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: ru\n"
+"Language-Team: ru <LL@li.org>\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../docs/examples.rst:3 3a71f390d9bf43938bc566edb0c75ca7
+msgid "Examples"
+msgstr ""
+
+#: ../../docs/examples.rst:5 6faa3de34a7047be95941b07d0a488c8
+msgid "This guide contains practical examples of using VibeMQ."
+msgstr ""
+
+#: ../../docs/examples.rst:9 2466a5768c8746349af099d10cc8a85f
+msgid "Contents"
+msgstr ""
+
+#: ../../docs/examples.rst:12 9ae5cfd02b794ba89cfe8b5d51fbf9a1
+msgid "Basic Examples"
+msgstr ""
+
+#: ../../docs/examples.rst:15 d6d5141fb871413ebefea45307debb5d
+msgid "Simple Publisher"
+msgstr ""
+
+#: ../../docs/examples.rst:50 482ccafdcad1480981e87d733f2c8413
+msgid "Simple Subscriber"
+msgstr ""
+
+#: ../../docs/examples.rst:81 8aeb9204de5444eaadbd447f754c803b
+msgid "Server"
+msgstr ""
+
+#: ../../docs/examples.rst:112 13c00802dda844188c191969b4d9130a
+msgid "Task Queues"
+msgstr ""
+
+#: ../../docs/examples.rst:115 e76ce0341b10456092dc01944a31c5f2
+msgid "Order Processing"
+msgstr ""
+
+#: ../../docs/examples.rst:117 0c0637f3350747b39c40d7c582c3dd5b
+msgid "**Publisher (OrderService.cs):**"
+msgstr ""
+
+#: ../../docs/examples.rst:155 49b07b0c0f874db19f47c55ecd7383ad
+msgid "**Handler (OrderProcessor.cs):**"
+msgstr ""
+
+#: ../../docs/examples.rst:210 7ba51d04bece4911b3f2be352f693e41
+msgid "**DI Registration:**"
+msgstr ""
+
+#: ../../docs/examples.rst:231 aac0511492724fbaba3a71ac4c7f5001
+msgid "Background Tasks with Priorities"
+msgstr ""
+
+#: ../../docs/examples.rst:262 ../../docs/examples.rst:370
+#: ../../docs/examples.rst:609 052f5563d1724035a68af593f70ec45b
+#: 359c3da0151b49aca6b42626875f2b52 ce5ffa6c54d645a686f129abb9395282
+msgid "**Usage:**"
+msgstr ""
+
+#: ../../docs/examples.rst:281 0ecdcd28a74a4580a5ccfb257536e416
+msgid "Event Bus"
+msgstr ""
+
+#: ../../docs/examples.rst:284 4c1416a5830844b49bc15b4f6a48fe03
+msgid "EventBus Implementation"
+msgstr ""
+
+#: ../../docs/examples.rst:364 5ce5fd2d271f4d07816a1b900da310c4
+msgid "**Registration:**"
+msgstr ""
+
+#: ../../docs/examples.rst:405 a940378077f14a5d88c254c14e8c7d97
+msgid "Microservices"
+msgstr ""
+
+#: ../../docs/examples.rst:408 dae34137c1de4ef9bd7bf65b8dd41a6a
+msgid "Data Synchronization Between Services"
+msgstr ""
+
+#: ../../docs/examples.rst:410 4c2fd753ce824e288595ec96c1a85d9f
+msgid "**User Service (Users.cs):**"
+msgstr ""
+
+#: ../../docs/examples.rst:432 2b26a8a723dc4b7fae5bfe3755ec3e99
+msgid "**Notification Service (Notifications.cs):**"
+msgstr ""
+
+#: ../../docs/examples.rst:459 9d1008b7b82242e7ab2c279ad259d285
+msgid "**Analytics Service (Analytics.cs):**"
+msgstr ""
+
+#: ../../docs/examples.rst:488 ae108dc2a92a4f5ba3518dc4095236b5
+msgid "CQRS with VibeMQ"
+msgstr ""
+
+#: ../../docs/examples.rst:490 70ec2097b34a450c97bb5b6942a7fdda
+msgid "**Commands:**"
+msgstr ""
+
+#: ../../docs/examples.rst:511 04d8f4b64d43441abe5a4cc199c1e988
+msgid "**Queries:**"
+msgstr ""
+
+#: ../../docs/examples.rst:557 1919bb052a9b4ab09ade27a87c821b59
+msgid "Monitoring and Logging"
+msgstr ""
+
+#: ../../docs/examples.rst:560 29b4e829891841468484431b086a7b6f
+msgid "Custom Logger"
+msgstr ""
+
+#: ../../docs/examples.rst:621 a9794a1386024c4592aab6605062371c
+msgid "Application Metrics"
+msgstr ""
+
+#: ../../docs/examples.rst:656 1000a61b0fa144309eb88d1bcd8e8b06
+msgid "Next Steps"
+msgstr ""
+
+#: ../../docs/examples.rst:658 d147c0004bbe4846b45dd61fa3e429d3
+msgid ":doc:`getting-started` — quick start"
+msgstr ""
+
+#: ../../docs/examples.rst:659 b525585c0e9b4c8183f300ef6b7e0c7c
+msgid ":doc:`client-usage` — client usage"
+msgstr ""
+
+#: ../../docs/examples.rst:660 f2b6035deaa3473a9a94a2a9d1a50705
+msgid ":doc:`di-integration` — DI integration"
+msgstr ""
+

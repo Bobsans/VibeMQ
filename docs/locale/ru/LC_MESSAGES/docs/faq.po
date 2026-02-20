@@ -1,0 +1,641 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2026, Darkboy
+# This file is distributed under the same license as the VibeMQ package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: VibeMQ 1.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-02-20 10:37+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: ru\n"
+"Language-Team: ru <LL@li.org>\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../docs/faq.rst:3 9d394d4562fb4a1a9699739d8c4752db
+msgid "Frequently Asked Questions"
+msgstr ""
+
+#: ../../docs/faq.rst:5 1f719f64ee564e0ba78310ccd643f918
+msgid "This guide answers common questions about VibeMQ."
+msgstr ""
+
+#: ../../docs/faq.rst:9 9a27a85bb23c44e49a7de1e04fecaaac
+msgid "Contents"
+msgstr ""
+
+#: ../../docs/faq.rst:12 5e08df8eaedd40eeb5c7527068bcfdf0
+msgid "General Questions"
+msgstr ""
+
+#: ../../docs/faq.rst:15 7be124e0151c4b04b3177c86a0907839
+msgid "What is VibeMQ?"
+msgstr ""
+
+#: ../../docs/faq.rst:17 042696d3990547b380eb13ea4e477337
+msgid ""
+"**VibeMQ** is a simple but reliable message broker for .NET applications."
+" It supports:"
+msgstr ""
+
+#: ../../docs/faq.rst:19 b6414bf821084ce081631153e3175e90
+msgid "Publish/subscribe (pub/sub)"
+msgstr ""
+
+#: ../../docs/faq.rst:20 1da1b8be5a374375832d438dfa0cc183
+msgid "Queues with delivery guarantees"
+msgstr ""
+
+#: ../../docs/faq.rst:21 55e1378e963c40238c2d00c608973253
+msgid "Automatic reconnections"
+msgstr ""
+
+#: ../../docs/faq.rst:22 c325a4c6e9974202abf2977c1960fd01
+msgid "Token-based authentication"
+msgstr ""
+
+#: ../../docs/faq.rst:23 b5bffffae43341fb96e3873f75f95c46
+msgid "TLS/SSL encryption"
+msgstr ""
+
+#: ../../docs/faq.rst:24 611602690ccd4458a60d60dd6ca1c0b5
+msgid "Health checks for orchestrators"
+msgstr ""
+
+#: ../../docs/faq.rst:27 09a7a039e1784aef810b228fe5b07314
+msgid "How is VibeMQ different from RabbitMQ/Kafka?"
+msgstr ""
+
+#: ../../docs/faq.rst:29 3da38854e1bb43119187c2c48f38ca8f
+msgid "**VibeMQ vs RabbitMQ:**"
+msgstr ""
+
+#: ../../docs/faq.rst:31 1ba6e78abb4444efab6aab85b68d2c0f
+msgid "VibeMQ is simpler to configure and use"
+msgstr ""
+
+#: ../../docs/faq.rst:32 4aa1823e78ea4322ac429d69199a6708
+msgid "Does not require external dependencies (databases, etc.)"
+msgstr ""
+
+#: ../../docs/faq.rst:33 19c9f9b9966e4bcbb92cca979f6088de
+msgid "Written in C# for .NET ecosystem"
+msgstr ""
+
+#: ../../docs/faq.rst:34 dd0f78f0094d48989010e18e56bf4d02
+msgid "Less functionality, but sufficient for most scenarios"
+msgstr ""
+
+#: ../../docs/faq.rst:36 74df03cf71ba4513a1134dc718a3d3af
+msgid "**VibeMQ vs Kafka:**"
+msgstr ""
+
+#: ../../docs/faq.rst:38 7d5a5a1472b64504b29f76bed616c020
+msgid "VibeMQ is not a distributed event log"
+msgstr ""
+
+#: ../../docs/faq.rst:39 55bbdd525ddc49038b69f51d44261ddf
+msgid "Does not support persistent storage (in current version)"
+msgstr ""
+
+#: ../../docs/faq.rst:40 d35f63763d4648e0aa330527376b4bd9
+msgid "Simpler to deploy and use"
+msgstr ""
+
+#: ../../docs/faq.rst:41 d1e8b23c56284922a198928f241ece24
+msgid "Better suited for task queues and real-time notifications"
+msgstr ""
+
+#: ../../docs/faq.rst:44 437e5444e47a44dea7ee5232706a192e
+msgid "When to use VibeMQ?"
+msgstr ""
+
+#: ../../docs/faq.rst:46 df26150470034f258222bfed12b0adfe
+msgid "**Good scenarios:**"
+msgstr ""
+
+#: ../../docs/faq.rst:48 8cca9b8f9d634f9b818933245df89958
+msgid "Task queues for background processing"
+msgstr ""
+
+#: ../../docs/faq.rst:49 6d1e1fc60d8b42fb8d08efb5de7bb5af
+msgid "Notifications between microservices"
+msgstr ""
+
+#: ../../docs/faq.rst:50 40b3622f56ac47cb89a30dc91fc4d5e9
+msgid "Real-time updates"
+msgstr ""
+
+#: ../../docs/faq.rst:51 ddf7d4917d404a95bd25f394d015256b
+msgid "Event-driven architecture"
+msgstr ""
+
+#: ../../docs/faq.rst:52 215ff43b7aca4f55b9a5a24f58d84db2
+msgid "Distributed systems on .NET"
+msgstr ""
+
+#: ../../docs/faq.rst:54 4374ac3cf24b447092c5ec943f0d2a94
+msgid "**Not suitable for:**"
+msgstr ""
+
+#: ../../docs/faq.rst:56 2cfe29c1f39c46b598f5fee73c3ab96d
+msgid "Storing large volumes of data"
+msgstr ""
+
+#: ../../docs/faq.rst:57 3b8a4db1fd9a4f3bb5bd231ec42727a1
+msgid "Real-time streaming (use Kafka)"
+msgstr ""
+
+#: ../../docs/faq.rst:58 165b63563c5b43d5af26d180fb63a1ed
+msgid "Complex message routing (use RabbitMQ)"
+msgstr ""
+
+#: ../../docs/faq.rst:59 05b9d6e7e33d40d993dc9cd4a7d8c928
+msgid "Transactional messages"
+msgstr ""
+
+#: ../../docs/faq.rst:62 1cc0ed1194d64f9bbeeb9f65e249855c
+msgid "What .NET versions are supported?"
+msgstr ""
+
+#: ../../docs/faq.rst:64 cbd7534469364edcad8c841df84e2bd5
+msgid "**.NET 8.0** (main target platform)"
+msgstr ""
+
+#: ../../docs/faq.rst:65 d63ea96ae40d4d45b3ab58257905d41a
+msgid "**.NET 10.0** (support planned)"
+msgstr ""
+
+#: ../../docs/faq.rst:68 7945e62502784dc3a4ab74d684fb0b45
+msgid "Technical Questions"
+msgstr ""
+
+#: ../../docs/faq.rst:71 f8fcbe27a30a4d209b4aedbb921f955f
+msgid "How does delivery guarantee work?"
+msgstr ""
+
+#: ../../docs/faq.rst:73 5a541d08d1e34f58b7a5ee5111278f6e
+msgid "VibeMQ uses acknowledgment (ACK) mechanism:"
+msgstr ""
+
+#: ../../docs/faq.rst:75 48f34f275fd340d8baf386faa95aeb56
+msgid "Broker sends message to subscriber"
+msgstr ""
+
+#: ../../docs/faq.rst:76 07edeb26ae1a4eb5b1514b98fd349a4b
+msgid "ACK wait timer starts"
+msgstr ""
+
+#: ../../docs/faq.rst:77 9309be6a64e047e9ac0b3ac73085ac29
+msgid "Subscriber processes message and sends ACK"
+msgstr ""
+
+#: ../../docs/faq.rst:78 3260d1108d574df3a885d7b6e1005fda
+msgid "If ACK not received — retry delivery"
+msgstr ""
+
+#: ../../docs/faq.rst:79 f4b0c1d622594308a9333594cf3a36e7
+msgid "After exhausting attempts — Dead Letter Queue"
+msgstr ""
+
+#: ../../docs/faq.rst:82 e0d892aeb9d74d0cae28cc97b307a9ec
+msgid "What happens when server restarts?"
+msgstr ""
+
+#: ../../docs/faq.rst:84 ee9e0a00835f4d03859a4481dcebb9f1
+msgid "**Current version:**"
+msgstr ""
+
+#: ../../docs/faq.rst:86 5e81cc54c26944ffa427fa1beb5900f6
+msgid "Messages in queues are lost (in-memory storage)"
+msgstr ""
+
+#: ../../docs/faq.rst:87 7ea92baa6c004ce485296ba1bdc32e3b
+msgid "Connections must be restored"
+msgstr ""
+
+#: ../../docs/faq.rst:89 ../../docs/faq.rst:108 ../../docs/faq.rst:401
+#: 57e0196a781b4ac28c71caf847bbcc0c bda7fa194c584522ab96254b6b6a4471
+#: ca1d2dfee11d46ff88708ab330502c7d
+msgid "**Planned:**"
+msgstr ""
+
+#: ../../docs/faq.rst:91 7617180ba8034665bb423c31fc9b0177
+msgid "Persistence layer for message storage"
+msgstr ""
+
+#: ../../docs/faq.rst:92 81bc4f4311244fdf88883036ce3bf9e9
+msgid "State recovery after restart"
+msgstr ""
+
+#: ../../docs/faq.rst:95 e63c610c546f401d9207e91b1eda0d92
+msgid "How to scale VibeMQ?"
+msgstr ""
+
+#: ../../docs/faq.rst:97 99313ed619a34ce2ad37325448f14f1b
+msgid "**Horizontal scaling:**"
+msgstr ""
+
+#: ../../docs/faq.rst:99 05b4b59aa05f4e6384effb9e57507aa0
+msgid "Run multiple server instances"
+msgstr ""
+
+#: ../../docs/faq.rst:100 c118a96220e943e5b317f42522ee9208
+msgid "Use load balancer"
+msgstr ""
+
+#: ../../docs/faq.rst:101 21b64b84898342d98c42ea3c8972d991
+msgid "Clients connect to nearest server"
+msgstr ""
+
+#: ../../docs/faq.rst:103 3b14010ef09a45ee90ebfbbae2471215
+msgid "**Vertical scaling:**"
+msgstr ""
+
+#: ../../docs/faq.rst:105 07430e0d72394a88b418f7f597132b3a
+msgid "Increase limits (MaxConnections, MaxQueueSize)"
+msgstr ""
+
+#: ../../docs/faq.rst:106 f412d49e61004833b4413094076e1948
+msgid "Add resources (CPU, RAM)"
+msgstr ""
+
+#: ../../docs/faq.rst:110 0e71690ef398479fad8b6bf5937a2baa
+msgid "Clustering for automatic scaling"
+msgstr ""
+
+#: ../../docs/faq.rst:113 baa5ecd5343f45238b23ca01ffdab34a
+msgid "How to ensure security?"
+msgstr ""
+
+#: ../../docs/faq.rst:115 49666cc9268b4e869b7716b9729e7ab1
+msgid "**Authentication:**"
+msgstr ""
+
+#: ../../docs/faq.rst:121 947ef973de24459fbddd577c9e100f95
+msgid "**TLS encryption:**"
+msgstr ""
+
+#: ../../docs/faq.rst:130 ../../docs/faq.rst:334
+#: 8b0af3fe9ddd4398bdc428c711423d76 ab1129b2470d45b6b081fc46aa717627
+msgid "**Rate limiting:**"
+msgstr ""
+
+#: ../../docs/faq.rst:140 28e053e6de95400a961027c45cd38ad8
+msgid "What delivery modes are supported?"
+msgstr ""
+
+#: ../../docs/faq.rst:142 f5992860f2bc4c9d8f23371342e2beeb
+msgid "**Round-robin** — to each subscriber in turn"
+msgstr ""
+
+#: ../../docs/faq.rst:143 2bef219376264f4589042ab76aafee5f
+msgid "**Fan-out with ACK** — to all with acknowledgment"
+msgstr ""
+
+#: ../../docs/faq.rst:144 f02fc65fe4464128978be980edf324b3
+msgid "**Fan-out without ACK** — to all without acknowledgment"
+msgstr ""
+
+#: ../../docs/faq.rst:145 01ce8abdb8de4da48ab24a4bc282aa8e
+msgid "**Priority-based** — by priority"
+msgstr ""
+
+#: ../../docs/faq.rst:148 0ab2da71820748d5b954a258ec404f9f
+msgid "How does Dead Letter Queue work?"
+msgstr ""
+
+#: ../../docs/faq.rst:150 d8cbfc4b310c406c87b82a5b8922d40b
+msgid "DLQ stores messages that could not be delivered:"
+msgstr ""
+
+#: ../../docs/faq.rst:159 542f69720ed447ad9de12c4ba217a9df
+msgid "**Reasons for DLQ:**"
+msgstr ""
+
+#: ../../docs/faq.rst:161 5ec914eadbfa4a1f8d7300f1f0cef86c
+msgid "Exceeded delivery attempt count"
+msgstr ""
+
+#: ../../docs/faq.rst:162 ../../docs/faq.rst:415
+#: 2ddf6f9c7ab14f74b6a519c7f9bd2232 a21caa83ca054558b8b10d63536eeca8
+msgid "Message TTL expired"
+msgstr ""
+
+#: ../../docs/faq.rst:163 8fd663d8df634eddaf383f865f4a4c48
+msgid "Deserialization error"
+msgstr ""
+
+#: ../../docs/faq.rst:164 10a45a31e80940ef9a84f1be3eb54164
+msgid "Exception in handler"
+msgstr ""
+
+#: ../../docs/faq.rst:167 f0a3e02de3a84a13ab887d48542297ce
+msgid "Deployment"
+msgstr ""
+
+#: ../../docs/faq.rst:170 8751ff46fd3d4eb2a8e2c7506aa68ef7
+msgid "How to run in Docker?"
+msgstr ""
+
+#: ../../docs/faq.rst:172 5b8e1406a62d4276a7ee0dd1147cec05
+msgid "**Dockerfile:**"
+msgstr ""
+
+#: ../../docs/faq.rst:182 b7d992e03eb84ba2bca451c726de6dd1
+msgid "**Run:**"
+msgstr ""
+
+#: ../../docs/faq.rst:190 066c00552b2f42a5aa358cfff774642b
+msgid "How to use with Kubernetes?"
+msgstr ""
+
+#: ../../docs/faq.rst:192 67df728dae044cf7acdca80f7082d209
+msgid "**Deployment:**"
+msgstr ""
+
+#: ../../docs/faq.rst:221 d9ff5c5d9aee4fbfa9d9db617486a6fe
+msgid "How to configure for production?"
+msgstr ""
+
+#: ../../docs/faq.rst:223 ../../docs/faq.rst:305
+#: 7b62beb8315b425e9101e2744838e113 da986b1a55b54b208c0d24ddea417a30
+msgid "**Recommendations:**"
+msgstr ""
+
+#: ../../docs/faq.rst:253 ef20801b05904c2bbe022b47f2963c02
+msgid "Performance"
+msgstr ""
+
+#: ../../docs/faq.rst:256 9520ceba7aa0415080dbf783ddcb5722
+msgid "What is VibeMQ performance?"
+msgstr ""
+
+#: ../../docs/faq.rst:258 2568fd2ca0f049deb5cf4ce8001d053c
+msgid "**Benchmarks:**"
+msgstr ""
+
+#: ../../docs/faq.rst:260 340ad6d36943418d8e18f7d32e98c853
+msgid "10,000+ messages/sec on single node"
+msgstr ""
+
+#: ../../docs/faq.rst:261 f903d4428a084b99ab3b5b141f0da3d0
+#, python-format
+msgid "Latency < 10ms for 95% of messages"
+msgstr ""
+
+#: ../../docs/faq.rst:262 cce61fd8b0534d6e922d9b25bef6f095
+msgid "Support for 1000+ simultaneous connections"
+msgstr ""
+
+#: ../../docs/faq.rst:264 dad7a431767640d8bf1f956cc0637bde
+msgid "**Factors affecting performance:**"
+msgstr ""
+
+#: ../../docs/faq.rst:266 273a09751b4d4590b267ad3d5b9d8418
+msgid "Message size"
+msgstr ""
+
+#: ../../docs/faq.rst:267 23c5c5afba7d4f29bb5a95ac0a27485c
+msgid "Number of subscribers"
+msgstr ""
+
+#: ../../docs/faq.rst:268 75bfe2324c684625a521aabf830d70f6
+msgid "Delivery mode"
+msgstr ""
+
+#: ../../docs/faq.rst:269 d0e3374da407452b84106e5fdd7c0912
+msgid "Network latency"
+msgstr ""
+
+#: ../../docs/faq.rst:272 c0274e4ae7764eb4b9a06c125cc563de
+msgid "How to optimize performance?"
+msgstr ""
+
+#: ../../docs/faq.rst:274 8537b2ae3677494488881efe853a5fe7
+msgid "**On server:**"
+msgstr ""
+
+#: ../../docs/faq.rst:284 d00bd70195564eacb970b26f1e7c0b9e
+msgid "**On client:**"
+msgstr ""
+
+#: ../../docs/faq.rst:293 bc1deb6fbf1847d8ae01de823443e4dc
+msgid "**General recommendations:**"
+msgstr ""
+
+#: ../../docs/faq.rst:295 4012248731e74da88587ac681ab37019
+msgid "Use batching for publishing"
+msgstr ""
+
+#: ../../docs/faq.rst:296 b920e7d81f564e9b8ccf7b9aedccd5e4
+msgid "Optimize message handlers"
+msgstr ""
+
+#: ../../docs/faq.rst:297 770e84660bbc4da3a3bd3507714597c0
+msgid "Monitor performance metrics"
+msgstr ""
+
+#: ../../docs/faq.rst:300 94fc53a9cdf948d4a8f247b831d85c12
+msgid "Security"
+msgstr ""
+
+#: ../../docs/faq.rst:303 c8aa57213fd7423e97150aa26a47ef7c
+msgid "How secure is token authentication?"
+msgstr ""
+
+#: ../../docs/faq.rst:307 9d7600e2ebdc4db2986b79f5419a62bb
+msgid "Use complex tokens (32+ characters)"
+msgstr ""
+
+#: ../../docs/faq.rst:308 e75972c1a8244fca9c9b0a45d7187c00
+msgid "Store tokens in secure location (Key Vault, Secrets Manager)"
+msgstr ""
+
+#: ../../docs/faq.rst:309 7fefc31aaa5e4a9dacb412ba2f645bc2
+msgid "Rotate tokens periodically"
+msgstr ""
+
+#: ../../docs/faq.rst:310 d3a58533646748559bf0c2fa1da69777
+msgid "Use different tokens for different environments"
+msgstr ""
+
+#: ../../docs/faq.rst:314 0284489d395f4711a50c6a32620d5da2
+msgid ""
+"Token authentication is suitable for internal security. For public APIs "
+"use OAuth2/OIDC."
+msgstr ""
+
+#: ../../docs/faq.rst:318 b225070f0f4d4352b7922c4abcf0e61f
+msgid "Do I need to use TLS?"
+msgstr ""
+
+#: ../../docs/faq.rst:320 66f3addc05494837aae504301761b435
+msgid "**Yes, if:**"
+msgstr ""
+
+#: ../../docs/faq.rst:322 905552c868e44970b202ad418d67dd45
+msgid "Messages contain sensitive data"
+msgstr ""
+
+#: ../../docs/faq.rst:323 d1aaa643b9ee415aace1033c3ddc955f
+msgid "Network is untrusted"
+msgstr ""
+
+#: ../../docs/faq.rst:324 15783fd1025548dab2999883e8097904
+msgid "Security compliance required"
+msgstr ""
+
+#: ../../docs/faq.rst:326 03bede36c04c4d1f84c02666dff572cb
+msgid "**No, if:**"
+msgstr ""
+
+#: ../../docs/faq.rst:328 e7565424c6014807ab8b936c65a57bfc
+msgid "All services in trusted network"
+msgstr ""
+
+#: ../../docs/faq.rst:329 8e4bb119b0ce43268503944feaf8f417
+msgid "TLS terminates at load balancer level"
+msgstr ""
+
+#: ../../docs/faq.rst:332 4fb5cc67af5140aa8734b63ce84b34ed
+msgid "How to protect against DDoS?"
+msgstr ""
+
+#: ../../docs/faq.rst:344 6b3fc0f92c534c38b2e25c93c7c19d02
+msgid "**Additionally:**"
+msgstr ""
+
+#: ../../docs/faq.rst:346 1db0993c98224eeb9467b202dea394fc
+msgid "Use firewall"
+msgstr ""
+
+#: ../../docs/faq.rst:347 6c5424808bcf4b119fd229cf706e8e03
+msgid "Limit number of connections"
+msgstr ""
+
+#: ../../docs/faq.rst:348 c07d0ad7c5a04088998ee5eb7d4265e1
+msgid "Monitor anomalies"
+msgstr ""
+
+#: ../../docs/faq.rst:351 4fe82a680729442e98d79916e9755c30
+msgid "Integration"
+msgstr ""
+
+#: ../../docs/faq.rst:354 9460abf42ae54b288877d73328d9d48c
+msgid "How to use with ASP.NET Core?"
+msgstr ""
+
+#: ../../docs/faq.rst:378 0d6cffc89d214520b9373be7280a2944
+msgid "How to use with Worker Service?"
+msgstr ""
+
+#: ../../docs/faq.rst:397 6074b72d9e1145f3bfb88315f8f6818e
+msgid "Can I use with other languages?"
+msgstr ""
+
+#: ../../docs/faq.rst:399 c4abf374e7614063b53adda75aafc0f8
+msgid "**Current version:** Only .NET clients"
+msgstr ""
+
+#: ../../docs/faq.rst:403 a9d2612ea33a4dda893046fbb7a4b883
+msgid "Clients for Java, Python, Node.js"
+msgstr ""
+
+#: ../../docs/faq.rst:404 5b7ef4e67d4f4d23895905d65c31e45d
+msgid "AMQP/MQTT protocol support"
+msgstr ""
+
+#: ../../docs/faq.rst:407 9930ad0a99f04bdfa3ace01ff6ec7d6d
+msgid "Troubleshooting"
+msgstr ""
+
+#: ../../docs/faq.rst:410 7c70fdb14aed45e8945e788aa23da40a
+msgid "Why are messages lost?"
+msgstr ""
+
+#: ../../docs/faq.rst:412 ../../docs/faq.rst:431 ../../docs/faq.rst:446
+#: 4f2ba3ea3dbd40ae9ada544678f1efd1 e5122abca40843f4a6a3552038374405
+#: f2bb48ac1e884b02acd909da93e4b584
+msgid "**Causes:**"
+msgstr ""
+
+#: ../../docs/faq.rst:414 e8de611e1cdc40a28e5a3b33daa3911c
+msgid "Server restarted (in-memory storage)"
+msgstr ""
+
+#: ../../docs/faq.rst:416 9aa1bde770794fae89fbde78ecb7fa22
+msgid "Queue size exceeded"
+msgstr ""
+
+#: ../../docs/faq.rst:418 ../../docs/faq.rst:437 ../../docs/faq.rst:452
+#: 6feba331bf474a8a97cc32c0d53acbf9 afc9116152224965bd74cb031050639c
+#: c04b09349ca6493498afbfbd35940002
+msgid "**Solution:**"
+msgstr ""
+
+#: ../../docs/faq.rst:429 0477d74013944b309aefab5b542dc2d5
+msgid "Why high latency?"
+msgstr ""
+
+#: ../../docs/faq.rst:433 cd50bd6cf5d04600b5067f96a8832acd
+msgid "Server overload"
+msgstr ""
+
+#: ../../docs/faq.rst:434 5451a08239d24710a2176627295cd4c9
+msgid "Slow handlers"
+msgstr ""
+
+#: ../../docs/faq.rst:435 ../../docs/faq.rst:448
+#: b746349915434429bb76589fe1628fa2 ccddc4ef32004e0c931ad6496278af42
+msgid "Network issues"
+msgstr ""
+
+#: ../../docs/faq.rst:439 5031cdcedec64bc697f1152ebd64eed0
+msgid "Optimize handlers"
+msgstr ""
+
+#: ../../docs/faq.rst:440 0762a115acbe4946bef78491bf994206
+msgid "Increase server resources"
+msgstr ""
+
+#: ../../docs/faq.rst:441 919e0afff98245f486242cc597faac54
+msgid "Check network"
+msgstr ""
+
+#: ../../docs/faq.rst:444 4410f9dbb0ef4c8f931d589d4dbba7ef
+msgid "Why frequent disconnections?"
+msgstr ""
+
+#: ../../docs/faq.rst:449 a08ac696a8a7497289ae75c8f82c9f19
+msgid "Keep-alive timeout"
+msgstr ""
+
+#: ../../docs/faq.rst:450 1960ee83b3724c14b12868ae0cc3fb94
+msgid "Server restarting"
+msgstr ""
+
+#: ../../docs/faq.rst:465 04624413781a44698d7cba05107e8b78
+msgid "Next Steps"
+msgstr ""
+
+#: ../../docs/faq.rst:467 10f3e5288c9e4b9ab9ba4be849a02784
+msgid ":doc:`getting-started` — quick start"
+msgstr ""
+
+#: ../../docs/faq.rst:468 eaaeb532f340455b8e606f450ed935a6
+msgid ":doc:`troubleshooting` — troubleshooting"
+msgstr ""
+
+#: ../../docs/faq.rst:469 1a57cc96eba741aba7b753b83d99a300
+msgid ":doc:`examples` — usage examples"
+msgstr ""
+

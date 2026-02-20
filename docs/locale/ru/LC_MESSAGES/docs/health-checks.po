@@ -1,0 +1,351 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2026, Darkboy
+# This file is distributed under the same license as the VibeMQ package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: VibeMQ 1.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-02-20 10:37+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: ru\n"
+"Language-Team: ru <LL@li.org>\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../docs/health-checks.rst:3 36cb62658e0c41baa5f643022ab01d9b
+msgid "Health Checks"
+msgstr ""
+
+#: ../../docs/health-checks.rst:5 8f7521f745d84b21928c0eb9b018a21c
+msgid "This guide describes using health checks for monitoring and orchestration."
+msgstr ""
+
+#: ../../docs/health-checks.rst:9 67007f6dec804afaa6266745a5c02372
+msgid "Contents"
+msgstr ""
+
+#: ../../docs/health-checks.rst:12 bdcd5a3241db4fd4a7b0b549806aff10
+msgid "Overview"
+msgstr ""
+
+#: ../../docs/health-checks.rst:14 2fbf5154b40043bab27d701eb5a09cff
+msgid ""
+"VibeMQ provides HTTP endpoints for server health checks. These are used "
+"by orchestrators (Kubernetes, Docker Swarm) to determine service state."
+msgstr ""
+
+#: ../../docs/health-checks.rst:17 c9e10382fdcb4c169fd9d96437c5713e
+msgid "Enabling Health Checks"
+msgstr ""
+
+#: ../../docs/health-checks.rst:32 882cf30f2b55450b8844eff190ef820b
+msgid "Configuration Parameters"
+msgstr ""
+
+#: ../../docs/health-checks.rst:43 712fd699d1e447fb8ce2e28df10c77ba
+msgid "Endpoints"
+msgstr ""
+
+#: ../../docs/health-checks.rst:46 1ac321527335486881b2412850243957
+msgid "GET /health/"
+msgstr ""
+
+#: ../../docs/health-checks.rst:48 118c039b09b044e794a4bd3dad516858
+msgid "Server health check."
+msgstr ""
+
+#: ../../docs/health-checks.rst:50 ../../docs/health-checks.rst:92
+#: 61c3339deead4b85a163fcd1a6a4f2ca d89389b502754e8ca3d49df1f0f692cc
+msgid "**Request:**"
+msgstr ""
+
+#: ../../docs/health-checks.rst:56 589837ad7466456f8c77d1f54ebf8701
+msgid "**Response (healthy):**"
+msgstr ""
+
+#: ../../docs/health-checks.rst:67 1c32a0cbd1f44e7ba2bc5aaaadb0edbd
+msgid "**Status code:** ``200 OK``"
+msgstr ""
+
+#: ../../docs/health-checks.rst:69 ecdb7fa9e54a4dc7b70555112fbbb843
+msgid "**Response (unhealthy):**"
+msgstr ""
+
+#: ../../docs/health-checks.rst:80 2fe7cfea20af4d319f816bbe9e222dca
+msgid "**Status code:** ``503 Service Unavailable``"
+msgstr ""
+
+#: ../../docs/health-checks.rst:82 ab0d3b9cc1e643d3844d0257beff4703
+msgid "**Health criteria:**"
+msgstr ""
+
+#: ../../docs/health-checks.rst:84 129f496a1d594e998778cf13003526af
+msgid "``healthy`` — memory usage < 90%"
+msgstr ""
+
+#: ../../docs/health-checks.rst:85 4773ac4c59fc4aaca609ba2944219979
+msgid "``unhealthy`` — memory usage >= 90%"
+msgstr ""
+
+#: ../../docs/health-checks.rst:88 9260c2f81a594c66916cf0edd7a6952a
+msgid "GET /metrics/"
+msgstr ""
+
+#: ../../docs/health-checks.rst:90 e92aa0ee9c2d4921b273931f9935e1a8
+msgid "Get detailed metrics."
+msgstr ""
+
+#: ../../docs/health-checks.rst:98 7e0be8b8ee5c41268709d017df5ff614
+msgid "**Response:**"
+msgstr ""
+
+#: ../../docs/health-checks.rst:120 002bd069fc324f6599b6b937ee225ad2
+msgid "Using with Orchestrators"
+msgstr ""
+
+#: ../../docs/health-checks.rst:123 2f8a0d013e494ecbb56773d3e1360d10
+msgid "Kubernetes"
+msgstr ""
+
+#: ../../docs/health-checks.rst:125 b1ef819360c745daa6a5fff0a7e738c9
+msgid "**Deployment with health checks:**"
+msgstr ""
+
+#: ../../docs/health-checks.rst:175 da3fb0a33d6d481780f13cc5af753bc6
+msgid "**Probe descriptions:**"
+msgstr ""
+
+#: ../../docs/health-checks.rst:177 ed6a3be897684be298e1654cf3cb4a38
+msgid "**livenessProbe** — determines if container should be restarted"
+msgstr ""
+
+#: ../../docs/health-checks.rst:178 32763bae88cd4099a30a32c7a46876d0
+msgid "**readinessProbe** — determines if container is ready to accept traffic"
+msgstr ""
+
+#: ../../docs/health-checks.rst:180 fb029ea411f34f8f971d7e2d3b630e39
+msgid "**Parameters:**"
+msgstr ""
+
+#: ../../docs/health-checks.rst:182 4cb23fe38d7c4e7a9b1cfabb44de4b86
+msgid "``initialDelaySeconds`` — delay before first check"
+msgstr ""
+
+#: ../../docs/health-checks.rst:183 85904ec42f0244599472c21e41539889
+msgid "``periodSeconds`` — interval between checks"
+msgstr ""
+
+#: ../../docs/health-checks.rst:184 bba25bc59ea4476db0e2bfb739c23acb
+msgid "``timeoutSeconds`` — check timeout"
+msgstr ""
+
+#: ../../docs/health-checks.rst:185 1f50f276c63741808e9ef6e31c740675
+msgid "``failureThreshold`` — number of failed attempts"
+msgstr ""
+
+#: ../../docs/health-checks.rst:188 7e9f5652ab4941ea8dfbc72b6202c582
+msgid "Docker Compose"
+msgstr ""
+
+#: ../../docs/health-checks.rst:212 1625e57ba5fe4d989ae0651683b2f23c
+msgid "Azure Container Instances"
+msgstr ""
+
+#: ../../docs/health-checks.rst:243 21d77bdf6b04499194bfe52d4555e7c9
+msgid "AWS ECS"
+msgstr ""
+
+#: ../../docs/health-checks.rst:245 fa997074a4fd4be0874ffd787a13aa46
+msgid "**Task definition:**"
+msgstr ""
+
+#: ../../docs/health-checks.rst:282 c7973a4aad01423daccd0d1d7deafce5
+msgid "Monitoring Health Checks"
+msgstr ""
+
+#: ../../docs/health-checks.rst:285 9aa4cd79e0084379b7241c789d477b5d
+msgid "Manual Check"
+msgstr ""
+
+#: ../../docs/health-checks.rst:298 55c0ec1121424ee9b3736b7e345ac2a3
+msgid "PowerShell:"
+msgstr ""
+
+#: ../../docs/health-checks.rst:318 3944607065884894b73d4daedb79d0cf
+msgid "Automatic Monitoring"
+msgstr ""
+
+#: ../../docs/health-checks.rst:320 527a101b53334e1cb87e83294cd5738d
+msgid "**Bash script:**"
+msgstr ""
+
+#: ../../docs/health-checks.rst:351 5d02abeaab484d7eadd11c5c9f140cc2
+msgid "**Python script:**"
+msgstr ""
+
+#: ../../docs/health-checks.rst:405 5e7f0bc056a14c74a6732df8a228ecbc
+msgid "Integration with Monitoring Systems"
+msgstr ""
+
+#: ../../docs/health-checks.rst:408 259dde82e56e42b4a617106384202b36
+msgid "Prometheus"
+msgstr ""
+
+#: ../../docs/health-checks.rst:410 86fe435e3d7648109b529d964bc1b7d4
+msgid "**prometheus.yml:**"
+msgstr ""
+
+#: ../../docs/health-checks.rst:423 61e5902d86684af2b551092234204596
+msgid "Grafana"
+msgstr ""
+
+#: ../../docs/health-checks.rst:425 72d2d817a3774f9fb9732a523445f489
+msgid "Import dashboard for visualizing VibeMQ metrics."
+msgstr ""
+
+#: ../../docs/health-checks.rst:427 4939b5240ebc4a0c9a8cf2fffff6171e
+msgid "**Main panels:**"
+msgstr ""
+
+#: ../../docs/health-checks.rst:429 a33ada596bb044ccb0390d4699b67a67
+msgid "Health status (health check)"
+msgstr ""
+
+#: ../../docs/health-checks.rst:430 4cc5589708f64ba49340203bc70f3929
+msgid "Active connections"
+msgstr ""
+
+#: ../../docs/health-checks.rst:431 f5262db2ca1f440c9c20e2c92fffeba7
+msgid "Queue count"
+msgstr ""
+
+#: ../../docs/health-checks.rst:432 6d11fc171bb648b7a0b0c368c723d0f2
+msgid "Memory usage"
+msgstr ""
+
+#: ../../docs/health-checks.rst:433 342c99bf2d424320a5eb5d92019b42ac
+msgid "Message throughput"
+msgstr ""
+
+#: ../../docs/health-checks.rst:434 de9a7cd155e14b81ab3320f10b714810
+msgid "Delivery latency"
+msgstr ""
+
+#: ../../docs/health-checks.rst:437 69d0866fcb44401499f085575013c47e
+msgid "Datadog"
+msgstr ""
+
+#: ../../docs/health-checks.rst:439 90629fa8b66b4ba0b8d1dfd924e9e4ee
+msgid "**Agent configuration:**"
+msgstr ""
+
+#: ../../docs/health-checks.rst:450 cf0c0cf2c6194d02acc589b397cfa061
+msgid "New Relic"
+msgstr ""
+
+#: ../../docs/health-checks.rst:452 74aacd0590a840368ab6eb5315f69813
+msgid "Use Prometheus endpoint for integration:"
+msgstr ""
+
+#: ../../docs/health-checks.rst:466 b1bba46e9bb04d1497f01929ba101d51
+msgid "Troubleshooting"
+msgstr ""
+
+#: ../../docs/health-checks.rst:469 08077f5d543941ce8f760a5389ea228b
+msgid "Health check not responding"
+msgstr ""
+
+#: ../../docs/health-checks.rst:471 a7704aa2d15f4016a35cb71448e58141
+msgid "**Problem:** ``curl: (7) Failed to connect to localhost port 8081``"
+msgstr ""
+
+#: ../../docs/health-checks.rst:473 ../../docs/health-checks.rst:512
+#: a0f37a65c71340069b3f906c0b2fed78 ab1bae70dede4ab2b67ada07ea146816
+msgid "**Causes:**"
+msgstr ""
+
+#: ../../docs/health-checks.rst:475 a08b0067658443c985f45a834118ca60
+msgid "Health check disabled"
+msgstr ""
+
+#: ../../docs/health-checks.rst:476 a0428efbe6bb4116a630ed3403f4e70c
+msgid "Wrong port"
+msgstr ""
+
+#: ../../docs/health-checks.rst:477 6382bb3e55814e939661f617e4b3aeec
+msgid "Firewall blocking"
+msgstr ""
+
+#: ../../docs/health-checks.rst:479 ../../docs/health-checks.rst:495
+#: 9dcb418400514e84aeee651db32aa98b c9335b0cec4e46c195bb8c70ed26e792
+msgid "**Solution:**"
+msgstr ""
+
+#: ../../docs/health-checks.rst:489 240db69f5c7c4ce1b9242abd3b082bea
+msgid "Returns 503"
+msgstr ""
+
+#: ../../docs/health-checks.rst:491 04e0a96af2934a20be7566801d0a112f
+msgid "**Problem:** Health check returns ``503 Service Unavailable``"
+msgstr ""
+
+#: ../../docs/health-checks.rst:493 65e99207438f4afea4452d8fe7bbe1d9
+msgid "**Cause:** Critical memory usage (>90%)"
+msgstr ""
+
+#: ../../docs/health-checks.rst:497 36fb00f720c442508fdbc74faeab97aa
+msgid "Increase memory limit"
+msgstr ""
+
+#: ../../docs/health-checks.rst:498 bb4dffa56cd04cab8ebad154b839b477
+msgid "Reduce queue sizes"
+msgstr ""
+
+#: ../../docs/health-checks.rst:499 8031b4c8477c4fcb91b665e12c00aedb
+msgid "Optimize memory usage"
+msgstr ""
+
+#: ../../docs/health-checks.rst:508 119933f6cfac41f4ade97c07fe6304ab
+msgid "Health check timeout"
+msgstr ""
+
+#: ../../docs/health-checks.rst:510 e6f8fc26bece4331a9521f6196b4d56c
+msgid "**Problem:** ``curl: (28) Operation timed out``"
+msgstr ""
+
+#: ../../docs/health-checks.rst:514 ae85634ff18e4a63952e915edc65e4ad
+msgid "Server overloaded"
+msgstr ""
+
+#: ../../docs/health-checks.rst:515 0861cc6c579b4ea6aac40bd785754c57
+msgid "Wrong timeout"
+msgstr ""
+
+#: ../../docs/health-checks.rst:517 1f195803ae3443dbaaf9ad3407d8784d
+msgid "**Solution:** Increase timeout in orchestrator configuration:"
+msgstr ""
+
+#: ../../docs/health-checks.rst:525 56312724fbcd419089f915f2bf6b8afb
+msgid "Next Steps"
+msgstr ""
+
+#: ../../docs/health-checks.rst:527 1d16d073a56d4d81bce5cbb5e95849e3
+msgid ":doc:`monitoring` — monitoring and metrics"
+msgstr ""
+
+#: ../../docs/health-checks.rst:528 a32974a7ebb84e2c8b0c036fca597eb5
+msgid ":doc:`troubleshooting` — troubleshooting"
+msgstr ""
+
+#: ../../docs/health-checks.rst:529 93b12a3304ed438fb156006512506d27
+msgid ":doc:`configuration` — configuration"
+msgstr ""
+

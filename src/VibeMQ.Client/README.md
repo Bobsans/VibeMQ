@@ -35,7 +35,7 @@ Full documentation: [https://vibemq.readthedocs.io/](https://vibemq.readthedocs.
 
 ## Dependency Injection
 
-For ASP.NET Core / Worker Service, use **VibeMQ.Client.DependencyInjection** for `IVibeMQClientFactory` and registration helpers.
+For ASP.NET Core / Worker Service, use **VibeMQ.Client.DependencyInjection**. It registers both `IVibeMQClientFactory` (create and own a client) and `IVibeMQClient` (inject a shared, lazily-connected client). The concrete type `VibeMQClient` implements `IVibeMQClient`.
 
 ## License
 

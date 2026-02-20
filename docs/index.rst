@@ -197,6 +197,7 @@ Client with Dependency Injection:
 
 .. code-block:: csharp
 
+   using VibeMQ.Client;
    using VibeMQ.Client.DependencyInjection;
 
    var host = Host.CreateDefaultBuilder(args)
@@ -209,8 +210,13 @@ Client with Dependency Injection:
        })
        .Build();
 
+   // Option A: inject IVibeMQClient (shared, lazy-connected)
+   var client = host.Services.GetRequiredService<IVibeMQClient>();
+   await client.PublishAsync("notifications", new { Title = "Hello" });
+
+   // Option B: create a dedicated client (you dispose it)
    var factory = host.Services.GetRequiredService<IVibeMQClientFactory>();
-   await using var client = await factory.CreateAsync();
+   await using var dedicatedClient = await factory.CreateAsync();
 
 🔗 Links
 =========

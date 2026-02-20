@@ -1,0 +1,432 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2026, Darkboy
+# This file is distributed under the same license as the VibeMQ package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: VibeMQ 1.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-02-20 10:37+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: ru\n"
+"Language-Team: ru <LL@li.org>\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../docs/server-setup.rst:3 d6898648c1504a68bf9dfca515e41420
+msgid "Server Setup"
+msgstr ""
+
+#: ../../docs/server-setup.rst:5 682ac7f2b07d4583a5db0e61ecc7efb3
+msgid "This guide describes various ways to configure and run the VibeMQ server."
+msgstr ""
+
+#: ../../docs/server-setup.rst:9 438aa11432ac4b2388f00d40f7af7c7c
+msgid "Contents"
+msgstr ""
+
+#: ../../docs/server-setup.rst:12 ae5b73e4028249c8adc37661c952dc90
+msgid "Basic Configuration"
+msgstr ""
+
+#: ../../docs/server-setup.rst:15 29eced5b29b542998db5180ff5f717ff
+msgid "Minimal Configuration"
+msgstr ""
+
+#: ../../docs/server-setup.rst:17 50fad358a08b406ca716c5a0d2161bf7
+msgid "Simplest way to start server:"
+msgstr ""
+
+#: ../../docs/server-setup.rst:29 c950823ad0414b9aa1573905a8eacbce
+msgid ""
+"This code will start server on port 8080 without authentication and with "
+"default settings."
+msgstr ""
+
+#: ../../docs/server-setup.rst:32 bbe7337665a64c76b2c81bd595f21b11
+msgid "Advanced Configuration"
+msgstr ""
+
+#: ../../docs/server-setup.rst:77 0f7a80bbacba49d2b5173910c5d225e5
+msgid "Configuration Parameters"
+msgstr ""
+
+#: ../../docs/server-setup.rst:80 cd7a4164cc9448629dac7f42718d982e
+msgid "Basic Parameters"
+msgstr ""
+
+#: ../../docs/server-setup.rst:97 fd3c1d68e2da47beafa5bbc64338566f
+msgid "Default Queue Settings"
+msgstr ""
+
+#: ../../docs/server-setup.rst:118 2b811a8fc0cd45819865295c93e5e08f
+msgid "Rate Limiting"
+msgstr ""
+
+#: ../../docs/server-setup.rst:133 957fed20590042128961ba6205c2f803
+msgid "TLS/SSL Settings"
+msgstr ""
+
+#: ../../docs/server-setup.rst:146 1068b71f324945c2a718bf71bb582705
+msgid "Health Check Settings"
+msgstr ""
+
+#: ../../docs/server-setup.rst:157 eb6d79c879e24e5a9067a68ccb2bb618
+msgid "Delivery Modes"
+msgstr ""
+
+#: ../../docs/server-setup.rst:160 ad26a11198a04cf2bd3b7636c3feb499
+msgid "Round-robin"
+msgstr ""
+
+#: ../../docs/server-setup.rst:162 1e8bf904a07940df8761faf10c6ed9e2
+msgid "Each message is delivered to one subscriber cyclically:"
+msgstr ""
+
+#: ../../docs/server-setup.rst:170 ../../docs/server-setup.rst:188
+#: ../../docs/server-setup.rst:205 07f016fe427445e1aaa8213379d295b1
+#: 57269197aca7494b848a32ac16959980 c2e889fe7a1b4246ba757a443a50b5ba
+msgid "**Usage:**"
+msgstr ""
+
+#: ../../docs/server-setup.rst:172 0f7e03c26bb4489f9768c14bcc64ef55
+msgid "Task processing by multiple workers"
+msgstr ""
+
+#: ../../docs/server-setup.rst:173 8d70f401d3d549f68943ebaf59802a4a
+msgid "Load balancing"
+msgstr ""
+
+#: ../../docs/server-setup.rst:174 a7b646ee32cc443c8ae17c7bfbd30fff
+msgid "Task queues"
+msgstr ""
+
+#: ../../docs/server-setup.rst:177 d77c6d10dc454de78c8363f3dc89c508
+msgid "Fan-out with Acknowledgment"
+msgstr ""
+
+#: ../../docs/server-setup.rst:179 084e47e996434438bf3c6986fa2fab38
+msgid "Message delivered to all subscribers with delivery guarantee:"
+msgstr ""
+
+#: ../../docs/server-setup.rst:190 006b168230af43fdb38fd5f4e3ee4c5a
+msgid "Notification broadcasting"
+msgstr ""
+
+#: ../../docs/server-setup.rst:191 7b908248f8204f78be8e38a80376dbe3
+msgid "Data replication"
+msgstr ""
+
+#: ../../docs/server-setup.rst:192 3392959bf31e415cb600d09126a60bb7
+msgid "Audit and logging"
+msgstr ""
+
+#: ../../docs/server-setup.rst:195 84d8b0d54428465c9dc2a3ded6744fe9
+msgid "Fan-out without Acknowledgment"
+msgstr ""
+
+#: ../../docs/server-setup.rst:197 d2c8ef347d4e4ef2bfdfd8dbaa774015
+msgid "Message delivered to all subscribers without acknowledgment:"
+msgstr ""
+
+#: ../../docs/server-setup.rst:207 f7d7297616de40dfb2c7033384b26a74
+msgid "Broadcast messages"
+msgstr ""
+
+#: ../../docs/server-setup.rst:208 a9918ca03b904a56a5a9c3666c560fe1
+msgid "Real-time updates"
+msgstr ""
+
+#: ../../docs/server-setup.rst:209 5ff51f1f4dd746b9ad79cd97885416ae
+msgid "Data streaming"
+msgstr ""
+
+#: ../../docs/server-setup.rst:212 27ae113bea99404aaa43663a11c41267
+msgid "Priority-based"
+msgstr ""
+
+#: ../../docs/server-setup.rst:214 a722f15f10f24162865da23c1064b881
+msgid "Delivery by message priority:"
+msgstr ""
+
+#: ../../docs/server-setup.rst:222 ae6792d1c885496190f22d21952b229a
+msgid "**Priorities:**"
+msgstr ""
+
+#: ../../docs/server-setup.rst:224 737fbda1bbb3454fad1903c58274cf33
+msgid "``Critical`` — critical (delivered first)"
+msgstr ""
+
+#: ../../docs/server-setup.rst:225 a67f5fb674044edbaaf497adff78cf97
+msgid "``High`` — high"
+msgstr ""
+
+#: ../../docs/server-setup.rst:226 e9cc00c806514fd5b4b9153581e20d04
+msgid "``Normal`` — normal (default)"
+msgstr ""
+
+#: ../../docs/server-setup.rst:227 3bbc48f10c3c4b4a99bc7341b381ce66
+msgid "``Low`` — low (delivered last)"
+msgstr ""
+
+#: ../../docs/server-setup.rst:229 ea9cc45e800642f189eaddfbf99a7a8e
+msgid "**Publishing example:**"
+msgstr ""
+
+#: ../../docs/server-setup.rst:238 d5223fbc27284976ab53172022e5b56f
+msgid "Overflow Strategies"
+msgstr ""
+
+#: ../../docs/server-setup.rst:241 8b0c4fe493ae477e8d57b14dea74bb41
+msgid "DropOldest"
+msgstr ""
+
+#: ../../docs/server-setup.rst:243 b166cb8210ad49918dfb112718d0229f
+msgid "Remove oldest message on overflow:"
+msgstr ""
+
+#: ../../docs/server-setup.rst:251 ../../docs/server-setup.rst:267
+#: ../../docs/server-setup.rst:283 ../../docs/server-setup.rst:301
+#: 19efe9eef4d64b8f92d9ab8708fb57bb 61c3b02f6d8f44fd8267ad9333527f87
+#: dfde1dc2de8a4cafb04e8fac75541f9c ed32a7ee144f40168745a32faae4728f
+msgid "**When to use:**"
+msgstr ""
+
+#: ../../docs/server-setup.rst:253 e4c0d644d6f341188982e7eedd05ffa0
+msgid "Fresh data is important"
+msgstr ""
+
+#: ../../docs/server-setup.rst:254 441de01a5be744bd829c8535818bbcfe
+msgid "Old messages lose relevance"
+msgstr ""
+
+#: ../../docs/server-setup.rst:257 a8ddbac426c24b41b5296a3f64e6be9b
+msgid "DropNewest"
+msgstr ""
+
+#: ../../docs/server-setup.rst:259 1e58f484dee64bb08b15c3e3864ae9ed
+msgid "Reject new message:"
+msgstr ""
+
+#: ../../docs/server-setup.rst:269 bd68c405b2cc47fc992a53750b8d152d
+msgid "All existing messages are important"
+msgstr ""
+
+#: ../../docs/server-setup.rst:270 ad0eb50b4fd248faae4dea8a8bb8cbfb
+msgid "New messages can wait"
+msgstr ""
+
+#: ../../docs/server-setup.rst:273 a427eea277d54de5a7a98b131f9e33ae
+msgid "BlockPublisher"
+msgstr ""
+
+#: ../../docs/server-setup.rst:275 3ee7489fcb804a4c9fa50e6a4ec4b1e1
+msgid "Block publisher until space is available:"
+msgstr ""
+
+#: ../../docs/server-setup.rst:285 7115fb6439614ffc90382748ac87679b
+msgid "Message loss is unacceptable"
+msgstr ""
+
+#: ../../docs/server-setup.rst:286 23c6d2d8bad4428bb3ebf0b60838a0aa
+msgid "Publisher can wait"
+msgstr ""
+
+#: ../../docs/server-setup.rst:289 98d6ba7cc5ce47da938920c816ab7106
+msgid "RedirectToDlq"
+msgstr ""
+
+#: ../../docs/server-setup.rst:291 1d793a1a3a5547fa87540636cab1ed33
+msgid "Redirect to Dead Letter Queue:"
+msgstr ""
+
+#: ../../docs/server-setup.rst:303 5aad5088e5544c3ebacd0c053c876635
+msgid "All messages must be preserved"
+msgstr ""
+
+#: ../../docs/server-setup.rst:304 9963c6e04e3b4aed8ed8868d35fe9779
+msgid "Subsequent processing planned"
+msgstr ""
+
+#: ../../docs/server-setup.rst:307 48719661d2af4489831b0ce1b1a4de77
+msgid "Dead Letter Queue"
+msgstr ""
+
+#: ../../docs/server-setup.rst:309 e9232b853d274e1dbc589263f4bb8a96
+msgid "DLQ Configuration:"
+msgstr ""
+
+#: ../../docs/server-setup.rst:319 c43334a70f094929803af0d603718f9f
+msgid "**Reasons for DLQ:**"
+msgstr ""
+
+#: ../../docs/server-setup.rst:321 3392dbb3752d437b952087750afa71c7
+msgid "Exceeded maximum delivery attempts"
+msgstr ""
+
+#: ../../docs/server-setup.rst:322 8d0c6bbcc5c44ad5ba5737a3fcad9561
+msgid "Message TTL expired"
+msgstr ""
+
+#: ../../docs/server-setup.rst:323 740dab9e4acf45fe862a0cc70b63b5ec
+msgid "Deserialization error"
+msgstr ""
+
+#: ../../docs/server-setup.rst:324 496611661a3f4efab24517f8189031e9
+msgid "Exception in handler"
+msgstr ""
+
+#: ../../docs/server-setup.rst:326 7cd737a0d2644e6780014fcb5d782e5a
+msgid "**Getting messages from DLQ:**"
+msgstr ""
+
+#: ../../docs/server-setup.rst:337 34eac796f9b447008fb993db57e11977
+msgid "Authentication"
+msgstr ""
+
+#: ../../docs/server-setup.rst:339 3b33b8b89f2340a0a6df72cc08420310
+msgid "Enabling Authentication:"
+msgstr ""
+
+#: ../../docs/server-setup.rst:347 ../../docs/server-setup.rst:384
+#: 525beaa92eb04fbaa7c50adde4e40cf1 8aa39d4c508d4c7db252a7b72ab86541
+msgid "**On client:**"
+msgstr ""
+
+#: ../../docs/server-setup.rst:361 e29c303995e14c88ac4a6025a9ecf3e4
+msgid ""
+"Use complex tokens in production (minimum 32 characters). Store tokens "
+"securely (Azure Key Vault, AWS Secrets Manager, HashiCorp Vault)."
+msgstr ""
+
+#: ../../docs/server-setup.rst:365 08d2868f888f4c76919260c129d36e70
+msgid "TLS/SSL Encryption"
+msgstr ""
+
+#: ../../docs/server-setup.rst:367 65ab1954cc7d494988ceb2b829c5b2dc
+msgid "TLS Configuration:"
+msgstr ""
+
+#: ../../docs/server-setup.rst:377 e8fd714b900c47ee837d17a01600c005
+msgid "**Creating self-signed certificate (for tests):**"
+msgstr ""
+
+#: ../../docs/server-setup.rst:400 f220fe5c6395487d973f5e532eb93f9f
+msgid "Do not use ``SkipCertificateValidation = true`` in production!"
+msgstr ""
+
+#: ../../docs/server-setup.rst:403 af90091700f74336b7a8b6c2b35f0f4b
+msgid "Starting and Stopping"
+msgstr ""
+
+#: ../../docs/server-setup.rst:406 2a0061fbed02460995238e29694a9214
+msgid "Starting Server"
+msgstr ""
+
+#: ../../docs/server-setup.rst:408 1c5f813966f843a9a0cb3d962f022c54
+msgid "**Async start:**"
+msgstr ""
+
+#: ../../docs/server-setup.rst:414 9550b9b4beca476dab51d84084d1fde7
+msgid "**Start with signal handling:**"
+msgstr ""
+
+#: ../../docs/server-setup.rst:427 b1ec5b9a77e94ca2b6bc9e8ab4bd2aae
+msgid "Stopping Server"
+msgstr ""
+
+#: ../../docs/server-setup.rst:429 9cef0331ea2d4f63b1a0bc8ac86e0b7b
+msgid "**Graceful stop:**"
+msgstr ""
+
+#: ../../docs/server-setup.rst:435 9d7a6e58512247f486b1d6f07f259b77
+msgid "**Resource cleanup:**"
+msgstr ""
+
+#: ../../docs/server-setup.rst:441 3704aefe47b549c0b4ee11abd4176e00
+msgid "**Using statement:**"
+msgstr ""
+
+#: ../../docs/server-setup.rst:453 8e067bb1e0804ad2946e6143256d7f6b
+msgid "Logging"
+msgstr ""
+
+#: ../../docs/server-setup.rst:455 c456f9fc328a45c89e75b598b86ee9ab
+msgid "Logging Configuration:"
+msgstr ""
+
+#: ../../docs/server-setup.rst:474 fdb3722b3e0a4e38ae0d351212632b4f
+msgid "**Log levels:**"
+msgstr ""
+
+#: ../../docs/server-setup.rst:476 55a53ebb41f04b7f951342100b0fa32f
+msgid "``Trace`` — detailed debugging"
+msgstr ""
+
+#: ../../docs/server-setup.rst:477 703cba80e320420dbaad4e9642d171b6
+msgid "``Debug`` — debug information"
+msgstr ""
+
+#: ../../docs/server-setup.rst:478 da6473ab65aa4cac925637456cd79824
+msgid "``Information`` — informational messages"
+msgstr ""
+
+#: ../../docs/server-setup.rst:479 50819dbe939c469894f56a606e4d1149
+msgid "``Warning`` — warnings"
+msgstr ""
+
+#: ../../docs/server-setup.rst:480 796c4b03d7c548ee896d2b6665aef2b3
+msgid "``Error`` — errors"
+msgstr ""
+
+#: ../../docs/server-setup.rst:481 5083272ba7ac449a9c09a33549c0d394
+msgid "``Critical`` — critical errors"
+msgstr ""
+
+#: ../../docs/server-setup.rst:484 1834fc6a59f64b02a52d63f936ec9e20
+msgid "Configuration Examples"
+msgstr ""
+
+#: ../../docs/server-setup.rst:487 cc92d5db12264dd6a865bebe94ba067b
+msgid "Minimal Server for Development"
+msgstr ""
+
+#: ../../docs/server-setup.rst:498 c55f2f10d13f4c92a356d4c918079539
+msgid "Production Server"
+msgstr ""
+
+#: ../../docs/server-setup.rst:526 7f0d90ac542b45dc9361597b880b31eb
+msgid "Microservices Server"
+msgstr ""
+
+#: ../../docs/server-setup.rst:545 50620f8a3be14e51892b979472a057fc
+msgid "IoT Server"
+msgstr ""
+
+#: ../../docs/server-setup.rst:566 425fed6901f943faa2b8f9067032327b
+msgid "Next Steps"
+msgstr ""
+
+#: ../../docs/server-setup.rst:568 061cbf96dd85472aa120b8312e34db7c
+msgid ":doc:`client-usage` — client usage"
+msgstr ""
+
+#: ../../docs/server-setup.rst:569 85585af3f57a4fb09515d8f57ec6f4bd
+msgid ":doc:`configuration` — detailed configuration"
+msgstr ""
+
+#: ../../docs/server-setup.rst:570 56643eda8f764a6b909889a288433af7
+msgid ":doc:`monitoring` — monitoring and health checks"
+msgstr ""
+
+#: ../../docs/server-setup.rst:571 98353969b8b04bf0a87c52a68cda8d48
+msgid ":doc:`di-integration` — DI integration"
+msgstr ""
+

@@ -1,5 +1,7 @@
 # Интерфейс клиента для DI (помимо фабрики)
 
+**Статус:** выполнено.
+
 **Описание:** Регистрация `IVibeMQClient` в DI, чтобы его можно было инжектить в классы и использовать сразу для отправки сообщений. Клиент должен быть уже подключён — без необходимости вызывать `ConnectAsync` вручную (connection managed internally, lazy connect на первый вызов).
 
 ## Текущее состояние
@@ -74,4 +76,13 @@
 2. Тесты lazy connection
 3. Тесты переподключения
 4. Тесты использования в сервисах
+
+---
+
+## Выполнено (дата реализации)
+
+- **Шаг 1:** Интерфейс `IVibeMQClient` в [`src/VibeMQ.Client/IVibeMQClient.cs`](../src/VibeMQ.Client/IVibeMQClient.cs), реализация в `VibeMQClient`.
+- **Шаг 2:** Класс [`ManagedVibeMQClient`](../src/VibeMQ.Client.DependencyInjection/ManagedVibeMQClient.cs) в DI-пакете: lazy connect под `SemaphoreSlim`, делегирование в `VibeMQClient`, `IDisposable` с sync-over-async и таймаутом 5 с.
+- **Шаг 3:** В [`ServiceCollectionExtensions.cs`](../src/VibeMQ.Client.DependencyInjection/ServiceCollectionExtensions.cs) зарегистрирован `IVibeMQClient` → `ManagedVibeMQClient` (Singleton). Один вызов `AddVibeMQClient()` даёт и фабрику, и инжектируемый клиент.
+- **Шаг 4:** Тесты — по желанию добавить отдельно (unit/интеграционные).
 

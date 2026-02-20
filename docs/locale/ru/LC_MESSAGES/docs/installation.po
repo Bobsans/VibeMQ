@@ -1,0 +1,266 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2026, Darkboy
+# This file is distributed under the same license as the VibeMQ package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: VibeMQ 1.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-02-20 10:37+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: ru\n"
+"Language-Team: ru <LL@li.org>\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../docs/installation.rst:3 7fd0098f8cbe4d97865c4caa4e8c5ed2
+msgid "Installation"
+msgstr ""
+
+#: ../../docs/installation.rst:5 f4377cb7d47a4f9aae24079d7cb743c9
+msgid "This guide describes various ways to install VibeMQ."
+msgstr ""
+
+#: ../../docs/installation.rst:9 185efffc8c1549fb98b65c5141b1f32a
+msgid "Contents"
+msgstr ""
+
+#: ../../docs/installation.rst:12 451219ee6f744aca94a41b6796dd8bba
+msgid "System Requirements"
+msgstr ""
+
+#: ../../docs/installation.rst:14 324ec54db6684443b89ee5932a010741
+msgid "**Minimum requirements:**"
+msgstr ""
+
+#: ../../docs/installation.rst:16 3e909f6f16594657b8870ceac723bbf4
+msgid "OS: Windows, Linux, macOS"
+msgstr ""
+
+#: ../../docs/installation.rst:17 ca3ed14da5fc477dbe78cb2339df13c3
+msgid ".NET 8.0 SDK or higher"
+msgstr ""
+
+#: ../../docs/installation.rst:18 3ff2e0e2c2ad4e86a8be24be4afb0fe0
+msgid "RAM: 512 MB (1 GB+ recommended)"
+msgstr ""
+
+#: ../../docs/installation.rst:19 458da957cc8d4658bd1b56d48f52ea4c
+msgid "Disk space: 100 MB"
+msgstr ""
+
+#: ../../docs/installation.rst:21 221428562c1448e2b6d0c066044df7a5
+msgid "**For production:**"
+msgstr ""
+
+#: ../../docs/installation.rst:23 7d2492b695f940cebd081e7a6d1d5f06
+msgid ".NET 8.0 Runtime or .NET 10.0"
+msgstr ""
+
+#: ../../docs/installation.rst:24 43dd9d9b921a4bb3bffbb011756fd29f
+msgid "2+ GB RAM"
+msgstr ""
+
+#: ../../docs/installation.rst:25 7dee409ba4ea4a54a7b3f703c01a666d
+msgid "SSD for better performance"
+msgstr ""
+
+#: ../../docs/installation.rst:28 16bbb5510dd840deae21b58bad4fb1e5
+msgid "NuGet Installation"
+msgstr ""
+
+#: ../../docs/installation.rst:31 d4cb5ba8d3424e4d90e5ffda16336810
+msgid "Basic Packages"
+msgstr ""
+
+#: ../../docs/installation.rst:33 519d8e5b82da491dad31c620fd5dfc7c
+msgid "To use VibeMQ in your project, add the required packages:"
+msgstr ""
+
+#: ../../docs/installation.rst:53 efc0810ba557481fb637c264d765be72
+msgid "Dependency Injection Packages"
+msgstr ""
+
+#: ../../docs/installation.rst:55 e509d4b1d38e4cdd9efc6b0ec832e334
+msgid "For integration with Microsoft.Extensions.DependencyInjection:"
+msgstr ""
+
+#: ../../docs/installation.rst:66 d0008510490848d6af7acba5ba64d305
+msgid "All Packages at Once"
+msgstr ""
+
+#: ../../docs/installation.rst:68 028e4a70ba18465780757681be9ef0d9
+msgid "For quick addition of all components:"
+msgstr ""
+
+#: ../../docs/installation.rst:79 0e8179f6e1d446e09ac2a3028d3bbb53
+msgid "Docker Installation"
+msgstr ""
+
+#: ../../docs/installation.rst:81 688b36a8eb9944b6b14ee2ad4e261f5e
+msgid "VibeMQ can be run in a Docker container."
+msgstr ""
+
+#: ../../docs/installation.rst:84 8b470c2dde894eaabc84729be5e8595e
+msgid "Dockerfile"
+msgstr ""
+
+#: ../../docs/installation.rst:86 f49ceb2865d34060b7ae75cd0c84e89f
+msgid "Create a ``Dockerfile`` in your project:"
+msgstr ""
+
+#: ../../docs/installation.rst:109 4ef8e7b057194c808c6a035e415d4768
+msgid "Build and run:"
+msgstr ""
+
+#: ../../docs/installation.rst:117 dd1945e1621c45ff83c6211803ba1405
+msgid "Docker Compose"
+msgstr ""
+
+#: ../../docs/installation.rst:119 a9c06eab6deb425d87a6b8c61ba421ba
+msgid "For deployment with other services, create a ``docker-compose.yml``:"
+msgstr ""
+
+#: ../../docs/installation.rst:152 dfb77d6dd2b6454d8584925bdb835b1c
+msgid "Start:"
+msgstr ""
+
+#: ../../docs/installation.rst:159 59bc9487bde6403d9bcdda402e185cfb
+msgid "Installation from Source Code"
+msgstr ""
+
+#: ../../docs/installation.rst:162 8b5aedc022684372844b54a8b9a2fe7b
+msgid "Clone the Repository"
+msgstr ""
+
+#: ../../docs/installation.rst:170 71dc7dd921214e1b9bb959552c11d528
+msgid "Build the Project"
+msgstr ""
+
+#: ../../docs/installation.rst:184 2bfe3b069d9d4208ad88535a5c209a80
+msgid "Local Package Installation"
+msgstr ""
+
+#: ../../docs/installation.rst:186 91dc87bcc6974c92bb08d4ed22bb7e21
+msgid "To use a locally built version:"
+msgstr ""
+
+#: ../../docs/installation.rst:201 dd4333487a9945ab88039dfda57a1151
+msgid "Integration into Existing Projects"
+msgstr ""
+
+#: ../../docs/installation.rst:204 d0f8477cb27b4b75a0fbeea170f752e2
+msgid "ASP.NET Core Application"
+msgstr ""
+
+#: ../../docs/installation.rst:206 32623c35a33f4fcb87672050385d2993
+msgid "For ASP.NET Core applications, use DI integration:"
+msgstr ""
+
+#: ../../docs/installation.rst:233 682a3fc977a04210bdc21dbdc1530a18
+msgid "Worker Service"
+msgstr ""
+
+#: ../../docs/installation.rst:235 15004ab4e47540e6844042a411a2c430
+msgid "For background services (.NET Worker):"
+msgstr ""
+
+#: ../../docs/installation.rst:254 bf154fbe07a34ded90fd8f41bdb48b72
+msgid "Console Application"
+msgstr ""
+
+#: ../../docs/installation.rst:256 1262ad7b9c6a4218acd6ef0fb5e220c8
+msgid "For console applications, use direct invocation:"
+msgstr ""
+
+#: ../../docs/installation.rst:269 5c2621f3048a4252a99f0d6c3fc7c0f2
+msgid "Installation Verification"
+msgstr ""
+
+#: ../../docs/installation.rst:272 2c986b6555ae450bb29b80303da61b45
+msgid "Server Verification"
+msgstr ""
+
+#: ../../docs/installation.rst:274 4ee595f5ba184a629943482e3d49f691
+msgid "After starting the server, check the health endpoint:"
+msgstr ""
+
+#: ../../docs/installation.rst:280 1236bef0122c40cbbbd9712c0f809593
+msgid "Response should be:"
+msgstr ""
+
+#: ../../docs/installation.rst:292 523153b6a8a5468d9cf26205d8ef9005
+msgid "Client Verification"
+msgstr ""
+
+#: ../../docs/installation.rst:294 0dbea304e6a845ee935efdd8792e5ad8
+msgid "Create a test script:"
+msgstr ""
+
+#: ../../docs/installation.rst:309 1183449236054cea91317a3fa9afdbca
+msgid "Troubleshooting"
+msgstr ""
+
+#: ../../docs/installation.rst:312 86a5331a0157490c97ecf1b3cb643666
+msgid "Port Already in Use"
+msgstr ""
+
+#: ../../docs/installation.rst:314 91573c39500b4e59a030a6333b9165f4
+msgid "**Error:** ``Address already in use``"
+msgstr ""
+
+#: ../../docs/installation.rst:316 70595fcf927d4706857f3f47c74b5285
+msgid "**Solution:** Change the port in configuration:"
+msgstr ""
+
+#: ../../docs/installation.rst:325 6b639ebd6170487b89f16c84a16ef1a8
+msgid "Authentication Error"
+msgstr ""
+
+#: ../../docs/installation.rst:327 68d95afb3e06468991b37e7e319f9231
+msgid "**Error:** ``Authentication failed``"
+msgstr ""
+
+#: ../../docs/installation.rst:329 2f53183c00294d63845c5178f665c82d
+msgid "**Solution:** Make sure tokens match:"
+msgstr ""
+
+#: ../../docs/installation.rst:340 011997b1d2864ca2a0b0f51e65adb402
+msgid "TLS/SSL Errors"
+msgstr ""
+
+#: ../../docs/installation.rst:342 7910ebabd1364696a6d517f662c06424
+msgid "**Error:** ``The remote certificate is invalid``"
+msgstr ""
+
+#: ../../docs/installation.rst:344 972121ca622b42d1a48b4f199f9ed228
+msgid "**Solution:** For tests, disable validation:"
+msgstr ""
+
+#: ../../docs/installation.rst:353 e70016ee10194138b364ea8538a24849
+msgid "For production, use valid certificates."
+msgstr ""
+
+#: ../../docs/installation.rst:356 15ef03a53d2249629f5fd523aa077a4e
+msgid "Next Steps"
+msgstr ""
+
+#: ../../docs/installation.rst:358 c9a1b545ce114d71a51e0d2cf73824a4
+msgid ":doc:`getting-started` — quick start guide"
+msgstr ""
+
+#: ../../docs/installation.rst:359 5dc10f9b0e93471fadbce1ca27cf4a56
+msgid ":doc:`server-setup` — server configuration"
+msgstr ""
+
+#: ../../docs/installation.rst:360 c870236bc7014e18938db5a1d87bcc36
+msgid ":doc:`configuration` — configuration parameters"
+msgstr ""
+
