@@ -50,10 +50,10 @@ jobs:
         run: dotnet restore -p:GITHUB_ACTIONS=true -p:Version=${{ steps.get_version.outputs.version_num }} -p:PackageVersion=${{ steps.get_version.outputs.version_num }}
 
       - name: Run unit tests
-        run: dotnet test --configuration Release --filter "FullyQualifiedName~VibeMQ.Tests.Unit" --verbosity normal -p:GITHUB_ACTIONS=true -p:Version=${{ steps.get_version.outputs.version_num }} -p:PackageVersion=${{ steps.get_version.outputs.version_num }}
+        run: dotnet test --configuration Release --filter "FullyQualifiedName~VibeMQ.Tests.Unit" --verbosity minimal -p:GITHUB_ACTIONS=true -p:Version=${{ steps.get_version.outputs.version_num }} -p:PackageVersion=${{ steps.get_version.outputs.version_num }}
 
       - name: Run integration tests
-        run: dotnet test --configuration Release --filter "FullyQualifiedName~VibeMQ.Tests.Integration" --verbosity normal -p:GITHUB_ACTIONS=true -p:Version=${{ steps.get_version.outputs.version_num }} -p:PackageVersion=${{ steps.get_version.outputs.version_num }}
+        run: dotnet test --configuration Release --filter "FullyQualifiedName~VibeMQ.Tests.Integration" --verbosity minimal -p:GITHUB_ACTIONS=true -p:Version=${{ steps.get_version.outputs.version_num }} -p:PackageVersion=${{ steps.get_version.outputs.version_num }}
 
       - name: Build projects
         run: dotnet build --no-incremental --configuration Release -p:GITHUB_ACTIONS=true -p:Version=${{ steps.get_version.outputs.version_num }} -p:PackageVersion=${{ steps.get_version.outputs.version_num }}
