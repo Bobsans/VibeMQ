@@ -13,8 +13,15 @@ import sys
 project = 'VibeMQ'
 copyright = '2026, Darkboy'
 author = 'Darkboy'
-release = '1.0.0'
-version = '1.0.0'
+_FALLBACK_VERSION = '1.3.0'
+_rtd_version = os.environ.get('READTHEDOCS_VERSION', '')
+_rtd_version_type = os.environ.get('READTHEDOCS_VERSION_TYPE', '')
+if _rtd_version_type == 'tag' and _rtd_version:
+    _resolved = _rtd_version.lstrip('v')
+else:
+    _resolved = _FALLBACK_VERSION
+release = _resolved
+version = _resolved
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
