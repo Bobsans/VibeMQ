@@ -579,9 +579,56 @@ Metrics
 
 - ``AverageDeliveryLatencyMs`` — average delivery latency
 
+Persistence & Storage
+=====================
+
+VibeMQ supports pluggable storage providers for message durability across server restarts.
+
+**Default behavior (InMemory):**
+
+All state is kept in memory — zero configuration, maximum performance. All data is lost on restart.
+
+**With SQLite storage:**
+
+.. code-block:: bash
+
+   dotnet add package VibeMQ.Server.Storage.Sqlite
+
+.. code-block:: csharp
+
+   var broker = BrokerBuilder.Create()
+       .UsePort(8080)
+       .UseSqliteStorage(options => {
+           options.DatabasePath = "/data/vibemq.db";
+       })
+       .Build();
+
+**How it works:**
+
+1. When a message is published it is saved to storage *before* entering the in-memory queue (write-ahead).
+2. When the subscriber acknowledges the message it is removed from storage.
+3. On server restart, all queues and unacknowledged messages are recovered automatically.
+
+**DLQ persistence:**
+
+Failed messages are saved to the ``dead_letters`` table before being added to the in-memory DLQ so they survive restarts.
+
+**Storage providers:**
+
++--------------------------------------+--------------------------------------------+
+| Provider                             | Description                                |
++======================================+============================================+
+| ``InMemoryStorageProvider``          | Default. Fast, no durability.              |
++--------------------------------------+--------------------------------------------+
+| ``SqliteStorageProvider``            | SQLite-based, single-file DB, zero-config. |
++--------------------------------------+--------------------------------------------+
+
+See :doc:`storage` for full configuration reference, database schema, and custom provider guide.
+
 Next Steps
 ==========
 
 - :doc:`server-setup` — server configuration
 - :doc:`client-usage` — client usage
+- :doc:`storage` — persistence & storage
 - :doc:`monitoring` — monitoring

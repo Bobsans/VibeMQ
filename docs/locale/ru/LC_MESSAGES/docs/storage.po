@@ -1,0 +1,408 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2026, Darkboy
+# This file is distributed under the same license as the VibeMQ package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: VibeMQ 1.3.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-02-23 00:00+0300\n"
+"PO-Revision-Date: 2026-02-23 00:00+0300\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: ru\n"
+"Language-Team: ru <LL@li.org>\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+msgid "Persistence & Storage"
+msgstr "Хранилище и персистентность"
+
+msgid ""
+"This guide describes the persistence layer in VibeMQ — how messages, "
+"queues, and dead-letter entries survive server restarts."
+msgstr ""
+"Это руководство описывает слой хранилища в VibeMQ — как сообщения, "
+"очереди и записи мёртвых писем переживают перезапуск сервера."
+
+msgid "Overview"
+msgstr "Обзор"
+
+msgid ""
+"By default VibeMQ keeps everything in memory: fast, zero-config, but all "
+"state is lost on restart. Starting with version 1.3.0 you can plug in a "
+"**storage provider** so that queues, messages, and DLQ entries are "
+"persisted to disk (or to an external database in future versions)."
+msgstr ""
+"По умолчанию VibeMQ хранит всё в памяти: быстро, без настройки, но все "
+"данные теряются при перезапуске. Начиная с версии 1.3.0 можно подключить "
+"**провайдер хранилища**, чтобы очереди, сообщения и записи DLQ "
+"сохранялись на диск (или во внешнюю базу данных в будущих версиях)."
+
+msgid "**Key design decisions:**"
+msgstr "**Ключевые архитектурные решения:**"
+
+msgid ""
+"**Write-ahead pattern** — a message is saved to storage *before* it "
+"enters the in-memory queue. On ACK the persisted copy is removed."
+msgstr ""
+"**Write-ahead pattern** — сообщение сохраняется в хранилище *до* "
+"попадания в очередь в памяти. После ACK сохранённая копия удаляется."
+
+msgid ""
+"**Single interface** — ``IStorageProvider`` covers messages, queue "
+"metadata, and DLQ in one contract."
+msgstr ""
+"**Единый интерфейс** — ``IStorageProvider`` охватывает сообщения, "
+"метаданные очередей и DLQ в одном контракте."
+
+msgid ""
+"**Separate NuGet packages** — each provider lives in its own assembly so "
+"you only take the dependency you need."
+msgstr ""
+"**Отдельные NuGet-пакеты** — каждый провайдер находится в отдельной "
+"сборке, чтобы брать только нужные зависимости."
+
+msgid ""
+"**Backward compatible** — ``InMemory`` is the default; existing code "
+"works without changes."
+msgstr ""
+"**Обратная совместимость** — ``InMemory`` используется по умолчанию; "
+"существующий код работает без изменений."
+
+msgid "Storage Providers"
+msgstr "Провайдеры хранилища"
+
+msgid "Provider"
+msgstr "Провайдер"
+
+msgid "Description"
+msgstr "Описание"
+
+msgid "``InMemoryStorageProvider``"
+msgstr "``InMemoryStorageProvider``"
+
+msgid "Default. No persistence, all in-memory."
+msgstr "По умолчанию. Без персистентности, всё в памяти."
+
+msgid "``SqliteStorageProvider``"
+msgstr "``SqliteStorageProvider``"
+
+msgid "SQLite-based. Zero-config, single-file DB."
+msgstr "На основе SQLite. Без настройки, единый файл базы данных."
+
+msgid ""
+"Future providers (RocksDB, PostgreSQL, Redis) are planned — see the "
+"project roadmap."
+msgstr ""
+"Провайдеры для RocksDB, PostgreSQL, Redis запланированы — см. roadmap "
+"проекта."
+
+msgid "Quick Start"
+msgstr "Быстрый старт"
+
+msgid "InMemory (default)"
+msgstr "InMemory (по умолчанию)"
+
+msgid "No configuration required — this is the default behavior:"
+msgstr "Настройка не требуется — это поведение по умолчанию:"
+
+msgid "SQLite"
+msgstr "SQLite"
+
+msgid "Install the package:"
+msgstr "Установите пакет:"
+
+msgid "Configure via the fluent builder:"
+msgstr "Настройте через fluent-builder:"
+
+msgid "Or via Dependency Injection:"
+msgstr "Или через Dependency Injection:"
+
+msgid ""
+"Register the storage provider **before** ``AddVibeMQBroker`` so that the "
+"broker picks it up from the DI container."
+msgstr ""
+"Регистрируйте провайдер хранилища **до** ``AddVibeMQBroker``, чтобы "
+"брокер подхватил его из DI-контейнера."
+
+msgid "SQLite Configuration"
+msgstr "Настройка SQLite"
+
+msgid "SqliteStorageOptions"
+msgstr "SqliteStorageOptions"
+
+msgid "Parameter"
+msgstr "Параметр"
+
+msgid "Default"
+msgstr "По умолчанию"
+
+msgid "``DatabasePath``"
+msgstr "``DatabasePath``"
+
+msgid "``\"vibemq.db\"``"
+msgstr "``\"vibemq.db\"``"
+
+msgid "Path to the SQLite database file"
+msgstr "Путь к файлу базы данных SQLite"
+
+msgid "``EnableWal``"
+msgstr "``EnableWal``"
+
+msgid "``true``"
+msgstr "``true``"
+
+msgid "Enable WAL journal mode for better concurrent read/write performance"
+msgstr "Включить WAL-режим журналирования для лучшей параллельной производительности"
+
+msgid "``BusyTimeoutMs``"
+msgstr "``BusyTimeoutMs``"
+
+msgid "``5000``"
+msgstr "``5000``"
+
+msgid "Milliseconds to wait when the DB is locked"
+msgstr "Миллисекунды ожидания при блокировке базы данных"
+
+msgid "Database Schema"
+msgstr "Схема базы данных"
+
+msgid ""
+"The SQLite provider automatically creates the following tables on first "
+"startup:"
+msgstr ""
+"SQLite-провайдер автоматически создаёт следующие таблицы при первом "
+"запуске:"
+
+msgid "**queues** — persisted queue metadata:"
+msgstr "**queues** — метаданные очередей:"
+
+msgid "**messages** — persisted messages with foreign key to queues:"
+msgstr "**messages** — сохранённые сообщения с внешним ключом к таблице очередей:"
+
+msgid "**dead_letters** — persisted dead-lettered messages:"
+msgstr "**dead_letters** — сохранённые мёртвые письма:"
+
+msgid ""
+"Deleting a queue (``RemoveQueueAsync``) cascade-deletes all its messages "
+"via the foreign key constraint."
+msgstr ""
+"Удаление очереди (``RemoveQueueAsync``) каскадно удаляет все её "
+"сообщения через ограничение внешнего ключа."
+
+msgid "How Persistence Works"
+msgstr "Как работает персистентность"
+
+msgid "Write-Ahead Pattern"
+msgstr "Write-Ahead Pattern"
+
+msgid "When a message is published:"
+msgstr "При публикации сообщения:"
+
+msgid ""
+"If the server crashes after the storage write but before the in-memory "
+"enqueue, the message is recovered on next startup."
+msgstr ""
+"Если сервер упадёт после записи в хранилище, но до добавления в "
+"очередь в памяти — сообщение будет восстановлено при следующем запуске."
+
+msgid "Acknowledgment Flow"
+msgstr "Процесс подтверждения"
+
+msgid "When a subscriber acknowledges a message:"
+msgstr "При подтверждении сообщения подписчиком:"
+
+msgid "Startup Recovery"
+msgstr "Восстановление при запуске"
+
+msgid "On server startup, the broker automatically recovers persisted state:"
+msgstr "При запуске сервера брокер автоматически восстанавливает сохранённое состояние:"
+
+msgid "``IStorageProvider.InitializeAsync()`` — creates schema if needed"
+msgstr "``IStorageProvider.InitializeAsync()`` — создаёт схему при необходимости"
+
+msgid "``GetAllQueuesAsync()`` — loads all queue metadata"
+msgstr "``GetAllQueuesAsync()`` — загружает метаданные всех очередей"
+
+msgid ""
+"For each queue: ``GetPendingMessagesAsync(queueName)`` — replays "
+"undelivered messages"
+msgstr ""
+"Для каждой очереди: ``GetPendingMessagesAsync(queueName)`` — "
+"воспроизводит недоставленные сообщения"
+
+msgid ""
+"Queues are recreated with their original ``CreatedAt`` timestamps"
+msgstr ""
+"Очереди воссоздаются с оригинальными временными метками ``CreatedAt``"
+
+msgid "Dead Letter Queue Persistence"
+msgstr "Персистентность очереди мёртвых писем"
+
+msgid ""
+"Failed messages are persisted to the ``dead_letters`` table before being "
+"added to the in-memory DLQ:"
+msgstr ""
+"Сообщения с ошибками сохраняются в таблицу ``dead_letters`` перед "
+"добавлением в DLQ в памяти:"
+
+msgid "Storage Management"
+msgstr "Управление хранилищем"
+
+msgid ""
+"The ``IStorageManagement`` interface provides optional maintenance "
+"operations. Not all providers support it — check at runtime:"
+msgstr ""
+"Интерфейс ``IStorageManagement`` предоставляет необязательные операции "
+"обслуживания. Не все провайдеры его поддерживают — проверяйте во "
+"время выполнения:"
+
+msgid "StorageStats"
+msgstr "StorageStats"
+
+msgid "Property"
+msgstr "Свойство"
+
+msgid "Type"
+msgstr "Тип"
+
+msgid "``TotalMessages``"
+msgstr "``TotalMessages``"
+
+msgid "``long``"
+msgstr "``long``"
+
+msgid "Total persisted messages"
+msgstr "Всего сохранённых сообщений"
+
+msgid "``TotalQueues``"
+msgstr "``TotalQueues``"
+
+msgid "Total persisted queues"
+msgstr "Всего сохранённых очередей"
+
+msgid "``TotalDeadLettered``"
+msgstr "``TotalDeadLettered``"
+
+msgid "Total dead-lettered entries"
+msgstr "Всего записей мёртвых писем"
+
+msgid "``StorageSizeBytes``"
+msgstr "``StorageSizeBytes``"
+
+msgid "Database file size in bytes"
+msgstr "Размер файла базы данных в байтах"
+
+msgid "IStorageProvider Interface"
+msgstr "Интерфейс IStorageProvider"
+
+msgid "All storage providers implement this interface:"
+msgstr "Все провайдеры хранилища реализуют этот интерфейс:"
+
+msgid "**Contract rules:**"
+msgstr "**Контрактные правила:**"
+
+msgid "``InitializeAsync`` **must** be called before any other operations."
+msgstr "``InitializeAsync`` **обязательно** должен быть вызван перед любыми другими операциями."
+
+msgid "``RemoveQueueAsync`` **must** cascade-delete all messages in the queue."
+msgstr "``RemoveQueueAsync`` **обязательно** должен каскадно удалять все сообщения очереди."
+
+msgid ""
+"``SaveMessagesAsync`` has a default implementation that calls "
+"``SaveMessageAsync`` in a loop. Providers should override for batch "
+"optimization."
+msgstr ""
+"``SaveMessagesAsync`` имеет реализацию по умолчанию, которая вызывает "
+"``SaveMessageAsync`` в цикле. Провайдеры должны переопределять её для "
+"пакетной оптимизации."
+
+msgid ""
+"``IsAvailableAsync`` returns ``true`` for embedded providers (InMemory, "
+"SQLite). Network providers should check connectivity."
+msgstr ""
+"``IsAvailableAsync`` возвращает ``true`` для встроенных провайдеров "
+"(InMemory, SQLite). Сетевые провайдеры должны проверять доступность."
+
+msgid "All methods **must** be thread-safe."
+msgstr "Все методы **обязательно** должны быть потокобезопасными."
+
+msgid "Implementing a Custom Provider"
+msgstr "Реализация собственного провайдера"
+
+msgid "To create your own storage provider:"
+msgstr "Чтобы создать собственный провайдер хранилища:"
+
+msgid "Create a new class library project referencing ``VibeMQ.Core``."
+msgstr "Создайте новый проект библиотеки классов с ссылкой на ``VibeMQ.Core``."
+
+msgid "Implement ``IStorageProvider`` (and optionally ``IStorageManagement``)."
+msgstr "Реализуйте ``IStorageProvider`` (и опционально ``IStorageManagement``)."
+
+msgid ""
+"Add an extension method for ``BrokerBuilder`` and/or "
+"``IServiceCollection``:"
+msgstr ""
+"Добавьте метод расширения для ``BrokerBuilder`` и/или "
+"``IServiceCollection``:"
+
+msgid "Configuration Examples"
+msgstr "Примеры конфигурации"
+
+msgid "Development (InMemory)"
+msgstr "Разработка (InMemory)"
+
+msgid "Production (SQLite)"
+msgstr "Продакшн (SQLite)"
+
+msgid "Production with DI (SQLite)"
+msgstr "Продакшн с DI (SQLite)"
+
+msgid "appsettings.json (SQLite)"
+msgstr "appsettings.json (SQLite)"
+
+msgid "Migration from Previous Versions"
+msgstr "Миграция с предыдущих версий"
+
+msgid "If you are upgrading from VibeMQ 1.2.x:"
+msgstr "При обновлении с VibeMQ 1.2.x:"
+
+msgid ""
+"``IMessageStore`` is now deprecated. It still works but will be removed "
+"in a future version. Migrate to ``IStorageProvider``."
+msgstr ""
+"``IMessageStore`` устарел. Он по-прежнему работает, но будет удалён в "
+"будущей версии. Мигрируйте на ``IStorageProvider``."
+
+msgid ""
+"``InMemoryMessageStore`` is deprecated in favor of "
+"``InMemoryStorageProvider``."
+msgstr ""
+"``InMemoryMessageStore`` устарел в пользу ``InMemoryStorageProvider``."
+
+msgid ""
+"No breaking changes — the default behavior (in-memory) is preserved. "
+"Adding persistence is opt-in."
+msgstr ""
+"Без breaking changes — поведение по умолчанию (в памяти) сохранено. "
+"Добавление персистентности является опциональным."
+
+msgid "Next Steps"
+msgstr "Следующие шаги"
+
+msgid "server-setup — server configuration"
+msgstr "server-setup — настройка сервера"
+
+msgid "configuration — all configuration parameters"
+msgstr "configuration — все параметры конфигурации"
+
+msgid "di-integration — DI integration"
+msgstr "di-integration — интеграция с DI"
+
+msgid "architecture — system architecture"
+msgstr "architecture — архитектура системы"

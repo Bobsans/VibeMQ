@@ -11,12 +11,40 @@ VibeMQ project change history.
 Version History
 ================
 
-Version 1.2.0
+Version 1.3.0
 -------------
 
 **Date:** February 2026
 
 **Status:** Current Stable Version
+
+**New features:**
+
+- **Persistence layer** — pluggable storage provider system for message durability
+- **SQLite storage** — ``VibeMQ.Server.Storage.Sqlite`` package with zero-config file-based persistence
+- **Write-ahead pattern** — messages are saved to storage before entering the in-memory queue; on restart all pending messages are recovered automatically
+- **IStorageProvider interface** — unified contract covering messages, queue metadata, and DLQ in a single abstraction
+- **IStorageManagement interface** — optional maintenance operations: backup, restore, compact (VACUUM), storage statistics
+- **Startup recovery** — queues and pending messages are replayed from storage on server start, preserving original ``CreatedAt`` timestamps
+- **DLQ persistence** — dead-lettered messages are saved to storage before being added to the in-memory DLQ
+
+**New packages:**
+
+- ``VibeMQ.Server.Storage.Sqlite`` — SQLite storage provider with WAL mode, busy timeout, and automatic schema creation
+
+**Migration from 1.2.x:**
+
+- No breaking changes — existing code works without modifications
+- The default storage is still ``InMemoryStorageProvider`` (no persistence)
+- Adding persistence is opt-in via ``UseSqliteStorage()`` or ``AddVibeMQSqliteStorage()``
+- ``IMessageStore`` is deprecated in favor of ``IStorageProvider`` (still functional, will be removed in 2.0)
+
+Version 1.2.0
+-------------
+
+**Date:** February 2026
+
+**Status:** Stable
 
 **New features:**
 
@@ -97,7 +125,6 @@ Backlog (Version 2.0+)
 
 **Planned features:**
 
-- Persistence layer for message storage
 - Clustering for horizontal scaling
 - Support for other protocols (AMQP, MQTT, HTTP)
 - Advanced monitoring (Prometheus, Grafana)

@@ -94,6 +94,7 @@ Connect the client:
    docs/client-usage
    docs/configuration
    docs/di-integration
+   docs/storage
 
 .. toctree::
    :maxdepth: 2
@@ -135,6 +136,13 @@ Connect the client:
 - Graceful shutdown without message loss
 - Health checks for orchestrators
 
+**Persistence:**
+
+- Pluggable storage providers (InMemory by default, SQLite available)
+- Write-ahead logging — messages saved before delivery
+- Automatic recovery of queues and messages on restart
+- Dead Letter Queue persistence
+
 **Security:**
 
 - Token-based authentication
@@ -168,6 +176,8 @@ VibeMQ consists of several NuGet packages:
 | ``VibeMQ.Server.DependencyInjection``    | Server DI integration           |
 +--------------------------------+------------------------------------------+
 | ``VibeMQ.Client.DependencyInjection``    | Client DI integration            |
++--------------------------------+------------------------------------------+
+| ``VibeMQ.Server.Storage.Sqlite``         | SQLite persistence provider     |
 +--------------------------------+------------------------------------------+
 
 💡 Usage Examples
