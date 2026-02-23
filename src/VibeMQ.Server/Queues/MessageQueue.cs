@@ -13,10 +13,16 @@ public sealed class MessageQueue {
     private readonly ConcurrentDictionary<string, BrokerMessage> _unacknowledged = new();
     private int _roundRobinIndex;
 
-    public MessageQueue(string name, QueueOptions options) {
+    public MessageQueue(string name, QueueOptions options)
+        : this(name, options, DateTime.UtcNow) { }
+
+    /// <summary>
+    /// Creates a queue with an explicit creation timestamp (used during recovery from storage).
+    /// </summary>
+    public MessageQueue(string name, QueueOptions options, DateTime createdAt) {
         Name = name;
         Options = options;
-        CreatedAt = DateTime.UtcNow;
+        CreatedAt = createdAt;
     }
 
     /// <summary>

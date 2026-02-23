@@ -8,7 +8,10 @@ namespace VibeMQ.Server.Storage;
 /// In-memory implementation of <see cref="IMessageStore"/>.
 /// Messages are stored in a thread-safe dictionary.
 /// </summary>
+[Obsolete("Use InMemoryStorageProvider instead. This class will be removed in a future version.")]
+#pragma warning disable CS0618 // IMessageStore is obsolete
 public sealed class InMemoryMessageStore : IMessageStore {
+#pragma warning restore CS0618
     private readonly ConcurrentDictionary<string, BrokerMessage> _messages = new();
 
     /// <inheritdoc />

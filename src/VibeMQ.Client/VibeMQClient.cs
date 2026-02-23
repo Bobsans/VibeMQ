@@ -541,7 +541,8 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
 
             case CommandType.Disconnect:
                 if (_logger.IsEnabled(LogLevel.Information)) {
-                    LogServerDisconnect(message.Headers?.GetValueOrDefault("reason") ?? "unknown");
+                    var reason = message.Headers?.GetValueOrDefault("reason") ?? "unknown";
+                    LogServerDisconnect(reason);
                 }
                 _isConnected = false;
 

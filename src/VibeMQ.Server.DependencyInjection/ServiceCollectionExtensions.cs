@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using VibeMQ.Configuration;
+using VibeMQ.Interfaces;
 
 namespace VibeMQ.Server.DependencyInjection;
 
@@ -23,10 +24,19 @@ public static class ServiceCollectionExtensions {
         services.TryAddSingleton(static sp => {
             var options = sp.GetRequiredService<IOptions<BrokerOptions>>().Value;
             var loggerFactory = sp.GetRequiredService<ILoggerFactory>();
-            return BrokerBuilder.Create()
+
+            var builder = BrokerBuilder.Create()
                 .ConfigureFrom(options)
-                .UseLoggerFactory(loggerFactory)
-                .Build();
+                .UseLoggerFactory(loggerFactory);
+
+            // Use storage provider from DI if registered (e.g. via AddVibeMQSqliteStorage)
+            var storageProvider = sp.GetService<IStorageProvider>();
+
+            if (storageProvider is not null) {
+                builder.UseStorageProvider(_ => storageProvider);
+            }
+
+            return builder.Build();
         });
         services.AddHostedService<VibeMQBrokerHostedService>();
         return services;

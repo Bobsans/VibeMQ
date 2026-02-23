@@ -5,6 +5,7 @@ namespace VibeMQ.Interfaces;
 /// <summary>
 /// Storage abstraction for broker messages (in-memory implementation for now).
 /// </summary>
+[Obsolete("Use IStorageProvider instead. This interface will be removed in a future version.")]
 public interface IMessageStore {
     /// <summary>
     /// Adds a message to the store and returns its ID.

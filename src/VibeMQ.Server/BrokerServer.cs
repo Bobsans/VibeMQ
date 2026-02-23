@@ -2,6 +2,7 @@ using System.Net;
 using System.Net.Sockets;
 using Microsoft.Extensions.Logging;
 using VibeMQ.Configuration;
+using VibeMQ.Interfaces;
 using VibeMQ.Metrics;
 using VibeMQ.Protocol;
 using VibeMQ.Server.Connections;
@@ -25,6 +26,7 @@ public sealed partial class BrokerServer : IAsyncDisposable {
     private readonly QueueManager _queueManager;
     private readonly AckTracker _ackTracker;
     private readonly RateLimiter _rateLimiter;
+    private readonly IStorageProvider _storageProvider;
     private readonly IBrokerMetrics _metrics;
     private readonly ILogger<BrokerServer> _logger;
     private readonly CancellationTokenSource _shutdownCts = new();
@@ -37,6 +39,7 @@ public sealed partial class BrokerServer : IAsyncDisposable {
         QueueManager queueManager,
         AckTracker ackTracker,
         RateLimiter rateLimiter,
+        IStorageProvider storageProvider,
         IBrokerMetrics metrics,
         ILogger<BrokerServer> logger
     ) {
@@ -46,6 +49,7 @@ public sealed partial class BrokerServer : IAsyncDisposable {
         _queueManager = queueManager;
         _ackTracker = ackTracker;
         _rateLimiter = rateLimiter;
+        _storageProvider = storageProvider;
         _metrics = metrics;
         _logger = logger;
     }
@@ -71,6 +75,9 @@ public sealed partial class BrokerServer : IAsyncDisposable {
     public async Task RunAsync(CancellationToken cancellationToken = default) {
         using var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, _shutdownCts.Token);
         var token = linkedCts.Token;
+
+        // Initialize storage and recover persisted state
+        await _queueManager.InitializeAsync(token).ConfigureAwait(false);
 
         _ackTracker.Start();
 
@@ -131,6 +138,7 @@ public sealed partial class BrokerServer : IAsyncDisposable {
         await WaitForInFlightMessagesAsync(_shutdownGracePeriod, cancellationToken).ConfigureAwait(false);
         await _ackTracker.DisposeAsync().ConfigureAwait(false);
         await _connectionManager.DisposeAsync().ConfigureAwait(false);
+        await _storageProvider.DisposeAsync().ConfigureAwait(false);
     }
 
     private async Task WaitForInFlightMessagesAsync(TimeSpan gracePeriod, CancellationToken cancellationToken) {

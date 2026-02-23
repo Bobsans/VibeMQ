@@ -10,6 +10,7 @@ using VibeMQ.Server.Handlers;
 using VibeMQ.Metrics;
 using VibeMQ.Server.Queues;
 using VibeMQ.Server.Security;
+using VibeMQ.Server.Storage;
 
 namespace VibeMQ.Server;
 
@@ -20,6 +21,7 @@ public sealed class BrokerBuilder {
     private readonly BrokerOptions _options = new();
     private readonly HealthCheckOptions _healthCheckOptions = new();
     private ILoggerFactory _loggerFactory = NullLoggerFactory.Instance;
+    private Func<ILoggerFactory, IStorageProvider>? _storageProviderFactory;
 
     private BrokerBuilder() { }
 
@@ -41,6 +43,7 @@ public sealed class BrokerBuilder {
         _options.QueueDefaults = options.QueueDefaults;
         _options.Tls = options.Tls;
         _options.RateLimit = options.RateLimit;
+        _options.StorageType = options.StorageType;
         return this;
     }
 
@@ -120,6 +123,16 @@ public sealed class BrokerBuilder {
     }
 
     /// <summary>
+    /// Sets a custom storage provider factory for message persistence.
+    /// If not called, <see cref="InMemoryStorageProvider"/> is used by default.
+    /// </summary>
+    /// <param name="factory">Factory that receives the logger factory and returns a storage provider instance.</param>
+    public BrokerBuilder UseStorageProvider(Func<ILoggerFactory, IStorageProvider> factory) {
+        _storageProviderFactory = factory;
+        return this;
+    }
+
+    /// <summary>
     /// Builds the broker server instance with all configured components.
     /// </summary>
     public BrokerServer Build() {
@@ -144,7 +157,12 @@ public sealed class BrokerBuilder {
             logger: _loggerFactory.CreateLogger<AckTracker>()
         );
 
+        // Storage provider
+        var storageProvider = _storageProviderFactory?.Invoke(_loggerFactory)
+            ?? new InMemoryStorageProvider();
+
         var deadLetterQueue = new DeadLetterQueue(
+            storageProvider,
             _loggerFactory.CreateLogger<DeadLetterQueue>()
         );
 
@@ -153,6 +171,7 @@ public sealed class BrokerBuilder {
             connectionManager,
             ackTracker,
             deadLetterQueue,
+            storageProvider,
             metrics,
             _options.QueueDefaults,
             _loggerFactory.CreateLogger<QueueManager>()
@@ -187,6 +206,7 @@ public sealed class BrokerBuilder {
             queueManager,
             ackTracker,
             rateLimiter,
+            storageProvider,
             metrics,
             _loggerFactory.CreateLogger<BrokerServer>()
         );

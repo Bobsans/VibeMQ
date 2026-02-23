@@ -187,16 +187,16 @@ public class TestPayload {
 }
 
 public sealed class ClassBasedTestPayloadHandler : IMessageHandler<TestPayload> {
-    private static readonly ConcurrentDictionary<string, TaskCompletionSource<TestPayload>> PendingByMessageName = new();
+    private static readonly ConcurrentDictionary<string, TaskCompletionSource<TestPayload>> _pendingByMessageName = new();
 
     public static Task<TestPayload> Expect(string messageName) {
         var tcs = new TaskCompletionSource<TestPayload>(TaskCreationOptions.RunContinuationsAsynchronously);
-        PendingByMessageName[messageName] = tcs;
+        _pendingByMessageName[messageName] = tcs;
         return tcs.Task;
     }
 
     public Task HandleAsync(TestPayload message, CancellationToken cancellationToken) {
-        if (PendingByMessageName.TryRemove(message.Name, out var pending)) {
+        if (_pendingByMessageName.TryRemove(message.Name, out var pending)) {
             pending.TrySetResult(message);
         }
 
@@ -215,17 +215,17 @@ public sealed class HandlerWithoutDefaultConstructor : IMessageHandler<TestPaylo
 }
 
 public sealed class CancelAwareClassBasedHandler : IMessageHandler<TestPayload> {
-    private static readonly ConcurrentDictionary<string, TaskCompletionSource<TestPayload>> PendingByMessageName = new();
+    private static readonly ConcurrentDictionary<string, TaskCompletionSource<TestPayload>> _pendingByMessageName = new();
 
     public static Task<TestPayload> Expect(string messageName) {
         var tcs = new TaskCompletionSource<TestPayload>(TaskCreationOptions.RunContinuationsAsynchronously);
-        PendingByMessageName[messageName] = tcs;
+        _pendingByMessageName[messageName] = tcs;
         return tcs.Task;
     }
 
     public Task HandleAsync(TestPayload message, CancellationToken cancellationToken) {
         cancellationToken.ThrowIfCancellationRequested();
-        if (PendingByMessageName.TryRemove(message.Name, out var pending)) {
+        if (_pendingByMessageName.TryRemove(message.Name, out var pending)) {
             pending.TrySetResult(message);
         }
         return Task.CompletedTask;

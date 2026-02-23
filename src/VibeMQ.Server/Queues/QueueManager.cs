@@ -21,6 +21,7 @@ public sealed partial class QueueManager : IQueueManager {
     private readonly ConnectionManager _connectionManager;
     private readonly AckTracker _ackTracker;
     private readonly DeadLetterQueue _deadLetterQueue;
+    private readonly IStorageProvider _storageProvider;
     private readonly IBrokerMetrics _metrics;
     private readonly QueueDefaults _defaults;
     private readonly ILogger<QueueManager> _logger;
@@ -29,6 +30,7 @@ public sealed partial class QueueManager : IQueueManager {
         ConnectionManager connectionManager,
         AckTracker ackTracker,
         DeadLetterQueue deadLetterQueue,
+        IStorageProvider storageProvider,
         IBrokerMetrics metrics,
         QueueDefaults defaults,
         ILogger<QueueManager> logger
@@ -36,6 +38,7 @@ public sealed partial class QueueManager : IQueueManager {
         _connectionManager = connectionManager;
         _ackTracker = ackTracker;
         _deadLetterQueue = deadLetterQueue;
+        _storageProvider = storageProvider;
         _metrics = metrics;
         _defaults = defaults;
         _logger = logger;
@@ -45,11 +48,40 @@ public sealed partial class QueueManager : IQueueManager {
         _ackTracker.OnRetryRequired += OnRetryRequiredAsync;
     }
 
+    /// <summary>
+    /// Initializes storage and recovers persisted queues and messages.
+    /// Must be called before the server starts accepting connections.
+    /// </summary>
+    public async Task InitializeAsync(CancellationToken cancellationToken = default) {
+        await _storageProvider.InitializeAsync(cancellationToken).ConfigureAwait(false);
+
+        // Recover persisted queues
+        var storedQueues = await _storageProvider.GetAllQueuesAsync(cancellationToken).ConfigureAwait(false);
+
+        foreach (var stored in storedQueues) {
+            var queue = new MessageQueue(stored.Name, stored.Options, stored.CreatedAt);
+            _queues.TryAdd(stored.Name, queue);
+
+            // Recover pending messages for this queue
+            var messages = await _storageProvider.GetPendingMessagesAsync(stored.Name, cancellationToken).ConfigureAwait(false);
+
+            foreach (var message in messages) {
+                queue.Enqueue(message);
+            }
+
+            LogQueueRecovered(stored.Name, messages.Count);
+        }
+
+        if (storedQueues.Count > 0) {
+            LogRecoveryComplete(storedQueues.Count);
+        }
+    }
+
     /// <inheritdoc />
     public int QueueCount => _queues.Count;
 
     /// <inheritdoc />
-    public Task CreateQueueAsync(string name, QueueOptions? options = null, CancellationToken cancellationToken = default) {
+    public async Task CreateQueueAsync(string name, QueueOptions? options = null, CancellationToken cancellationToken = default) {
         var queueOptions = options ?? new QueueOptions {
             Mode = _defaults.DefaultDeliveryMode,
             MaxQueueSize = _defaults.MaxQueueSize,
@@ -58,19 +90,17 @@ public sealed partial class QueueManager : IQueueManager {
         var queue = new MessageQueue(name, queueOptions);
 
         if (_queues.TryAdd(name, queue)) {
+            await _storageProvider.SaveQueueAsync(name, queueOptions, cancellationToken).ConfigureAwait(false);
             LogQueueCreated(name, queueOptions.Mode);
         }
-
-        return Task.CompletedTask;
     }
 
     /// <inheritdoc />
-    public Task DeleteQueueAsync(string name, CancellationToken cancellationToken = default) {
+    public async Task DeleteQueueAsync(string name, CancellationToken cancellationToken = default) {
         if (_queues.TryRemove(name, out _)) {
+            await _storageProvider.RemoveQueueAsync(name, cancellationToken).ConfigureAwait(false);
             LogQueueDeleted(name);
         }
-
-        return Task.CompletedTask;
     }
 
     /// <inheritdoc />
@@ -106,9 +136,14 @@ public sealed partial class QueueManager : IQueueManager {
         // Set max retry attempts from queue config
         message.DeliveryAttempts = queue.Options.MaxRetryAttempts;
 
+        // Write-ahead: persist to storage BEFORE enqueueing in memory
+        await _storageProvider.SaveMessageAsync(message, cancellationToken).ConfigureAwait(false);
+
         var accepted = queue.Enqueue(message);
 
         if (!accepted) {
+            // Message was rejected by queue — remove from storage
+            await _storageProvider.RemoveMessageAsync(message.Id, cancellationToken).ConfigureAwait(false);
             LogMessageRejected(message.Id, message.QueueName, queue.Options.OverflowStrategy);
 
             // If overflow strategy is RedirectToDlq, send to DLQ
@@ -127,22 +162,24 @@ public sealed partial class QueueManager : IQueueManager {
     }
 
     /// <inheritdoc />
-    public Task<bool> AcknowledgeAsync(string messageId, CancellationToken cancellationToken = default) {
+    public async Task<bool> AcknowledgeAsync(string messageId, CancellationToken cancellationToken = default) {
         // First try the AckTracker (centralized tracking)
         if (_ackTracker.Acknowledge(messageId)) {
+            await _storageProvider.RemoveMessageAsync(messageId, cancellationToken).ConfigureAwait(false);
             _metrics.RecordAcknowledged();
-            return Task.FromResult(true);
+            return true;
         }
 
         // Fallback: check individual queues
         foreach (var queue in _queues.Values) {
             if (queue.Acknowledge(messageId)) {
+                await _storageProvider.RemoveMessageAsync(messageId, cancellationToken).ConfigureAwait(false);
                 _metrics.RecordAcknowledged();
-                return Task.FromResult(true);
+                return true;
             }
         }
 
-        return Task.FromResult(false);
+        return false;
     }
 
     private async Task DeliverAsync(MessageQueue queue, CancellationToken cancellationToken) {
@@ -235,6 +272,9 @@ public sealed partial class QueueManager : IQueueManager {
                 .ConfigureAwait(false);
             _metrics.RecordDeadLettered();
         }
+
+        // Remove expired message from storage
+        await _storageProvider.RemoveMessageAsync(message.Id, CancellationToken.None).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -289,4 +329,10 @@ public sealed partial class QueueManager : IQueueManager {
 
     [LoggerMessage(Level = LogLevel.Error, Message = "Failed to deliver message {messageId} to client {clientId}.")]
     private partial void LogDeliveryFailed(string messageId, string clientId, Exception exception);
+
+    [LoggerMessage(Level = LogLevel.Information, Message = "Queue {queueName} recovered with {messageCount} pending messages.")]
+    private partial void LogQueueRecovered(string queueName, int messageCount);
+
+    [LoggerMessage(Level = LogLevel.Information, Message = "Recovery complete: {queueCount} queues restored.")]
+    private partial void LogRecoveryComplete(int queueCount);
 }

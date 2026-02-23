@@ -1,3 +1,5 @@
+using System.Net;
+using System.Net.Sockets;
 using VibeMQ.Client;
 using VibeMQ.Server;
 
@@ -16,7 +18,8 @@ public sealed class TestBrokerFixture : IAsyncLifetime {
     public int Port { get; private set; }
 
     public async Task InitializeAsync() {
-        Port = Random.Shared.Next(30_000, 60_000);
+        // Let the OS assign a free port to avoid collisions and TIME_WAIT issues
+        Port = GetFreePort();
         _cts = new CancellationTokenSource();
 
         _server = BrokerBuilder.Create()
@@ -28,8 +31,8 @@ public sealed class TestBrokerFixture : IAsyncLifetime {
 
         _serverTask = _server.RunAsync(_cts.Token);
 
-        // Give the server time to start
-        await Task.Delay(300);
+        // Wait until the server is actually listening (or fail fast if it crashed)
+        await WaitForPortAsync(Port, _serverTask, TimeSpan.FromSeconds(10));
     }
 
     public async Task<VibeMQClient> CreateClientAsync(bool authenticate = true) {
@@ -65,5 +68,40 @@ public sealed class TestBrokerFixture : IAsyncLifetime {
         }
 
         _cts?.Dispose();
+    }
+
+    /// <summary>
+    /// Asks the OS to assign an available ephemeral port, avoiding collisions.
+    /// </summary>
+    private static int GetFreePort() {
+        var listener = new TcpListener(IPAddress.Loopback, 0);
+        listener.Start();
+        var port = ((IPEndPoint)listener.LocalEndpoint).Port;
+        listener.Stop();
+        return port;
+    }
+
+    /// <summary>
+    /// Polls until the port is reachable or the server task faults (whichever comes first).
+    /// </summary>
+    private static async Task WaitForPortAsync(int port, Task serverTask, TimeSpan timeout) {
+        using var cts = new CancellationTokenSource(timeout);
+
+        while (!cts.Token.IsCancellationRequested) {
+            // Fail fast if the server crashed during startup
+            if (serverTask.IsCompleted) {
+                await serverTask; // rethrows the exception
+            }
+
+            try {
+                using var tcp = new TcpClient();
+                await tcp.ConnectAsync("127.0.0.1", port, cts.Token);
+                return; // Port is open — server is ready
+            } catch (SocketException) {
+                await Task.Delay(50, cts.Token);
+            }
+        }
+
+        throw new TimeoutException($"Server did not start listening on port {port} within {timeout.TotalSeconds}s.");
     }
 }
