@@ -34,20 +34,14 @@ To use VibeMQ in your project, add the required packages:
 
 .. code-block:: bash
 
-   # Broker server
+   # Broker server (includes protocol and health check from Core)
    dotnet add package VibeMQ.Server
 
    # Client for connection
    dotnet add package VibeMQ.Client
 
-   # Core (models and interfaces)
+   # Core (models, interfaces, protocol, health check server)
    dotnet add package VibeMQ.Core
-
-   # Communication protocol
-   dotnet add package VibeMQ.Protocol
-
-   # Health check server
-   dotnet add package VibeMQ.Health
 
 Dependency Injection Packages
 -----------------------------
@@ -71,7 +65,6 @@ For quick addition of all components:
 
    dotnet add package VibeMQ.Server
    dotnet add package VibeMQ.Client
-   dotnet add package VibeMQ.Health
    dotnet add package VibeMQ.Server.DependencyInjection
    dotnet add package VibeMQ.Client.DependencyInjection
 

@@ -52,7 +52,7 @@ Registration with Configuration
 .. code-block:: csharp
 
    using VibeMQ.Server.DependencyInjection;
-   using VibeMQ.Core.Enums;
+   using VibeMQ.Enums;
 
    var host = Host.CreateDefaultBuilder(args)
        .ConfigureServices(services => {
@@ -93,6 +93,7 @@ Configuration from appsettings.json
 
 .. code-block:: csharp
 
+   using VibeMQ.Configuration;
    using VibeMQ.Server.DependencyInjection;
 
    var host = Host.CreateDefaultBuilder(args)
@@ -100,9 +101,10 @@ Configuration from appsettings.json
            config.AddJsonFile("appsettings.json");
        })
        .ConfigureServices((context, services) => {
-           services.AddVibeMQBroker(
+           services.Configure<BrokerOptions>(
                context.Configuration.GetSection("VibeMQ")
            );
+           services.AddVibeMQBroker();
        })
        .Build();
 
@@ -114,7 +116,7 @@ Advanced Configuration
 .. code-block:: csharp
 
    using VibeMQ.Server.DependencyInjection;
-   using VibeMQ.Core.Enums;
+   using VibeMQ.Enums;
 
    var host = Host.CreateDefaultBuilder(args)
        .ConfigureServices(services => {
@@ -128,16 +130,14 @@ Advanced Configuration
                options.EnableAuthentication = true;
                options.AuthToken = Environment.GetEnvironmentVariable("VIBEMQ_TOKEN");
                
-               // Queues
+               // Queues (only DefaultDeliveryMode, MaxQueueSize, EnableAutoCreate are in QueueDefaults)
                options.QueueDefaults.DefaultDeliveryMode = DeliveryMode.FanOutWithAck;
                options.QueueDefaults.MaxQueueSize = 100_000;
-               options.QueueDefaults.EnableDeadLetterQueue = true;
-               options.QueueDefaults.MaxRetryAttempts = 5;
-               options.QueueDefaults.MessageTtl = TimeSpan.FromHours(24);
+               options.QueueDefaults.EnableAutoCreate = true;
                
                // Rate limiting
                options.RateLimit.Enabled = true;
-               options.RateLimit.MaxConnectionsPerIpPerWindow = 100;
+               options.RateLimit.MaxConnectionsPerIpPerWindow = 50;
                options.RateLimit.MaxMessagesPerClientPerSecond = 5000;
                
                // TLS
@@ -239,9 +239,10 @@ Configuration from appsettings.json
            config.AddJsonFile("appsettings.json");
        })
        .ConfigureServices((context, services) => {
-           services.AddVibeMQClient(
+           services.Configure<VibeMQClientSettings>(
                context.Configuration.GetSection("VibeMQClient")
            );
+           services.AddVibeMQClient();
        })
        .Build();
 
@@ -410,8 +411,8 @@ You can use class-based message handlers with automatic subscription on applicat
 
 .. code-block:: csharp
 
-   using VibeMQ.Core.Attributes;
-   using VibeMQ.Core.Interfaces;
+   using VibeMQ.Attributes;
+   using VibeMQ.Interfaces;
    using VibeMQ.Client.DependencyInjection;
 
    // Define handler with Queue attribute
@@ -597,15 +598,21 @@ For Docker and cloud deployments:
 
 .. code-block:: csharp
 
+   using VibeMQ.Configuration;
+   using VibeMQ.Server.DependencyInjection;
+   using VibeMQ.Client.DependencyInjection;
+
    var host = Host.CreateDefaultBuilder(args)
        .ConfigureServices((context, services) => {
-           services.AddVibeMQBroker(
+           services.Configure<BrokerOptions>(
                context.Configuration.GetSection("VibeMQ")
            );
-           
-           services.AddVibeMQClient(
+           services.AddVibeMQBroker();
+
+           services.Configure<VibeMQClientSettings>(
                context.Configuration.GetSection("VibeMQClient")
            );
+           services.AddVibeMQClient();
        })
        .Build();
 

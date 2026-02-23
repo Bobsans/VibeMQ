@@ -129,7 +129,6 @@ Backlog (Version 2.0+)
 - Support for other protocols (AMQP, MQTT, HTTP)
 - Advanced monitoring (Prometheus, Grafana)
 - Web management interface
-- .NET 10 support
 - Protocol-level compression
 - Granular authorization
 - Delayed messages

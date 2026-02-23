@@ -84,7 +84,7 @@ Server
 
    using Microsoft.Extensions.Logging;
    using VibeMQ.Server;
-   using VibeMQ.Core.Enums;
+   using VibeMQ.Enums;
 
    using var loggerFactory = LoggerFactory.Create(builder => {
        builder.SetMinimumLevel(LogLevel.Information).AddConsole();
@@ -234,8 +234,8 @@ Using class-based handlers with automatic subscription:
 
 .. code-block:: csharp
 
-   using VibeMQ.Core.Attributes;
-   using VibeMQ.Core.Interfaces;
+   using VibeMQ.Attributes;
+   using VibeMQ.Interfaces;
    using VibeMQ.Client.DependencyInjection;
 
    // Define message types
@@ -292,7 +292,7 @@ Background Tasks with Priorities
 .. code-block:: csharp
 
    using VibeMQ.Client;
-   using VibeMQ.Core.Enums;
+   using VibeMQ.Enums;
 
    public class TaskQueueService {
        private readonly VibeMQClient _client;
@@ -382,24 +382,6 @@ EventBus Implementation
                    await handler(eventData);
                },
                ct
-           );
-
-           _subscriptions.Add(subscription);
-           return subscription;
-       }
-
-       private async Task<IAsyncDisposable> SubscribeInternalAsync<T>(
-           string eventType,
-           Func<T, Task> handler) {
-           
-           var client = await _clientFactory.CreateAsync();
-           
-           var subscription = await client.SubscribeAsync<T>(
-               $"events.{eventType}",
-               async eventData => {
-                   _logger.LogInformation("Received event {EventType}", eventType);
-                   await handler(eventData);
-               }
            );
 
            _subscriptions.Add(subscription);
@@ -574,16 +556,17 @@ CQRS with VibeMQ
            _client = client;
        }
 
-       public async Task<TResponse> AskAsync<TResponse>(string queryName, object query) {
+       public async Task<TResponse> AskAsync<TResponse>(string queryName, object query)
+           where TResponse : class {
            var correlationId = Guid.NewGuid().ToString();
            var tcs = new TaskCompletionSource<TResponse>();
 
-           // Temporary subscription for response
-           var subscription = await _client.SubscribeAsync<TResponse>(
+           // Temporary subscription for response (handler receives payload only; include CorrelationId in response type)
+           await using var subscription = await _client.SubscribeAsync<QueryResponse<TResponse>>(
                $"queries.{queryName}.response",
                msg => {
-                   if (msg.Headers?["correlation_id"] == correlationId) {
-                       tcs.SetResult(msg);
+                   if (msg.CorrelationId == correlationId) {
+                       tcs.TrySetResult(msg.Data);
                    }
                    return Task.CompletedTask;
                }
@@ -597,13 +580,16 @@ CQRS with VibeMQ
 
            // Wait for response with timeout
            using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(30));
-           cts.Token.Register(() => {
-               tcs.TrySetException(new TimeoutException("Query timeout"));
-               subscription.DisposeAsync();
-           });
+           cts.Token.Register(() => tcs.TrySetException(new TimeoutException("Query timeout")));
 
            return await tcs.Task;
        }
+   }
+
+   public class QueryResponse<T> {
+       public string CorrelationId { get; set; } = "";
+       public T? Data { get; set; }
+   }
    }
 
 Monitoring and Logging
@@ -663,7 +649,8 @@ Custom Logger
 
 .. code-block:: csharp
 
-   using var loggerFactory = new FileLoggerProvider("logs/vibemq.log");
+   using var loggerFactory = LoggerFactory.Create(builder =>
+       builder.AddProvider(new FileLoggerProvider("logs/vibemq.log")));
 
    var broker = BrokerBuilder.Create()
        .UsePort(8080)

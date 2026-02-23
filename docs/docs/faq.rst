@@ -147,13 +147,13 @@ What delivery modes are supported?
 How does Dead Letter Queue work?
 -------------------------------
 
-DLQ stores messages that could not be delivered:
+DLQ stores messages that could not be delivered. Enable it when creating a queue (server queue defaults do not include DLQ options):
 
 .. code-block:: csharp
 
-   .ConfigureQueues(options => {
-       options.EnableDeadLetterQueue = true;
-       options.MaxRetryAttempts = 3;
+   await client.CreateQueueAsync("my-queue", new QueueOptions {
+       EnableDeadLetterQueue = true,
+       MaxRetryAttempts = 3
    });
 
 **Reasons for DLQ:**
@@ -231,8 +231,6 @@ How to configure for production?
        .ConfigureQueues(options => {
            options.DefaultDeliveryMode = DeliveryMode.FanOutWithAck;
            options.MaxQueueSize = 100_000;
-           options.EnableDeadLetterQueue = true;
-           options.MaxRetryAttempts = 5;
        })
        .ConfigureRateLimiting(options => {
            options.Enabled = true;
@@ -278,8 +276,8 @@ How to optimize performance?
    .UseMaxConnections(5000)  // Increase limit
    .ConfigureQueues(options => {
        options.MaxQueueSize = 100_000;  // Larger queue
-       options.OverflowStrategy = OverflowStrategy.DropOldest;  // Fast strategy
    })
+   // OverflowStrategy is set per-queue when creating with QueueOptions
 
 **On client:**
 
@@ -419,11 +417,11 @@ Why are messages lost?
 
 .. code-block:: csharp
 
+   // Server defaults: limit queue size
    .ConfigureQueues(options => {
-       options.EnableDeadLetterQueue = true;  // Save failed messages
-       options.MessageTtl = TimeSpan.FromHours(24);  // Increase TTL
-       options.MaxQueueSize = 100_000;  // Increase size
+       options.MaxQueueSize = 100_000;
    })
+   // When creating queues: use QueueOptions with EnableDeadLetterQueue, MessageTtl
 
 Why high latency?
 ------------------------

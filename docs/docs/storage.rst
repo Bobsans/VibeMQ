@@ -131,17 +131,17 @@ The SQLite provider automatically creates the following tables on first startup:
    CREATE TABLE IF NOT EXISTS messages (
        id                TEXT PRIMARY KEY,
        queue_name        TEXT NOT NULL REFERENCES queues(name) ON DELETE CASCADE,
-       payload_json      TEXT NOT NULL,
+       payload_json      TEXT,
        timestamp         TEXT NOT NULL,
        headers_json      TEXT,
-       version           TEXT,
+       version           INTEGER NOT NULL DEFAULT 1,
        priority          INTEGER NOT NULL DEFAULT 1,
        delivery_attempts INTEGER NOT NULL DEFAULT 0
    );
 
-   CREATE INDEX IF NOT EXISTS idx_messages_queue_time
+   CREATE INDEX IF NOT EXISTS ix_messages_queue_timestamp
        ON messages(queue_name, timestamp);
-   CREATE INDEX IF NOT EXISTS idx_messages_queue_priority
+   CREATE INDEX IF NOT EXISTS ix_messages_queue_priority
        ON messages(queue_name, priority DESC, timestamp);
 
 **dead_letters** — persisted dead-lettered messages:
@@ -152,11 +152,11 @@ The SQLite provider automatically creates the following tables on first startup:
        id           INTEGER PRIMARY KEY AUTOINCREMENT,
        message_id   TEXT NOT NULL,
        message_json TEXT NOT NULL,
-       reason       TEXT NOT NULL,
+       reason       INTEGER NOT NULL,
        failed_at    TEXT NOT NULL
    );
 
-   CREATE INDEX IF NOT EXISTS idx_dead_letters_failed_at
+   CREATE INDEX IF NOT EXISTS ix_dead_letters_failed_at
        ON dead_letters(failed_at);
 
 .. note::
@@ -387,10 +387,6 @@ Production (SQLite)
            options.DatabasePath = "/data/vibemq.db";
            options.EnableWal = true;
        })
-       .ConfigureQueues(options => {
-           options.EnableDeadLetterQueue = true;
-           options.MaxRetryAttempts = 5;
-       })
        .Build();
 
 Production with DI (SQLite)
@@ -407,8 +403,6 @@ Production with DI (SQLite)
        options.Port = 8080;
        options.EnableAuthentication = true;
        options.AuthToken = Environment.GetEnvironmentVariable("VIBEMQ_TOKEN");
-       options.QueueDefaults.EnableDeadLetterQueue = true;
-       options.QueueDefaults.MaxRetryAttempts = 5;
    });
 
 appsettings.json (SQLite)
@@ -421,11 +415,7 @@ appsettings.json (SQLite)
        "Port": 8080,
        "StorageType": "Sqlite",
        "EnableAuthentication": true,
-       "AuthToken": "my-secret-token",
-       "QueueDefaults": {
-         "EnableDeadLetterQueue": true,
-         "MaxRetryAttempts": 5
-       }
+       "AuthToken": "my-secret-token"
      }
    }
 

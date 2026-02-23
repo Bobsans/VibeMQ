@@ -31,7 +31,7 @@ Start the server:
 .. code-block:: csharp
 
    using VibeMQ.Server;
-   using VibeMQ.Core.Enums;
+   using VibeMQ.Enums;
 
    var broker = BrokerBuilder.Create()
        .UsePort(8080)
@@ -188,7 +188,7 @@ Server with Dependency Injection:
 .. code-block:: csharp
 
    using VibeMQ.Server.DependencyInjection;
-   using VibeMQ.Core.Enums;
+   using VibeMQ.Enums;
 
    var host = Host.CreateDefaultBuilder(args)
        .ConfigureServices(services => {

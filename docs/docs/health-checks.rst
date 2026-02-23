@@ -58,10 +58,15 @@ Server health check.
 .. code-block:: json
 
    {
+     "is_healthy": true,
      "status": "healthy",
      "active_connections": 15,
      "queue_count": 5,
-     "memory_usage_mb": 256
+     "in_flight_messages": 42,
+     "total_messages_published": 125000,
+     "total_messages_delivered": 124850,
+     "memory_usage_mb": 256,
+     "timestamp": "2026-02-18T10:30:00Z"
    }
 
 **Status code:** ``200 OK``
@@ -71,10 +76,15 @@ Server health check.
 .. code-block:: json
 
    {
+     "is_healthy": false,
      "status": "unhealthy",
      "active_connections": 0,
      "queue_count": 0,
-     "memory_usage_mb": 512
+     "in_flight_messages": 0,
+     "total_messages_published": 0,
+     "total_messages_delivered": 0,
+     "memory_usage_mb": 512,
+     "timestamp": "2026-02-18T10:30:00Z"
    }
 
 **Status code:** ``503 Service Unavailable``
@@ -113,7 +123,8 @@ Get detailed metrics.
      "in_flight_messages": 42,
      "memory_usage_bytes": 268435456,
      "average_delivery_latency_ms": 2.5,
-     "timestamp": "2026-02-18T10:30:00Z"
+     "timestamp": "2026-02-18T10:30:00Z",
+     "uptime": "02:15:30.5000000"
    }
 
 Using with Orchestrators

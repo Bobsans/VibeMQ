@@ -40,7 +40,7 @@ Create a ``Program.cs`` file with the server startup code:
 
    using Microsoft.Extensions.Logging;
    using VibeMQ.Server;
-   using VibeMQ.Core.Enums;
+   using VibeMQ.Enums;
 
    using var loggerFactory = LoggerFactory.Create(builder => {
        builder.SetMinimumLevel(LogLevel.Information).AddConsole();

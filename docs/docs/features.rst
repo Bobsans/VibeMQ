@@ -268,7 +268,7 @@ When publishing to a non-existent queue, it's created automatically:
 .. code-block:: csharp
 
    await queueManager.CreateQueueAsync("my-queue", new QueueOptions {
-       DeliveryMode = DeliveryMode.RoundRobin,
+       Mode = DeliveryMode.RoundRobin,
        MaxQueueSize = 10_000,
        MessageTtl = TimeSpan.FromHours(1),
    });
@@ -467,8 +467,8 @@ Overload protection:
 
    .ConfigureRateLimiting(options => {
        options.Enabled = true;
-       options.MaxConnectionsPerIpPerWindow = 100;
-       options.ConnectionWindowSeconds = 60;
+       options.MaxConnectionsPerIpPerWindow = 20;
+       options.ConnectionWindow = TimeSpan.FromSeconds(60);
        options.MaxMessagesPerClientPerSecond = 1000;
    });
 
@@ -477,11 +477,11 @@ Overload protection:
 +------------------------+------------------+------------------------------------------+
 | Parameter              | Default          | Description                              |
 +========================+==================+==========================================+
-| ``Enabled``            | false            | Enable rate limiting                     |
+| ``Enabled``            | true             | Enable rate limiting                     |
 +------------------------+------------------+------------------------------------------+
-| ``MaxConnectionsPerIpPerWindow`` | 100    | Max connections per IP per window        |
+| ``MaxConnectionsPerIpPerWindow`` | 20     | Max connections per IP per window        |
 +------------------------+------------------+------------------------------------------+
-| ``ConnectionWindowSeconds`` | 60          | Time window (seconds)                    |
+| ``ConnectionWindow``   | 60s              | Time window (seconds)                    |
 +------------------------+------------------+------------------------------------------+
 | ``MaxMessagesPerClientPerSecond`` | 1000  | Max messages per second per client       |
 +------------------------+------------------+------------------------------------------+
@@ -547,11 +547,13 @@ HTTP endpoints for monitoring:
    {
      "total_messages_published": 125000,
      "total_messages_delivered": 124850,
-     "total_acknowledged": 124800,
+     "total_messages_acknowledged": 124800,
      "active_connections": 15,
      "active_queues": 5,
      "memory_usage_bytes": 268435456,
-     "average_delivery_latency_ms": 2.5
+     "average_delivery_latency_ms": 2.5,
+     "timestamp": "2026-02-18T10:30:00Z",
+     "uptime": "02:15:30.5000000"
    }
 
 Metrics

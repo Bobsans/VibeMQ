@@ -198,8 +198,8 @@ Queue Issues
 
 .. code-block:: csharp
 
-   await queueManager.CreateQueueAsync("notifications", new QueueOptions {
-       DeliveryMode = DeliveryMode.RoundRobin,
+   await client.CreateQueueAsync("notifications", new QueueOptions {
+       Mode = DeliveryMode.RoundRobin,
        MaxQueueSize = 10_000
    });
 
@@ -219,9 +219,9 @@ Queue Issues
 .. code-block:: csharp
 
    try {
-       await queueManager.CreateQueueAsync("notifications");
-   } catch (QueueAlreadyExistsException) {
-       // Queue already exists, this is normal
+       await client.CreateQueueAsync("notifications");
+   } catch (InvalidOperationException ex) when (ex.Message.Contains("CreateQueue failed")) {
+       // Queue may already exist or server returned an error
    }
 
 Message Delivery Issues
@@ -254,8 +254,8 @@ Messages Not Delivered
 
 .. code-block:: csharp
 
-   var info = await queueManager.GetQueueInfoAsync("notifications");
-   Console.WriteLine($"Subscribers: {info.SubscriberCount}");
+   var info = await client.GetQueueInfoAsync("notifications");
+   Console.WriteLine($"Subscribers: {info?.SubscriberCount}");
 
 Slow Message Delivery
 -------------------------------
@@ -305,9 +305,9 @@ Slow Message Delivery
 
 .. code-block:: csharp
 
-   // Increase timeout on server
-   .ConfigureQueues(options => {
-       options.MessageTtl = TimeSpan.FromMinutes(1);  // Increase TTL
+   // When creating the queue, set TTL (server queue defaults do not include TTL)
+   await client.CreateQueueAsync("notifications", new QueueOptions {
+       MessageTtl = TimeSpan.FromMinutes(1)
    });
 
    // Ensure handler is fast
@@ -346,15 +346,18 @@ Memory Issues
 
 .. code-block:: csharp
 
-   // Limit queue sizes
+   // Limit queue sizes (defaults for auto-created queues)
    .ConfigureQueues(options => {
-       options.MaxQueueSize = 10_000;  // Limit size
-       options.MessageTtl = TimeSpan.FromHours(1);  // Set TTL
+       options.MaxQueueSize = 10_000;
    });
 
-   // Enable Dead Letter Queue
-   options.EnableDeadLetterQueue = true;
-   options.MaxRetryAttempts = 3;
+   // When creating a queue, enable DLQ and set TTL/retries
+   await client.CreateQueueAsync("notifications", new QueueOptions {
+       MaxQueueSize = 10_000,
+       MessageTtl = TimeSpan.FromHours(1),
+       EnableDeadLetterQueue = true,
+       MaxRetryAttempts = 3
+   });
 
 **Monitor memory:**
 
@@ -373,11 +376,11 @@ Backpressure
 
 .. code-block:: csharp
 
-   // Increase memory limit or reduce load
+   // Reduce default queue size; set overflow strategy when creating queues
    .ConfigureQueues(options => {
-       options.MaxQueueSize = 5_000;  // Reduce size
-       options.OverflowStrategy = OverflowStrategy.DropOldest;  // Strategy
+       options.MaxQueueSize = 5_000;
    });
+   // When creating a queue: new QueueOptions { OverflowStrategy = OverflowStrategy.DropOldest }
 
 Reconnection Issues
 ======================
@@ -437,8 +440,8 @@ Frequent Disconnections
                }
            }
        );
-   } catch (MaxReconnectAttemptsExceededException) {
-       // Handle error
+   } catch (InvalidOperationException) {
+       // Reconnection attempts exhausted or other error
        Console.WriteLine("Failed to connect. Check server.");
    }
 
@@ -599,11 +602,11 @@ Queue Check
 
 .. code-block:: csharp
 
-   var queues = await queueManager.ListQueuesAsync();
-   
+   var queues = await client.ListQueuesAsync();
+
    foreach (var queueName in queues) {
-       var info = await queueManager.GetQueueInfoAsync(queueName);
-       Console.WriteLine($"{queueName}: {info.MessageCount} messages, {info.SubscriberCount} subscribers");
+       var info = await client.GetQueueInfoAsync(queueName);
+       Console.WriteLine($"{queueName}: {info?.MessageCount} messages, {info?.SubscriberCount} subscribers");
    }
 
 Connection Check

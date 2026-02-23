@@ -27,7 +27,10 @@ Main server configuration class:
        public QueueDefaults QueueDefaults { get; set; } = new();
        public TlsOptions Tls { get; set; } = new();
        public RateLimitOptions RateLimit { get; set; } = new();
+       public StorageType StorageType { get; set; } = StorageType.InMemory;
    }
+
+**StorageType** (default: ``InMemory``) selects the persistence backend: ``InMemory`` (no durability) or ``Sqlite`` (durable, single-node). See :doc:`storage` for details.
 
 Basic Parameters
 ----------------
@@ -116,7 +119,7 @@ Token for client authentication:
 QueueDefaults
 -------------
 
-Default queue settings:
+Server-side default settings for auto-created queues (used by ``ConfigureQueues``). Only these three properties are configurable as defaults; per-queue options (MessageTtl, DeadLetterQueue, OverflowStrategy, MaxRetryAttempts) are set via ``QueueOptions`` when creating a queue explicitly with ``CreateQueueAsync`` on the client or when the queue is created with custom options.
 
 .. code-block:: csharp
 
@@ -124,11 +127,6 @@ Default queue settings:
        public DeliveryMode DefaultDeliveryMode { get; set; } = DeliveryMode.RoundRobin;
        public int MaxQueueSize { get; set; } = 10_000;
        public bool EnableAutoCreate { get; set; } = true;
-       public TimeSpan? MessageTtl { get; set; }
-       public bool EnableDeadLetterQueue { get; set; } = false;
-       public string? DeadLetterQueueName { get; set; }
-       public OverflowStrategy OverflowStrategy { get; set; } = OverflowStrategy.DropOldest;
-       public int MaxRetryAttempts { get; set; } = 3;
    }
 
 DefaultDeliveryMode
@@ -179,83 +177,7 @@ Automatically create queues on first publish:
 
 .. note::
 
-   Disable for strict queue control.
-
-MessageTtl
-~~~~~~~~~~
-
-**Type:** ``TimeSpan?``
-
-**Default:** ``null`` (no limit)
-
-Message time-to-live:
-
-.. code-block:: csharp
-
-   options.MessageTtl = TimeSpan.FromHours(24);
-
-.. note::
-
-   Expired messages are automatically removed.
-
-EnableDeadLetterQueue
-~~~~~~~~~~~~~~~~~~~~~
-
-**Type:** ``bool``
-
-**Default:** ``false``
-
-Enable Dead Letter Queue:
-
-.. code-block:: csharp
-
-   options.EnableDeadLetterQueue = true;
-
-DeadLetterQueueName
-~~~~~~~~~~~~~~~~~~~
-
-**Type:** ``string?``
-
-**Default:** ``null`` (auto-name)
-
-Dead Letter Queue name:
-
-.. code-block:: csharp
-
-   options.DeadLetterQueueName = "dead-letters";
-
-OverflowStrategy
-~~~~~~~~~~~~~~~~
-
-**Type:** ``OverflowStrategy``
-
-**Default:** ``DropOldest``
-
-Queue overflow strategy:
-
-.. code-block:: csharp
-
-   options.OverflowStrategy = OverflowStrategy.DropOldest;
-
-**Possible values:**
-
-- ``DropOldest`` — remove oldest message
-- ``DropNewest`` — reject new message
-- ``BlockPublisher`` — block publisher
-- ``RedirectToDlq`` — redirect to DLQ
-
-MaxRetryAttempts
-~~~~~~~~~~~~~~~~
-
-**Type:** ``int``
-
-**Default:** ``3``
-
-Maximum number of delivery attempts:
-
-.. code-block:: csharp
-
-   options.MaxRetryAttempts = 5;
+   Disable for strict queue control. Per-queue options (MessageTtl, EnableDeadLetterQueue, OverflowStrategy, MaxRetryAttempts) are available in ``QueueOptions`` when creating a queue via ``client.CreateQueueAsync(name, options)``.
 
 TlsOptions
 ----------
@@ -268,6 +190,8 @@ TLS/SSL settings:
        public bool Enabled { get; set; }
        public string? CertificatePath { get; set; }
        public string? CertificatePassword { get; set; }
+       public SslProtocols SslProtocols { get; set; } = SslProtocols.Tls12 | SslProtocols.Tls13;
+       public bool RequireClientCertificate { get; set; }
    }
 
 Enabled
@@ -321,9 +245,9 @@ Rate limiting settings:
 .. code-block:: csharp
 
    public sealed class RateLimitOptions {
-       public bool Enabled { get; set; }
-       public int MaxConnectionsPerIpPerWindow { get; set; } = 100;
-       public int ConnectionWindowSeconds { get; set; } = 60;
+       public bool Enabled { get; set; } = true;
+       public int MaxConnectionsPerIpPerWindow { get; set; } = 20;
+       public TimeSpan ConnectionWindow { get; set; } = TimeSpan.FromSeconds(60);
        public int MaxMessagesPerClientPerSecond { get; set; } = 1000;
    }
 
@@ -332,7 +256,7 @@ Enabled
 
 **Type:** ``bool``
 
-**Default:** ``false``
+**Default:** ``true``
 
 Enable rate limiting:
 
@@ -347,7 +271,7 @@ MaxConnectionsPerIpPerWindow
 
 **Type:** ``int``
 
-**Default:** ``100``
+**Default:** ``20``
 
 Maximum number of connections from one IP per time window:
 
@@ -355,18 +279,18 @@ Maximum number of connections from one IP per time window:
 
    options.MaxConnectionsPerIpPerWindow = 50;
 
-ConnectionWindowSeconds
-~~~~~~~~~~~~~~~~~~~~~~~
+ConnectionWindow
+~~~~~~~~~~~~~~~~
 
-**Type:** ``int``
+**Type:** ``TimeSpan``
 
-**Default:** ``60``
+**Default:** ``60 seconds``
 
-Time window for connection limiting (seconds):
+Time window for connection limiting:
 
 .. code-block:: csharp
 
-   options.ConnectionWindowSeconds = 120;
+   options.ConnectionWindow = TimeSpan.FromSeconds(120);
 
 MaxMessagesPerClientPerSecond
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -630,9 +554,7 @@ Production
        .ConfigureQueues(options => {
            options.DefaultDeliveryMode = DeliveryMode.FanOutWithAck;
            options.MaxQueueSize = 100_000;
-           options.EnableDeadLetterQueue = true;
-           options.MaxRetryAttempts = 5;
-           options.MessageTtl = TimeSpan.FromDays(1);
+           options.EnableAutoCreate = true;
        })
        .ConfigureRateLimiting(options => {
            options.Enabled = true;
@@ -662,7 +584,6 @@ IoT Scenario
        .ConfigureQueues(options => {
            options.DefaultDeliveryMode = DeliveryMode.RoundRobin;
            options.MaxQueueSize = 1000;
-           options.MessageTtl = TimeSpan.FromSeconds(60);
        })
        .ConfigureRateLimiting(options => {
            options.Enabled = true;
@@ -682,8 +603,7 @@ Microservices
        .ConfigureQueues(options => {
            options.DefaultDeliveryMode = DeliveryMode.FanOutWithAck;
            options.EnableAutoCreate = true;
-           options.MessageTtl = TimeSpan.FromMinutes(30);
-           options.EnableDeadLetterQueue = true;
+           options.MaxQueueSize = 10_000;
        })
        .ConfigureHealthChecks(options => {
            options.Enabled = true;

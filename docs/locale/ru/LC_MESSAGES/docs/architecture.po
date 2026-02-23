@@ -140,7 +140,7 @@ msgstr "Интерфейс сбора метрик"
 
 #: ../../docs/architecture.rst:82 dd5a8249c9764fb586fadb9099bbef10
 msgid "**Enumerations:**"
-msgstr "**Нумерации:**"
+msgstr "**Перечисления:**"
 
 #: ../../docs/architecture.rst:84 4a17ca50cf574235ac5de2c62920289c
 msgid "``DeliveryMode`` — delivery mode (RoundRobin, FanOut, Priority)"
@@ -170,11 +170,11 @@ msgstr "VibeMQ.Протокол"
 
 #: ../../docs/architecture.rst:93 48d40b1cc7c34040b3e0897da5a293de
 msgid "**Purpose:** Message serialization and TCP transmission."
-msgstr "**Цель:** сериализация сообщений и передача TCP."
+msgstr "**Цель:** сериализация сообщений и передача по TCP."
 
 #: ../../docs/architecture.rst:95 6b791e56b1c2486493a055b91482e942
 msgid "**Framing:**"
-msgstr "**Кадр:**"
+msgstr "**Кадрирование:**"
 
 #: ../../docs/architecture.rst:97 b54bac93ae74495abc1ea85063f7b251
 msgid "Uses length-prefix approach for message separation in TCP stream:"
@@ -224,7 +224,7 @@ msgstr "**BrokerServer** — основной класс сервера:"
 
 #: ../../docs/architecture.rst:147 c2283de99a974dd98fbcd0ef3dd8a4f1
 msgid "**BrokerBuilder** — Fluent API for configuration:"
-msgstr "**BrokerBuilder** — Свободный API для настройки:"
+msgstr "**BrokerBuilder** — Fluent API для настройки:"
 
 #: ../../docs/architecture.rst:157 d6042a09cdb940a9aed09f031f7a0845
 msgid "**QueueManager** — queue management:"
@@ -336,7 +336,7 @@ msgstr "VibeMQ.Клиент"
 
 #: ../../docs/architecture.rst:198 a31f07a5cc624e05839d0beb37f42742
 msgid "**Purpose:** Client for broker connection."
-msgstr "**Назначение:** Клиент для подключения брокера."
+msgstr "**Цель:** Клиент для подключения к брокеру."
 
 #: ../../docs/architecture.rst:200 3b565c0c39c947108ff382460b2eeb2c
 msgid "**VibeMQClient** — main client class:"
@@ -384,7 +384,7 @@ msgstr "Жизненный цикл сообщения"
 
 #: ../../docs/architecture.rst:269 699f4f69c4bb4036a35f5ec5558eed4b
 msgid "**Publishing:**"
-msgstr "**Издательский:**"
+msgstr "**Публикация:**"
 
 #: ../../docs/architecture.rst:271 ff54318b0deb4fd99a14fb11b5d5849d
 msgid "Client sends ``Publish`` command"
@@ -440,7 +440,7 @@ msgstr "Сообщение помечено как «в работе»"
 
 #: ../../docs/architecture.rst:289 4082823f33ca4a9181e3b7429963e9f9
 msgid "**Acknowledgment:**"
-msgstr "**Признание:**"
+msgstr "**Подтверждение:**"
 
 #: ../../docs/architecture.rst:291 3eb20f09a783468bb28488c41871a376
 msgid "Subscriber sends ``Ack`` command"
@@ -549,7 +549,7 @@ msgstr "При остановке сервера выполняется корр
 
 #: ../../docs/architecture.rst:385 24d9464012144a5fa69577f5cf232e60
 msgid "Stop accepting new connections"
-msgstr "Перестаньте принимать новые связи"
+msgstr "Прекращение приёма новых соединений"
 
 #: ../../docs/architecture.rst:386 b3f80d41d1eb4c0b83fceb95b3d64029
 msgid "Send shutdown notification to clients"
@@ -561,7 +561,7 @@ msgstr "Ожидание обработки сообщения в полете (
 
 #: ../../docs/architecture.rst:388 eac53407593c4409baec0cb3700b60df
 msgid "Close all connections"
-msgstr "Закройте все соединения"
+msgstr "Закрытие всех соединений"
 
 #: ../../docs/architecture.rst:389 266f2776712e4186858dbaaa4705163e
 msgid "Clean up resources"
@@ -616,8 +616,8 @@ msgid "Object Pool"
 msgstr "Пул объектов"
 
 #: ../../docs/architecture.rst:413 78e2e8223a1d4032a2e06add90f2fe9f
-msgid "Message object pool is used to reduce allocations:"
-msgstr "Пул объектов сообщений используется для сокращения выделений:"
+msgid "Protocol message object pool is used to reduce allocations on hot paths (publish/deliver):"
+msgstr "Пул объектов протокольных сообщений используется для сокращения выделений на горячих путях (публикация/доставка):"
 
 #: ../../docs/architecture.rst:425 97e7583d9b7f48c7b7e17c4288287de9
 msgid "Metrics and Monitoring"

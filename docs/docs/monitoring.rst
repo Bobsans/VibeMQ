@@ -93,7 +93,8 @@ Returns detailed server metrics.
      "in_flight_messages": 42,
      "memory_usage_bytes": 268435456,
      "average_delivery_latency_ms": 2.5,
-     "timestamp": "2026-02-18T10:30:00Z"
+     "timestamp": "2026-02-18T10:30:00Z",
+     "uptime": "02:15:30.5000000"
    }
 
 Metrics

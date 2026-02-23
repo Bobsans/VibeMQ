@@ -109,7 +109,7 @@ You can attach custom headers to messages, including priority:
 
 .. code-block:: csharp
 
-   using VibeMQ.Core.Enums;
+   using VibeMQ.Enums;
 
    // Publish with custom headers
    await client.PublishAsync("orders", orderData, new Dictionary<string, string> {
@@ -210,7 +210,7 @@ Instead of using lambda handlers, you can create handler classes implementing ``
 
 .. code-block:: csharp
 
-   using VibeMQ.Core.Interfaces;
+   using VibeMQ.Interfaces;
 
    // Define message handler
    public class OrderHandler : IMessageHandler<OrderCreated> {
@@ -306,8 +306,8 @@ You can create queues explicitly before publishing or subscribing:
 
 .. code-block:: csharp
 
-   using VibeMQ.Core.Configuration;
-   using VibeMQ.Core.Enums;
+   using VibeMQ.Configuration;
+   using VibeMQ.Enums;
 
    // Create queue with default options
    await client.CreateQueueAsync("my-queue");
@@ -323,7 +323,7 @@ You can create queues explicitly before publishing or subscribing:
 
 .. note::
 
-   Queue management methods (``DeleteQueueAsync``, ``GetQueueInfoAsync``, ``ListQueuesAsync``) are available on the server side via ``IQueueManager``, not on the client. Queues are typically created automatically when publishing to a non-existent queue (if ``EnableAutoCreate`` is enabled) or configured on the server side.
+   The client (``IVibeMQClient``) also provides ``DeleteQueueAsync``, ``GetQueueInfoAsync``, and ``ListQueuesAsync``. On the server, the same operations are implemented via ``IQueueManager``. Queues are typically created automatically when publishing to a non-existent queue (if ``EnableAutoCreate`` is enabled on the server) or you can create them explicitly with ``CreateQueueAsync``.
 
 Client Settings
 ===============

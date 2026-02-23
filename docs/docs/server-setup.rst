@@ -35,7 +35,7 @@ Advanced Configuration
 
    using Microsoft.Extensions.Logging;
    using VibeMQ.Server;
-   using VibeMQ.Core.Enums;
+   using VibeMQ.Enums;
 
    using var loggerFactory = LoggerFactory.Create(builder => {
        builder.SetMinimumLevel(LogLevel.Information).AddConsole();
@@ -50,9 +50,6 @@ Advanced Configuration
            options.DefaultDeliveryMode = DeliveryMode.RoundRobin;
            options.MaxQueueSize = 10_000;
            options.EnableAutoCreate = true;
-           options.MessageTtl = TimeSpan.FromHours(24);
-           options.EnableDeadLetterQueue = true;
-           options.MaxRetryAttempts = 3;
        })
        .ConfigureRateLimiting(options => {
            options.Enabled = true;
@@ -105,14 +102,8 @@ Default Queue Settings
 +------------------------+------------------+----------------------------------+
 | ``EnableAutoCreate``   | true             | Automatic queue creation          |
 +------------------------+------------------+----------------------------------+
-| ``MessageTtl``         | null             | Message time-to-live (TTL)        |
-+------------------------+------------------+----------------------------------+
-| ``EnableDeadLetterQueue`` | false         | Enable DLQ                        |
-+------------------------+------------------+----------------------------------+
-| ``MaxRetryAttempts``   | 3                | Max delivery attempts              |
-+------------------------+------------------+----------------------------------+
-| ``OverflowStrategy``   | DropOldest       | Overflow strategy                 |
-+------------------------+------------------+----------------------------------+
+
+Per-queue options (MessageTtl, EnableDeadLetterQueue, MaxRetryAttempts, OverflowStrategy) are set via ``QueueOptions`` when creating a queue with ``client.CreateQueueAsync(name, options)``; see :doc:`client-usage`.
 
 Rate Limiting
 -------------
@@ -120,11 +111,11 @@ Rate Limiting
 +------------------------+------------------+----------------------------------+
 | Parameter               | Default          | Description                       |
 +========================+==================+==================================+
-| ``Enabled``            | false            | Enable rate limiting              |
+| ``Enabled``            | true             | Enable rate limiting              |
 +------------------------+------------------+----------------------------------+
-| ``MaxConnectionsPerIpPerWindow`` | 100    | Max connections from IP per window |
+| ``MaxConnectionsPerIpPerWindow`` | 20     | Max connections from IP per window |
 +------------------------+------------------+----------------------------------+
-| ``ConnectionWindowSeconds`` | 60          | Time window for connections (sec) |
+| ``ConnectionWindow``   | 60 sec           | Time window (TimeSpan)            |
 +------------------------+------------------+----------------------------------+
 | ``MaxMessagesPerClientPerSecond`` | 1000  | Max messages from client per sec  |
 +------------------------+------------------+----------------------------------+
@@ -182,7 +173,6 @@ Message delivered to all subscribers with delivery guarantee:
 
    .ConfigureQueues(options => {
        options.DefaultDeliveryMode = DeliveryMode.FanOutWithAck;
-       options.MaxRetryAttempts = 3;
    });
 
 **Usage:**
@@ -230,7 +220,7 @@ Delivery by message priority:
 
 .. code-block:: csharp
 
-   using VibeMQ.Core.Enums;
+   using VibeMQ.Enums;
 
    await client.PublishAsync("alerts", message, new Dictionary<string, string> {
        ["priority"] = MessagePriority.Critical.ToString()
@@ -246,9 +236,7 @@ Remove oldest message on overflow:
 
 .. code-block:: csharp
 
-   .ConfigureQueues(options => {
-       options.OverflowStrategy = OverflowStrategy.DropOldest;
-   });
+   // Set via QueueOptions when creating queue: client.CreateQueueAsync("q", new QueueOptions { OverflowStrategy = OverflowStrategy.DropOldest });
 
 **When to use:**
 
@@ -278,9 +266,7 @@ Block publisher until space is available:
 
 .. code-block:: csharp
 
-   .ConfigureQueues(options => {
-       options.OverflowStrategy = OverflowStrategy.BlockPublisher;
-   });
+   // Set via QueueOptions when creating queue: client.CreateQueueAsync("q", new QueueOptions { OverflowStrategy = OverflowStrategy.BlockPublisher });
 
 **When to use:**
 
@@ -294,11 +280,7 @@ Redirect to Dead Letter Queue:
 
 .. code-block:: csharp
 
-   .ConfigureQueues(options => {
-       options.OverflowStrategy = OverflowStrategy.RedirectToDlq;
-       options.EnableDeadLetterQueue = true;
-       options.DeadLetterQueueName = "dlq";
-   });
+   // Set via QueueOptions when creating queue: client.CreateQueueAsync("q", new QueueOptions { OverflowStrategy = OverflowStrategy.RedirectToDlq, EnableDeadLetterQueue = true, DeadLetterQueueName = "dlq" });
 
 **When to use:**
 
@@ -312,11 +294,7 @@ DLQ Configuration:
 
 .. code-block:: csharp
 
-   .ConfigureQueues(options => {
-       options.EnableDeadLetterQueue = true;
-       options.DeadLetterQueueName = "dead-letters";
-       options.MaxRetryAttempts = 3;
-   });
+   // Set via QueueOptions when creating queue: client.CreateQueueAsync("q", new QueueOptions { EnableDeadLetterQueue = true, DeadLetterQueueName = "dead-letters", MaxRetryAttempts = 3 });
 
 **Reasons for DLQ:**
 
@@ -325,15 +303,7 @@ DLQ Configuration:
 - Deserialization error
 - Exception in handler
 
-**Getting messages from DLQ:**
-
-.. code-block:: csharp
-
-   var dlqMessages = await queueManager.GetDeadLetterMessagesAsync(100);
-   
-   foreach (var message in dlqMessages) {
-       // Process failed message
-   }
+**Getting messages from DLQ:** DLQ messages are persisted by the broker's storage provider. To consume them you can subscribe to the Dead Letter Queue by name (if the broker exposes it as a queue) or use a custom component that has access to the storage provider's ``GetDeadLetteredMessagesAsync`` API. See :doc:`storage` for storage provider details.
 
 Authentication
 ==============
@@ -508,12 +478,11 @@ Production Server
        .ConfigureQueues(options => {
            options.DefaultDeliveryMode = DeliveryMode.RoundRobin;
            options.MaxQueueSize = 100_000;
-           options.EnableDeadLetterQueue = true;
-           options.MaxRetryAttempts = 5;
+           options.EnableAutoCreate = true;
        })
        .ConfigureRateLimiting(options => {
            options.Enabled = true;
-           options.MaxConnectionsPerIpPerWindow = 100;
+           options.MaxConnectionsPerIpPerWindow = 50;
            options.MaxMessagesPerClientPerSecond = 5000;
        })
        .UseTls(options => {
@@ -535,7 +504,7 @@ Microservices Server
        .ConfigureQueues(options => {
            options.DefaultDeliveryMode = DeliveryMode.FanOutWithAck;
            options.EnableAutoCreate = true;
-           options.MessageTtl = TimeSpan.FromMinutes(30);
+           options.MaxQueueSize = 10_000;
        })
        .ConfigureHealthChecks(options => {
            options.Enabled = true;
@@ -554,8 +523,7 @@ IoT Server
        .UseMaxConnections(10000)
        .ConfigureQueues(options => {
            options.DefaultDeliveryMode = DeliveryMode.RoundRobin;
-           options.MaxQueueSize = 1000;  // Small size to save memory
-           options.MessageTtl = TimeSpan.FromSeconds(60);  // Short TTL
+           options.MaxQueueSize = 1000;
        })
        .ConfigureRateLimiting(options => {
            options.Enabled = true;

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: VibeMQ 1.3.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-23 00:00+0300\n"
+"POT-Creation-Date: 2026-02-23 15:59+0300\n"
 "PO-Revision-Date: 2026-02-23 00:00+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ru\n"
@@ -19,9 +19,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.18.0\n"
 
+#: ../../docs/storage.rst:3 11b7977b0a694e30be47b3059910113d
 msgid "Persistence & Storage"
 msgstr "Хранилище и персистентность"
 
+#: ../../docs/storage.rst:5 d9b53a7cd41d40c7b781cdf1867b9fd4
 msgid ""
 "This guide describes the persistence layer in VibeMQ — how messages, "
 "queues, and dead-letter entries survive server restarts."
@@ -29,9 +31,15 @@ msgstr ""
 "Это руководство описывает слой хранилища в VibeMQ — как сообщения, "
 "очереди и записи мёртвых писем переживают перезапуск сервера."
 
+#: ../../docs/storage.rst:9 5aedc3e0d9de4b268bae0989203cda33
+msgid "Contents"
+msgstr "Содержание"
+
+#: ../../docs/storage.rst:12 5edf134817bb4ab7b4f5dbfd606a1205
 msgid "Overview"
 msgstr "Обзор"
 
+#: ../../docs/storage.rst:14 37224fd4c12344da9cff66109f8c68a4
 msgid ""
 "By default VibeMQ keeps everything in memory: fast, zero-config, but all "
 "state is lost on restart. Starting with version 1.3.0 you can plug in a "
@@ -43,9 +51,11 @@ msgstr ""
 "**провайдер хранилища**, чтобы очереди, сообщения и записи DLQ "
 "сохранялись на диск (или во внешнюю базу данных в будущих версиях)."
 
+#: ../../docs/storage.rst:16 041726c8207e4c818941e8360aea7149
 msgid "**Key design decisions:**"
 msgstr "**Ключевые архитектурные решения:**"
 
+#: ../../docs/storage.rst:18 4b1da41e10ce45da83514b0a73e12399
 msgid ""
 "**Write-ahead pattern** — a message is saved to storage *before* it "
 "enters the in-memory queue. On ACK the persisted copy is removed."
@@ -53,6 +63,7 @@ msgstr ""
 "**Write-ahead pattern** — сообщение сохраняется в хранилище *до* "
 "попадания в очередь в памяти. После ACK сохранённая копия удаляется."
 
+#: ../../docs/storage.rst:19 1bd7c99469554d31a6059423c2328aa4
 msgid ""
 "**Single interface** — ``IStorageProvider`` covers messages, queue "
 "metadata, and DLQ in one contract."
@@ -60,6 +71,7 @@ msgstr ""
 "**Единый интерфейс** — ``IStorageProvider`` охватывает сообщения, "
 "метаданные очередей и DLQ в одном контракте."
 
+#: ../../docs/storage.rst:20 91488c93a3364181a3e9755303912b36
 msgid ""
 "**Separate NuGet packages** — each provider lives in its own assembly so "
 "you only take the dependency you need."
@@ -67,6 +79,7 @@ msgstr ""
 "**Отдельные NuGet-пакеты** — каждый провайдер находится в отдельной "
 "сборке, чтобы брать только нужные зависимости."
 
+#: ../../docs/storage.rst:21 bb521ced3ac84b188d6cde83be25081f
 msgid ""
 "**Backward compatible** — ``InMemory`` is the default; existing code "
 "works without changes."
@@ -74,27 +87,37 @@ msgstr ""
 "**Обратная совместимость** — ``InMemory`` используется по умолчанию; "
 "существующий код работает без изменений."
 
+#: ../../docs/storage.rst:24 5f04fddb290a4a968d031343f1cf293f
 msgid "Storage Providers"
 msgstr "Провайдеры хранилища"
 
+#: ../../docs/storage.rst:27 9509f9e7121944868d21e144297979de
 msgid "Provider"
 msgstr "Провайдер"
 
+#: ../../docs/storage.rst:27 ../../docs/storage.rst:102
+#: ../../docs/storage.rst:281 373f10cafe1c4ef09a6cd9c39f06495a
+#: ad0b0efa74c94d3ca6ad017190bbb836 d936bd741d234f2e9c823437a068915d
 msgid "Description"
 msgstr "Описание"
 
+#: ../../docs/storage.rst:29 393aedf11d1d47949e60083e4fb5479d
 msgid "``InMemoryStorageProvider``"
 msgstr "``InMemoryStorageProvider``"
 
+#: ../../docs/storage.rst:29 b98260dfdfc84c9c8a92ff70900d67c9
 msgid "Default. No persistence, all in-memory."
 msgstr "По умолчанию. Без персистентности, всё в памяти."
 
+#: ../../docs/storage.rst:31 b1ad1344fedc4ac58d7d68d39f7f232d
 msgid "``SqliteStorageProvider``"
 msgstr "``SqliteStorageProvider``"
 
+#: ../../docs/storage.rst:31 24a3cf0e1d304b11a6d3aeb016fe3d86
 msgid "SQLite-based. Zero-config, single-file DB."
 msgstr "На основе SQLite. Без настройки, единый файл базы данных."
 
+#: ../../docs/storage.rst:34 8d4ada890420432fa486416a5b2b8612
 msgid ""
 "Future providers (RocksDB, PostgreSQL, Redis) are planned — see the "
 "project roadmap."
@@ -102,27 +125,35 @@ msgstr ""
 "Провайдеры для RocksDB, PostgreSQL, Redis запланированы — см. roadmap "
 "проекта."
 
+#: ../../docs/storage.rst:37 824f4b7d2e154f42921ce74dfa662236
 msgid "Quick Start"
 msgstr "Быстрый старт"
 
+#: ../../docs/storage.rst:40 3a4546e769f84105a01ea1c3fb458bef
 msgid "InMemory (default)"
 msgstr "InMemory (по умолчанию)"
 
+#: ../../docs/storage.rst:42 af54ac25ff0240069f3533f52279e8e0
 msgid "No configuration required — this is the default behavior:"
 msgstr "Настройка не требуется — это поведение по умолчанию:"
 
+#: ../../docs/storage.rst:51 cd26671fb95146b9a469f35ddcc09e33
 msgid "SQLite"
 msgstr "SQLite"
 
+#: ../../docs/storage.rst:53 71c6b9239f3d4142992125f760624a67
 msgid "Install the package:"
 msgstr "Установите пакет:"
 
+#: ../../docs/storage.rst:59 fc2feceadac64a629384faf9ff4f38f6
 msgid "Configure via the fluent builder:"
 msgstr "Настройте через fluent-builder:"
 
+#: ../../docs/storage.rst:77 7eb062be0c764959b8c32640ebb1d99b
 msgid "Or via Dependency Injection:"
 msgstr "Или через Dependency Injection:"
 
+#: ../../docs/storage.rst:93 aac335fbd8ab46ca98cacbc3ec521967
 msgid ""
 "Register the storage provider **before** ``AddVibeMQBroker`` so that the "
 "broker picks it up from the DI container."
@@ -130,48 +161,65 @@ msgstr ""
 "Регистрируйте провайдер хранилища **до** ``AddVibeMQBroker``, чтобы "
 "брокер подхватил его из DI-контейнера."
 
+#: ../../docs/storage.rst:96 b110e385cd9142efa90d915563e36b7d
 msgid "SQLite Configuration"
 msgstr "Настройка SQLite"
 
+#: ../../docs/storage.rst:99 aadc5875cfd8480894f819ec9ac19797
 msgid "SqliteStorageOptions"
 msgstr "SqliteStorageOptions"
 
+#: ../../docs/storage.rst:102 4b33451877a14c3dbe01aa815ddb0709
 msgid "Parameter"
 msgstr "Параметр"
 
+#: ../../docs/storage.rst:102 9449f4eb043b432d8d9e77c4c1115ca1
 msgid "Default"
 msgstr "По умолчанию"
 
+#: ../../docs/storage.rst:104 7c0acd89e9e14569a548094cfb63cea4
 msgid "``DatabasePath``"
 msgstr "``DatabasePath``"
 
+#: ../../docs/storage.rst:104 5f6b617e3f444f0fb994755ce31db749
 msgid "``\"vibemq.db\"``"
 msgstr "``\"vibemq.db\"``"
 
+#: ../../docs/storage.rst:104 37b0db93ad954556bb28fbc724ad2817
 msgid "Path to the SQLite database file"
 msgstr "Путь к файлу базы данных SQLite"
 
+#: ../../docs/storage.rst:106 e18a90beb97f4e228afc8f4624b7433c
 msgid "``EnableWal``"
 msgstr "``EnableWal``"
 
+#: ../../docs/storage.rst:106 208acf26879b435097fdb4ea8f1ff71c
 msgid "``true``"
 msgstr "``true``"
 
+#: ../../docs/storage.rst:106 41d5a857c71341319798bb84dcd1695c
 msgid "Enable WAL journal mode for better concurrent read/write performance"
-msgstr "Включить WAL-режим журналирования для лучшей параллельной производительности"
+msgstr ""
+"Включить WAL-режим журналирования для лучшей параллельной "
+"производительности"
 
+#: ../../docs/storage.rst:109 f7f32c5dbeef4e1ab2dcdccbaef78df4
 msgid "``BusyTimeoutMs``"
 msgstr "``BusyTimeoutMs``"
 
+#: ../../docs/storage.rst:109 f5e11f30ecf74fde9405a4554cdad0ff
 msgid "``5000``"
 msgstr "``5000``"
 
+#: ../../docs/storage.rst:109 52ba2ff9bafe49b489f0c870a58e983c
 msgid "Milliseconds to wait when the DB is locked"
 msgstr "Миллисекунды ожидания при блокировке базы данных"
 
+#: ../../docs/storage.rst:113 92d121a23772410bb11558969c426df5
 msgid "Database Schema"
 msgstr "Схема базы данных"
 
+#: ../../docs/storage.rst:115 1570c27a1f9d433a8b733e0cf10aa410
 msgid ""
 "The SQLite provider automatically creates the following tables on first "
 "startup:"
@@ -179,56 +227,73 @@ msgstr ""
 "SQLite-провайдер автоматически создаёт следующие таблицы при первом "
 "запуске:"
 
+#: ../../docs/storage.rst:117 b9a3c7aeb31a46729023a62e2a0e0834
 msgid "**queues** — persisted queue metadata:"
 msgstr "**queues** — метаданные очередей:"
 
+#: ../../docs/storage.rst:127 22908bb7c0854b48b8ce6ddba8ce238b
 msgid "**messages** — persisted messages with foreign key to queues:"
 msgstr "**messages** — сохранённые сообщения с внешним ключом к таблице очередей:"
 
+#: ../../docs/storage.rst:147 b69724f7e1844ac797a253c87685084f
 msgid "**dead_letters** — persisted dead-lettered messages:"
 msgstr "**dead_letters** — сохранённые мёртвые письма:"
 
+#: ../../docs/storage.rst:164 eb1e3615808844f3b5ad96d5da70bce3
 msgid ""
 "Deleting a queue (``RemoveQueueAsync``) cascade-deletes all its messages "
 "via the foreign key constraint."
 msgstr ""
-"Удаление очереди (``RemoveQueueAsync``) каскадно удаляет все её "
-"сообщения через ограничение внешнего ключа."
+"Удаление очереди (``RemoveQueueAsync``) каскадно удаляет все её сообщения"
+" через ограничение внешнего ключа."
 
+#: ../../docs/storage.rst:167 b7dfddf0644041af8b07ab73866bcc4d
 msgid "How Persistence Works"
 msgstr "Как работает персистентность"
 
+#: ../../docs/storage.rst:170 b0e6554b146245b9b483b9b50bb2e2ab
 msgid "Write-Ahead Pattern"
 msgstr "Write-Ahead Pattern"
 
+#: ../../docs/storage.rst:172 5874a906f91f4f988011295db26997e3
 msgid "When a message is published:"
 msgstr "При публикации сообщения:"
 
+#: ../../docs/storage.rst:187 24643ea2356d452ea6d888b72026030b
 msgid ""
 "If the server crashes after the storage write but before the in-memory "
 "enqueue, the message is recovered on next startup."
 msgstr ""
-"Если сервер упадёт после записи в хранилище, но до добавления в "
-"очередь в памяти — сообщение будет восстановлено при следующем запуске."
+"Если сервер упадёт после записи в хранилище, но до добавления в очередь в"
+" памяти — сообщение будет восстановлено при следующем запуске."
 
+#: ../../docs/storage.rst:190 6877a46877db468fb3b2eb5a5c39cbf9
 msgid "Acknowledgment Flow"
 msgstr "Процесс подтверждения"
 
+#: ../../docs/storage.rst:192 24155f3f64ee481bbc70a16b73b66a38
 msgid "When a subscriber acknowledges a message:"
 msgstr "При подтверждении сообщения подписчиком:"
 
+#: ../../docs/storage.rst:208 fce06ae7c194446aa7ba48b2306e63b2
 msgid "Startup Recovery"
 msgstr "Восстановление при запуске"
 
+#: ../../docs/storage.rst:210 c448f9831bdc4f22b357c65de8926506
 msgid "On server startup, the broker automatically recovers persisted state:"
-msgstr "При запуске сервера брокер автоматически восстанавливает сохранённое состояние:"
+msgstr ""
+"При запуске сервера брокер автоматически восстанавливает сохранённое "
+"состояние:"
 
+#: ../../docs/storage.rst:212 a4d2af46688941c7bf995c2c98d261ed
 msgid "``IStorageProvider.InitializeAsync()`` — creates schema if needed"
 msgstr "``IStorageProvider.InitializeAsync()`` — создаёт схему при необходимости"
 
+#: ../../docs/storage.rst:213 112c05625b98414c958fa0e02b67c6c5
 msgid "``GetAllQueuesAsync()`` — loads all queue metadata"
 msgstr "``GetAllQueuesAsync()`` — загружает метаданные всех очередей"
 
+#: ../../docs/storage.rst:214 133cefeff16242b9b5a4e7e3e78a1a9c
 msgid ""
 "For each queue: ``GetPendingMessagesAsync(queueName)`` — replays "
 "undelivered messages"
@@ -236,14 +301,15 @@ msgstr ""
 "Для каждой очереди: ``GetPendingMessagesAsync(queueName)`` — "
 "воспроизводит недоставленные сообщения"
 
-msgid ""
-"Queues are recreated with their original ``CreatedAt`` timestamps"
-msgstr ""
-"Очереди воссоздаются с оригинальными временными метками ``CreatedAt``"
+#: ../../docs/storage.rst:215 7a876571767f4455bd4fb9b7575010c7
+msgid "Queues are recreated with their original ``CreatedAt`` timestamps"
+msgstr "Очереди воссоздаются с оригинальными временными метками ``CreatedAt``"
 
+#: ../../docs/storage.rst:237 bdf3fd1bb17d45a796309698daadfe41
 msgid "Dead Letter Queue Persistence"
 msgstr "Персистентность очереди мёртвых писем"
 
+#: ../../docs/storage.rst:239 b0cb12101a4443eba1714baf4f7817f2
 msgid ""
 "Failed messages are persisted to the ``dead_letters`` table before being "
 "added to the in-memory DLQ:"
@@ -251,68 +317,95 @@ msgstr ""
 "Сообщения с ошибками сохраняются в таблицу ``dead_letters`` перед "
 "добавлением в DLQ в памяти:"
 
+#: ../../docs/storage.rst:252 6197169e280041cf8f1e7968a69afbf0
 msgid "Storage Management"
 msgstr "Управление хранилищем"
 
+#: ../../docs/storage.rst:254 9938092d47d14766a1439ed5d375c628
 msgid ""
 "The ``IStorageManagement`` interface provides optional maintenance "
 "operations. Not all providers support it — check at runtime:"
 msgstr ""
 "Интерфейс ``IStorageManagement`` предоставляет необязательные операции "
-"обслуживания. Не все провайдеры его поддерживают — проверяйте во "
-"время выполнения:"
+"обслуживания. Не все провайдеры его поддерживают — проверяйте во время "
+"выполнения:"
 
+#: ../../docs/storage.rst:278 a428838ed4984409b11fbc22f013c1c6
 msgid "StorageStats"
 msgstr "StorageStats"
 
+#: ../../docs/storage.rst:281 bb35bb5b0b78432faa6cc431031da43d
 msgid "Property"
 msgstr "Свойство"
 
+#: ../../docs/storage.rst:281 5deec90084f1463682d37cf565289305
 msgid "Type"
 msgstr "Тип"
 
+#: ../../docs/storage.rst:283 3658e54a30664460a6731bdeb98aa534
 msgid "``TotalMessages``"
 msgstr "``TotalMessages``"
 
+#: ../../docs/storage.rst:283 ../../docs/storage.rst:285
+#: ../../docs/storage.rst:287 ../../docs/storage.rst:289
+#: 7d9a002630a0419b86c1de36d6d0773a 87b3c54d6dc64d0692b7e883ead3baa1
+#: a16220c8a08e4fb68fe4ef32d27e622d a5eaa170968441c6bc4d009588e7b8ac
 msgid "``long``"
 msgstr "``long``"
 
+#: ../../docs/storage.rst:283 304368fd1725450c96d304c387e52fcf
 msgid "Total persisted messages"
 msgstr "Всего сохранённых сообщений"
 
+#: ../../docs/storage.rst:285 d4e818a35be54a7187653a0aec817d37
 msgid "``TotalQueues``"
 msgstr "``TotalQueues``"
 
+#: ../../docs/storage.rst:285 4613f823807b41879956257a9af2a928
 msgid "Total persisted queues"
 msgstr "Всего сохранённых очередей"
 
+#: ../../docs/storage.rst:287 1901b8f16d4f42e3a8fdeb7ed124e73c
 msgid "``TotalDeadLettered``"
 msgstr "``TotalDeadLettered``"
 
+#: ../../docs/storage.rst:287 84a611f031ce43928b0dffb03dbeeca9
 msgid "Total dead-lettered entries"
 msgstr "Всего записей мёртвых писем"
 
+#: ../../docs/storage.rst:289 5e066e058288430b94d405ecf91983d8
 msgid "``StorageSizeBytes``"
 msgstr "``StorageSizeBytes``"
 
+#: ../../docs/storage.rst:289 b956c8a0610e4a61a6e7d3977b8ca4dd
 msgid "Database file size in bytes"
 msgstr "Размер файла базы данных в байтах"
 
+#: ../../docs/storage.rst:293 afd89429f553478fba6596624114beef
 msgid "IStorageProvider Interface"
 msgstr "Интерфейс IStorageProvider"
 
+#: ../../docs/storage.rst:295 e6242ab106bf43f5af60637a98d7de69
 msgid "All storage providers implement this interface:"
 msgstr "Все провайдеры хранилища реализуют этот интерфейс:"
 
+#: ../../docs/storage.rst:323 7607bf98918a48a5a8c3a5c81d90a2dc
 msgid "**Contract rules:**"
 msgstr "**Контрактные правила:**"
 
+#: ../../docs/storage.rst:325 fbccb81ada68480dbe78e85c51d7943b
 msgid "``InitializeAsync`` **must** be called before any other operations."
-msgstr "``InitializeAsync`` **обязательно** должен быть вызван перед любыми другими операциями."
+msgstr ""
+"``InitializeAsync`` **обязательно** должен быть вызван перед любыми "
+"другими операциями."
 
+#: ../../docs/storage.rst:326 ea29f4861d4949deaec4889e183a1c74
 msgid "``RemoveQueueAsync`` **must** cascade-delete all messages in the queue."
-msgstr "``RemoveQueueAsync`` **обязательно** должен каскадно удалять все сообщения очереди."
+msgstr ""
+"``RemoveQueueAsync`` **обязательно** должен каскадно удалять все "
+"сообщения очереди."
 
+#: ../../docs/storage.rst:327 a78e875cdc8e4564925c77beb0e251b7
 msgid ""
 "``SaveMessagesAsync`` has a default implementation that calls "
 "``SaveMessageAsync`` in a loop. Providers should override for batch "
@@ -322,6 +415,7 @@ msgstr ""
 "``SaveMessageAsync`` в цикле. Провайдеры должны переопределять её для "
 "пакетной оптимизации."
 
+#: ../../docs/storage.rst:328 605ec49d066f4b1494505719da7ac127
 msgid ""
 "``IsAvailableAsync`` returns ``true`` for embedded providers (InMemory, "
 "SQLite). Network providers should check connectivity."
@@ -329,21 +423,27 @@ msgstr ""
 "``IsAvailableAsync`` возвращает ``true`` для встроенных провайдеров "
 "(InMemory, SQLite). Сетевые провайдеры должны проверять доступность."
 
+#: ../../docs/storage.rst:329 19a9d7f2bf3042419896821e574dddf7
 msgid "All methods **must** be thread-safe."
 msgstr "Все методы **обязательно** должны быть потокобезопасными."
 
+#: ../../docs/storage.rst:332 6a1e92f1b4734e0d8138cd869bebd7e4
 msgid "Implementing a Custom Provider"
 msgstr "Реализация собственного провайдера"
 
+#: ../../docs/storage.rst:334 5a124a1ac58b4bcfbb4a52d021a10af8
 msgid "To create your own storage provider:"
 msgstr "Чтобы создать собственный провайдер хранилища:"
 
+#: ../../docs/storage.rst:336 ad39a2277da5401fbe9ba0f89d0c3e98
 msgid "Create a new class library project referencing ``VibeMQ.Core``."
 msgstr "Создайте новый проект библиотеки классов с ссылкой на ``VibeMQ.Core``."
 
+#: ../../docs/storage.rst:337 13e047f7b2664d13a43f42a7b4e495b9
 msgid "Implement ``IStorageProvider`` (and optionally ``IStorageManagement``)."
 msgstr "Реализуйте ``IStorageProvider`` (и опционально ``IStorageManagement``)."
 
+#: ../../docs/storage.rst:338 2c79de81c2654da6b17738f9cef18629
 msgid ""
 "Add an extension method for ``BrokerBuilder`` and/or "
 "``IServiceCollection``:"
@@ -351,27 +451,35 @@ msgstr ""
 "Добавьте метод расширения для ``BrokerBuilder`` и/или "
 "``IServiceCollection``:"
 
+#: ../../docs/storage.rst:367 3341305139be47a3ad4b941cbf18cb70
 msgid "Configuration Examples"
 msgstr "Примеры конфигурации"
 
+#: ../../docs/storage.rst:370 e86987e5f6f44cefbfb1795e07750d8a
 msgid "Development (InMemory)"
 msgstr "Разработка (InMemory)"
 
+#: ../../docs/storage.rst:379 777126a066404d619ba9f0517be420e0
 msgid "Production (SQLite)"
 msgstr "Продакшн (SQLite)"
 
+#: ../../docs/storage.rst:397 af2aa05a3ec24944b8893a4d36a031f1
 msgid "Production with DI (SQLite)"
 msgstr "Продакшн с DI (SQLite)"
 
+#: ../../docs/storage.rst:415 4338a29404134a0095b76c17cd9ef64f
 msgid "appsettings.json (SQLite)"
 msgstr "appsettings.json (SQLite)"
 
+#: ../../docs/storage.rst:433 ea63d13748bb49648f66d71b6778e797
 msgid "Migration from Previous Versions"
 msgstr "Миграция с предыдущих версий"
 
+#: ../../docs/storage.rst:435 e182a0350ed34073b27ae5aa8a331b89
 msgid "If you are upgrading from VibeMQ 1.2.x:"
 msgstr "При обновлении с VibeMQ 1.2.x:"
 
+#: ../../docs/storage.rst:437 8073b8b102a84caa9bb3df569b60590f
 msgid ""
 "``IMessageStore`` is now deprecated. It still works but will be removed "
 "in a future version. Migrate to ``IStorageProvider``."
@@ -379,12 +487,13 @@ msgstr ""
 "``IMessageStore`` устарел. Он по-прежнему работает, но будет удалён в "
 "будущей версии. Мигрируйте на ``IStorageProvider``."
 
+#: ../../docs/storage.rst:438 3e418ddba68b4f6ab6044e5bdd51abcc
 msgid ""
 "``InMemoryMessageStore`` is deprecated in favor of "
 "``InMemoryStorageProvider``."
-msgstr ""
-"``InMemoryMessageStore`` устарел в пользу ``InMemoryStorageProvider``."
+msgstr "``InMemoryMessageStore`` устарел в пользу ``InMemoryStorageProvider``."
 
+#: ../../docs/storage.rst:439 a986a66fa25b491c8b9649c9cbfcaa1f
 msgid ""
 "No breaking changes — the default behavior (in-memory) is preserved. "
 "Adding persistence is opt-in."
@@ -392,17 +501,23 @@ msgstr ""
 "Без breaking changes — поведение по умолчанию (в памяти) сохранено. "
 "Добавление персистентности является опциональным."
 
+#: ../../docs/storage.rst:442 cdf7d3ab50344f47b2dcce6a3aa9cea7
 msgid "Next Steps"
-msgstr "Следующие шаги"
+msgstr "Дальнейшие шаги"
 
-msgid "server-setup — server configuration"
-msgstr "server-setup — настройка сервера"
+#: ../../docs/storage.rst:444 8026c19d4764409291f20b1c8351e503
+msgid ":doc:`server-setup` — server configuration"
+msgstr ":doc:`server-setup` — настройка сервера"
 
-msgid "configuration — all configuration parameters"
-msgstr "configuration — все параметры конфигурации"
+#: ../../docs/storage.rst:445 0d1ff01d55e54f61af6506958a1e666f
+msgid ":doc:`configuration` — all configuration parameters"
+msgstr ":doc:`configuration` — все параметры конфигурации"
 
-msgid "di-integration — DI integration"
-msgstr "di-integration — интеграция с DI"
+#: ../../docs/storage.rst:446 3250999b405942a5bc5bb3f6216b9508
+msgid ":doc:`di-integration` — DI integration"
+msgstr ":doc:`di-integration` — интеграция с DI"
 
-msgid "architecture — system architecture"
-msgstr "architecture — архитектура системы"
+#: ../../docs/storage.rst:447 c1614af817e14abc8dae773031c2c047
+msgid ":doc:`architecture` — system architecture"
+msgstr ":doc:`architecture` — архитектура системы"
+

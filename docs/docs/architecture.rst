@@ -410,15 +410,15 @@ Overflow strategies:
 Object Pool
 -----------
 
-Message object pool is used to reduce allocations:
+Protocol message object pool is used to reduce allocations on hot paths (publish/deliver):
 
 .. code-block:: csharp
 
-   public class MessageObjectPool {
-       private readonly ConcurrentBag<BrokerMessage> _pool = new();
+   public static class ProtocolMessagePool {
+       private static readonly ConcurrentBag<ProtocolMessage> _pool = new();
 
-       public BrokerMessage Rent() { ... }
-       public void Return(BrokerMessage message) { ... }
+       public static ProtocolMessage Rent(CommandType type) { ... }
+       public static void Return(ProtocolMessage message) { ... }
    }
 
 Metrics and Monitoring
