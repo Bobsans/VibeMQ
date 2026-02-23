@@ -59,6 +59,9 @@ nCrunchTemp_*
 ## BenchmarkDotNet
 BenchmarkDotNet.Artifacts/
 
+## Documentation build artifacts
+docs/locale/**/*.mo
+
 ## OS files
 .DS_Store
 Thumbs.db

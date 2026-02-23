@@ -28,6 +28,9 @@ build:
         if [ "$READTHEDOCS_VERSION_TYPE" = "external" ] && ! git diff --quiet origin/main -- docs/ .readthedocs.yaml; then
           exit 1;
         fi
+    pre_build:
+      # Compile .po translation files into .mo binaries before building docs.
+      - find docs/locale -name "*.po" -exec sh -c 'msgfmt "$1" -o "${1%.po}.mo"' _ {} \;
 
 # Build documentation with i18n support
 # The language is determined by READTHEDOCS_LANGUAGE environment variable
