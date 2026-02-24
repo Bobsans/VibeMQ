@@ -312,31 +312,46 @@ configuration settings:
 
 **QueueInfo fields:**
 
-+---------------------------+----------------------+---------------------------------------------+
-| Field                     | Type                 | Description                                 |
-+===========================+======================+=============================================+
-| ``Name``                  | ``string``           | Queue name.                                 |
-+---------------------------+----------------------+---------------------------------------------+
-| ``MessageCount``          | ``int``              | Messages currently waiting in the queue.    |
-+---------------------------+----------------------+---------------------------------------------+
-| ``SubscriberCount``       | ``int``              | Number of active subscribers.               |
-+---------------------------+----------------------+---------------------------------------------+
-| ``CreatedAt``             | ``DateTime``         | UTC timestamp of queue creation.            |
-+---------------------------+----------------------+---------------------------------------------+
-| ``DeliveryMode``          | ``DeliveryMode``     | Delivery mode configured for the queue.     |
-+---------------------------+----------------------+---------------------------------------------+
-| ``MaxSize``               | ``int``              | Maximum message capacity.                   |
-+---------------------------+----------------------+---------------------------------------------+
-| ``MessageTtl``            | ``TimeSpan?``        | Per-message time-to-live. ``null`` = no TTL.|
-+---------------------------+----------------------+---------------------------------------------+
-| ``EnableDeadLetterQueue`` | ``bool``             | Whether a DLQ is enabled.                   |
-+---------------------------+----------------------+---------------------------------------------+
-| ``DeadLetterQueueName``   | ``string?``          | DLQ name. ``null`` = auto-generated.        |
-+---------------------------+----------------------+---------------------------------------------+
-| ``OverflowStrategy``      | ``OverflowStrategy`` | Action taken when the queue is full.        |
-+---------------------------+----------------------+---------------------------------------------+
-| ``MaxRetryAttempts``      | ``int``              | Delivery attempts before DLQ routing.       |
-+---------------------------+----------------------+---------------------------------------------+
+.. list-table::
+   :header-rows: 1
+   :widths: 26 22 44
+
+   * - Field
+     - Type
+     - Description
+   * - ``Name``
+     - ``string``
+     - Queue name.
+   * - ``MessageCount``
+     - ``int``
+     - Messages currently waiting in the queue.
+   * - ``SubscriberCount``
+     - ``int``
+     - Number of active subscribers.
+   * - ``CreatedAt``
+     - ``DateTime``
+     - UTC timestamp of queue creation.
+   * - ``DeliveryMode``
+     - ``DeliveryMode``
+     - Delivery mode configured for the queue.
+   * - ``MaxSize``
+     - ``int``
+     - Maximum message capacity.
+   * - ``MessageTtl``
+     - ``TimeSpan?``
+     - Per-message time-to-live. ``null`` = no TTL.
+   * - ``EnableDeadLetterQueue``
+     - ``bool``
+     - Whether a DLQ is enabled.
+   * - ``DeadLetterQueueName``
+     - ``string?``
+     - DLQ name. ``null`` = auto-generated.
+   * - ``OverflowStrategy``
+     - ``OverflowStrategy``
+     - Action taken when the queue is full.
+   * - ``MaxRetryAttempts``
+     - ``int``
+     - Delivery attempts before DLQ routing.
 
 List Queues
 -----------

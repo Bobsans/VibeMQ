@@ -160,25 +160,28 @@ Connect the client:
 
 VibeMQ consists of several NuGet packages:
 
-+--------------------------------+------------------------------------------+
-| Package                        | Description                                |
-+================================+==========================================+
-| ``VibeMQ.Server``              | Broker server                              |
-+--------------------------------+------------------------------------------+
-| ``VibeMQ.Client``              | Client for broker connection               |
-+--------------------------------+------------------------------------------+
-| ``VibeMQ.Core``                | Core: models, interfaces, configuration    |
-+--------------------------------+------------------------------------------+
-| ``VibeMQ.Protocol``            | Message exchange protocol                  |
-+--------------------------------+------------------------------------------+
-| ``VibeMQ.Health``              | HTTP health check server                   |
-+--------------------------------+------------------------------------------+
-| ``VibeMQ.Server.DependencyInjection``    | Server DI integration           |
-+--------------------------------+------------------------------------------+
-| ``VibeMQ.Client.DependencyInjection``    | Client DI integration            |
-+--------------------------------+------------------------------------------+
-| ``VibeMQ.Server.Storage.Sqlite``         | SQLite persistence provider     |
-+--------------------------------+------------------------------------------+
+.. list-table::
+   :header-rows: 1
+   :widths: 42 38
+
+   * - Package
+     - Description
+   * - ``VibeMQ.Server``
+     - Broker server
+   * - ``VibeMQ.Client``
+     - Client for broker connection
+   * - ``VibeMQ.Core``
+     - Core: models, interfaces, configuration
+   * - ``VibeMQ.Protocol``
+     - Message exchange protocol
+   * - ``VibeMQ.Health``
+     - HTTP health check server
+   * - ``VibeMQ.Server.DependencyInjection``
+     - Server DI integration
+   * - ``VibeMQ.Client.DependencyInjection``
+     - Client DI integration
+   * - ``VibeMQ.Server.Storage.Sqlite``
+     - SQLite persistence provider
 
 💡 Usage Examples
 ==================

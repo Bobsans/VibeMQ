@@ -28,9 +28,14 @@ Main server configuration class:
        public TlsOptions Tls { get; set; } = new();
        public RateLimitOptions RateLimit { get; set; } = new();
        public StorageType StorageType { get; set; } = StorageType.InMemory;
+       public IReadOnlyList<CompressionAlgorithm> SupportedCompressions { get; set; }
+           = [CompressionAlgorithm.Brotli, CompressionAlgorithm.GZip];
+       public int CompressionThreshold { get; set; } = 1024;  // 1 KB
    }
 
 **StorageType** (default: ``InMemory``) selects the persistence backend: ``InMemory`` (no durability) or ``Sqlite`` (durable, single-node). See :doc:`storage` for details.
+
+**SupportedCompressions** (default: ``Brotli, GZip``) and **CompressionThreshold** (default: ``1024`` bytes) control frame-level compression. Use ``ConfigureFrom(BrokerOptions)`` to set them; see :doc:`protocol` for negotiation and framing.
 
 Basic Parameters
 ----------------
@@ -320,6 +325,9 @@ ClientOptions
        public TimeSpan CommandTimeout { get; set; } = TimeSpan.FromSeconds(10);
        public bool UseTls { get; set; }
        public bool SkipCertificateValidation { get; set; }
+       public IReadOnlyList<CompressionAlgorithm> PreferredCompressions { get; set; }
+           = [CompressionAlgorithm.Brotli, CompressionAlgorithm.GZip];
+       public int CompressionThreshold { get; set; } = 1024;  // 1 KB
        public IList<QueueDeclaration> QueueDeclarations { get; set; } = [];
    }
 
@@ -335,6 +343,24 @@ Token for authentication:
 .. code-block:: csharp
 
    AuthToken = "my-secret-token"
+
+PreferredCompressions
+~~~~~~~~~~~~~~~~~~~~~
+
+**Type:** ``IReadOnlyList<CompressionAlgorithm>``
+
+**Default:** ``[Brotli, GZip]``
+
+Compression algorithms the client prefers (descending priority). Empty list disables compression. See :doc:`protocol` for negotiation.
+
+CompressionThreshold
+~~~~~~~~~~~~~~~~~~~~
+
+**Type:** ``int``
+
+**Default:** ``1024`` (1 KB)
+
+Minimum serialized body size in bytes to apply compression. Bodies smaller than this are sent uncompressed.
 
 ReconnectPolicy
 ~~~~~~~~~~~~~~~
@@ -447,18 +473,31 @@ Describes a single queue to provision at connection time.
        public bool FailOnProvisioningError { get; init; } = true;
    }
 
-+---------------------------+-----------------------------+----------+-------------------------------------------------------------------+
-| Property                  | Type                        | Default  | Description                                                       |
-+===========================+=============================+==========+===================================================================+
-| ``QueueName``             | ``string``                  | required | Name of the queue to provision.                                   |
-+---------------------------+-----------------------------+----------+-------------------------------------------------------------------+
-| ``Options``               | ``QueueOptions``            | defaults | Desired queue settings.                                           |
-+---------------------------+-----------------------------+----------+-------------------------------------------------------------------+
-| ``OnConflict``            | ``QueueConflictResolution`` | Ignore   | Strategy when Soft or Hard differences are found.                 |
-+---------------------------+-----------------------------+----------+-------------------------------------------------------------------+
-| ``FailOnProvisioningError`` | ``bool``                  | ``true`` | Abort ``ConnectAsync`` on provisioning errors. Set ``false`` to   |
-|                           |                             |          | log and skip instead. Does not affect conflict handling.          |
-+---------------------------+-----------------------------+----------+-------------------------------------------------------------------+
+.. list-table::
+   :header-rows: 1
+   :widths: 26 28 10 72
+
+   * - Property
+     - Type
+     - Default
+     - Description
+   * - ``QueueName``
+     - ``string``
+     - required
+     - Name of the queue to provision.
+   * - ``Options``
+     - ``QueueOptions``
+     - defaults
+     - Desired queue settings.
+   * - ``OnConflict``
+     - ``QueueConflictResolution``
+     - Ignore
+     - Strategy when Soft or Hard differences are found.
+   * - ``FailOnProvisioningError``
+     - ``bool``
+     - ``true``
+     - Abort ``ConnectAsync`` on provisioning errors. Set ``false`` to
+       log and skip instead. Does not affect conflict handling.
 
 QueueConflictResolution
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -471,18 +510,21 @@ silently logged at Debug level.
 
    public enum QueueConflictResolution { Ignore, Fail, Override }
 
-+---------------+-------------------------------------------------------------------------+
-| Value         | Behavior                                                                |
-+===============+=========================================================================+
-| ``Ignore``    | Keep the existing queue unchanged. Log the diff at Warning (Soft) or   |
-|               | Error (Hard) level. **Default.**                                        |
-+---------------+-------------------------------------------------------------------------+
-| ``Fail``      | Throw ``QueueConflictException``. Treat settings drift as a            |
-|               | deployment error. Recommended for production.                           |
-+---------------+-------------------------------------------------------------------------+
-| ``Override``  | Delete and recreate the queue with the declared settings.               |
-|               | **All existing messages are permanently lost.** Use with caution.       |
-+---------------+-------------------------------------------------------------------------+
+.. list-table::
+   :header-rows: 1
+   :widths: 14 76
+
+   * - Value
+     - Behavior
+   * - ``Ignore``
+     - Keep the existing queue unchanged. Log the diff at Warning (Soft) or
+       Error (Hard) level. **Default.**
+   * - ``Fail``
+     - Throw ``QueueConflictException``. Treat settings drift as a
+       deployment error. Recommended for production.
+   * - ``Override``
+     - Delete and recreate the queue with the declared settings.
+       **All existing messages are permanently lost.** Use with caution.
 
 ConflictSeverity
 ~~~~~~~~~~~~~~~~
@@ -493,17 +535,24 @@ Severity level assigned to each setting difference.
 
    public enum ConflictSeverity { Info, Soft, Hard }
 
-+----------+-------+----------------------------------------------------------------------+
-| Value    | Logs  | Description                                                          |
-+==========+=======+======================================================================+
-| ``Info`` | Debug | Additive or neutral change. Not a conflict; ``OnConflict``           |
-|          |       | is never triggered.                                                  |
-+----------+-------+----------------------------------------------------------------------+
-| ``Soft`` | Warn  | Behavioral change that may affect in-flight messages.                |
-|          |       | ``OnConflict`` is applied.                                           |
-+----------+-------+----------------------------------------------------------------------+
-| ``Hard`` | Error | Breaking semantic change. ``OnConflict`` is applied.                 |
-+----------+-------+----------------------------------------------------------------------+
+.. list-table::
+   :header-rows: 1
+   :widths: 10 8 62
+
+   * - Value
+     - Logs
+     - Description
+   * - ``Info``
+     - Debug
+     - Additive or neutral change. Not a conflict; ``OnConflict``
+       is never triggered.
+   * - ``Soft``
+     - Warn
+     - Behavioral change that may affect in-flight messages.
+       ``OnConflict`` is applied.
+   * - ``Hard``
+     - Error
+     - Breaking semantic change. ``OnConflict`` is applied.
 
 ReconnectPolicy
 ---------------

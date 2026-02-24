@@ -197,21 +197,21 @@ Message Fields
 +-------------------+------------------+----------------------------------+
 | Field             | Type             | Description                       |
 +===================+==================+==================================+
-| ``id``            | string           | Unique identifier                 │
+| ``id``            | string           | Unique identifier                 |
 +-------------------+------------------+----------------------------------+
-| ``type``          | CommandType      | Command type                      │
+| ``type``          | CommandType      | Command type                      |
 +-------------------+------------------+----------------------------------+
-| ``queue``         | string?          | Queue name                        │
+| ``queue``         | string?          | Queue name                        |
 +-------------------+------------------+----------------------------------+
-| ``payload``       | JsonElement?     | Payload                           │
+| ``payload``       | JsonElement?     | Payload                           |
 +-------------------+------------------+----------------------------------+
-| ``headers``       | object?          | Headers                           │
+| ``headers``       | object?          | Headers                           |
 +-------------------+------------------+----------------------------------+
-| ``version``       | int              | Protocol version (default: 1)     │
+| ``version``       | int              | Protocol version (default: 1)     |
 +-------------------+------------------+----------------------------------+
-| ``errorCode``     | string?          | Error code (for Error)            │
+| ``errorCode``     | string?          | Error code (for Error)            |
 +-------------------+------------------+----------------------------------+
-| ``errorMessage``  | string?          | Error message                     │
+| ``errorMessage``  | string?          | Error message                     |
 +-------------------+------------------+----------------------------------+
 
 Command Types (CommandType)
@@ -652,8 +652,8 @@ Message Headers
 +------------------------+----------------------------------+
 | Header                  | Description                       |
 +========================+==================================+
-| ``priority``           | Priority (Low, Normal, High,     │
-|                        │ Critical)                         |
+| ``priority``           | Priority (Low, Normal, High,     |
+|                        | Critical)                         |
 +------------------------+----------------------------------+
 | ``correlationId``      | ID for request correlation        |
 +------------------------+----------------------------------+

@@ -15,10 +15,11 @@ When making any changes to the codebase, always update the documentation and tra
 ## Translation Workflow
 
 1. **Generate translation templates** (only for local testing): From `docs/` run `sphinx-build -b gettext . _build/gettext` to generate `.pot` files
-2. **Update translation files** (only for local testing): From `docs/` run `sphinx-intl update -p _build/gettext -l ru` to update `.po` files in `docs/locale/ru/LC_MESSAGES/`
-3. **Translate new strings**: Edit Russian translations in `.po` files for any new or modified strings
-4. **Keep PO reference lines**: Do not remove or alter `#:` reference lines (e.g. `#: ../../docs/examples.rst:3 b90cdb1602eb41d0b4027cd928290c3f`). Sphinx uses the file path, line number and hash to match translations; keep these as generated
-5. **In repository**: Keep only `.po` files. Do not commit `.mo` files — Read the Docs compiles `.mo` during the documentation build (see `.readthedocs.yaml`)
+2. **REQUIRED — Check changed .po files**: After running `sphinx-build -b gettext` and `sphinx-intl update`, always review the changed `.po` files and verify that translations in them are correct. Incorrect or irrelevant strings often end up in `.po`; fix or remove them before committing.
+3. **Update translation files** (only for local testing): From `docs/` run `sphinx-intl update -p _build/gettext -l ru` to update `.po` files in `docs/locale/ru/LC_MESSAGES/`
+4. **Translate new strings**: Edit Russian translations in `.po` files for any new or modified strings
+5. **Keep PO reference lines**: Do not remove or alter `#:` reference lines (e.g. `#: ../../docs/examples.rst:3 b90cdb1602eb41d0b4027cd928290c3f`). Sphinx uses the file path, line number and hash to match translations; keep these as generated
+6. **In repository**: Keep only `.po` files. Do not commit `.mo` files — Read the Docs compiles `.mo` during the documentation build (see `.readthedocs.yaml`)
 
 ## Cleanup After Testing
 
@@ -37,6 +38,7 @@ After running gettext/update-po or building docs locally, always remove generate
 cd docs
 sphinx-build -b gettext . _build/gettext
 sphinx-intl update -p _build/gettext -l ru
+# REQUIRED: Review changed .po files and fix incorrect/irrelevant translations
 # 4. Edit .po files with new translations (keep #: reference lines with hashes)
 # 5. (Optional) Test build
 sphinx-build -b html -D language=en . _build/html/en

@@ -57,27 +57,30 @@ VibeMQ.Core
 
 **Main types:**
 
-+------------------------+--------------------------------------------------+
-| Type                   | Description                                      |
-+========================+==================================================+
-| ``BrokerMessage``      | Broker message model                             |
-+------------------------+--------------------------------------------------+
-| ``QueueInfo``          | Queue state information                          |
-+------------------------+--------------------------------------------------+
-| ``BrokerOptions``      | Server configuration                             |
-+------------------------+--------------------------------------------------+
-| ``QueueOptions``       | Queue settings                                   |
-+------------------------+--------------------------------------------------+
-| ``ClientOptions``      | Client settings                                  |
-+------------------------+--------------------------------------------------+
-| ``IQueueManager``      | Queue management interface                       |
-+------------------------+--------------------------------------------------+
-| ``IMessageStore``      | Message store interface                          |
-+------------------------+--------------------------------------------------+
-| ``IAuthenticationService`` | Authentication interface                     |
-+------------------------+--------------------------------------------------+
-| ``IBrokerMetrics``     | Metrics collection interface                     |
-+------------------------+--------------------------------------------------+
+.. list-table::
+   :header-rows: 1
+   :widths: 30 50
+
+   * - Type
+     - Description
+   * - ``BrokerMessage``
+     - Broker message model
+   * - ``QueueInfo``
+     - Queue state information
+   * - ``BrokerOptions``
+     - Server configuration
+   * - ``QueueOptions``
+     - Queue settings
+   * - ``ClientOptions``
+     - Client settings
+   * - ``IQueueManager``
+     - Queue management interface
+   * - ``IMessageStore``
+     - Message store interface
+   * - ``IAuthenticationService``
+     - Authentication interface
+   * - ``IBrokerMetrics``
+     - Metrics collection interface
 
 **Enumerations:**
 

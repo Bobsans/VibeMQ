@@ -31,13 +31,19 @@ Enabling Health Checks
 Configuration Parameters
 -----------------------
 
-+------------------------+------------------+----------------------------------+
-| Parameter              | Default          | Description                       |
-+========================+==================+==================================+
-| ``Enabled``            | true             | Enable health check server        |
-+------------------------+------------------+----------------------------------+
-| ``Port``               | 8081             | HTTP port for health checks       |
-+------------------------+------------------+----------------------------------+
+.. list-table::
+   :header-rows: 1
+   :widths: 34 18 38
+
+   * - Parameter
+     - Default
+     - Description
+   * - ``Enabled``
+     - true
+     - Enable health check server
+   * - ``Port``
+     - 8081
+     - HTTP port for health checks
 
 Endpoints
 =========

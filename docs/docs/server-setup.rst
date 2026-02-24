@@ -76,73 +76,110 @@ Configuration Parameters
 Basic Parameters
 ------------------
 
-+------------------------+------------------+----------------------------------+
-| Parameter               | Default          | Description                       |
-+========================+==================+==================================+
-| ``Port``               | 8080             | TCP port for client connections  |
-+------------------------+------------------+----------------------------------+
-| ``MaxConnections``     | 1000             | Maximum number of connections    |
-+------------------------+------------------+----------------------------------+
-| ``MaxMessageSize``     | 1 MB             | Maximum message size              |
-+------------------------+------------------+----------------------------------+
-| ``EnableAuthentication`` | false          | Enable authentication             |
-+------------------------+------------------+----------------------------------+
-| ``AuthToken``          | null             | Token for authentication          |
-+------------------------+------------------+----------------------------------+
+.. list-table::
+   :header-rows: 1
+   :widths: 34 18 38
+
+   * - Parameter
+     - Default
+     - Description
+   * - ``Port``
+     - 8080
+     - TCP port for client connections
+   * - ``MaxConnections``
+     - 1000
+     - Maximum number of connections
+   * - ``MaxMessageSize``
+     - 1 MB
+     - Maximum message size
+   * - ``EnableAuthentication``
+     - false
+     - Enable authentication
+   * - ``AuthToken``
+     - null
+     - Token for authentication
 
 Default Queue Settings
 -------------------------------
 
-+------------------------+------------------+----------------------------------+
-| Parameter               | Default          | Description                       |
-+========================+==================+==================================+
-| ``DefaultDeliveryMode``| RoundRobin       | Default delivery mode             |
-+------------------------+------------------+----------------------------------+
-| ``MaxQueueSize``       | 10,000           | Maximum queue size                |
-+------------------------+------------------+----------------------------------+
-| ``EnableAutoCreate``   | true             | Automatic queue creation          |
-+------------------------+------------------+----------------------------------+
+.. list-table::
+   :header-rows: 1
+   :widths: 34 18 38
+
+   * - Parameter
+     - Default
+     - Description
+   * - ``DefaultDeliveryMode``
+     - RoundRobin
+     - Default delivery mode
+   * - ``MaxQueueSize``
+     - 10,000
+     - Maximum queue size
+   * - ``EnableAutoCreate``
+     - true
+     - Automatic queue creation
 
 Per-queue options (MessageTtl, EnableDeadLetterQueue, MaxRetryAttempts, OverflowStrategy) are set via ``QueueOptions`` when creating a queue with ``client.CreateQueueAsync(name, options)``; see :doc:`client-usage`.
 
 Rate Limiting
 -------------
 
-+------------------------+------------------+----------------------------------+
-| Parameter               | Default          | Description                       |
-+========================+==================+==================================+
-| ``Enabled``            | true             | Enable rate limiting              |
-+------------------------+------------------+----------------------------------+
-| ``MaxConnectionsPerIpPerWindow`` | 20     | Max connections from IP per window |
-+------------------------+------------------+----------------------------------+
-| ``ConnectionWindow``   | 60 sec           | Time window (TimeSpan)            |
-+------------------------+------------------+----------------------------------+
-| ``MaxMessagesPerClientPerSecond`` | 1000  | Max messages from client per sec  |
-+------------------------+------------------+----------------------------------+
+.. list-table::
+   :header-rows: 1
+   :widths: 34 18 38
+
+   * - Parameter
+     - Default
+     - Description
+   * - ``Enabled``
+     - true
+     - Enable rate limiting
+   * - ``MaxConnectionsPerIpPerWindow``
+     - 20
+     - Max connections from IP per window
+   * - ``ConnectionWindow``
+     - 60 sec
+     - Time window (TimeSpan)
+   * - ``MaxMessagesPerClientPerSecond``
+     - 1000
+     - Max messages from client per sec
 
 TLS/SSL Settings
 -----------------
 
-+------------------------+------------------+----------------------------------+
-| Parameter               | Default          | Description                       |
-+========================+==================+==================================+
-| ``Enabled``            | false            | Enable TLS                        |
-+------------------------+------------------+----------------------------------+
-| ``CertificatePath``    | null             | Path to PFX certificate           |
-+------------------------+------------------+----------------------------------+
-| ``CertificatePassword``| null             | Certificate password               |
-+------------------------+------------------+----------------------------------+
+.. list-table::
+   :header-rows: 1
+   :widths: 34 18 38
+
+   * - Parameter
+     - Default
+     - Description
+   * - ``Enabled``
+     - false
+     - Enable TLS
+   * - ``CertificatePath``
+     - null
+     - Path to PFX certificate
+   * - ``CertificatePassword``
+     - null
+     - Certificate password
 
 Health Check Settings
 ----------------------
 
-+------------------------+------------------+----------------------------------+
-| Parameter               | Default          | Description                       |
-+========================+==================+==================================+
-| ``Enabled``            | true             | Enable health check server        |
-+------------------------+------------------+----------------------------------+
-| ``Port``               | 8081             | HTTP port for health checks       |
-+------------------------+------------------+----------------------------------+
+.. list-table::
+   :header-rows: 1
+   :widths: 34 18 38
+
+   * - Parameter
+     - Default
+     - Description
+   * - ``Enabled``
+     - true
+     - Enable health check server
+   * - ``Port``
+     - 8081
+     - HTTP port for health checks
 
 Delivery Modes
 ===============

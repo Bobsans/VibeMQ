@@ -392,137 +392,126 @@ msgstr "**Поля QueueInfo:**"
 
 #: ../../docs/features.rst:316 684d0cafcf914bfb869dde4a746ef66d
 msgid "Field"
-msgstr ""
+msgstr "Поле"
 
 #: ../../docs/features.rst:316 8fe62328270c48b498f3ba5be1958a83
 msgid "Type"
-msgstr ""
+msgstr "Тип"
 
 #: ../../docs/features.rst:318 51d87e7c1ff74288a7998230b1d4b4ce
-#, fuzzy
 msgid "``Name``"
-msgstr "``Enabled``"
+msgstr "``Name``"
 
 #: ../../docs/features.rst:318 51d87e7c1ff74288a7998230b1d4b4ce
 msgid "``string``"
-msgstr ""
+msgstr "``string``"
 
 #: ../../docs/features.rst:318 413e62ca11f84a4e9819920c9367a728
-#, fuzzy
 msgid "Queue name."
-msgstr "Управление очередями"
+msgstr "Имя очереди."
 
 #: ../../docs/features.rst:320 3c2dcca7a7b842e3bd7e6b1f86e57c8e
 msgid "``MessageCount``"
-msgstr ""
+msgstr "``MessageCount``"
 
 #: ../../docs/features.rst:320 ../../docs/features.rst:322
 #: ../../docs/features.rst:328 ../../docs/features.rst:338
 #: 51d87e7c1ff74288a7998230b1d4b4ce
-#, fuzzy
 msgid "``int``"
-msgstr "``InitialDelay``"
+msgstr "``int``"
 
 #: ../../docs/features.rst:320 2148111c67574a25a6b84ef6edafa363
 msgid "Messages currently waiting in the queue."
-msgstr ""
+msgstr "Сообщения в очереди в ожидании."
 
 #: ../../docs/features.rst:322 5f796b8717484a0d828c24fa29289fc6
 msgid "``SubscriberCount``"
-msgstr ""
+msgstr "``SubscriberCount``"
 
 #: ../../docs/features.rst:322 b9d1da09779a45d488a7bc3e083f8ff9
 msgid "Number of active subscribers."
-msgstr ""
+msgstr "Количество активных подписчиков."
 
 #: ../../docs/features.rst:324 efe8c46f970e474f93ab30c4e4a3d7cb
-#, fuzzy
 msgid "``CreatedAt``"
-msgstr "``Enabled``"
+msgstr "``CreatedAt``"
 
 #: ../../docs/features.rst:324 efe8c46f970e474f93ab30c4e4a3d7cb
 msgid "``DateTime``"
-msgstr ""
+msgstr "``DateTime``"
 
 #: ../../docs/features.rst:324 b4bcaf60e01a495ba36796fc229ef101
 msgid "UTC timestamp of queue creation."
-msgstr ""
+msgstr "Время создания очереди (UTC)."
 
 #: ../../docs/features.rst:326 59d11f7b85534be4bbdf66af5f48baad
-#, fuzzy
 msgid "``DeliveryMode``"
-msgstr "Режимы доставки"
+msgstr "``DeliveryMode``"
 
 #: ../../docs/features.rst:326 be02db7a428b43d9a374030094a5e2d5
 msgid "Delivery mode configured for the queue."
-msgstr ""
+msgstr "Режим доставки для очереди."
 
 #: ../../docs/features.rst:328 8471f2d454a547d6a654cf8329f3cc88
-#, fuzzy
 msgid "``MaxSize``"
-msgstr "``MaxDelay``"
+msgstr "``MaxSize``"
 
 #: ../../docs/features.rst:328 306553b54bbc4056ae2304b85588bfe8
 msgid "Maximum message capacity."
-msgstr ""
+msgstr "Максимальная вместимость очереди."
 
 #: ../../docs/features.rst:330 efe8c46f970e474f93ab30c4e4a3d7cb
-#, fuzzy
 msgid "``MessageTtl``"
-msgstr "``MaxDelay``"
+msgstr "``MessageTtl``"
 
 #: ../../docs/features.rst:330 59ac8c800d794050ae915679c35f7701
 msgid "``TimeSpan?``"
-msgstr ""
+msgstr "``TimeSpan?``"
 
 #: ../../docs/features.rst:330 ce88fcab8ef748198e039152507c6778
 msgid "Per-message time-to-live. ``null`` = no TTL."
-msgstr ""
+msgstr "Время жизни сообщения. ``null`` = без TTL."
 
 #: ../../docs/features.rst:332 7f92058bc31848e0a4c326e63b8c34c2
-#, fuzzy
 msgid "``EnableDeadLetterQueue``"
-msgstr "Dead Letter Queue (DLQ)"
+msgstr "``EnableDeadLetterQueue``"
 
 #: ../../docs/features.rst:332 51d87e7c1ff74288a7998230b1d4b4ce
-#, fuzzy
 msgid "``bool``"
-msgstr "``Enabled``"
+msgstr "``bool``"
 
 #: ../../docs/features.rst:332 8e5d4c9b04044d528b48d63263490f9f
 msgid "Whether a DLQ is enabled."
-msgstr ""
+msgstr "Включена ли DLQ."
 
 #: ../../docs/features.rst:334 7f92058bc31848e0a4c326e63b8c34c2
-#, fuzzy
 msgid "``DeadLetterQueueName``"
-msgstr "Dead Letter Queue (DLQ)"
+msgstr "``DeadLetterQueueName``"
 
 #: ../../docs/features.rst:334 51d87e7c1ff74288a7998230b1d4b4ce
 msgid "``string?``"
-msgstr ""
+msgstr "``string?``"
 
 #: ../../docs/features.rst:334 394d94e2210f4705b14f77a5da7ea965
 msgid "DLQ name. ``null`` = auto-generated."
-msgstr ""
+msgstr "Имя DLQ. ``null`` = автоматическое."
 
 #: ../../docs/features.rst:336 30ba90b141ff486c98e2e99c322d471c
 #: 41c77132bc5b4fa9b097a8aebd2a7793
 msgid "``OverflowStrategy``"
-msgstr ""
+msgstr "``OverflowStrategy``"
 
 #: ../../docs/features.rst:336 6ca2569f77c846d8ac367e988d921ee4
 msgid "Action taken when the queue is full."
-msgstr ""
+msgstr "Действие при переполнении очереди."
 
 #: ../../docs/features.rst:338 efe8c46f970e474f93ab30c4e4a3d7cb
-#, fuzzy
 msgid "``MaxRetryAttempts``"
-msgstr "``MaxAttempts``"
+msgstr "``MaxRetryAttempts``"
 
 #: ../../docs/features.rst:338 365be33e03d24a0682cffc40c34e0d8b
 msgid "Delivery attempts before DLQ routing."
-msgstr ""
+msgstr "Попытки доставки до перенаправления в DLQ."
 
 #: ../../docs/features.rst:342 606dd5c78e564cb6a9ff7c9b087126ed
 msgid "List Queues"
@@ -661,9 +650,8 @@ msgid "Maximum delay"
 msgstr "Максимальная задержка"
 
 #: ../../docs/features.rst:481 286e50c9424e4fac926bd2469c2c8827
-#, fuzzy
 msgid "``UseExponentialBackoff``"
-msgstr "``UseExponentialBackoff`` | true"
+msgstr "``UseExponentialBackoff``"
 
 #: ../../docs/features.rst:481 ../../docs/features.rst:562
 #: 6a881825203c48b2856a3ca55ec9625b
@@ -721,14 +709,12 @@ msgid "Enable rate limiting"
 msgstr "Включить ограничение частоты"
 
 #: ../../docs/features.rst:564 5126df90f6dd4f52a87053fbb325c3fc
-#, fuzzy
 msgid "``MaxConnectionsPerIpPerWindow``"
-msgstr "``MaxConnectionsPerIpPerWindow`` | 20"
+msgstr "``MaxConnectionsPerIpPerWindow``"
 
 #: ../../docs/features.rst:564 708790f0b6ac43da997d212094184cd1
-#, fuzzy
 msgid "20"
-msgstr "2"
+msgstr "20"
 
 #: ../../docs/features.rst:564 61aad853bf9e4bf4b7ef9a46d0680547
 msgid "Max connections per IP per window"
@@ -747,13 +733,12 @@ msgid "Time window (seconds)"
 msgstr "Временное окно (секунды)"
 
 #: ../../docs/features.rst:568 840810dc49e648c8aab188a3959bca2c
-#, fuzzy
 msgid "``MaxMessagesPerClientPerSecond``"
-msgstr "``MaxMessagesPerClientPerSecond`` | 1000"
+msgstr "``MaxMessagesPerClientPerSecond``"
 
 #: ../../docs/features.rst:568 2a621349fb54448298ee971c6a7e33e0
 msgid "1000"
-msgstr ""
+msgstr "1000"
 
 #: ../../docs/features.rst:568 cb5aadfc25f546e081f250a89f22176c
 msgid "Max messages per second per client"

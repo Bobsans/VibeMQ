@@ -270,6 +270,8 @@ msgid ""
 "The ``OnConflict`` strategy determines what happens when at least one "
 "``Soft`` or ``Hard`` difference is detected:"
 msgstr ""
+"Стратегия ``OnConflict`` определяет поведение при обнаружении хотя бы одного "
+"различия ``Soft`` или ``Hard``:"
 
 #: ../../docs/client-usage.rst:374 a6cb459606874bf7b46075da047c538e
 msgid "Strategy"
@@ -289,7 +291,7 @@ msgstr "Залогировать различие и продолжить. По 
 
 #: ../../docs/client-usage.rst:378 45327a87e7e945739817571c5eb704f2
 msgid "``Fail``"
-msgstr ""
+msgstr "``Fail``"
 
 #: ../../docs/client-usage.rst:378 1be24605092340c8978172e2121328f1
 msgid "Throw ``QueueConflictException`` — treat drift as a deploy error."
@@ -308,18 +310,16 @@ msgid "**Severity classification per setting:**"
 msgstr "**Классификация важности по настройкам:**"
 
 #: ../../docs/client-usage.rst:386 2b8fe11caaf34da9b55658b4b1b46de7
-#, fuzzy
 msgid "Setting"
-msgstr "Настройки клиента"
+msgstr "Настройка"
 
 #: ../../docs/client-usage.rst:386 1de0157518f54c40aa3efe185a772094
-#, fuzzy
 msgid "Direction"
-msgstr "Отключение"
+msgstr "Направление"
 
 #: ../../docs/client-usage.rst:388 bf7bb987b58c4b3c887ab25cc23bc15c
 msgid "``Mode``"
-msgstr ""
+msgstr "``Mode``"
 
 #: ../../docs/client-usage.rst:388 ../../docs/client-usage.rst:390
 #: ../../docs/client-usage.rst:414 1d531a15d3af46db8138c0785fd57475
