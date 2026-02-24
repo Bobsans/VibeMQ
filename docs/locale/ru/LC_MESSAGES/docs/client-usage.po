@@ -1,17 +1,17 @@
-# SOME DESCRIPTIVE TITLE.
+# VibeMQ Documentation (Russian).
 # Copyright (C) 2026, Darkboy
 # This file is distributed under the same license as the VibeMQ package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+# Darkboy, 2026.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: VibeMQ 1.0.0\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-23 15:59+0300\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Report-Msgid-Bugs-To: https://github.com/DarkBoy/VibeMQ/issues\n"
+"POT-Creation-Date: 2026-02-24 09:28+0300\n"
+"PO-Revision-Date: 2026-02-24 12:00+0300\n"
+"Last-Translator: Darkboy\n"
 "Language: ru\n"
-"Language-Team: ru <LL@li.org>\n"
+"Language-Team: Russian <https://github.com/DarkBoy/VibeMQ>\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "MIME-Version: 1.0\n"
@@ -19,23 +19,23 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.18.0\n"
 
-#: ../../docs/client-usage.rst:3 ecda4937b902438ebe1c03eaf59d1398
+#: ../../docs/client-usage.rst:3 485b28eeda8145899d33ca508e71f57c
 msgid "Client Usage"
 msgstr "Использование клиента"
 
-#: ../../docs/client-usage.rst:5 3079ee5457fa45d9a122b59ed44a5775
+#: ../../docs/client-usage.rst:5 400b9cc5c25247b384c93de88fcb6a71
 msgid "This guide describes various ways to use the VibeMQ client."
 msgstr "Это руководство описывает различные способы использования клиента VibeMQ."
 
-#: ../../docs/client-usage.rst:9 36c045ac236847b0974518dbc1d2523a
+#: ../../docs/client-usage.rst:9 cbbb1531e7d3472bb5337cb31480833c
 msgid "Contents"
 msgstr "Содержание"
 
-#: ../../docs/client-usage.rst:12 a982fce8355943199f88779e50f3cb6a
+#: ../../docs/client-usage.rst:12 81db954f9a174bc5a8f86526b7cc8ee9
 msgid "Using with Dependency Injection (IVibeMQClient)"
 msgstr "Использование с внедрением зависимостей (IVibeMQClient)"
 
-#: ../../docs/client-usage.rst:14 d81288460d4a434681de0b9362a0dc94
+#: ../../docs/client-usage.rst:14 8437d86d7edf48a58311dbd8463a3316
 msgid ""
 "In ASP.NET Core or Worker Service you can inject **``IVibeMQClient``** "
 "and use it without calling ``ConnectAsync`` or managing disposal. The "
@@ -46,83 +46,86 @@ msgstr ""
 "В ASP.NET Core или Worker Service можно внедрить **``IVibeMQClient``** и "
 "использовать его без вызова ``ConnectAsync`` и управления освобождением. "
 "Клиент общий (Singleton) и подключается лениво при первом "
-"``PublishAsync`` или ``SubscribeAsync``. Регистрация и примеры — в :doc:`di-integration`."
+"``PublishAsync`` или ``SubscribeAsync``. Регистрация и примеры — в :doc"
+":`di-integration`."
 
-#: ../../docs/client-usage.rst:39 294c3cf0907a41358ea254c86f17c801
+#: ../../docs/client-usage.rst:39 f7824ea0190e4383a3778cbe2152d43f
 msgid ""
 "The concrete type ``VibeMQClient`` implements ``IVibeMQClient``. For "
 "manual connection and full control, use ``VibeMQClient.ConnectAsync`` as "
 "in the sections below."
 msgstr ""
 "Конкретный тип ``VibeMQClient`` реализует ``IVibeMQClient``. Для ручного "
-"подключения и полного контроля используйте ``VibeMQClient.ConnectAsync``, "
-"как в разделах ниже."
+"подключения и полного контроля используйте ``VibeMQClient.ConnectAsync``,"
+" как в разделах ниже."
 
-#: ../../docs/client-usage.rst:42 5bd3de1fd9f742b9ade51e379b2cb945
+#: ../../docs/client-usage.rst:42 fcab7fcd4efb4320844fdb1fdf816c97
 msgid "Connecting to Server"
 msgstr "Подключение к серверу"
 
-#: ../../docs/client-usage.rst:45 79d16ff24fd74e7d91b1a417c81eb793
+#: ../../docs/client-usage.rst:45 9fd1ee8c54b44b268b80ab38be5a044b
 msgid "Basic Connection"
 msgstr "Базовое подключение"
 
-#: ../../docs/client-usage.rst:59 2b0bbbc4c504428089fa927e9ff7ff20
+#: ../../docs/client-usage.rst:59 5e25d415edd841b0ae7db58bb003a91d
 msgid "Connection with Authentication"
 msgstr "Подключение с аутентификацией"
 
-#: ../../docs/client-usage.rst:72 b71ad45b780043cbbe71383054e7c845
+#: ../../docs/client-usage.rst:72 2392d140157f44aab78a81c33e88da30
 msgid "Connection with Logging"
 msgstr "Подключение с логированием"
 
-#: ../../docs/client-usage.rst:92 18b1fc2d053042d0a1becaa6d8091710
+#: ../../docs/client-usage.rst:92 3c4d9b454d4840b2846bf58047b3254d
 msgid "Publishing Messages"
 msgstr "Публикация сообщений"
 
-#: ../../docs/client-usage.rst:95 40162c4be22d42ffadc4e67d5b46f0e2
+#: ../../docs/client-usage.rst:95 d845d1ef3a1d401d91b4a3fab2c50307
 msgid "Basic Publishing"
 msgstr "Базовая публикация"
 
-#: ../../docs/client-usage.rst:106 68334749dafa444a8b83801b8abeebed
+#: ../../docs/client-usage.rst:106 0f889362803e4b798e140c05455483bb
 msgid "Publishing with Headers"
 msgstr "Публикация с заголовками"
 
-#: ../../docs/client-usage.rst:108 28bde22631284878b64b40edce1cb00a
+#: ../../docs/client-usage.rst:108 1d2f6d3cc764437eb8d194bc9fdf6de8
 msgid "You can attach custom headers to messages, including priority:"
-msgstr "К сообщениям можно добавлять пользовательские заголовки, в том числе приоритет:"
+msgstr ""
+"К сообщениям можно добавлять пользовательские заголовки, в том числе "
+"приоритет:"
 
-#: ../../docs/client-usage.rst:134 ecc9effa9c1743a5a4307d3b4ecb5b15
+#: ../../docs/client-usage.rst:134 5c6c72ab0417415098e5b80547d18085
 msgid "Typed Publishing"
 msgstr "Типизированная публикация"
 
-#: ../../docs/client-usage.rst:136 c75483e012c945fc96dc0359a0a1830b
+#: ../../docs/client-usage.rst:136 e699b569affb4e3eb971b30296ecfa6c
 msgid "Create a class for the message:"
 msgstr "Создайте класс для сообщения:"
 
-#: ../../docs/client-usage.rst:146 2732e6d978424450bc391255596f8f08
+#: ../../docs/client-usage.rst:146 71fc8d8d8bc841908c9ef64dbedfa585
 msgid "Use it:"
 msgstr "Используйте его:"
 
-#: ../../docs/client-usage.rst:157 3832276e8d2e4041b1f0be033f779f91
+#: ../../docs/client-usage.rst:157 8b9c07e6043544c58da358855ff31c0c
 msgid "Subscribing to Messages"
 msgstr "Подписка на сообщения"
 
-#: ../../docs/client-usage.rst:160 125548ab38d440f1932850d784d13a93
+#: ../../docs/client-usage.rst:160 a3269f381f48413b8bbbfa22bd5cfe44
 msgid "Basic Subscription"
 msgstr "Базовая подписка"
 
-#: ../../docs/client-usage.rst:172 480fc621b9a54caab85c428743e74909
+#: ../../docs/client-usage.rst:172 7b81873be66d47ab833c957012f46fb3
 msgid "Typed Subscription"
 msgstr "Типизированная подписка"
 
-#: ../../docs/client-usage.rst:190 ff2f3b61612b4c56ba20e449eaf207d7
+#: ../../docs/client-usage.rst:190 f698a27c5b68433daaeadfcfcbe127f5
 msgid "Subscription with Error Handling"
 msgstr "Подписка с обработкой ошибок"
 
-#: ../../docs/client-usage.rst:207 f81445e3a78f4ec69ad4d521288dec6b
+#: ../../docs/client-usage.rst:207 bd554aabbb654a20ae85052e4cc3e980
 msgid "Class-based Subscriptions"
 msgstr "Подписки на основе классов"
 
-#: ../../docs/client-usage.rst:209 14b18431a3104dbbb66d6fab2cbac21e
+#: ../../docs/client-usage.rst:209 fd3530b8440649a591d045a779e45c73
 msgid ""
 "Instead of using lambda handlers, you can create handler classes "
 "implementing ``IMessageHandler<T>``:"
@@ -130,7 +133,7 @@ msgstr ""
 "Вместо лямбда-обработчиков можно создавать классы-обработчики, "
 "реализующие ``IMessageHandler<T>``:"
 
-#: ../../docs/client-usage.rst:237 f1ea4a08fb3f43369f49f8d03f841a71
+#: ../../docs/client-usage.rst:237 1b6d921151824ec39acb53d7272596ba
 msgid ""
 "This approach provides better testability, dependency injection support, "
 "and cleaner code organization."
@@ -138,271 +141,630 @@ msgstr ""
 "Такой подход обеспечивает лучшую тестируемость, поддержку внедрения "
 "зависимостей и более чистую организацию кода."
 
-#: ../../docs/client-usage.rst:240 5b89a3b5f4ba43f09e77e5d18a708f11
+#: ../../docs/client-usage.rst:240 b371ae5c0c6d42228c005b4d355c5099
 msgid "Multiple Subscriptions"
 msgstr "Несколько подписок"
 
-#: ../../docs/client-usage.rst:268 7e2519bd864c4a8f8392b972aa8953cf
+#: ../../docs/client-usage.rst:268 2542b8c4a90947d19535796fb7e46566
 msgid "Unsubscribing from Queue"
 msgstr "Отписка от очереди"
 
-#: ../../docs/client-usage.rst:271 a468f9bc0c1c453dbb6b4ff489e95c84
+#: ../../docs/client-usage.rst:271 22f43420447e402e9ba0844ddbaef3a3
 msgid "Automatic Unsubscribe"
 msgstr "Автоматическая отписка"
 
-#: ../../docs/client-usage.rst:273 97f36003dbb74591bc5c1ccc208064eb
+#: ../../docs/client-usage.rst:273 0376052d9bb94514b4dc6acc329ee6e0
 msgid "When using ``await using``, unsubscription happens automatically:"
 msgstr "При использовании ``await using`` отписка происходит автоматически:"
 
-#: ../../docs/client-usage.rst:284 2fde1e8afab649e38d624c35c02f55c3
+#: ../../docs/client-usage.rst:284 27687d92fa0144c28a954d35be3c4eb3
 msgid "Manual Unsubscribe"
 msgstr "Ручная отписка"
 
-#: ../../docs/client-usage.rst:296 b81c204d1ff9429a9260b6c515e2777e
+#: ../../docs/client-usage.rst:296 a79fda5a4c68454aa91d81bd3eb6e53c
 msgid "Or via client method:"
 msgstr "Или через метод клиента:"
 
-#: ../../docs/client-usage.rst:303 1e8bfebd06de4bd0878d4780a7a44d89
-msgid "Creating Queues"
-msgstr "Создание очередей"
+#: ../../docs/client-usage.rst:305 87d87efac4d74a59a463f07c137c609e
+msgid "Queue Declarations"
+msgstr "Объявление очередей"
 
-#: ../../docs/client-usage.rst:305 69b54ba13d124cc785b7aedae05b3cc2
-msgid "You can create queues explicitly before publishing or subscribing:"
-msgstr "Очереди можно создавать явно перед публикацией или подпиской:"
-
-#: ../../docs/client-usage.rst:319
+#: ../../docs/client-usage.rst:307 a2a604027ebf45099a1e57fc4b70d276
 msgid ""
-"The client (``IVibeMQClient``) also provides ``DeleteQueueAsync``, "
-"``GetQueueInfoAsync``, and ``ListQueuesAsync``. On the server, the same "
-"operations are implemented via ``IQueueManager``. Queues are typically "
-"created automatically when publishing to a non-existent queue (if "
-"``EnableAutoCreate`` is enabled on the server) or you can create them "
-"explicitly with ``CreateQueueAsync``."
+"Queue declarations let you describe the queues your application needs "
+"directly in ``ClientOptions``. On each ``ConnectAsync``, the client "
+"automatically creates any missing queues and — when the queue already "
+"exists — compares the declared settings against the live configuration "
+"and reacts according to your chosen conflict strategy."
 msgstr ""
-"Клиент (``IVibeMQClient``) также предоставляет ``DeleteQueueAsync``, "
-"``GetQueueInfoAsync`` и ``ListQueuesAsync``. На сервере те же операции "
-"реализованы через ``IQueueManager``. Очереди обычно создаются автоматически "
-"при публикации в несуществующую очередь (если на сервере включён "
-"``EnableAutoCreate``) или их можно создать явно с помощью ``CreateQueueAsync``."
+"Объявления очередей позволяют описать нужные приложению очереди прямо в "
+"``ClientOptions``. При каждом ``ConnectAsync`` клиент создаёт отсутствующие "
+"очереди и — если очередь уже есть — сравнивает объявленные настройки с "
+"текущей конфигурацией и действует согласно выбранной стратегии конфликтов."
 
-#: ../../docs/client-usage.rst:329 5743ec6bbfb343a79409b239cb573d98
+#: ../../docs/client-usage.rst:312 b8ec0d4a37a246bb9e0d6865bf34c1b8
+msgid ""
+"This is the recommended way to manage queues in production: your code is "
+"the source of truth and the broker always matches it."
+msgstr ""
+"Это рекомендуемый способ управления очередями в production: код — источник "
+"истины, брокер всегда ему соответствует."
+
+#: ../../docs/client-usage.rst:316 2e9367127fb1449588d9f9561191a139
+msgid "Declaring Queues"
+msgstr "Объявление очередей"
+
+#: ../../docs/client-usage.rst:318 360f956ca4fc40a8a7a5a7c3ef47a8a8
+msgid "Use the fluent ``DeclareQueue`` helper on ``ClientOptions``:"
+msgstr "Используйте цепочку ``DeclareQueue`` в ``ClientOptions``:"
+
+#: ../../docs/client-usage.rst:348 15d7fc1e2c6342c6aa320ab5f69cd837
+msgid ""
+"Declarations are processed **sequentially** in the order they appear, "
+"which ensures a DLQ queue exists before the main queue that references "
+"it."
+msgstr ""
+"Объявления обрабатываются **последовательно** в порядке объявления — так "
+"очередь DLQ создаётся до основной очереди, которая на неё ссылается."
+
+#: ../../docs/client-usage.rst:352 3ff0a2cf5f5b43f49d8d3bb0e1b9fdec
+msgid "Conflict Resolution"
+msgstr "Разрешение конфликтов"
+
+#: ../../docs/client-usage.rst:354 c905bfd5a70745ec87c5d4ceb4408bf8
+msgid ""
+"When a queue already exists, the client computes a diff between the "
+"declared and the live configuration. Each setting difference is "
+"classified by severity:"
+msgstr ""
+"Если очередь уже существует, клиент вычисляет разницу между объявленной и "
+"текущей конфигурацией. Каждое расхождение классифицируется по степени важности:"
+
+#: ../../docs/client-usage.rst:358 ../../docs/client-usage.rst:386
+#: 7f803d982f5342c29016efe8ff5fcf03 b738d132c2ec4db7a1b67e64b26d3dbe
+msgid "Severity"
+msgstr "Важность"
+
+#: ../../docs/client-usage.rst:358 84e240c90453462c936aabb17b72fd34
+msgid "Description"
+msgstr "Описание"
+
+#: ../../docs/client-usage.rst:360 f7a3d2c564204ff9a93489f0ddb5dc43
+msgid "``Info``"
+msgstr "``Info``"
+
+#: ../../docs/client-usage.rst:360 37084c0e32b740fdafe22b49fd921877
+msgid ""
+"Additive or neutral change (e.g. increasing ``MaxQueueSize``). Never a "
+"conflict. Logged at Debug. ``OnConflict`` is not triggered."
+msgstr ""
+"Добавочное или нейтральное изменение (напр. увеличение ``MaxQueueSize``). "
+"Не конфликт. Логируется на Debug. ``OnConflict`` не вызывается."
+
+#: ../../docs/client-usage.rst:363 6cdfe51e08314037b81ca4e372e92eea
+msgid "``Soft``"
+msgstr "``Soft``"
+
+#: ../../docs/client-usage.rst:363 35c40a407b3143b4a52378e7ac35fe90
+msgid ""
+"Behavioral change that may affect in-flight messages (e.g. enabling TTL)."
+" Logged at Warning. ``OnConflict`` is applied."
+msgstr ""
+"Поведенческое изменение, способное затронуть сообщения в обработке (напр. "
+"включение TTL). Логируется на Warning. Применяется ``OnConflict``."
+
+#: ../../docs/client-usage.rst:366 7e2cc2ad4efe4fbbb636ba7e47a83389
+msgid "``Hard``"
+msgstr "``Hard``"
+
+#: ../../docs/client-usage.rst:366 121894e4ea304738894aaa27cbded630
+msgid ""
+"Breaking semantic change (e.g. changing ``Mode``). Logged at Error. "
+"``OnConflict`` is applied."
+msgstr ""
+"Критическое семантическое изменение (напр. смена ``Mode``). Логируется на "
+"Error. Применяется ``OnConflict``."
+
+#: ../../docs/client-usage.rst:370 4fd060c1d58148e9a50d6d2aa29c0723
+msgid ""
+"The ``OnConflict`` strategy determines what happens when at least one "
+"``Soft`` or ``Hard`` difference is detected:"
+msgstr ""
+
+#: ../../docs/client-usage.rst:374 a6cb459606874bf7b46075da047c538e
+msgid "Strategy"
+msgstr "Стратегия"
+
+#: ../../docs/client-usage.rst:374 d083e77d683f4aa7b4d81fd9ebbd3b1f
+msgid "Behavior"
+msgstr "Поведение"
+
+#: ../../docs/client-usage.rst:376 8374981a1e58493ca90cf89773693c43
+msgid "``Ignore``"
+msgstr "``Ignore``"
+
+#: ../../docs/client-usage.rst:376 57b45eead7a4445e9f517e06778e16f5
+msgid "Log the diff and continue. Default."
+msgstr "Залогировать различие и продолжить. По умолчанию."
+
+#: ../../docs/client-usage.rst:378 45327a87e7e945739817571c5eb704f2
+msgid "``Fail``"
+msgstr ""
+
+#: ../../docs/client-usage.rst:378 1be24605092340c8978172e2121328f1
+msgid "Throw ``QueueConflictException`` — treat drift as a deploy error."
+msgstr "Выбросить ``QueueConflictException`` — считать расхождение ошибкой деплоя."
+
+#: ../../docs/client-usage.rst:380 d55bf08f60f143e5a8422194a4a09684
+msgid "``Override``"
+msgstr "``Override``"
+
+#: ../../docs/client-usage.rst:380 f1dbac6415494d07abfef03bb8d4ca93
+msgid "Delete and recreate the queue. **All messages are lost.**"
+msgstr "Удалить и создать очередь заново. **Все сообщения теряются.**"
+
+#: ../../docs/client-usage.rst:383 71ef2706cbcd43c7ae927cc92f9dc3c9
+msgid "**Severity classification per setting:**"
+msgstr "**Классификация важности по настройкам:**"
+
+#: ../../docs/client-usage.rst:386 2b8fe11caaf34da9b55658b4b1b46de7
+#, fuzzy
+msgid "Setting"
+msgstr "Настройки клиента"
+
+#: ../../docs/client-usage.rst:386 1de0157518f54c40aa3efe185a772094
+#, fuzzy
+msgid "Direction"
+msgstr "Отключение"
+
+#: ../../docs/client-usage.rst:388 bf7bb987b58c4b3c887ab25cc23bc15c
+msgid "``Mode``"
+msgstr ""
+
+#: ../../docs/client-usage.rst:388 ../../docs/client-usage.rst:390
+#: ../../docs/client-usage.rst:414 1d531a15d3af46db8138c0785fd57475
+#: 33a9124aa7c64b1d84de530194b708f6 94fdeeec6fca447b8b7c8259a4310490
+msgid "any"
+msgstr "любое"
+
+#: ../../docs/client-usage.rst:388 ../../docs/client-usage.rst:404
+#: ../../docs/client-usage.rst:411 231f236b08144871b03061b9b72374bc
+#: be0fba889de54dbabfa4268503011f71 ea227a6edeef47dd994030b9fa2df5b0
+msgid "Hard"
+msgstr "Hard"
+
+#: ../../docs/client-usage.rst:390 d5bb0fc78a344303a8f16b009beda659
+msgid "``MaxQueueSize``"
+msgstr "``MaxQueueSize``"
+
+#: ../../docs/client-usage.rst:390 ../../docs/client-usage.rst:394
+#: ../../docs/client-usage.rst:398 ../../docs/client-usage.rst:400
+#: ../../docs/client-usage.rst:406 ../../docs/client-usage.rst:408
+#: ../../docs/client-usage.rst:414 24335274fadc4332801388ecfc0ab173
+#: 663d27413e724b1f8a5da9d0d5535a2c 7590aeff1e2a4c2992242873ec450780
+#: a2bfcdd562494f6dadae289241153843 a2d0bc88f1b54b0f8ce6fd6634419e89
+#: c856537026d14e18bcb2c43d02c1c7bc c93d16af0d954fad8d6735a6a38aaf61
+msgid "Info"
+msgstr "Info"
+
+#: ../../docs/client-usage.rst:392 ../../docs/client-usage.rst:394
+#: ../../docs/client-usage.rst:396 ../../docs/client-usage.rst:398
+#: 51c32ea15d6c43aca8b7d20980b4e495 786148de6aa84fb2a92b73850724f9ca
+#: bf559a49a4e846d0be58983f22382382 d18d5bc377a94f48bb64447d1ba2f804
+msgid "``MessageTtl``"
+msgstr "``MessageTtl``"
+
+#: ../../docs/client-usage.rst:392 091df0a2a9b04da6ba503aec68b346a7
+msgid "``null`` → value"
+msgstr "``null`` → значение"
+
+#: ../../docs/client-usage.rst:392 ../../docs/client-usage.rst:396
+#: ../../docs/client-usage.rst:402 558113a8cf6c463baeda8bf6d2b5c379
+#: 5b9fc96f8da34eda949ab6efa5a7f9c8 bd2047b122824e19be8c2f2c7ad50dda
+msgid "Soft"
+msgstr "Soft"
+
+#: ../../docs/client-usage.rst:394 84df8058bed64f23bda2a02023c4b487
+msgid "value → ``null``"
+msgstr "значение → ``null``"
+
+#: ../../docs/client-usage.rst:396 128b42f751284c1996489e40a46bf1c7
+msgid "decrease"
+msgstr "уменьшение"
+
+#: ../../docs/client-usage.rst:398 6c96c85d3d3b41b5bb4ec549a89de340
+msgid "increase"
+msgstr "увеличение"
+
+#: ../../docs/client-usage.rst:400 ../../docs/client-usage.rst:402
+#: 573f4871592d409daa2a5e05e401d094 ec0ed40591e04a328f5832783950cc03
+msgid "``EnableDeadLetterQueue``"
+msgstr "``EnableDeadLetterQueue``"
+
+#: ../../docs/client-usage.rst:400 2f566ee29be04a2e972577403bb97d63
+msgid "``false`` → ``true``"
+msgstr "``false`` → ``true``"
+
+#: ../../docs/client-usage.rst:402 86e7c0e629af49048c9e246fee45cb41
+msgid "``true`` → ``false``"
+msgstr "``true`` → ``false``"
+
+#: ../../docs/client-usage.rst:404 9b545d8383ea49c5a6111fff74fb8e70
+msgid "``DeadLetterQueueName``"
+msgstr "``DeadLetterQueueName``"
+
+#: ../../docs/client-usage.rst:404 be1cea6080644f4592d988ff3eaa4d28
+msgid "any (when DLQ active)"
+msgstr "любое (при включённой DLQ)"
+
+#: ../../docs/client-usage.rst:406 ../../docs/client-usage.rst:408
+#: ../../docs/client-usage.rst:411 71441da76253444a9cd6b465b6069ca0
+#: 85270f00e03b4649af87047360e7be5a df67227661934913b23fa16e76f8b591
+msgid "``OverflowStrategy``"
+msgstr "``OverflowStrategy``"
+
+#: ../../docs/client-usage.rst:406 8f719a3add20401e963ba2c66eb853a9
+msgid "→ non-``RedirectToDlq``"
+msgstr "→ не ``RedirectToDlq``"
+
+#: ../../docs/client-usage.rst:408 037c5665249140f28781a9b7c571c3f9
+msgid "→ ``RedirectToDlq``, DLQ enabled"
+msgstr "→ ``RedirectToDlq``, DLQ включена"
+
+#: ../../docs/client-usage.rst:411 211502024227493baa05319c514e5b6c
+msgid "→ ``RedirectToDlq``, DLQ **not** enabled"
+msgstr "→ ``RedirectToDlq``, DLQ **не** включена"
+
+#: ../../docs/client-usage.rst:414 b58b3a0db54a45c5884eb46519c22f9e
+msgid "``MaxRetryAttempts``"
+msgstr "``MaxRetryAttempts``"
+
+#: ../../docs/client-usage.rst:418 a3ece9328b8443f4a28fc7a7c16a7854
+msgid "Handling QueueConflictException"
+msgstr "Обработка QueueConflictException"
+
+#: ../../docs/client-usage.rst:420 6e3b289b7f5141fbbe5598364cdb1818
+msgid ""
+"When ``OnConflict = Fail`` and a conflict is detected, ``ConnectAsync`` "
+"throws ``QueueConflictException``. The exception carries the full diff "
+"for diagnostics:"
+msgstr ""
+"При ``OnConflict = Fail`` и обнаружении конфликта ``ConnectAsync`` выбрасывает "
+"``QueueConflictException``. Исключение содержит полный diff для диагностики:"
+
+#: ../../docs/client-usage.rst:438 698e7f272701498483ef32ab80aeac2b
+msgid ""
+"The ``Conflicts`` list contains only ``Soft`` and ``Hard`` diffs. "
+"``Info`` differences are never included."
+msgstr ""
+"В список ``Conflicts`` входят только дифы ``Soft`` и ``Hard``. Различия "
+"``Info`` не включаются."
+
+#: ../../docs/client-usage.rst:442 b4cfcc0c152646babbbb54ec42e22031
+msgid "Provisioning Errors vs. Conflicts"
+msgstr "Ошибки провизионирования и конфликты"
+
+#: ../../docs/client-usage.rst:444 47f4f068843d466dbec2a6e0b5576fc3
+msgid ""
+"``FailOnProvisioningError`` (default ``true``) controls what happens when"
+" a provisioning operation fails for a technical reason (e.g. network "
+"timeout, broker error) — not for a conflict. Set it to ``false`` to let "
+"the client skip that queue and continue connecting:"
+msgstr ""
+"``FailOnProvisioningError`` (по умолчанию ``true``) задаёт поведение при "
+"технической ошибке провизионирования (таймаут, ошибка брокера), не при "
+"конфликте. Установите ``false``, чтобы клиент пропускал такую очередь и "
+"продолжал подключение:"
+
+#: ../../docs/client-usage.rst:458 ac56f033c0da45bba80beaac959a9d97
+msgid ""
+"``FailOnProvisioningError`` never suppresses ``QueueConflictException``. "
+"Conflicts always propagate regardless of this flag."
+msgstr ""
+"``FailOnProvisioningError`` не подавляет ``QueueConflictException``. "
+"Конфликты всегда пробрасываются независимо от этого флага."
+
+#: ../../docs/client-usage.rst:462 ac71a3f88ad642a58c8e535e54a34200
+msgid "Pre-flight Validation"
+msgstr "Проверка перед подключением"
+
+#: ../../docs/client-usage.rst:464 f2e9e74c4b99443da4d619934be48163
+msgid ""
+"The client validates declarations **before** establishing a TCP "
+"connection. An ``InvalidOperationException`` is thrown immediately if a "
+"declaration contains an incompatible combination of options, such as "
+"``OverflowStrategy = RedirectToDlq`` without ``EnableDeadLetterQueue = "
+"true``:"
+msgstr ""
+"Клиент проверяет объявления **до** установления TCP-соединения. "
+"``InvalidOperationException`` выбрасывается сразу, если объявление содержит "
+"несовместимую комбинацию (напр. ``OverflowStrategy = RedirectToDlq`` без "
+"``EnableDeadLetterQueue = true``):"
+
+#: ../../docs/client-usage.rst:478 bbc278c546144078ae8f8ec6b723de79
+msgid "Reconnect Behavior"
+msgstr "Поведение при переподключении"
+
+#: ../../docs/client-usage.rst:480 5425c19b6add43d8bd6e17c1153cd846
+msgid ""
+"On automatic reconnect, the client re-runs provisioning with a forced "
+"``Ignore`` strategy for all declarations. This ensures missing queues are"
+" recreated (e.g. after a server restart that lost in-memory data) without"
+" aborting the reconnect due to a conflict detected on a previous "
+"connection."
+msgstr ""
+"При автоматическом переподключении клиент повторно выполняет провизионирование "
+"с принудительной стратегией ``Ignore`` для всех объявлений. Так отсутствующие "
+"очереди создаются заново (напр. после перезапуска сервера с потерей данных в "
+"памяти) без прерывания переподключения из-за конфликта с предыдущего соединения."
+
+#: ../../docs/client-usage.rst:486 670d6618494047f2bc30e08926d6511c
+msgid "Queue Declarations with Dependency Injection"
+msgstr "Объявление очередей с внедрением зависимостей"
+
+#: ../../docs/client-usage.rst:488 762a40621e114b4cbbea797697520308
+msgid "Call ``DeclareQueue`` directly on ``settings.ClientOptions``:"
+msgstr "Вызывайте ``DeclareQueue`` прямо в ``settings.ClientOptions``:"
+
+#: ../../docs/client-usage.rst:509 7fd9679170dc4ee3be153ab703d0f4bf
+msgid "Creating Queues Manually"
+msgstr "Ручное создание очередей"
+
+#: ../../docs/client-usage.rst:511 f4b4f777b87c49d8835db32f202779c4
+msgid "You can also create individual queues at any point after connecting:"
+msgstr "Отдельные очереди можно создавать в любой момент после подключения:"
+
+#: ../../docs/client-usage.rst:532 a01c3eff6faf4fc8b009ee2ce89f4417
+msgid ""
+"Prefer :ref:`queue declarations <queue-declarations>` for queues that "
+"must exist at startup. Use ``CreateQueueAsync`` for queues created "
+"dynamically at runtime."
+msgstr ""
+"Предпочтительнее :ref:`объявление очередей <queue-declarations>` для очередей, "
+"которые должны существовать при старте. ``CreateQueueAsync`` — для очередей, "
+"создаваемых динамически в рантайме."
+
+#: ../../docs/client-usage.rst:535 03c9018a62274ed0b0a2d3e1409b8d34
+msgid ""
+"``GetQueueInfoAsync``, ``DeleteQueueAsync``, and ``ListQueuesAsync`` are "
+"also available on ``IVibeMQClient``. When ``EnableAutoCreate`` is enabled"
+" on the server, queues are created automatically on the first publish "
+"even if not declared."
+msgstr ""
+"На ``IVibeMQClient`` также доступны ``GetQueueInfoAsync``, ``DeleteQueueAsync`` "
+"и ``ListQueuesAsync``. При включённом на сервере ``EnableAutoCreate`` очереди "
+"создаются автоматически при первой публикации, даже если не объявлены."
+
+#: ../../docs/client-usage.rst:540 34a1d14578d149d98073c1a6df3c6c08
 msgid "Client Settings"
 msgstr "Настройки клиента"
 
-#: ../../docs/client-usage.rst:332 5ee0e88b04594b138155144ec54313ef
+#: ../../docs/client-usage.rst:543 563375d0fb1c4649b97a8306139bd1ed
 msgid "ClientOptions"
 msgstr "ClientOptions"
 
-#: ../../docs/client-usage.rst:360 1d116e1eaeed4828a255388e637c11f2
+#: ../../docs/client-usage.rst:571 81607e6c14b84baba40180079f64fbee
 msgid "ReconnectPolicy"
 msgstr "ReconnectPolicy"
 
-#: ../../docs/client-usage.rst:362 e6f6d161119c4f35b47fe34ec7374ae0
+#: ../../docs/client-usage.rst:573 bf7f19c5b1084e499ed824eec7f458b3
 msgid "Configure reconnection policy:"
 msgstr "Настройка политики переподключения:"
 
-#: ../../docs/client-usage.rst:373 642292732a274808b085c91926d06588
+#: ../../docs/client-usage.rst:584 c76d54784fb74d0ea5878ae34fcb57a7
 msgid "**How it works:**"
 msgstr "**Как работает:**"
 
-#: ../../docs/client-usage.rst:375 d60c394f873f4e66b36126bc7238c925
+#: ../../docs/client-usage.rst:586 c1bcf1bd67814b08b84e7b2cb925911d
 msgid "Attempt 1: immediately"
 msgstr "Попытка 1: сразу"
 
-#: ../../docs/client-usage.rst:376 dd473af55cf2473dbd50536629774405
+#: ../../docs/client-usage.rst:587 22965a91d936499cb6d8d83461826a2c
 msgid "Attempt 2: after 1s"
 msgstr "Попытка 2: через 1 с"
 
-#: ../../docs/client-usage.rst:377 23abf95d4f5b44a4967deaad4dff0b29
+#: ../../docs/client-usage.rst:588 8bcedd614bd840e89969fab736b70a78
 msgid "Attempt 3: after 2s"
 msgstr "Попытка 3: через 2 с"
 
-#: ../../docs/client-usage.rst:378 c2d7fbdff81944e684c6cf579ecd3bdd
+#: ../../docs/client-usage.rst:589 dfca792d00e64af2bba18c733a06f089
 msgid "Attempt 4: after 4s"
 msgstr "Попытка 4: через 4 с"
 
-#: ../../docs/client-usage.rst:379 46f79adf73aa4662a60b6eb86a5f2f6a
+#: ../../docs/client-usage.rst:590 a7a8411b97d942d592a4603cfde021cc
 msgid "Attempt 5: after 8s"
 msgstr "Попытка 5: через 8 с"
 
-#: ../../docs/client-usage.rst:380 565fdb51cf6f474b9cdca5ebf2d0fc29
+#: ../../docs/client-usage.rst:591 46bcc981eeff4aa2991c2b34ff8b1216
 msgid "..."
 msgstr "..."
 
-#: ../../docs/client-usage.rst:381 397424a4072c4ca88c575a1c5f7cff2b
+#: ../../docs/client-usage.rst:592 3ccdac807bb44b0788ef7097cefe476f
 msgid "Attempt N: after 5min (maximum)"
 msgstr "Попытка N: через 5 мин (максимум)"
 
-#: ../../docs/client-usage.rst:384 0b8e7dbf8a8f41d29a8b4198aea1d2ab
+#: ../../docs/client-usage.rst:595 cb0b6bdbd3924545bc51aac538550aa5
 msgid "TLS/SSL Connection"
 msgstr "Подключение TLS/SSL"
 
-#: ../../docs/client-usage.rst:386 e939a6bf7673443c90a337519aa02a5d
+#: ../../docs/client-usage.rst:597 dd96b01baeb745b78d0960233474c492
 msgid "Connection with TLS:"
 msgstr "Подключение с TLS:"
 
-#: ../../docs/client-usage.rst:401 e41616328ecc4391803b13fef408753d
+#: ../../docs/client-usage.rst:612 6799b1336c78450fa49f15248c83eebc
 msgid ""
 "For production, use valid certificates. ``SkipCertificateValidation = "
 "true`` only for tests!"
-msgstr "В production используйте валидные сертификаты. ``SkipCertificateValidation = true`` только для тестов!"
+msgstr ""
+"В production используйте валидные сертификаты. "
+"``SkipCertificateValidation = true`` только для тестов!"
 
-#: ../../docs/client-usage.rst:405 a2aa638096ab44ae9c38b241b67b6fa5
+#: ../../docs/client-usage.rst:616 b7abae4794c148fb95713b7ae6c20265
 msgid "Handling Disconnections"
 msgstr "Обработка разрывов соединения"
 
-#: ../../docs/client-usage.rst:408 8f3a8842122c48689726114029809b1a
+#: ../../docs/client-usage.rst:619 6cfae994233e46a196969c5f48245c3c
 msgid "Automatic Reconnection"
 msgstr "Автоматическое переподключение"
 
-#: ../../docs/client-usage.rst:410 6889c26578de4af7a57449586d78eb73
+#: ../../docs/client-usage.rst:621 05da790ffa5e4667a9796ac08519e139
 msgid "Client automatically reconnects on connection loss:"
 msgstr "Клиент автоматически переподключается при разрыве:"
 
-#: ../../docs/client-usage.rst:432 bd2275a9f4fc4b3689d9110bfaff014b
+#: ../../docs/client-usage.rst:643 3d4fd6e30e4e4c6687a05facc0af05b9
 msgid "Status Check"
 msgstr "Проверка состояния"
 
-#: ../../docs/client-usage.rst:443 bf5b26644afb45e08c29d901ecd9c455
+#: ../../docs/client-usage.rst:654 ff0ca575f4f146acbb7acc0cbf0fc6cf
 msgid "Events (Optional)"
 msgstr "События (опционально)"
 
-#: ../../docs/client-usage.rst:445 9e2cc70989ba4f77973ed33e51dc1191
+#: ../../docs/client-usage.rst:656 dc5e1f78e8e44b459ae7919e571f5571
 msgid "For status tracking, you can use periodic checks:"
 msgstr "Для отслеживания состояния можно использовать периодическую проверку:"
 
-#: ../../docs/client-usage.rst:457 97d147905d854dbba45dd227fde6e10c
+#: ../../docs/client-usage.rst:668 7f1200528af348f5aedff14ad29f0177
 msgid "Disconnecting"
 msgstr "Отключение"
 
-#: ../../docs/client-usage.rst:460 a1ae5ac84b7448a5b180d5d854adcfba
+#: ../../docs/client-usage.rst:671 ad9f88e0a6494da8997c3ff4dd6bc12b
 msgid "Graceful Disconnect"
 msgstr "Корректное отключение"
 
-#: ../../docs/client-usage.rst:467 84990347696748458a181be3dead7a70
+#: ../../docs/client-usage.rst:678 99ce869310fb463d8dda6b33d46970c2
 msgid "Using Using"
 msgstr "Использование Using"
 
-#: ../../docs/client-usage.rst:477 262eba5ae46c48f1853f6e2cdc8ad2b8
+#: ../../docs/client-usage.rst:688 3fcaf59ec5f0478c92362fdae73dd002
 msgid "Full resource release:"
 msgstr "Полное освобождение ресурсов:"
 
-#: ../../docs/client-usage.rst:484 9c80e03b85414922a4dabfe707f13bb1
+#: ../../docs/client-usage.rst:695 62da0da3a4bd4b54a2893898f1cf02d2
 msgid "Usage Examples"
 msgstr "Примеры использования"
 
-#: ../../docs/client-usage.rst:487 1ac84f4ac9bf4bbbb99833509cfcf656
+#: ../../docs/client-usage.rst:698 41868d5297de4dd0823107bd399f2716
 msgid "Simple Publisher"
 msgstr "Простой издатель"
 
-#: ../../docs/client-usage.rst:512 2908fb9b849643f4bc72f1108bec2c46
+#: ../../docs/client-usage.rst:723 949ed407fe5d4fce883abba42ace921e
 msgid "Simple Subscriber"
 msgstr "Простой подписчик"
 
-#: ../../docs/client-usage.rst:533 26d16be1f05b473fac33d3f3cf249db6
+#: ../../docs/client-usage.rst:744 0b7e5bb7d1174cdc8ae758dde7569ee2
 msgid "Task Processing Worker"
 msgstr "Воркер обработки задач"
 
-#: ../../docs/client-usage.rst:577 fe67aeabfa444ab69d1c20d3c844dce5
+#: ../../docs/client-usage.rst:788 3390fd4b5d0149d0a801078bd1b59f03
 msgid "Event Bus for Microservices"
 msgstr "Шина событий для микросервисов"
 
-#: ../../docs/client-usage.rst:613 f388776a959d4722a983cd414ac7a167
+#: ../../docs/client-usage.rst:824 fdf761ce6d3643528f8e23b52c314b70
 msgid "Troubleshooting"
 msgstr "Устранение неполадок"
 
-#: ../../docs/client-usage.rst:616 2d110f86f0de4204ac2935df5a1b9a02
+#: ../../docs/client-usage.rst:827 8a4150205bee49289c2548830462fe90
 msgid "Connection Error"
 msgstr "Ошибка подключения"
 
-#: ../../docs/client-usage.rst:618 4d91b264f469432e8fb666d647ec2fb3
+#: ../../docs/client-usage.rst:829 9ef3b9523fb5460997c8a7760bfb59a9
 msgid "**Error:** ``Connection refused``"
 msgstr "**Ошибка:** ``Connection refused``"
 
-#: ../../docs/client-usage.rst:620 c33b2c628d6f4276bc499a02b8cdb24a
+#: ../../docs/client-usage.rst:831 be58dac554194dafa0f30059f210f2af
 msgid "**Causes:**"
 msgstr "**Причины:**"
 
-#: ../../docs/client-usage.rst:622 f8291003f5704e6c8a65137a6b82a6ed
+#: ../../docs/client-usage.rst:833 de8f169ec27247b3a355dd82963c0b68
 msgid "Server not running"
 msgstr "Сервер не запущен"
 
-#: ../../docs/client-usage.rst:623 4dfacf83a136444ba18edee66614f4ec
+#: ../../docs/client-usage.rst:834 37008aeae05f487c8efcbbd7dd055c2a
 msgid "Wrong port"
 msgstr "Неверный порт"
 
-#: ../../docs/client-usage.rst:624 b05ae4c2d84a4227a071ef61f4786fc2
+#: ../../docs/client-usage.rst:835 cce220c255364783af245fbf4b447a51
 msgid "Firewall blocking connection"
 msgstr "Файрвол блокирует подключение"
 
-#: ../../docs/client-usage.rst:626 378f0eb392b54e7583366aaa102e7d32
+#: ../../docs/client-usage.rst:837 98f02c948fce4557b0014dd4cece1222
 msgid "**Solution:**"
 msgstr "**Решение:**"
 
-#: ../../docs/client-usage.rst:638 87a9c3e80d4743a290e3bf07b9c1dfb8
+#: ../../docs/client-usage.rst:849 32f21488888546978482c7435b4d81a5
 msgid "Authentication Error"
 msgstr "Ошибка аутентификации"
 
-#: ../../docs/client-usage.rst:640 a0c3746dae1f4930bd68c718fcde4560
+#: ../../docs/client-usage.rst:851 1c39842ce4c449ff80a0106b03153b8d
 msgid "**Error:** ``Authentication failed``"
 msgstr "**Ошибка:** ``Authentication failed``"
 
-#: ../../docs/client-usage.rst:642 344c78520e34407c935c06e543829b28
+#: ../../docs/client-usage.rst:853 ceddd6f19918438ba7a22392293178da
 msgid "**Solution:** Make sure tokens match:"
 msgstr "**Решение:** Убедитесь, что токены совпадают:"
 
-#: ../../docs/client-usage.rst:653 85395434560d476b8b999c24182eabf2
+#: ../../docs/client-usage.rst:864 24b5b4c3552a4ebf90fc01a419e388e9
 msgid "Connection Timeout"
 msgstr "Таймаут подключения"
 
-#: ../../docs/client-usage.rst:655 ae7ebb949ae749328360c7a35fbf8747
+#: ../../docs/client-usage.rst:866 c3f91f0aca66457d91f97da7f7755e52
 msgid "**Error:** ``Connection timeout``"
 msgstr "**Ошибка:** ``Connection timeout``"
 
-#: ../../docs/client-usage.rst:657 35f1672035494e9cb758ec477d8e9fbd
+#: ../../docs/client-usage.rst:868 62aea750806f413193d417937c731bec
 msgid "**Solution:** Increase timeout:"
 msgstr "**Решение:** Увеличьте таймаут:"
 
-#: ../../docs/client-usage.rst:666 4d14eabf324d455bb3f3e4cac6a26470
+#: ../../docs/client-usage.rst:877 e3ef74673ebf481998ea127e8a158429
 msgid "Frequent Disconnections"
 msgstr "Частые разрывы соединения"
 
-#: ../../docs/client-usage.rst:668 dfe61ee744334e8491612be9015db58c
+#: ../../docs/client-usage.rst:879 5c7aff7d039d4536b71b2a89c06fe259
 msgid "**Cause:** Network or server issues"
 msgstr "**Причина:** Проблемы с сетью или сервером"
 
-#: ../../docs/client-usage.rst:670 d315bdd2e19744a1979320520eb8598c
+#: ../../docs/client-usage.rst:881 41afa5fcdb3a4b2585ae425132a93b45
 msgid "**Solution:** Configure reconnect policy:"
 msgstr "**Решение:** Настройте политику переподключения:"
 
-#: ../../docs/client-usage.rst:683 9a2127b1474449b3b53a9f16c904ecc3
+#: ../../docs/client-usage.rst:894 58949d5822424cd3a14b421cfc369a80
 msgid "Next Steps"
 msgstr "Дальнейшие шаги"
 
-#: ../../docs/client-usage.rst:685 4cf7d7f456834977a5f90ce2d1d8e716
+#: ../../docs/client-usage.rst:896 7579da7551c74012b434297349320812
 msgid ":doc:`server-setup` — server configuration"
 msgstr ":doc:`server-setup` — настройка сервера"
 
-#: ../../docs/client-usage.rst:686 d374d48ae3584f5d99d59a253e5ee773
+#: ../../docs/client-usage.rst:897 bd95cf4bc80c471e9f0c0744c41dbf9e
 msgid ":doc:`configuration` — configuration parameters"
 msgstr ":doc:`configuration` — параметры конфигурации"
 
-#: ../../docs/client-usage.rst:687 90c0aebd044b40c68aa42baae64debff
+#: ../../docs/client-usage.rst:898 4a1b389b97d844bcbf1c70e14bd1fea2
 msgid ":doc:`di-integration` — DI integration"
 msgstr ":doc:`di-integration` — интеграция DI"
 
-#~ msgid "Publishing with Priority"
-#~ msgstr "8080"
+#~ msgid "You can create queues explicitly before publishing or subscribing:"
+#~ msgstr "Очереди можно создавать явно перед публикацией или подпиской:"
 
-#~ msgid "Queue Management"
-#~ msgstr "});"
-
-#~ msgid "Deleting a Queue"
-#~ msgstr "var client = await VibeMQClient.ConnectAsync("
-
-#~ msgid "Getting Queue Information"
-#~ msgstr "\"localhost\","
-
-#~ msgid "List Queues"
-#~ msgstr "8080,"
+#~ msgid ""
+#~ "The client (``IVibeMQClient``) also provides"
+#~ " ``DeleteQueueAsync``, ``GetQueueInfoAsync``, and "
+#~ "``ListQueuesAsync``. On the server, the "
+#~ "same operations are implemented via "
+#~ "``IQueueManager``. Queues are typically "
+#~ "created automatically when publishing to "
+#~ "a non-existent queue (if "
+#~ "``EnableAutoCreate`` is enabled on the "
+#~ "server) or you can create them "
+#~ "explicitly with ``CreateQueueAsync``."
+#~ msgstr ""
+#~ "Клиент (``IVibeMQClient``) также предоставляет "
+#~ "``DeleteQueueAsync``, ``GetQueueInfoAsync`` и "
+#~ "``ListQueuesAsync``. На сервере те же "
+#~ "операции реализованы через ``IQueueManager``. "
+#~ "Очереди обычно создаются автоматически при "
+#~ "публикации в несуществующую очередь (если "
+#~ "на сервере включён ``EnableAutoCreate``) или"
+#~ " их можно создать явно с помощью "
+#~ "``CreateQueueAsync``."
 

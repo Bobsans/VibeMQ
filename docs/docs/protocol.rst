@@ -21,6 +21,8 @@ Protocol Layers
    ┌─────────────────────────────────────┐
    │  Application Layer (Binary)         │
    ├─────────────────────────────────────┤
+   │  Compression (optional, per-frame)  │
+   ├─────────────────────────────────────┤
    │  Framing (Length-prefix)            │
    ├─────────────────────────────────────┤
    │  Transport (TCP)                    │
@@ -29,35 +31,128 @@ Protocol Layers
 Framing
 ========
 
-**Length-prefix** approach is used to separate messages in TCP stream:
+**Length-prefix** approach is used to separate messages in the TCP stream.
+Each frame is self-contained and carries its own compression information.
+
+Frame Format
+------------
 
 .. code-block:: text
 
-   [4 bytes: body length in Big Endian uint32] [N bytes: binary body]
+   [4 bytes: body length in Big Endian uint32] [1 byte: compression flags] [N bytes: body]
 
-Length Format
-------------
+- **body length** — size of the (possibly compressed) body in bytes.
+- **compression flags** — algorithm identifier (see :ref:`compression-flags`).
+- **body** — serialized (and optionally compressed) ``ProtocolMessage``.
 
-First 4 bytes of each frame contain message body length encoded as Big Endian:
+.. _compression-flags:
+
+Compression Flags Byte
+~~~~~~~~~~~~~~~~~~~~~~
+
++--------+-----------------------------+
+| Value  | Meaning                     |
++========+=============================+
+| 0x00   | No compression              |
++--------+-----------------------------+
+| 0x01   | GZip                        |
++--------+-----------------------------+
+| 0x02   | Brotli                      |
++--------+-----------------------------+
+
+Frame Example (no compression)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: text
+
+   Bytes 0-3:   [0x00 0x00 0x00 0x5A]  ← Body length: 90 bytes
+   Byte  4:     [0x00]                 ← No compression
+   Bytes 5-94:  [binary message data]  ← Binary protocol message
+
+Frame Example (Brotli)
+~~~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: text
+
+   Bytes 0-3:   [0x00 0x00 0x00 0x2C]  ← Compressed body length: 44 bytes
+   Byte  4:     [0x02]                 ← Brotli compression
+   Bytes 5-48:  [compressed data]      ← Brotli-compressed binary message
+
+Compression
+===========
+
+VibeMQ supports optional frame-level compression using GZip and Brotli (both built in to .NET,
+no external dependencies). Compression is negotiated during the Connect handshake and applied
+transparently to all subsequent frames.
+
+Negotiation
+-----------
+
+The client advertises its preferred algorithms in the Connect message (comma-separated, in
+descending priority). The server replies with the selected algorithm in ConnectAck. If the
+server omits the header, no compression is used.
+
+.. code-block:: text
+
+   Client → Connect:
+   {
+     "headers": {
+       "supported-compression": "brotli,gzip"
+     }
+   }
+
+   Server → ConnectAck:
+   {
+     "headers": {
+       "negotiated-compression": "brotli"
+     }
+   }
+
+After the handshake, ``FrameWriter`` on both sides uses the negotiated algorithm. ``FrameReader``
+always reads the compression flag directly from each frame, so mixed-compression streams are
+handled correctly without shared state.
+
+Threshold
+---------
+
+Compression is applied only when the serialized body reaches the configured threshold
+(default **1 024 bytes**). Frames below the threshold are sent uncompressed (flags = ``0x00``).
+
+Configuration
+-------------
+
+**Server** (``BrokerOptions``):
 
 .. code-block:: csharp
 
-   // Read length
-   byte[] lengthBytes = await stream.ReadAsync(4);
-   uint length = BitConverter.ToUInt32(lengthBytes.Reverse().ToArray(), 0);
-   
-   // Write length
-   uint length = (uint)messageBytes.Length;
-   byte[] lengthBytes = BitConverter.GetBytes(length).Reverse().ToArray();
-   await stream.WriteAsync(lengthBytes);
+   builder.ConfigureFrom(new BrokerOptions {
+       SupportedCompressions = [CompressionAlgorithm.Brotli, CompressionAlgorithm.GZip],
+       CompressionThreshold = 1024,
+   });
 
-Frame Example
--------------
+**Client** (``ClientOptions``):
 
-.. code-block:: text
+.. code-block:: csharp
 
-   Bytes 0-3:   [0x00 0x00 0x00 0x5A]  ← Length 90 bytes
-   Bytes 4-93:  [binary message data]  ← Binary protocol message
+   var options = new ClientOptions {
+       PreferredCompressions = [CompressionAlgorithm.Brotli, CompressionAlgorithm.GZip],
+       CompressionThreshold = 1024,
+   };
+
+   // Disable compression entirely
+   PreferredCompressions = []   // client side
+   SupportedCompressions = []   // server side
+
+Compression Headers
+-------------------
+
++------------------------------+----------------------------+---------------------------------------------+
+| Header                       | Direction                  | Description                                 |
++==============================+============================+=============================================+
+| ``supported-compression``    | Client → Server (Connect)  | Comma-separated preferred algorithms        |
++------------------------------+----------------------------+---------------------------------------------+
+| ``negotiated-compression``   | Server → Client (ConnectAck)| Selected algorithm; absent if none agreed  |
++------------------------------+----------------------------+---------------------------------------------+
 
 Message Format
 ================
@@ -603,7 +698,8 @@ Connection Establishment
      "id": "conn_001",
      "type": "connect",
      "headers": {
-       "authToken": "my-token"
+       "authToken": "my-token",
+       "supported-compression": "brotli,gzip"
      }
    }
 
@@ -612,7 +708,8 @@ Connection Establishment
      "id": "conn_001",
      "type": "connectAck",
      "headers": {
-       "connectionId": "srv_100"
+       "connectionId": "srv_100",
+       "negotiated-compression": "brotli"
      }
    }
 
@@ -687,13 +784,15 @@ Keep-alive
 Protocol Versions
 ================
 
-Current version: **1.0**
+Current version: **1.1**
 
-+----------------+----------------------------------+
-| Version         | Changes                           |
-+================+==================================+
-| 1.0            | Base version                       |
-+----------------+----------------------------------+
++----------------+---------------------------------------------------+
+| Version        | Changes                                           |
++================+===================================================+
+| 1.0            | Base version                                      |
++----------------+---------------------------------------------------+
+| 1.1            | Frame header extended with compression flags byte |
++----------------+---------------------------------------------------+
 
 Next Steps
 ==========

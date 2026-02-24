@@ -2,12 +2,13 @@ using Microsoft.Extensions.Logging;
 using VibeMQ.Configuration;
 using VibeMQ.Interfaces;
 using VibeMQ.Protocol;
+using VibeMQ.Protocol.Compression;
 using VibeMQ.Server.Connections;
 
 namespace VibeMQ.Server.Handlers;
 
 /// <summary>
-/// Handles the Connect command: authenticates the client if required.
+/// Handles the Connect command: authenticates the client and negotiates compression.
 /// </summary>
 public sealed partial class ConnectHandler : ICommandHandler {
     private readonly BrokerOptions _options;
@@ -53,9 +54,41 @@ public sealed partial class ConnectHandler : ICommandHandler {
         connection.IsAuthenticated = true;
         LogClientAuthenticated(connection.Id);
 
+        // Negotiate compression
+        Dictionary<string, string>? ackHeaders = null;
+        var supportedByClient = message.Headers?.GetValueOrDefault("supported-compression");
+
+        if (!string.IsNullOrEmpty(supportedByClient) && _options.SupportedCompressions.Count > 0) {
+            var algorithm = NegotiateAlgorithm(supportedByClient);
+
+            if (algorithm is not null) {
+                ackHeaders = new Dictionary<string, string> {
+                    ["negotiated-compression"] = CompressorFactory.Serialize(algorithm.Value),
+                };
+                connection.SetCompression(algorithm.Value, _options.CompressionThreshold);
+                LogCompressionNegotiated(connection.Id, algorithm.Value);
+            }
+        }
+
         await connection.SendMessageAsync(new ProtocolMessage {
             Type = CommandType.ConnectAck,
+            Headers = ackHeaders,
         }, cancellationToken).ConfigureAwait(false);
+    }
+
+    /// <summary>
+    /// Picks the first algorithm from the client's preference list that the broker also supports.
+    /// </summary>
+    private CompressionAlgorithm? NegotiateAlgorithm(string supportedByClient) {
+        foreach (var part in supportedByClient.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)) {
+            var algorithm = CompressorFactory.Parse(part);
+
+            if (algorithm is not null && _options.SupportedCompressions.Contains(algorithm.Value)) {
+                return algorithm.Value;
+            }
+        }
+
+        return null;
     }
 
     [LoggerMessage(Level = LogLevel.Warning, Message = "Authentication failed for client {clientId}.")]
@@ -63,4 +96,7 @@ public sealed partial class ConnectHandler : ICommandHandler {
 
     [LoggerMessage(Level = LogLevel.Debug, Message = "Client {clientId} authenticated successfully.")]
     private partial void LogClientAuthenticated(string clientId);
+
+    [LoggerMessage(Level = LogLevel.Debug, Message = "Compression negotiated for client {clientId}: {algorithm}.")]
+    private partial void LogCompressionNegotiated(string clientId, CompressionAlgorithm algorithm);
 }

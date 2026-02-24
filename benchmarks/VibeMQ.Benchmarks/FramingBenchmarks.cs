@@ -12,6 +12,7 @@ namespace VibeMQ.Benchmarks;
 [MemoryDiagnoser]
 [ThreadingDiagnoser]
 public class FramingBenchmarks {
+    private readonly FrameWriter _writer = new();
     private ProtocolMessage _smallMessage = null!;
     private ProtocolMessage _largeMessage = null!;
     private MemoryStream _stream = null!;
@@ -47,19 +48,19 @@ public class FramingBenchmarks {
     [Benchmark(Baseline = true)]
     public async Task WriteSmallMessage() {
         _stream.Position = 0;
-        await FrameWriter.WriteFrameAsync(_stream, _smallMessage);
+        await _writer.WriteFrameAsync(_stream, _smallMessage);
     }
 
     [Benchmark]
     public async Task WriteLargeMessage() {
         _stream.Position = 0;
-        await FrameWriter.WriteFrameAsync(_stream, _largeMessage);
+        await _writer.WriteFrameAsync(_stream, _largeMessage);
     }
 
     [Benchmark]
     public async Task WriteAndReadSmallMessage() {
         _stream.Position = 0;
-        await FrameWriter.WriteFrameAsync(_stream, _smallMessage);
+        await _writer.WriteFrameAsync(_stream, _smallMessage);
         _stream.Position = 0;
         await FrameReader.ReadFrameAsync(_stream, ProtocolConstants.DEFAULT_MAX_MESSAGE_SIZE);
     }
@@ -67,7 +68,7 @@ public class FramingBenchmarks {
     [Benchmark]
     public async Task WriteAndReadLargeMessage() {
         _stream.Position = 0;
-        await FrameWriter.WriteFrameAsync(_stream, _largeMessage);
+        await _writer.WriteFrameAsync(_stream, _largeMessage);
         _stream.Position = 0;
         await FrameReader.ReadFrameAsync(_stream, ProtocolConstants.DEFAULT_MAX_MESSAGE_SIZE);
     }
@@ -79,7 +80,7 @@ public class FramingBenchmarks {
         _stream.Position = 0;
 
         for (var i = 0; i < count; i++) {
-            await FrameWriter.WriteFrameAsync(_stream, _smallMessage);
+            await _writer.WriteFrameAsync(_stream, _smallMessage);
         }
     }
 }

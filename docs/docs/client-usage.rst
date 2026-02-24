@@ -299,10 +299,216 @@ Or via client method:
 
    await client.UnsubscribeAsync("notifications");
 
-Creating Queues
-================
+.. _queue-declarations:
 
-You can create queues explicitly before publishing or subscribing:
+Queue Declarations
+==================
+
+Queue declarations let you describe the queues your application needs directly in ``ClientOptions``.
+On each ``ConnectAsync``, the client automatically creates any missing queues and — when the queue
+already exists — compares the declared settings against the live configuration and reacts according
+to your chosen conflict strategy.
+
+This is the recommended way to manage queues in production: your code is the source of truth and the
+broker always matches it.
+
+Declaring Queues
+----------------
+
+Use the fluent ``DeclareQueue`` helper on ``ClientOptions``:
+
+.. code-block:: csharp
+
+   using VibeMQ.Client;
+   using VibeMQ.Configuration;
+   using VibeMQ.Enums;
+
+   await using var client = await VibeMQClient.ConnectAsync(
+       "localhost",
+       8080,
+       new ClientOptions {
+           AuthToken = "my-token",
+       }
+       .DeclareQueue("orders", q => {
+           q.Mode            = DeliveryMode.FanOutWithAck;
+           q.MaxQueueSize    = 50_000;
+           q.EnableDeadLetterQueue = true;
+           q.MessageTtl      = TimeSpan.FromHours(24);
+       }, onConflict: QueueConflictResolution.Fail)
+
+       .DeclareQueue("analytics-events", q => {
+           q.MaxQueueSize    = 200_000;
+           q.OverflowStrategy = OverflowStrategy.DropOldest;
+       })
+
+       .DeclareQueue("transient-tasks",
+           onConflict: QueueConflictResolution.Override)
+   );
+
+Declarations are processed **sequentially** in the order they appear, which ensures a DLQ queue
+exists before the main queue that references it.
+
+Conflict Resolution
+-------------------
+
+When a queue already exists, the client computes a diff between the declared and the live
+configuration. Each setting difference is classified by severity:
+
++-------------------+-----------------------------------------------------------------------+
+| Severity          | Description                                                           |
++===================+=======================================================================+
+| ``Info``          | Additive or neutral change (e.g. increasing ``MaxQueueSize``).        |
+|                   | Never a conflict. Logged at Debug. ``OnConflict`` is not triggered.   |
++-------------------+-----------------------------------------------------------------------+
+| ``Soft``          | Behavioral change that may affect in-flight messages                  |
+|                   | (e.g. enabling TTL). Logged at Warning. ``OnConflict`` is applied.    |
++-------------------+-----------------------------------------------------------------------+
+| ``Hard``          | Breaking semantic change (e.g. changing ``Mode``). Logged at Error.   |
+|                   | ``OnConflict`` is applied.                                            |
++-------------------+-----------------------------------------------------------------------+
+
+The ``OnConflict`` strategy determines what happens when at least one ``Soft`` or ``Hard``
+difference is detected:
+
++---------------+-------------------------------------------------------------------+
+| Strategy      | Behavior                                                          |
++===============+===================================================================+
+| ``Ignore``    | Log the diff and continue. Default.                               |
++---------------+-------------------------------------------------------------------+
+| ``Fail``      | Throw ``QueueConflictException`` — treat drift as a deploy error. |
++---------------+-------------------------------------------------------------------+
+| ``Override``  | Delete and recreate the queue. **All messages are lost.**         |
++---------------+-------------------------------------------------------------------+
+
+**Severity classification per setting:**
+
++-------------------------------+-------------------------+------------+
+| Setting                       | Direction               | Severity   |
++===============================+=========================+============+
+| ``Mode``                      | any                     | Hard       |
++-------------------------------+-------------------------+------------+
+| ``MaxQueueSize``              | any                     | Info       |
++-------------------------------+-------------------------+------------+
+| ``MessageTtl``                | ``null`` → value        | Soft       |
++-------------------------------+-------------------------+------------+
+| ``MessageTtl``                | value → ``null``        | Info       |
++-------------------------------+-------------------------+------------+
+| ``MessageTtl``                | decrease                | Soft       |
++-------------------------------+-------------------------+------------+
+| ``MessageTtl``                | increase                | Info       |
++-------------------------------+-------------------------+------------+
+| ``EnableDeadLetterQueue``     | ``false`` → ``true``    | Info       |
++-------------------------------+-------------------------+------------+
+| ``EnableDeadLetterQueue``     | ``true`` → ``false``    | Soft       |
++-------------------------------+-------------------------+------------+
+| ``DeadLetterQueueName``       | any (when DLQ active)   | Hard       |
++-------------------------------+-------------------------+------------+
+| ``OverflowStrategy``          | → non-``RedirectToDlq`` | Info       |
++-------------------------------+-------------------------+------------+
+| ``OverflowStrategy``          | → ``RedirectToDlq``,    | Info       |
+|                               | DLQ enabled             |            |
++-------------------------------+-------------------------+------------+
+| ``OverflowStrategy``          | → ``RedirectToDlq``,    | Hard       |
+|                               | DLQ **not** enabled     |            |
++-------------------------------+-------------------------+------------+
+| ``MaxRetryAttempts``          | any                     | Info       |
++-------------------------------+-------------------------+------------+
+
+Handling QueueConflictException
+--------------------------------
+
+When ``OnConflict = Fail`` and a conflict is detected, ``ConnectAsync`` throws
+``QueueConflictException``. The exception carries the full diff for diagnostics:
+
+.. code-block:: csharp
+
+   using VibeMQ.Client.Exceptions;
+
+   try {
+       await using var client = await VibeMQClient.ConnectAsync("localhost", 8080, options);
+   } catch (QueueConflictException ex) {
+       Console.WriteLine($"Queue '{ex.QueueName}' has conflicting settings:");
+       foreach (var diff in ex.Conflicts) {
+           Console.WriteLine($"  [{diff.Severity}] {diff.SettingName}: " +
+                             $"{diff.ExistingValue} → {diff.DeclaredValue}");
+       }
+       Console.WriteLine($"Highest severity: {ex.HighestSeverity}");
+   }
+
+The ``Conflicts`` list contains only ``Soft`` and ``Hard`` diffs. ``Info`` differences are never
+included.
+
+Provisioning Errors vs. Conflicts
+----------------------------------
+
+``FailOnProvisioningError`` (default ``true``) controls what happens when a provisioning
+operation fails for a technical reason (e.g. network timeout, broker error) — not for a conflict.
+Set it to ``false`` to let the client skip that queue and continue connecting:
+
+.. code-block:: csharp
+
+   options.DeclareQueue("non-critical-cache",
+       q => q.MaxQueueSize = 10_000,
+       onConflict: QueueConflictResolution.Ignore,
+       failOnError: false   // skip on error, do not abort connection
+   );
+
+.. note::
+
+   ``FailOnProvisioningError`` never suppresses ``QueueConflictException``. Conflicts always
+   propagate regardless of this flag.
+
+Pre-flight Validation
+---------------------
+
+The client validates declarations **before** establishing a TCP connection. An
+``InvalidOperationException`` is thrown immediately if a declaration contains an incompatible
+combination of options, such as ``OverflowStrategy = RedirectToDlq`` without
+``EnableDeadLetterQueue = true``:
+
+.. code-block:: csharp
+
+   // This throws before any network call is made:
+   options.DeclareQueue("bad-queue", q => {
+       q.OverflowStrategy     = OverflowStrategy.RedirectToDlq;
+       q.EnableDeadLetterQueue = false; // ← invalid
+   });
+
+Reconnect Behavior
+------------------
+
+On automatic reconnect, the client re-runs provisioning with a forced ``Ignore`` strategy for
+all declarations. This ensures missing queues are recreated (e.g. after a server restart that
+lost in-memory data) without aborting the reconnect due to a conflict detected on a previous
+connection.
+
+Queue Declarations with Dependency Injection
+---------------------------------------------
+
+Call ``DeclareQueue`` directly on ``settings.ClientOptions``:
+
+.. code-block:: csharp
+
+   services.AddVibeMQClient(settings => {
+       settings.Host = "localhost";
+       settings.Port = 8080;
+
+       settings.ClientOptions
+           .DeclareQueue("orders", q => {
+               q.Mode                  = DeliveryMode.FanOutWithAck;
+               q.EnableDeadLetterQueue = true;
+               q.MessageTtl            = TimeSpan.FromHours(24);
+           }, onConflict: QueueConflictResolution.Fail)
+
+           .DeclareQueue("notifications",
+               onConflict: QueueConflictResolution.Ignore,
+               failOnError: false);
+   });
+
+Creating Queues Manually
+========================
+
+You can also create individual queues at any point after connecting:
 
 .. code-block:: csharp
 
@@ -323,7 +529,12 @@ You can create queues explicitly before publishing or subscribing:
 
 .. note::
 
-   The client (``IVibeMQClient``) also provides ``DeleteQueueAsync``, ``GetQueueInfoAsync``, and ``ListQueuesAsync``. On the server, the same operations are implemented via ``IQueueManager``. Queues are typically created automatically when publishing to a non-existent queue (if ``EnableAutoCreate`` is enabled on the server) or you can create them explicitly with ``CreateQueueAsync``.
+   Prefer :ref:`queue declarations <queue-declarations>` for queues that must exist at startup.
+   Use ``CreateQueueAsync`` for queues created dynamically at runtime.
+
+   ``GetQueueInfoAsync``, ``DeleteQueueAsync``, and ``ListQueuesAsync`` are also available on
+   ``IVibeMQClient``. When ``EnableAutoCreate`` is enabled on the server, queues are created
+   automatically on the first publish even if not declared.
 
 Client Settings
 ===============

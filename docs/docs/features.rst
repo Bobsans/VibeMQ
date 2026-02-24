@@ -283,25 +283,107 @@ Deleting a Queue
 Getting Information
 -------------------
 
+``GetQueueInfoAsync`` returns a complete snapshot of a queue's current state, including all
+configuration settings:
+
 .. code-block:: csharp
 
-   var info = await queueManager.GetQueueInfoAsync("my-queue");
+   var info = await client.GetQueueInfoAsync("orders");
 
-   Console.WriteLine($"Queue: {info.Name}");
-   Console.WriteLine($"Messages: {info.MessageCount}");
-   Console.WriteLine($"Subscribers: {info.SubscriberCount}");
-   Console.WriteLine($"Mode: {info.DeliveryMode}");
+   if (info is null) {
+       Console.WriteLine("Queue does not exist.");
+       return;
+   }
+
+   // Runtime state
+   Console.WriteLine($"Name:             {info.Name}");
+   Console.WriteLine($"Messages:         {info.MessageCount}");
+   Console.WriteLine($"Subscribers:      {info.SubscriberCount}");
+   Console.WriteLine($"Created:          {info.CreatedAt:u}");
+
+   // Configuration
+   Console.WriteLine($"Mode:             {info.DeliveryMode}");
+   Console.WriteLine($"Max size:         {info.MaxSize}");
+   Console.WriteLine($"Message TTL:      {info.MessageTtl?.ToString() ?? "none"}");
+   Console.WriteLine($"DLQ enabled:      {info.EnableDeadLetterQueue}");
+   Console.WriteLine($"DLQ name:         {info.DeadLetterQueueName ?? "auto"}");
+   Console.WriteLine($"Overflow:         {info.OverflowStrategy}");
+   Console.WriteLine($"Max retries:      {info.MaxRetryAttempts}");
+
+**QueueInfo fields:**
+
++---------------------------+----------------------+---------------------------------------------+
+| Field                     | Type                 | Description                                 |
++===========================+======================+=============================================+
+| ``Name``                  | ``string``           | Queue name.                                 |
++---------------------------+----------------------+---------------------------------------------+
+| ``MessageCount``          | ``int``              | Messages currently waiting in the queue.    |
++---------------------------+----------------------+---------------------------------------------+
+| ``SubscriberCount``       | ``int``              | Number of active subscribers.               |
++---------------------------+----------------------+---------------------------------------------+
+| ``CreatedAt``             | ``DateTime``         | UTC timestamp of queue creation.            |
++---------------------------+----------------------+---------------------------------------------+
+| ``DeliveryMode``          | ``DeliveryMode``     | Delivery mode configured for the queue.     |
++---------------------------+----------------------+---------------------------------------------+
+| ``MaxSize``               | ``int``              | Maximum message capacity.                   |
++---------------------------+----------------------+---------------------------------------------+
+| ``MessageTtl``            | ``TimeSpan?``        | Per-message time-to-live. ``null`` = no TTL.|
++---------------------------+----------------------+---------------------------------------------+
+| ``EnableDeadLetterQueue`` | ``bool``             | Whether a DLQ is enabled.                   |
++---------------------------+----------------------+---------------------------------------------+
+| ``DeadLetterQueueName``   | ``string?``          | DLQ name. ``null`` = auto-generated.        |
++---------------------------+----------------------+---------------------------------------------+
+| ``OverflowStrategy``      | ``OverflowStrategy`` | Action taken when the queue is full.        |
++---------------------------+----------------------+---------------------------------------------+
+| ``MaxRetryAttempts``      | ``int``              | Delivery attempts before DLQ routing.       |
++---------------------------+----------------------+---------------------------------------------+
 
 List Queues
 -----------
 
 .. code-block:: csharp
 
-   var queues = await queueManager.ListQueuesAsync();
+   var queues = await client.ListQueuesAsync();
 
    foreach (var queueName in queues) {
        Console.WriteLine(queueName);
    }
+
+Queue Declarations
+------------------
+
+Instead of calling ``CreateQueueAsync`` manually, you can declare all queues your application
+needs as part of ``ClientOptions``. On every ``ConnectAsync`` the client:
+
+1. Creates any queue that does not yet exist.
+2. Compares the declared settings against the live queue and classifies each difference as
+   ``Info``, ``Soft``, or ``Hard``.
+3. Applies the ``OnConflict`` strategy (``Ignore``, ``Fail``, or ``Override``) for any
+   ``Soft`` or ``Hard`` differences found.
+
+.. code-block:: csharp
+
+   await using var client = await VibeMQClient.ConnectAsync(
+       "localhost",
+       8080,
+       new ClientOptions()
+           // Production queue — any drift is a deploy error
+           .DeclareQueue("orders", q => {
+               q.Mode                  = DeliveryMode.FanOutWithAck;
+               q.MaxQueueSize          = 50_000;
+               q.EnableDeadLetterQueue = true;
+               q.MessageTtl            = TimeSpan.FromHours(24);
+           }, onConflict: QueueConflictResolution.Fail)
+
+           // Analytics — drift is acceptable
+           .DeclareQueue("analytics-events", q => {
+               q.MaxQueueSize     = 200_000;
+               q.OverflowStrategy = OverflowStrategy.DropOldest;
+           })
+   );
+
+See :doc:`client-usage` for a full description of conflict resolution, the ``QueueConflictException``
+type, and DI integration.
 
 Message Priorities
 ==================
@@ -387,17 +469,17 @@ The client automatically reconnects when the connection is lost.
 
 **Parameters:**
 
-+------------------------+------------------+------------------------------------------+
-| Parameter              | Default          | Description                              |
-+========================+==================+==========================================+
-| ``MaxAttempts``        | int.MaxValue     | Maximum number of attempts               |
-+------------------------+------------------+------------------------------------------+
-| ``InitialDelay``       | 1s               | Initial delay                            |
-+------------------------+------------------+------------------------------------------+
-| ``MaxDelay``           | 5min             | Maximum delay                            |
-+------------------------+------------------+------------------------------------------+
-| ``UseExponentialBackoff`` | true          | Exponential increase                     |
-+------------------------+------------------+------------------------------------------+
++---------------------------+------------------+------------------------------------------+
+| Parameter                 | Default          | Description                              |
++===========================+==================+==========================================+
+| ``MaxAttempts``           | int.MaxValue     | Maximum number of attempts               |
++---------------------------+------------------+------------------------------------------+
+| ``InitialDelay``          | 1s               | Initial delay                            |
++---------------------------+------------------+------------------------------------------+
+| ``MaxDelay``              | 5min             | Maximum delay                            |
++---------------------------+------------------+------------------------------------------+
+| ``UseExponentialBackoff`` | true             | Exponential increase                     |
++---------------------------+------------------+------------------------------------------+
 
 Authentication
 ==============
@@ -474,17 +556,17 @@ Overload protection:
 
 **Parameters:**
 
-+------------------------+------------------+------------------------------------------+
-| Parameter              | Default          | Description                              |
-+========================+==================+==========================================+
-| ``Enabled``            | true             | Enable rate limiting                     |
-+------------------------+------------------+------------------------------------------+
-| ``MaxConnectionsPerIpPerWindow`` | 20     | Max connections per IP per window        |
-+------------------------+------------------+------------------------------------------+
-| ``ConnectionWindow``   | 60s              | Time window (seconds)                    |
-+------------------------+------------------+------------------------------------------+
-| ``MaxMessagesPerClientPerSecond`` | 1000  | Max messages per second per client       |
-+------------------------+------------------+------------------------------------------+
++-----------------------------------+------------------+------------------------------------------+
+| Parameter                         | Default          | Description                              |
++===================================+==================+==========================================+
+| ``Enabled``                       | true             | Enable rate limiting                     |
++-----------------------------------+------------------+------------------------------------------+
+| ``MaxConnectionsPerIpPerWindow``  | 20               | Max connections per IP per window        |
++-----------------------------------+------------------+------------------------------------------+
+| ``ConnectionWindow``              | 60s              | Time window (seconds)                    |
++-----------------------------------+------------------+------------------------------------------+
+| ``MaxMessagesPerClientPerSecond`` | 1000             | Max messages per second per client       |
++-----------------------------------+------------------+------------------------------------------+
 
 Graceful Shutdown
 =================

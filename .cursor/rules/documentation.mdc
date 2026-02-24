@@ -14,35 +14,36 @@ When making any changes to the codebase, always update the documentation and tra
 
 ## Translation Workflow
 
-1. **Generate translation templates** (only for local testing): Run `make gettext` in `docs/` to generate `.pot` files
-2. **Update translation files** (only for local testing): Run `make update-po` to update `.po` files in `docs/locale/ru/LC_MESSAGES/`
+1. **Generate translation templates** (only for local testing): From `docs/` run `sphinx-build -b gettext . _build/gettext` to generate `.pot` files
+2. **Update translation files** (only for local testing): From `docs/` run `sphinx-intl update -p _build/gettext -l ru` to update `.po` files in `docs/locale/ru/LC_MESSAGES/`
 3. **Translate new strings**: Edit Russian translations in `.po` files for any new or modified strings
-4. **In repository**: Keep only `.po` files. Do not commit `.mo` files — Read the Docs compiles `.mo` during the documentation build (see `.readthedocs.yaml`)
+4. **Keep PO reference lines**: Do not remove or alter `#:` reference lines (e.g. `#: ../../docs/examples.rst:3 b90cdb1602eb41d0b4027cd928290c3f`). Sphinx uses the file path, line number and hash to match translations; keep these as generated
+5. **In repository**: Keep only `.po` files. Do not commit `.mo` files — Read the Docs compiles `.mo` during the documentation build (see `.readthedocs.yaml`)
 
 ## Cleanup After Testing
 
-After running `make gettext`, `make update-po`, or building docs locally, always remove generated artifacts:
+After running gettext/update-po or building docs locally, always remove generated artifacts:
 
-- **Remove build directory**: Delete `docs/_build/` (HTML, gettext, doctrees)
-- **Remove all .mo files**: Delete every `*.mo` under `docs/locale/` (e.g. `docs/locale/**/*.mo`)
-- **Use make clean**: Run `make clean` in `docs/` to remove build artifacts
+- **Remove build directory**: Delete `docs/_build/` (e.g. PowerShell: `Remove-Item -Recurse -Force docs\_build`)
+- **Remove all .mo files**: Delete every `*.mo` under `docs/locale/` (e.g. PowerShell: `Get-ChildItem -Path docs\locale -Filter *.mo -Recurse | Remove-Item`)
 - **Check git status**: Ensure no `_build/` or `.mo` files are staged or committed
 
-## Workflow Example
+## Workflow Example (Windows, PowerShell)
 
-```bash
+```powershell
 # 1. Make code changes
 # 2. Update .rst files in docs/docs/
 # 3. (Optional, for testing) Update translations
 cd docs
-make gettext
-make update-po
-# 4. Edit .po files with new translations
+sphinx-build -b gettext . _build/gettext
+sphinx-intl update -p _build/gettext -l ru
+# 4. Edit .po files with new translations (keep #: reference lines with hashes)
 # 5. (Optional) Test build
-make html-all
+sphinx-build -b html -D language=en . _build/html/en
+sphinx-build -b html -D language=ru . _build/html/ru
 # 6. Clean up: remove _build and all .mo files
-make clean
-# Remove .mo if present (e.g. del docs\locale\ru\LC_MESSAGES\**\*.mo on Windows)
+Remove-Item -Recurse -Force _build
+Get-ChildItem -Path locale -Filter *.mo -Recurse | Remove-Item
 cd ..
 ```
 

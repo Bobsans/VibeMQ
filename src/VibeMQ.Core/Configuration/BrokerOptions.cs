@@ -1,4 +1,6 @@
 using VibeMQ.Enums;
+using VibeMQ.Protocol;
+using VibeMQ.Protocol.Compression;
 
 namespace VibeMQ.Configuration;
 
@@ -50,4 +52,19 @@ public sealed class BrokerOptions {
     /// Storage backend type for message persistence. Default: <see cref="StorageType.InMemory"/>.
     /// </summary>
     public StorageType StorageType { get; set; } = StorageType.InMemory;
+
+    /// <summary>
+    /// Compression algorithms the broker is willing to use, in descending preference order.
+    /// The broker picks the first algorithm that the client also supports.
+    /// An empty list disables compression negotiation.
+    /// </summary>
+    public IReadOnlyList<CompressionAlgorithm> SupportedCompressions { get; set; }
+        = [CompressionAlgorithm.Brotli, CompressionAlgorithm.GZip];
+
+    /// <summary>
+    /// Minimum serialized body size in bytes required to apply compression.
+    /// Bodies smaller than this threshold are sent uncompressed even when an algorithm is negotiated.
+    /// Default: <see cref="ProtocolConstants.COMPRESSION_THRESHOLD"/> (1 KB).
+    /// </summary>
+    public int CompressionThreshold { get; set; } = ProtocolConstants.COMPRESSION_THRESHOLD;
 }

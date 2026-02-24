@@ -1,16 +1,16 @@
-# SOME DESCRIPTIVE TITLE.
+# VibeMQ Documentation (Russian).
 # Copyright (C) 2026, Darkboy
 # This file is distributed under the same license as the VibeMQ package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+# Darkboy, 2026.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: VibeMQ 1.0.0\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: https://github.com/DarkBoy/VibeMQ/issues\n"
 "POT-Creation-Date: 2026-02-20 10:37+0300\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: ru <LL@li.org>\n"
+"PO-Revision-Date: 2026-02-24 12:00+0300\n"
+"Last-Translator: Darkboy\n"
+"Language-Team: Russian <https://github.com/DarkBoy/VibeMQ>\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"

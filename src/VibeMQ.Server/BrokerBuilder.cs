@@ -44,6 +44,8 @@ public sealed class BrokerBuilder {
         _options.Tls = options.Tls;
         _options.RateLimit = options.RateLimit;
         _options.StorageType = options.StorageType;
+        _options.SupportedCompressions = options.SupportedCompressions;
+        _options.CompressionThreshold = options.CompressionThreshold;
         return this;
     }
 

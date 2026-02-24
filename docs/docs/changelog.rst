@@ -11,12 +11,39 @@ VibeMQ project change history.
 Version History
 ================
 
-Version 1.4.0
+Version 1.5.0
 -------------
 
 **Date:** February 2026
 
 **Status:** Current Stable Version
+
+**New features:**
+
+- **Queue Declarations** — declare queues in ``ClientOptions`` via ``DeclareQueue()``; client provisions or verifies queues on every ``ConnectAsync``
+- **Conflict resolution** — when a queue already exists, compare declared vs live settings; strategies ``Ignore``, ``Fail``, ``Override``; severity classification (Info, Soft, Hard)
+- **QueueConflictException** — thrown when ``OnConflict = Fail`` and drift is detected; carries full diff for diagnostics
+- **Pre-flight validation** — declarations validated before TCP connection; invalid combinations (e.g. ``RedirectToDlq`` without DLQ) throw immediately
+- **FailOnProvisioningError** — option to skip failed provisioning and continue connecting; conflicts always propagate
+
+**Documentation:**
+
+- Client usage guide: Queue Declarations, conflict resolution tables, DI integration
+- Configuration: QueueDeclarations, QueueDeclaration, QueueConflictResolution, ConflictSeverity
+- Features: GetQueueInfoAsync snapshot, Queue Declarations section
+- Russian translations updated for client-usage, configuration, features, protocol
+
+**Migration from 1.4.x:**
+
+- No breaking API changes — queue declarations are optional
+- New ``ClientOptions.DeclareQueue()`` fluent API; existing code unchanged if not using declarations
+
+Version 1.4.0
+-------------
+
+**Date:** February 2026
+
+**Status:** Stable
 
 **New features:**
 

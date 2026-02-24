@@ -320,6 +320,7 @@ ClientOptions
        public TimeSpan CommandTimeout { get; set; } = TimeSpan.FromSeconds(10);
        public bool UseTls { get; set; }
        public bool SkipCertificateValidation { get; set; }
+       public IList<QueueDeclaration> QueueDeclarations { get; set; } = [];
    }
 
 AuthToken
@@ -406,6 +407,103 @@ Skip certificate validation:
 .. warning::
 
    Do not use in production!
+
+QueueDeclarations
+~~~~~~~~~~~~~~~~~
+
+**Type:** ``IList<QueueDeclaration>``
+
+**Default:** ``[]``
+
+Queues to automatically create or verify on every ``ConnectAsync``. Use the fluent
+``DeclareQueue`` helper to populate this list:
+
+.. code-block:: csharp
+
+   new ClientOptions()
+       .DeclareQueue("orders", q => {
+           q.Mode            = DeliveryMode.FanOutWithAck;
+           q.MaxQueueSize    = 50_000;
+           q.MessageTtl      = TimeSpan.FromHours(24);
+           q.EnableDeadLetterQueue = true;
+       }, onConflict: QueueConflictResolution.Fail)
+       .DeclareQueue("audit-log",
+           onConflict: QueueConflictResolution.Ignore,
+           failOnError: false)
+
+Declarations are evaluated sequentially. See :doc:`client-usage` for full details.
+
+QueueDeclaration
+~~~~~~~~~~~~~~~~
+
+Describes a single queue to provision at connection time.
+
+.. code-block:: csharp
+
+   public sealed class QueueDeclaration {
+       public required string QueueName { get; init; }
+       public QueueOptions Options { get; init; } = new();
+       public QueueConflictResolution OnConflict { get; init; } = QueueConflictResolution.Ignore;
+       public bool FailOnProvisioningError { get; init; } = true;
+   }
+
++---------------------------+-----------------------------+----------+-------------------------------------------------------------------+
+| Property                  | Type                        | Default  | Description                                                       |
++===========================+=============================+==========+===================================================================+
+| ``QueueName``             | ``string``                  | required | Name of the queue to provision.                                   |
++---------------------------+-----------------------------+----------+-------------------------------------------------------------------+
+| ``Options``               | ``QueueOptions``            | defaults | Desired queue settings.                                           |
++---------------------------+-----------------------------+----------+-------------------------------------------------------------------+
+| ``OnConflict``            | ``QueueConflictResolution`` | Ignore   | Strategy when Soft or Hard differences are found.                 |
++---------------------------+-----------------------------+----------+-------------------------------------------------------------------+
+| ``FailOnProvisioningError`` | ``bool``                  | ``true`` | Abort ``ConnectAsync`` on provisioning errors. Set ``false`` to   |
+|                           |                             |          | log and skip instead. Does not affect conflict handling.          |
++---------------------------+-----------------------------+----------+-------------------------------------------------------------------+
+
+QueueConflictResolution
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Controls what happens when an existing queue has settings that differ from the declaration.
+Only ``Soft`` and ``Hard`` differences trigger this strategy; ``Info`` differences are always
+silently logged at Debug level.
+
+.. code-block:: csharp
+
+   public enum QueueConflictResolution { Ignore, Fail, Override }
+
++---------------+-------------------------------------------------------------------------+
+| Value         | Behavior                                                                |
++===============+=========================================================================+
+| ``Ignore``    | Keep the existing queue unchanged. Log the diff at Warning (Soft) or   |
+|               | Error (Hard) level. **Default.**                                        |
++---------------+-------------------------------------------------------------------------+
+| ``Fail``      | Throw ``QueueConflictException``. Treat settings drift as a            |
+|               | deployment error. Recommended for production.                           |
++---------------+-------------------------------------------------------------------------+
+| ``Override``  | Delete and recreate the queue with the declared settings.               |
+|               | **All existing messages are permanently lost.** Use with caution.       |
++---------------+-------------------------------------------------------------------------+
+
+ConflictSeverity
+~~~~~~~~~~~~~~~~
+
+Severity level assigned to each setting difference.
+
+.. code-block:: csharp
+
+   public enum ConflictSeverity { Info, Soft, Hard }
+
++----------+-------+----------------------------------------------------------------------+
+| Value    | Logs  | Description                                                          |
++==========+=======+======================================================================+
+| ``Info`` | Debug | Additive or neutral change. Not a conflict; ``OnConflict``           |
+|          |       | is never triggered.                                                  |
++----------+-------+----------------------------------------------------------------------+
+| ``Soft`` | Warn  | Behavioral change that may affect in-flight messages.                |
+|          |       | ``OnConflict`` is applied.                                           |
++----------+-------+----------------------------------------------------------------------+
+| ``Hard`` | Error | Breaking semantic change. ``OnConflict`` is applied.                 |
++----------+-------+----------------------------------------------------------------------+
 
 ReconnectPolicy
 ---------------

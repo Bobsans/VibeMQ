@@ -2,6 +2,7 @@ using System.Net;
 using System.Net.Sockets;
 using Microsoft.Extensions.Logging;
 using VibeMQ.Protocol;
+using VibeMQ.Protocol.Compression;
 using VibeMQ.Protocol.Framing;
 
 namespace VibeMQ.Server.Connections;
@@ -17,6 +18,7 @@ public sealed partial class ClientConnection : IAsyncDisposable {
     private readonly ILogger _logger;
     private readonly int _maxMessageSize;
     private readonly SemaphoreSlim _writeLock = new(1, 1);
+    private readonly FrameWriter _frameWriter = new();
     private int _disposed;
 
     public ClientConnection(
@@ -78,6 +80,16 @@ public sealed partial class ClientConnection : IAsyncDisposable {
     }
 
     /// <summary>
+    /// Activates compression for outgoing frames on this connection.
+    /// Call this after compression has been negotiated in the Connect handshake.
+    /// </summary>
+    /// <param name="algorithm">Agreed compression algorithm.</param>
+    /// <param name="threshold">Minimum body size in bytes to apply compression.</param>
+    public void SetCompression(CompressionAlgorithm algorithm, int threshold) {
+        _frameWriter.SetCompression(algorithm, threshold);
+    }
+
+    /// <summary>
     /// Reads the next protocol message from the connection.
     /// Returns null if the connection was closed gracefully.
     /// </summary>
@@ -99,7 +111,7 @@ public sealed partial class ClientConnection : IAsyncDisposable {
         await _writeLock.WaitAsync(cancellationToken).ConfigureAwait(false);
 
         try {
-            await FrameWriter.WriteFrameAsync(_stream, message, cancellationToken).ConfigureAwait(false);
+            await _frameWriter.WriteFrameAsync(_stream, message, cancellationToken).ConfigureAwait(false);
             LastActivity = DateTime.UtcNow;
         } finally {
             _writeLock.Release();

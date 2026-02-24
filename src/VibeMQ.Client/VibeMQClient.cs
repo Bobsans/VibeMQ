@@ -1,14 +1,17 @@
 using System.Collections.Concurrent;
 using System.Net.Security;
 using System.Net.Sockets;
+using System.Text;
 using System.Text.Json;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
+using VibeMQ.Client.Exceptions;
 using VibeMQ.Configuration;
 using VibeMQ.Interfaces;
 using VibeMQ.Models;
 using VibeMQ.Protocol;
+using VibeMQ.Protocol.Compression;
 using VibeMQ.Protocol.Framing;
 
 namespace VibeMQ.Client;
@@ -24,6 +27,8 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
     private readonly ConcurrentDictionary<string, SubscriptionRegistration> _subscriptionHandlers = new();
     private readonly ConcurrentDictionary<string, TaskCompletionSource<ProtocolMessage>> _pendingResponses = new();
     private readonly SemaphoreSlim _connectLock = new(1, 1);
+
+    private readonly FrameWriter _frameWriter = new();
 
     private string _host = string.Empty;
     private int _port;
@@ -70,7 +75,12 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
         IServiceProvider? serviceProvider,
         CancellationToken cancellationToken
     ) {
-        var client = new VibeMQClient(options ?? new ClientOptions(), logger, serviceProvider);
+        var opts = options ?? new ClientOptions();
+
+        // Pre-flight: validate declarations before attempting connection
+        opts.ValidateDeclarations();
+
+        var client = new VibeMQClient(opts, logger, serviceProvider);
         client._host = host;
         client._port = port;
 
@@ -437,8 +447,11 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
         _connectLock.Dispose();
     }
 
-    private async Task ConnectInternalAsync(CancellationToken cancellationToken) {
+    private async Task ConnectInternalAsync(CancellationToken cancellationToken, bool isReconnect = false) {
         LogConnecting(_host, _port);
+
+        // Reset compression so the handshake itself is always uncompressed
+        _frameWriter.SetCompression(CompressionAlgorithm.None);
 
         _tcpClient = new TcpClient();
         await _tcpClient.ConnectAsync(_host, _port, cancellationToken).ConfigureAwait(false);
@@ -458,32 +471,42 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
         _stream = stream;
         _cts = new CancellationTokenSource();
 
-        // Authenticate if required
+        // Build Connect headers (auth + compression preference)
+        var connectHeaders = new Dictionary<string, string>();
+
         if (!string.IsNullOrEmpty(_options.AuthToken)) {
-            var connectMsg = new ProtocolMessage {
-                Type = CommandType.Connect,
-                Headers = new Dictionary<string, string> {
-                    ["authToken"] = _options.AuthToken,
-                },
-            };
+            connectHeaders["authToken"] = _options.AuthToken;
+        }
 
-            await FrameWriter.WriteFrameAsync(_stream, connectMsg, cancellationToken).ConfigureAwait(false);
-            var response = await FrameReader.ReadFrameAsync(_stream, ProtocolConstants.DEFAULT_MAX_MESSAGE_SIZE, cancellationToken)
-                .ConfigureAwait(false);
+        if (_options.PreferredCompressions.Count > 0) {
+            connectHeaders["supported-compression"] = string.Join(
+                ",",
+                _options.PreferredCompressions.Select(CompressorFactory.Serialize)
+            );
+        }
 
-            if (response is null || response.Type == CommandType.Error) {
-                throw new InvalidOperationException($"Authentication failed: {response?.ErrorMessage ?? "no response"}");
-            }
-        } else {
-            // Send Connect without auth
-            var connectMsg = new ProtocolMessage { Type = CommandType.Connect };
-            await FrameWriter.WriteFrameAsync(_stream, connectMsg, cancellationToken).ConfigureAwait(false);
-            var response = await FrameReader.ReadFrameAsync(_stream, ProtocolConstants.DEFAULT_MAX_MESSAGE_SIZE, cancellationToken)
-                .ConfigureAwait(false);
+        var connectMsg = new ProtocolMessage {
+            Type = CommandType.Connect,
+            Headers = connectHeaders.Count > 0 ? connectHeaders : null,
+        };
 
-            if (response is null || response.Type == CommandType.Error) {
-                throw new InvalidOperationException($"Connection failed: {response?.ErrorMessage ?? "no response"}");
-            }
+        await _frameWriter.WriteFrameAsync(_stream, connectMsg, cancellationToken).ConfigureAwait(false);
+
+        var response = await FrameReader.ReadFrameAsync(_stream, ProtocolConstants.DEFAULT_MAX_MESSAGE_SIZE, cancellationToken)
+            .ConfigureAwait(false);
+
+        if (response is null || response.Type == CommandType.Error) {
+            var reason = response?.ErrorMessage ?? "no response";
+            throw new InvalidOperationException($"Connection failed: {reason}");
+        }
+
+        // Apply negotiated compression for subsequent outgoing frames
+        var negotiated = response.Headers?.GetValueOrDefault("negotiated-compression");
+        var algorithm = CompressorFactory.Parse(negotiated) ?? CompressionAlgorithm.None;
+
+        if (algorithm != CompressionAlgorithm.None) {
+            _frameWriter.SetCompression(algorithm, _options.CompressionThreshold);
+            LogCompressionNegotiated(algorithm);
         }
 
         _isConnected = true;
@@ -491,6 +514,18 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
         // Start background tasks
         _readLoopTask = ReadLoopAsync(_cts.Token);
         _keepAliveTask = KeepAliveLoopAsync(_cts.Token);
+
+        // Provision declared queues (requires the read loop to be running for request/response)
+        if (_options.QueueDeclarations.Count > 0) {
+            try {
+                await ProvisionQueuesAsync(isReconnect, cancellationToken).ConfigureAwait(false);
+            } catch {
+                // Provisioning failed: clean up the established connection and rethrow
+                await _cts.CancelAsync().ConfigureAwait(false);
+                CleanupConnection();
+                throw;
+            }
+        }
 
         LogConnected(_host, _port);
     }
@@ -600,7 +635,7 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
 
             try {
                 CleanupConnection();
-                await ConnectInternalAsync(CancellationToken.None).ConfigureAwait(false);
+                await ConnectInternalAsync(CancellationToken.None, isReconnect: true).ConfigureAwait(false);
 
                 // Resubscribe to all active queues
                 foreach (var queueName in _subscriptionHandlers.Keys) {
@@ -618,6 +653,91 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
         }
 
         LogReconnectGaveUp(policy.MaxAttempts);
+    }
+
+    private async Task ProvisionQueuesAsync(bool isReconnect, CancellationToken cancellationToken) {
+        foreach (var declaration in _options.QueueDeclarations) {
+            try {
+                await ProvisionSingleQueueAsync(declaration, isReconnect, cancellationToken).ConfigureAwait(false);
+            } catch (QueueConflictException) {
+                throw; // Always propagate conflict exceptions regardless of FailOnProvisioningError
+            } catch (Exception ex) when (!declaration.FailOnProvisioningError) {
+                LogProvisioningError(declaration.QueueName, ex);
+            }
+        }
+    }
+
+    private async Task ProvisionSingleQueueAsync(
+        QueueDeclaration declaration,
+        bool isReconnect,
+        CancellationToken cancellationToken
+    ) {
+        var existing = await GetQueueInfoAsync(declaration.QueueName, cancellationToken).ConfigureAwait(false);
+
+        if (existing is null) {
+            await CreateQueueAsync(declaration.QueueName, declaration.Options, cancellationToken).ConfigureAwait(false);
+            LogQueueProvisioned(declaration.QueueName);
+            return;
+        }
+
+        // On reconnect, conflicts are suppressed — only ensure the queue exists
+        var resolution = isReconnect ? QueueConflictResolution.Ignore : declaration.OnConflict;
+
+        var allDiffs = QueueSettingDiffAnalyzer.Analyze(declaration.Options, existing);
+        var conflicts = allDiffs.Where(d => d.Severity > ConflictSeverity.Info).ToList();
+
+        // Log info-only diffs at Debug
+        foreach (var diff in allDiffs.Where(d => d.Severity == ConflictSeverity.Info)) {
+            LogSettingInfoDiff(declaration.QueueName, diff.SettingName, diff.ExistingValue, diff.DeclaredValue);
+        }
+
+        if (conflicts.Count == 0) {
+            return; // Idempotent
+        }
+
+        var maxSeverity = conflicts.Max(d => d.Severity);
+        var diffSummary = BuildDiffSummary(declaration.QueueName, conflicts);
+
+        switch (resolution) {
+            case QueueConflictResolution.Ignore:
+                if (maxSeverity == ConflictSeverity.Hard) {
+                    LogConflictError(diffSummary);
+                } else {
+                    LogConflictWarning(diffSummary);
+                }
+                break;
+
+            case QueueConflictResolution.Fail:
+                throw new QueueConflictException(declaration.QueueName, conflicts);
+
+            case QueueConflictResolution.Override:
+                if (maxSeverity == ConflictSeverity.Hard) {
+                    LogOverrideHard(declaration.QueueName);
+                } else {
+                    LogOverrideSoft(declaration.QueueName);
+                }
+                await DeleteQueueAsync(declaration.QueueName, cancellationToken).ConfigureAwait(false);
+                await CreateQueueAsync(declaration.QueueName, declaration.Options, cancellationToken).ConfigureAwait(false);
+                LogQueueProvisioned(declaration.QueueName);
+                break;
+        }
+    }
+
+    private static string BuildDiffSummary(string queueName, IReadOnlyList<QueueSettingDiff> conflicts) {
+        var severities = conflicts.Select(c => c.Severity.ToString()).Distinct().OrderByDescending(s => s);
+        var sb = new StringBuilder();
+        sb.Append(System.Globalization.CultureInfo.InvariantCulture,
+            $"Queue '{queueName}' has conflicting settings [{string.Join(", ", severities)}]:");
+
+        foreach (var diff in conflicts) {
+            sb.AppendLine();
+            var existing = diff.ExistingValue is null ? "null" : diff.ExistingValue.ToString()!;
+            var declared = diff.DeclaredValue is null ? "null" : diff.DeclaredValue.ToString()!;
+            sb.Append(System.Globalization.CultureInfo.InvariantCulture,
+                $"  [{diff.Severity}] {diff.SettingName,-20} {existing,-15} →  {declared}  (declared)");
+        }
+
+        return sb.ToString();
     }
 
     private async Task<ProtocolMessage> SendAndWaitAsync(ProtocolMessage message, CancellationToken cancellationToken) {
@@ -648,7 +768,7 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
             throw new InvalidOperationException("Not connected to broker.");
         }
 
-        await FrameWriter.WriteFrameAsync(_stream, message, cancellationToken).ConfigureAwait(false);
+        await _frameWriter.WriteFrameAsync(_stream, message, cancellationToken).ConfigureAwait(false);
     }
 
     private void CleanupConnection() {
@@ -709,6 +829,30 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
 
     [LoggerMessage(Level = LogLevel.Error, Message = "Reconnect gave up after {maxAttempts} attempts.")]
     private partial void LogReconnectGaveUp(int maxAttempts);
+
+    [LoggerMessage(Level = LogLevel.Debug, Message = "Compression negotiated with broker: {algorithm}.")]
+    private partial void LogCompressionNegotiated(CompressionAlgorithm algorithm);
+
+    [LoggerMessage(Level = LogLevel.Debug, Message = "Queue '{queueName}' provisioned successfully.")]
+    private partial void LogQueueProvisioned(string queueName);
+
+    [LoggerMessage(Level = LogLevel.Error, Message = "Provisioning queue '{queueName}' failed; continuing because FailOnProvisioningError is false.")]
+    private partial void LogProvisioningError(string queueName, Exception exception);
+
+    [LoggerMessage(Level = LogLevel.Warning, Message = "Queue '{queueName}' settings mismatch (Soft conflict), overriding as per OnConflict=Override.")]
+    private partial void LogOverrideSoft(string queueName);
+
+    [LoggerMessage(Level = LogLevel.Warning, Message = "Queue '{queueName}' settings mismatch (Hard conflict), overriding as per OnConflict=Override.")]
+    private partial void LogOverrideHard(string queueName);
+
+    [LoggerMessage(Level = LogLevel.Debug, Message = "Queue '{queueName}' setting '{settingName}': {existingValue} → {declaredValue} (Info, not a conflict).")]
+    private partial void LogSettingInfoDiff(string queueName, string settingName, object? existingValue, object? declaredValue);
+
+    [LoggerMessage(Level = LogLevel.Warning, Message = "{diffSummary}")]
+    private partial void LogConflictWarning(string diffSummary);
+
+    [LoggerMessage(Level = LogLevel.Error, Message = "{diffSummary}")]
+    private partial void LogConflictError(string diffSummary);
 
     private sealed class SubscriptionRegistration : IAsyncDisposable {
         private Func<ProtocolMessage, CancellationToken, Task> _handler;

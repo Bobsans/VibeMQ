@@ -127,6 +127,11 @@ public sealed class MessageQueue {
             DeliveryMode = Options.Mode,
             MaxSize = Options.MaxQueueSize,
             CreatedAt = CreatedAt,
+            MessageTtl = Options.MessageTtl,
+            EnableDeadLetterQueue = Options.EnableDeadLetterQueue,
+            DeadLetterQueueName = Options.DeadLetterQueueName,
+            OverflowStrategy = Options.OverflowStrategy,
+            MaxRetryAttempts = Options.MaxRetryAttempts,
         };
     }
 
