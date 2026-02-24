@@ -86,12 +86,11 @@ Apply this skill when the user wants to:
      ```powershell
      git tag -a vX.Y.Z -m "Release vX.Y.Z"
      ```
-   - **Step C — Push together:** Push the branch and the tag in one go so the remote has both the commit and the tag. This ensures the release workflow sees the correct tree for building docs and NuGet packages.
+   - **Step C — Push together:** Push the branch and the tag in one command using `--tags` flag so the remote has both the commit and the tag. This ensures the release workflow sees the correct tree for building docs and NuGet packages.
      ```powershell
-     git push origin main
-     git push origin vX.Y.Z
+     git push origin main --tags
      ```
-     Or push branch and all tags: `git push origin main --follow-tags`
+     This pushes `main` branch and all tags (including the release tag) in one operation.
    - **Rationale:** If you push the tag before the commit, or push the tag from another machine, the tag might point to an older commit and the release build would use outdated docs/code. Always: commit first, then tag that commit locally, then push both.
 
 8. **Create the tag (local only, see step 7 for order)**
@@ -108,12 +107,11 @@ Apply this skill when the user wants to:
    - Create the tag **only after** the release commit exists locally; do not push until step 9.
 
 9. **Push branch and tag** (after commit and tag are created locally)
-   - Push branch first, then tag:
+   - Push branch and tag together using `--tags` flag:
      ```powershell
-     git push origin main
-     git push origin vX.Y.Z
+     git push origin main --tags
      ```
-   - Or: `git push origin main --follow-tags` (pushes `main` and any tags that point to commits on it)
+   - This pushes `main` branch and all tags (including the release tag) in one command.
    - Pushing the tag triggers the [Release workflow](.github/workflows/release.yml):
      - Builds and tests the project
      - Creates NuGet packages
@@ -131,10 +129,8 @@ git commit -m "feat(release): prepare v1.5.0" -m "Queue declarations, compressio
 # 2. Tag locally (points to the commit above)
 git tag -a v1.5.0 -m "Release v1.5.0"
 
-# 3. Push branch and tag together
-git push origin main
-git push origin v1.5.0
-# Or: git push origin main --follow-tags
+# 3. Push branch and tag together (use --tags flag)
+git push origin main --tags
 ```
 
 **Other commands:**
@@ -149,8 +145,8 @@ git tag -l 'v1.0.0'
 # Create annotated tag (after commit, before push)
 git tag -a v1.0.0 -m "Release v1.0.0"
 
-# Push tag to origin (after pushing main)
-git push origin v1.0.0
+# Push branch and tags together (preferred for releases)
+git push origin main --tags
 
 # Verify tag was created
 git show v1.0.0
