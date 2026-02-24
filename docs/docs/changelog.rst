@@ -11,12 +11,35 @@ VibeMQ project change history.
 Version History
 ================
 
-Version 1.3.0
+Version 1.4.0
 -------------
 
 **Date:** February 2026
 
 **Status:** Current Stable Version
+
+**New features:**
+
+- **Frame-level compression** — optional GZip and Brotli compression for protocol frames (negotiated at Connect handshake, configurable threshold)
+- **Protocol 1.1** — frame header extended with compression flags byte; mixed-compression streams supported per frame
+- **BrokerOptions** — ``SupportedCompressions``, ``CompressionThreshold``; **ClientOptions** — ``PreferredCompressions``, ``CompressionThreshold``
+
+**Documentation:**
+
+- Protocol guide updated with framing format, compression flags, negotiation, and configuration
+- Russian translations updated and corrected for protocol, configuration, FAQ, features, and server-setup
+
+**Migration from 1.3.x:**
+
+- No breaking API changes — compression is optional; set empty ``SupportedCompressions`` / ``PreferredCompressions`` to disable
+- Protocol version 1.1 adds a compression flags byte to each frame; all clients and servers must use the new frame format
+
+Version 1.3.0
+-------------
+
+**Date:** February 2026
+
+**Status:** Stable
 
 **New features:**
 
