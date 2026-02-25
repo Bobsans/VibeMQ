@@ -15,8 +15,10 @@ var host = Host.CreateDefaultBuilder(args)
     .ConfigureServices(services => {
         services.AddVibeMQClient(settings => {
             settings.Host = "localhost";
-            settings.Port = 8080;
-            settings.ClientOptions.AuthToken = "my-secret-token";
+            settings.Port = 2925;
+    #pragma warning disable CS0618
+        settings.ClientOptions.AuthToken = "my-secret-token";
+#pragma warning restore CS0618
             settings.ClientOptions.ReconnectPolicy = new ReconnectPolicy {
                 MaxAttempts = 5,
                 UseExponentialBackoff = true,
@@ -37,7 +39,7 @@ Console.WriteLine();
 
 var factory = host.Services.GetRequiredService<IVibeMQClientFactory>();
 
-Console.WriteLine("Connecting to broker at localhost:8080...");
+Console.WriteLine("Connecting to broker at localhost:2925...");
 await using var client = await factory.CreateAsync();
 Console.WriteLine("Connected!");
 Console.WriteLine();

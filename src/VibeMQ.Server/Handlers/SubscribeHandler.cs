@@ -1,6 +1,8 @@
 using Microsoft.Extensions.Logging;
+using VibeMQ.Enums;
 using VibeMQ.Interfaces;
 using VibeMQ.Protocol;
+using VibeMQ.Server.Auth;
 using VibeMQ.Server.Connections;
 
 namespace VibeMQ.Server.Handlers;
@@ -10,10 +12,12 @@ namespace VibeMQ.Server.Handlers;
 /// </summary>
 public sealed partial class SubscribeHandler : ICommandHandler {
     private readonly IQueueManager _queueManager;
+    private readonly IAuthorizationService? _authz;
     private readonly ILogger<SubscribeHandler> _logger;
 
-    public SubscribeHandler(IQueueManager queueManager, ILogger<SubscribeHandler> logger) {
+    public SubscribeHandler(IQueueManager queueManager, IAuthorizationService? authz, ILogger<SubscribeHandler> logger) {
         _queueManager = queueManager;
+        _authz = authz;
         _logger = logger;
     }
 
@@ -25,7 +29,13 @@ public sealed partial class SubscribeHandler : ICommandHandler {
         CancellationToken cancellationToken = default
     ) {
         if (string.IsNullOrEmpty(message.Queue)) {
-            await connection.SendErrorAsync("INVALID_QUEUE", "Queue name is required for subscribe.", cancellationToken)
+            await connection.SendErrorAsync(message.Id, "INVALID_QUEUE", "Queue name is required for subscribe.", cancellationToken)
+                .ConfigureAwait(false);
+            return;
+        }
+
+        if (_authz is not null && !await _authz.IsAuthorizedAsync(connection, QueueOperation.Subscribe, message.Queue, cancellationToken).ConfigureAwait(false)) {
+            await connection.SendErrorAsync(message.Id, "NOT_AUTHORIZED", "Access denied.", cancellationToken)
                 .ConfigureAwait(false);
             return;
         }

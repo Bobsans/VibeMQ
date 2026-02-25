@@ -10,7 +10,7 @@ public sealed class HealthCheckOptions {
     public bool Enabled { get; set; } = true;
 
     /// <summary>
-    /// HTTP port for health check requests. Default: 8081.
+    /// HTTP port for health check requests. Default: 2926 (broker port + 1).
     /// </summary>
-    public int Port { get; set; } = 8081;
+    public int Port { get; set; } = 2926;
 }

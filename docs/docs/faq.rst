@@ -175,7 +175,7 @@ How to run in Docker?
 
    FROM mcr.microsoft.com/dotnet/runtime:8.0
    WORKDIR /app
-   EXPOSE 8080 8081
+   EXPOSE 2925 2926
    COPY . .
    ENTRYPOINT ["dotnet", "VibeMQ.Server.dll"]
 
@@ -184,7 +184,7 @@ How to run in Docker?
 .. code-block:: bash
 
    docker build -t vibemq-server .
-   docker run -p 8080:8080 -p 8081:8081 vibemq-server
+   docker run -p 2925:2925 -p 2926:2926 vibemq-server
 
 How to use with Kubernetes?
 ------------------------------
@@ -208,12 +208,12 @@ How to use with Kubernetes?
          - name: vibemq
            image: vibemq-server:latest
            ports:
-           - containerPort: 8080
-           - containerPort: 8081
+           - containerPort: 2925
+           - containerPort: 2926
            livenessProbe:
              httpGet:
                path: /health/
-               port: 8081
+               port: 2926
              initialDelaySeconds: 10
              periodSeconds: 10
 
@@ -225,7 +225,7 @@ How to configure for production?
 .. code-block:: csharp
 
    var broker = BrokerBuilder.Create()
-       .UsePort(8080)
+       .UsePort(2925)
        .UseAuthentication(Environment.GetEnvironmentVariable("VIBEMQ_TOKEN"))
        .UseMaxConnections(5000)
        .ConfigureQueues(options => {
@@ -243,7 +243,7 @@ How to configure for production?
        })
        .ConfigureHealthChecks(options => {
            options.Enabled = true;
-           options.Port = 8081;
+           options.Port = 2926;
        })
        .Build();
 
@@ -360,13 +360,13 @@ How to use with ASP.NET Core?
 
    // Server
    builder.Services.AddVibeMQBroker(options => {
-       options.Port = 8080;
+       options.Port = 2925;
    });
 
    // Client
    builder.Services.AddVibeMQClient(settings => {
        settings.Host = "localhost";
-       settings.Port = 8080;
+       settings.Port = 2925;
    });
 
    var app = builder.Build();
@@ -384,7 +384,7 @@ How to use with Worker Service?
            services.AddHostedService<Worker>();
            services.AddVibeMQClient(settings => {
                settings.Host = "localhost";
-               settings.Port = 8080;
+               settings.Port = 2925;
            });
        })
        .Build();

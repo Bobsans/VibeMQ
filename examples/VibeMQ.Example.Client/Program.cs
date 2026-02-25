@@ -23,9 +23,10 @@ Console.WriteLine("╚═══════════════════�
 Console.WriteLine();
 
 // Connect to broker
-Console.WriteLine("Connecting to broker at localhost:8080...");
+Console.WriteLine("Connecting to broker at localhost:2925...");
 
-await using var client = await VibeMQClient.ConnectAsync("localhost", 8080, new ClientOptions {
+#pragma warning disable CS0618
+await using var client = await VibeMQClient.ConnectAsync("localhost", 2925, new ClientOptions {
     AuthToken = "my-secret-token",
     ReconnectPolicy = new ReconnectPolicy {
         MaxAttempts = 5,
@@ -33,6 +34,7 @@ await using var client = await VibeMQClient.ConnectAsync("localhost", 8080, new 
     },
     KeepAliveInterval = TimeSpan.FromSeconds(30),
 }, logger);
+#pragma warning restore CS0618
 
 Console.WriteLine("Connected!");
 Console.WriteLine();

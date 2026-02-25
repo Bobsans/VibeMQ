@@ -13,7 +13,7 @@ public class ClientDependencyInjectionTests {
         services.AddLogging();
         services.AddVibeMQClient(settings => {
             settings.Host = "localhost";
-            settings.Port = 8080;
+            settings.Port = 2925;
         });
         var provider = services.BuildServiceProvider();
 

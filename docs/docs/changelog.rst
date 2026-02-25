@@ -11,6 +11,40 @@ VibeMQ project change history.
 Version History
 ================
 
+Version 1.6.0
+-------------
+
+**Date:** February 2026
+
+**Status:** Current Stable Version
+
+**New features:**
+
+- **Username/password authorization** — BCrypt-hashed passwords stored in a dedicated SQLite ``auth.db``; superuser account seeded automatically on first run
+- **Per-queue ACL** — glob patterns (``*`` matches any sequence including dots) mapped to ``QueueOperation`` sets; union semantics when multiple patterns match
+- **Superuser bypass** — accounts with ``IsSuperuser=true`` skip all permission checks
+- **Session permission cache** — permissions loaded once at login into ``ClientConnection.CachedPermissions``; no per-request DB I/O
+- **Filtered ListQueues** — regular users see only queues matching their ACL patterns with ``ListQueues`` operation
+- **7 admin protocol commands** — ``AdminCreateUser``, ``AdminDeleteUser``, ``AdminChangePassword``, ``AdminGrantPermission``, ``AdminRevokePermission``, ``AdminListUsers``, ``AdminGetUserPermissions`` (superuser-only)
+- **``ClientOptions.Username`` / ``ClientOptions.Password``** — new client credentials; take priority over legacy ``AuthToken``
+- **``BrokerBuilder.UseAuthorization(Action<AuthorizationOptions>)``** — fluent API to enable the new auth mode
+- **Backward compatibility** — legacy ``UseAuthentication(token)`` / ``AuthToken`` still works unchanged
+- **Docker image** — official image built from ``VibeMQ.Server.Host``; configuration via ``VibeMQ__*`` environment variables and optional config file (see :doc:`docker`)
+
+**Documentation:**
+
+- New :doc:`docker` guide (build, run, environment variables, examples)
+- New :doc:`authorization` guide covering users, ACL, glob patterns, admin commands, and security recommendations
+- Configuration updated: ``AuthorizationOptions``, ``Username``/``Password`` in ``ClientOptions``
+- Server setup updated with ``UseAuthorization`` example and deprecated token auth note
+- Russian translations for all updated pages
+
+**Migration from 1.5.x:**
+
+- No breaking API changes — legacy token auth continues to work
+- New ``UseAuthorization()`` is opt-in; existing servers are unaffected
+- ``ClientOptions.AuthToken`` is now deprecated; migrate to ``Username`` + ``Password`` when adopting the new mode
+
 Version 1.5.0
 -------------
 

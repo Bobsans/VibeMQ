@@ -4,6 +4,8 @@ Server Setup
 
 This guide describes various ways to configure and run the VibeMQ server.
 
+For running the broker in Docker with environment-based configuration, see :doc:`docker`.
+
 .. contents:: Contents
    :local:
    :depth: 2
@@ -21,12 +23,12 @@ Simplest way to start server:
    using VibeMQ.Server;
 
    var broker = BrokerBuilder.Create()
-       .UsePort(8080)
+       .UsePort(2925)
        .Build();
 
    await broker.RunAsync(CancellationToken.None);
 
-This code will start server on port 8080 without authentication and with default settings.
+This code will start server on port 2925 without authentication and with default settings.
 
 Advanced Configuration
 ------------------------
@@ -42,7 +44,7 @@ Advanced Configuration
    });
 
    var broker = BrokerBuilder.Create()
-       .UsePort(8080)
+       .UsePort(2925)
        .UseAuthentication("my-secret-token")
        .UseMaxConnections(1000)
        .UseMaxMessageSize(1_048_576)  // 1 MB
@@ -58,7 +60,7 @@ Advanced Configuration
        })
        .ConfigureHealthChecks(options => {
            options.Enabled = true;
-           options.Port = 8081;
+           options.Port = 2926;
        })
        .UseTls(options => {
            options.Enabled = false;  // Enable for production
@@ -84,7 +86,7 @@ Basic Parameters
      - Default
      - Description
    * - ``Port``
-     - 8080
+     - 2925
      - TCP port for client connections
    * - ``MaxConnections``
      - 1000
@@ -94,10 +96,13 @@ Basic Parameters
      - Maximum message size
    * - ``EnableAuthentication``
      - false
-     - Enable authentication
+     - Enable legacy token authentication
    * - ``AuthToken``
      - null
-     - Token for authentication
+     - Token for legacy authentication (deprecated)
+   * - ``Authorization``
+     - null
+     - Enable username/password auth with per-queue ACL (see :doc:`authorization`)
 
 Default Queue Settings
 -------------------------------
@@ -178,7 +183,7 @@ Health Check Settings
      - true
      - Enable health check server
    * - ``Port``
-     - 8081
+     - 2926
      - HTTP port for health checks
 
 Delivery Modes
@@ -342,15 +347,21 @@ DLQ Configuration:
 
 **Getting messages from DLQ:** DLQ messages are persisted by the broker's storage provider. To consume them you can subscribe to the Dead Letter Queue by name (if the broker exposes it as a queue) or use a custom component that has access to the storage provider's ``GetDeadLetteredMessagesAsync`` API. See :doc:`storage` for storage provider details.
 
-Authentication
-==============
+Authorization (Username/Password + ACL)
+=======================================
 
-Enabling Authentication:
+The recommended authentication mode for production. Uses BCrypt-hashed passwords
+and per-queue ACL stored in a dedicated SQLite database:
 
 .. code-block:: csharp
 
    var broker = BrokerBuilder.Create()
-       .UseAuthentication("my-secret-token")
+       .UsePort(2925)
+       .UseAuthorization(o => {
+           o.SuperuserUsername = "admin";
+           o.SuperuserPassword = Environment.GetEnvironmentVariable("VIBEMQ_ADMIN_PASS");
+           o.DatabasePath = "/var/lib/vibemq/auth.db";
+       })
        .Build();
 
 **On client:**
@@ -359,7 +370,31 @@ Enabling Authentication:
 
    var client = await VibeMQClient.ConnectAsync(
        "localhost",
-       8080,
+       2925,
+       new ClientOptions {
+           Username = "alice",
+           Password = "alice-secret"
+       }
+   );
+
+See :doc:`authorization` for full details (users, ACL patterns, admin commands).
+
+Legacy Token Authentication
+============================
+
+.. deprecated::
+
+   Use ``UseAuthorization()`` for new deployments.
+
+Enabling Authentication:
+
+**On client:**
+
+.. code-block:: csharp
+
+   var client = await VibeMQClient.ConnectAsync(
+       "localhost",
+       2925,
        new ClientOptions {
            AuthToken = "my-secret-token"
        }
@@ -396,7 +431,7 @@ TLS Configuration:
 
    var client = await VibeMQClient.ConnectAsync(
        "localhost",
-       8080,
+       2925,
        new ClientOptions {
            UseTls = true,
            // Tests only!
@@ -452,7 +487,7 @@ Stopping Server
 .. code-block:: csharp
 
    await using var broker = BrokerBuilder.Create()
-       .UsePort(8080)
+       .UsePort(2925)
        .Build();
 
    await broker.RunAsync(cancellationToken);
@@ -476,7 +511,7 @@ Logging Configuration:
    });
 
    var broker = BrokerBuilder.Create()
-       .UsePort(8080)
+       .UsePort(2925)
        .UseLoggerFactory(loggerFactory)
        .Build();
 
@@ -498,7 +533,7 @@ Minimal Server for Development
 .. code-block:: csharp
 
    var broker = BrokerBuilder.Create()
-       .UsePort(8080)
+       .UsePort(2925)
        .Build();
 
    await broker.RunAsync(CancellationToken.None);
@@ -509,7 +544,7 @@ Production Server
 .. code-block:: csharp
 
    var broker = BrokerBuilder.Create()
-       .UsePort(8080)
+       .UsePort(2925)
        .UseAuthentication(Environment.GetEnvironmentVariable("VIBEMQ_TOKEN"))
        .UseMaxConnections(5000)
        .ConfigureQueues(options => {
@@ -536,7 +571,7 @@ Microservices Server
 .. code-block:: csharp
 
    var broker = BrokerBuilder.Create()
-       .UsePort(8080)
+       .UsePort(2925)
        .UseAuthentication("microservice-token")
        .ConfigureQueues(options => {
            options.DefaultDeliveryMode = DeliveryMode.FanOutWithAck;
@@ -545,7 +580,7 @@ Microservices Server
        })
        .ConfigureHealthChecks(options => {
            options.Enabled = true;
-           options.Port = 8081;
+           options.Port = 2926;
        })
        .Build();
 

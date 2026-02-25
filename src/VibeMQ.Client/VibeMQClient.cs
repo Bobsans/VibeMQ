@@ -474,9 +474,15 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
         // Build Connect headers (auth + compression preference)
         var connectHeaders = new Dictionary<string, string>();
 
-        if (!string.IsNullOrEmpty(_options.AuthToken)) {
+        if (!string.IsNullOrEmpty(_options.Username) && !string.IsNullOrEmpty(_options.Password)) {
+            connectHeaders["authUsername"] = _options.Username;
+            connectHeaders["authPassword"] = _options.Password;
+        }
+#pragma warning disable CS0618
+        else if (!string.IsNullOrEmpty(_options.AuthToken)) {
             connectHeaders["authToken"] = _options.AuthToken;
         }
+#pragma warning restore CS0618
 
         if (_options.PreferredCompressions.Count > 0) {
             connectHeaders["supported-compression"] = string.Join(
@@ -593,6 +599,13 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
             case CommandType.DeleteQueue:
             case CommandType.QueueInfo:
             case CommandType.ListQueues:
+            case CommandType.AdminCreateUser:
+            case CommandType.AdminDeleteUser:
+            case CommandType.AdminChangePassword:
+            case CommandType.AdminGrantPermission:
+            case CommandType.AdminRevokePermission:
+            case CommandType.AdminListUsers:
+            case CommandType.AdminGetUserPermissions:
             case CommandType.Error:
                 // Complete pending request
                 if (_pendingResponses.TryRemove(message.Id, out var tcs)) {

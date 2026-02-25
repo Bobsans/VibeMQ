@@ -44,7 +44,7 @@ No configuration required — this is the default behavior:
 .. code-block:: csharp
 
    var broker = BrokerBuilder.Create()
-       .UsePort(8080)
+       .UsePort(2925)
        .Build();
 
 SQLite
@@ -64,7 +64,7 @@ Configure via the fluent builder:
    using VibeMQ.Server.Storage.Sqlite;
 
    var broker = BrokerBuilder.Create()
-       .UsePort(8080)
+       .UsePort(2925)
        .UseSqliteStorage(options => {
            options.DatabasePath = "vibemq.db";
            options.EnableWal = true;
@@ -85,7 +85,7 @@ Or via Dependency Injection:
        options.DatabasePath = "vibemq.db";
    });
    services.AddVibeMQBroker(options => {
-       options.Port = 8080;
+       options.Port = 2925;
    });
 
 .. note::
@@ -372,7 +372,7 @@ Development (InMemory)
 .. code-block:: csharp
 
    var broker = BrokerBuilder.Create()
-       .UsePort(8080)
+       .UsePort(2925)
        .Build();
 
 Production (SQLite)
@@ -381,7 +381,7 @@ Production (SQLite)
 .. code-block:: csharp
 
    var broker = BrokerBuilder.Create()
-       .UsePort(8080)
+       .UsePort(2925)
        .UseAuthentication(Environment.GetEnvironmentVariable("VIBEMQ_TOKEN"))
        .UseSqliteStorage(options => {
            options.DatabasePath = "/data/vibemq.db";
@@ -400,7 +400,7 @@ Production with DI (SQLite)
    });
 
    services.AddVibeMQBroker(options => {
-       options.Port = 8080;
+       options.Port = 2925;
        options.EnableAuthentication = true;
        options.AuthToken = Environment.GetEnvironmentVariable("VIBEMQ_TOKEN");
    });
@@ -412,7 +412,7 @@ appsettings.json (SQLite)
 
    {
      "VibeMQ": {
-       "Port": 8080,
+       "Port": 2925,
        "StorageType": "Sqlite",
        "EnableAuthentication": true,
        "AuthToken": "my-secret-token"

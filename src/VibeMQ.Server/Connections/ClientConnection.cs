@@ -42,9 +42,26 @@ public sealed partial class ClientConnection : IAsyncDisposable {
     public string Id { get; }
 
     /// <summary>
-    /// Whether this connection has been authenticated.
+    /// Whether this connection has been authenticated (i.e. the Connect handshake succeeded).
     /// </summary>
     public bool IsAuthenticated { get; set; }
+
+    /// <summary>
+    /// Authenticated username. <see langword="null"/> when authorization is not enabled.
+    /// </summary>
+    public string? Username { get; set; }
+
+    /// <summary>
+    /// Whether the authenticated user has superuser privileges.
+    /// Superusers bypass all per-queue authorization checks.
+    /// </summary>
+    public bool IsSuperuser { get; set; }
+
+    /// <summary>
+    /// Per-session permission cache loaded at authentication time.
+    /// Used by the authorization service to evaluate ACL without hitting the database on every request.
+    /// </summary>
+    public IReadOnlyList<PermissionEntry> CachedPermissions { get; set; } = [];
 
     /// <summary>
     /// Remote endpoint of the client.
@@ -119,7 +136,19 @@ public sealed partial class ClientConnection : IAsyncDisposable {
     }
 
     /// <summary>
-    /// Sends an error response to the client.
+    /// Sends an error response to the client, correlating to the original request by <paramref name="messageId"/>.
+    /// </summary>
+    public Task SendErrorAsync(string messageId, string errorCode, string errorMessage, CancellationToken cancellationToken = default) {
+        return SendMessageAsync(new ProtocolMessage {
+            Id = messageId,
+            Type = CommandType.Error,
+            ErrorCode = errorCode,
+            ErrorMessage = errorMessage,
+        }, cancellationToken);
+    }
+
+    /// <summary>
+    /// Sends an error response to the client without a correlation ID (use for connection-level errors).
     /// </summary>
     public Task SendErrorAsync(string errorCode, string errorMessage, CancellationToken cancellationToken = default) {
         return SendMessageAsync(new ProtocolMessage {

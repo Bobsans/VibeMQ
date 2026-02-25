@@ -21,10 +21,10 @@ Enabling Health Checks
    using VibeMQ.Health;
 
    var broker = BrokerBuilder.Create()
-       .UsePort(8080)
+       .UsePort(2925)
        .ConfigureHealthChecks(options => {
            options.Enabled = true;
-           options.Port = 8081;
+           options.Port = 2926;
        })
        .Build();
 
@@ -42,7 +42,7 @@ Configuration Parameters
      - true
      - Enable health check server
    * - ``Port``
-     - 8081
+     - 2926
      - HTTP port for health checks
 
 Endpoints
@@ -57,7 +57,7 @@ Server health check.
 
 .. code-block:: bash
 
-   curl http://localhost:8081/health/
+   curl http://localhost:2926/health/
 
 **Response (healthy):**
 
@@ -109,7 +109,7 @@ Get detailed metrics.
 
 .. code-block:: bash
 
-   curl http://localhost:8081/metrics/
+   curl http://localhost:2926/metrics/
 
 **Response:**
 
@@ -161,14 +161,14 @@ Kubernetes
          - name: vibemq
            image: vibemq-server:latest
            ports:
-           - containerPort: 8080
+           - containerPort: 2925
              name: tcp
-           - containerPort: 8081
+           - containerPort: 2926
              name: http
            livenessProbe:
              httpGet:
                path: /health/
-               port: 8081
+               port: 2926
              initialDelaySeconds: 10
              periodSeconds: 10
              timeoutSeconds: 5
@@ -176,7 +176,7 @@ Kubernetes
            readinessProbe:
              httpGet:
                path: /health/
-               port: 8081
+               port: 2926
              initialDelaySeconds: 5
              periodSeconds: 5
              timeoutSeconds: 3
@@ -212,13 +212,13 @@ Docker Compose
      vibemq:
        image: vibemq-server:latest
        ports:
-         - "8080:8080"
-         - "8081:8081"
+         - "2925:2925"
+         - "2926:2926"
        environment:
-         - VIBEMQ__PORT=8080
+         - VIBEMQ__PORT=2925
          - VIBEMQ__AUTHTOKEN=my-secret-token
        healthcheck:
-         test: ["CMD", "curl", "-f", "http://localhost:8081/health/"]
+         test: ["CMD", "curl", "-f", "http://localhost:2926/health/"]
          interval: 10s
          timeout: 5s
          retries: 3
@@ -239,20 +239,20 @@ Azure Container Instances
      - name: vibemq
        image: vibemq-server:latest
        ports:
-       - port: 8080
+       - port: 2925
          protocol: TCP
-       - port: 8081
+       - port: 2926
          protocol: TCP
        livenessProbe:
          httpGet:
            path: /health/
-           port: 8081
+           port: 2926
          initialDelaySeconds: 10
          periodSeconds: 10
        readinessProbe:
          httpGet:
            path: /health/
-           port: 8081
+           port: 2926
          initialDelaySeconds: 5
          periodSeconds: 5
 
@@ -271,20 +271,20 @@ AWS ECS
          "image": "vibemq-server:latest",
          "portMappings": [
            {
-             "containerPort": 8080,
-             "hostPort": 8080,
+             "containerPort": 2925,
+             "hostPort": 2925,
              "protocol": "tcp"
            },
            {
-             "containerPort": 8081,
-             "hostPort": 8081,
+             "containerPort": 2926,
+             "hostPort": 2926,
              "protocol": "tcp"
            }
          ],
          "healthCheck": {
            "command": [
              "CMD-SHELL",
-             "curl -f http://localhost:8081/health/ || exit 1"
+             "curl -f http://localhost:2926/health/ || exit 1"
            ],
            "interval": 10,
            "timeout": 5,
@@ -304,24 +304,24 @@ Manual Check
 .. code-block:: bash
 
    # Health check
-   curl http://localhost:8081/health/
+   curl http://localhost:2926/health/
 
    # Detailed metrics
-   curl http://localhost:8081/metrics/
+   curl http://localhost:2926/metrics/
 
    # With formatting
-   curl -s http://localhost:8081/metrics/ | jq
+   curl -s http://localhost:2926/metrics/ | jq
 
 PowerShell:
 
 .. code-block:: powershell
 
    # Health check
-   Invoke-RestMethod -Uri http://localhost:8081/health/
+   Invoke-RestMethod -Uri http://localhost:2926/health/
 
    # Check with error handling
    try {
-       $response = Invoke-RestMethod -Uri http://localhost:8081/health/
+       $response = Invoke-RestMethod -Uri http://localhost:2926/health/
        if ($response.status -eq "healthy") {
            Write-Host "✓ Server healthy" -ForegroundColor Green
        } else {
@@ -340,8 +340,8 @@ Automatic Monitoring
 
    #!/bin/bash
 
-   HEALTH_URL="http://localhost:8081/health/"
-   METRICS_URL="http://localhost:8081/metrics/"
+   HEALTH_URL="http://localhost:2926/health/"
+   METRICS_URL="http://localhost:2926/metrics/"
 
    # Health check
    response=$(curl -s -w "\n%{http_code}" $HEALTH_URL)
@@ -373,8 +373,8 @@ Automatic Monitoring
    import sys
    import time
 
-   HEALTH_URL = "http://localhost:8081/health/"
-   METRICS_URL = "http://localhost:8081/metrics/"
+   HEALTH_URL = "http://localhost:2926/health/"
+   METRICS_URL = "http://localhost:2926/metrics/"
 
    def check_health():
        try:
@@ -431,7 +431,7 @@ Prometheus
    scrape_configs:
      - job_name: 'vibemq'
        static_configs:
-         - targets: ['vibemq:8081']
+         - targets: ['vibemq:2926']
        metrics_path: '/metrics/'
        scrape_interval: 15s
        scrape_timeout: 10s
@@ -458,7 +458,7 @@ Datadog
 .. code-block:: yaml
 
    instances:
-     - vibemq_url: http://vibemq:8081/metrics/
+     - vibemq_url: http://vibemq:2926/metrics/
        tags:
          - "service:vibemq"
          - "env:production"
@@ -477,7 +477,7 @@ Use Prometheus endpoint for integration:
          - vibemq_messages_delivered_total
          - vibemq_active_connections
        urls:
-         - http://vibemq:8081/metrics/
+         - http://vibemq:2926/metrics/
 
 Troubleshooting
 ==================
@@ -485,7 +485,7 @@ Troubleshooting
 Health check not responding
 ------------------------
 
-**Problem:** ``curl: (7) Failed to connect to localhost port 8081``
+**Problem:** ``curl: (7) Failed to connect to localhost port 2926``
 
 **Causes:**
 
@@ -499,7 +499,7 @@ Health check not responding
 
    .ConfigureHealthChecks(options => {
        options.Enabled = true;
-       options.Port = 8081;  // Check port
+       options.Port = 2926;  // Check port
    })
 
 Returns 503

@@ -15,7 +15,7 @@ using VibeMQ.Client;
 
 await using var client = await VibeMQClient.ConnectAsync(
     "localhost",
-    8080,
+    2925,
     new ClientOptions { AuthToken = "your-token" }
 );
 

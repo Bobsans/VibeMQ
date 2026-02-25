@@ -5,6 +5,7 @@ using VibeMQ.Configuration;
 using VibeMQ.Interfaces;
 using VibeMQ.Metrics;
 using VibeMQ.Protocol;
+using VibeMQ.Server.Auth;
 using VibeMQ.Server.Connections;
 using VibeMQ.Server.Delivery;
 using VibeMQ.Server.Handlers;
@@ -28,6 +29,7 @@ public sealed partial class BrokerServer : IAsyncDisposable {
     private readonly RateLimiter _rateLimiter;
     private readonly IStorageProvider _storageProvider;
     private readonly IBrokerMetrics _metrics;
+    private readonly AuthBootstrapper? _authBootstrapper;
     private readonly ILogger<BrokerServer> _logger;
     private readonly CancellationTokenSource _shutdownCts = new();
     private TcpListener? _listener;
@@ -41,6 +43,7 @@ public sealed partial class BrokerServer : IAsyncDisposable {
         RateLimiter rateLimiter,
         IStorageProvider storageProvider,
         IBrokerMetrics metrics,
+        AuthBootstrapper? authBootstrapper,
         ILogger<BrokerServer> logger
     ) {
         _options = options;
@@ -51,6 +54,7 @@ public sealed partial class BrokerServer : IAsyncDisposable {
         _rateLimiter = rateLimiter;
         _storageProvider = storageProvider;
         _metrics = metrics;
+        _authBootstrapper = authBootstrapper;
         _logger = logger;
     }
 
@@ -75,6 +79,11 @@ public sealed partial class BrokerServer : IAsyncDisposable {
     public async Task RunAsync(CancellationToken cancellationToken = default) {
         using var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, _shutdownCts.Token);
         var token = linkedCts.Token;
+
+        // Initialize authorization (schema + superuser seed)
+        if (_authBootstrapper is not null) {
+            await _authBootstrapper.InitializeAsync(token).ConfigureAwait(false);
+        }
 
         // Initialize storage and recover persisted state
         await _queueManager.InitializeAsync(token).ConfigureAwait(false);

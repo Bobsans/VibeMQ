@@ -57,7 +57,7 @@ Registration with Configuration
    var host = Host.CreateDefaultBuilder(args)
        .ConfigureServices(services => {
            services.AddVibeMQBroker(options => {
-               options.Port = 8080;
+               options.Port = 2925;
                options.EnableAuthentication = true;
                options.AuthToken = "my-secret-token";
                options.QueueDefaults.DefaultDeliveryMode = DeliveryMode.RoundRobin;
@@ -78,7 +78,7 @@ Configuration from appsettings.json
 
    {
      "VibeMQ": {
-       "Port": 8080,
+       "Port": 2925,
        "EnableAuthentication": true,
        "AuthToken": "my-secret-token",
        "QueueDefaults": {
@@ -122,7 +122,7 @@ Advanced Configuration
        .ConfigureServices(services => {
            services.AddVibeMQBroker(options => {
                // Basic settings
-               options.Port = 8080;
+               options.Port = 2925;
                options.MaxConnections = 5000;
                options.MaxMessageSize = 2_097_152;
                
@@ -197,7 +197,7 @@ Registration with Configuration
        .ConfigureServices(services => {
            services.AddVibeMQClient(settings => {
                settings.Host = "localhost";
-               settings.Port = 8080;
+               settings.Port = 2925;
                settings.ClientOptions.AuthToken = "my-secret-token";
            });
        })
@@ -213,7 +213,7 @@ Configuration from appsettings.json
    {
      "VibeMQClient": {
        "Host": "localhost",
-       "Port": 8080,
+       "Port": 2925,
        "ClientOptions": {
          "AuthToken": "my-secret-token",
          "KeepAliveInterval": "00:00:30",
@@ -257,7 +257,7 @@ Advanced Client Configuration
        .ConfigureServices(services => {
            services.AddVibeMQClient(settings => {
                settings.Host = "vibemq.internal";
-               settings.Port = 8080;
+               settings.Port = 2925;
                
                settings.ClientOptions.AuthToken = Environment.GetEnvironmentVariable("VIBEMQ_TOKEN");
                settings.ClientOptions.KeepAliveInterval = TimeSpan.FromSeconds(30);
@@ -433,7 +433,7 @@ You can use class-based message handlers with automatic subscription on applicat
    // Register handler and enable automatic subscriptions
    services.AddVibeMQClient(settings => {
        settings.Host = "localhost";
-       settings.Port = 8080;
+       settings.Port = 2925;
    })
    .AddMessageHandler<OrderCreated, OrderHandler>()  // Register handler
    .AddMessageHandlerSubscriptions();  // Enable automatic subscription on startup
@@ -552,7 +552,7 @@ Server + Client in One Application
        .ConfigureServices(services => {
            // Broker server
            services.AddVibeMQBroker(options => {
-               options.Port = 8080;
+               options.Port = 2925;
                options.EnableAuthentication = true;
                options.AuthToken = "my-token";
            });
@@ -560,7 +560,7 @@ Server + Client in One Application
            // Client for local publishing
            services.AddVibeMQClient(settings => {
                settings.Host = "localhost";
-               settings.Port = 8080;
+               settings.Port = 2925;
                settings.ClientOptions.AuthToken = "my-token";
            });
        })
@@ -583,7 +583,7 @@ For Docker and cloud deployments:
 .. code-block:: bash
 
    # Server
-   VIBEMQ__PORT=8080
+   VIBEMQ__PORT=2925
    VIBEMQ__ENABLEAUTHENTICATION=true
    VIBEMQ__AUTHTOKEN=my-secret-token
    VIBEMQ__QUEUEDEFAULTS__DEFAULTDELIVERYMODE=RoundRobin
@@ -591,7 +591,7 @@ For Docker and cloud deployments:
 
    # Client
    VIBEMQCLIENT__HOST=vibemq-server
-   VIBEMQCLIENT__PORT=8080
+   VIBEMQCLIENT__PORT=2925
    VIBEMQCLIENT__CLIENTOPTIONS__AUTHTOKEN=my-secret-token
 
 **Program.cs:**
@@ -629,18 +629,18 @@ Docker Compose Example
      vibemq:
        image: vibemq-server:latest
        environment:
-         - VIBEMQ__PORT=8080
+         - VIBEMQ__PORT=2925
          - VIBEMQ__ENABLEAUTHENTICATION=true
          - VIBEMQ__AUTHTOKEN=${VIBEMQ_TOKEN}
        ports:
-         - "8080:8080"
-         - "8081:8081"
+         - "2925:2925"
+         - "2926:2926"
 
      my-app:
        image: my-app:latest
        environment:
          - VIBEMQCLIENT__HOST=vibemq
-         - VIBEMQCLIENT__PORT=8080
+         - VIBEMQCLIENT__PORT=2925
          - VIBEMQCLIENT__CLIENTOPTIONS__AUTHTOKEN=${VIBEMQ_TOKEN}
        depends_on:
          - vibemq

@@ -82,7 +82,7 @@ Create a ``Dockerfile`` in your project:
 
    FROM mcr.microsoft.com/dotnet/runtime:8.0 AS base
    WORKDIR /app
-   EXPOSE 8080 8081
+   EXPOSE 2925 2926
 
    FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
    WORKDIR /src
@@ -104,7 +104,7 @@ Build and run:
 .. code-block:: bash
 
    docker build -t vibemq-server .
-   docker run -p 8080:8080 -p 8081:8081 vibemq-server
+   docker run -p 2925:2925 -p 2926:2926 vibemq-server
 
 Docker Compose
 --------------
@@ -120,10 +120,10 @@ For deployment with other services, create a ``docker-compose.yml``:
        image: vibemq-server:latest
        container_name: vibemq-broker
        ports:
-         - "8080:8080"  # TCP port for clients
-         - "8081:8081"  # HTTP port for health checks
+         - "2925:2925"  # TCP port for clients
+         - "2926:2926"  # HTTP port for health checks
        environment:
-         - VIBEMQ_PORT=8080
+         - VIBEMQ_PORT=2925
          - VIBEMQ_AUTH_TOKEN=my-secret-token
          - VIBEMQ_MAX_CONNECTIONS=1000
        volumes:
@@ -137,7 +137,7 @@ For deployment with other services, create a ``docker-compose.yml``:
          - vibemq
        environment:
          - VIBEMQ_HOST=vibemq
-         - VIBEMQ_PORT=8080
+         - VIBEMQ_PORT=2925
 
    volumes:
      vibemq-data:
@@ -207,7 +207,7 @@ For ASP.NET Core applications, use DI integration:
 
    // Add broker server
    builder.Services.AddVibeMQBroker(options => {
-       options.Port = 8080;
+       options.Port = 2925;
        options.EnableAuthentication = true;
        options.AuthToken = builder.Configuration["VibeMQ:AuthToken"];
    });
@@ -215,7 +215,7 @@ For ASP.NET Core applications, use DI integration:
    // Add client for sending messages
    builder.Services.AddVibeMQClient(settings => {
        settings.Host = "localhost";
-       settings.Port = 8080;
+       settings.Port = 2925;
        settings.ClientOptions.AuthToken = builder.Configuration["VibeMQ:AuthToken"];
    });
 
@@ -236,7 +236,7 @@ For background services (.NET Worker):
            services.AddHostedService<Worker>();
            services.AddVibeMQClient(settings => {
                settings.Host = "localhost";
-               settings.Port = 8080;
+               settings.Port = 2925;
            });
        })
        .Build();
@@ -253,7 +253,7 @@ For console applications, use direct invocation:
    using VibeMQ.Server;
 
    var broker = BrokerBuilder.Create()
-       .UsePort(8080)
+       .UsePort(2925)
        .Build();
 
    await broker.RunAsync(CancellationToken.None);
@@ -268,7 +268,7 @@ After starting the server, check the health endpoint:
 
 .. code-block:: bash
 
-   curl http://localhost:8081/health/
+   curl http://localhost:2926/health/
 
 Response should be:
 
@@ -291,7 +291,7 @@ Create a test script:
    using VibeMQ.Client;
 
    try {
-       await using var client = await VibeMQClient.ConnectAsync("localhost", 8080);
+       await using var client = await VibeMQClient.ConnectAsync("localhost", 2925);
        Console.WriteLine("✓ Connection successful!");
        Console.WriteLine($"Status: {(client.IsConnected ? "Connected" : "Disconnected")}");
    } catch (Exception ex) {
@@ -311,7 +311,7 @@ Port Already in Use
 .. code-block:: csharp
 
    var broker = BrokerBuilder.Create()
-       .UsePort(8081)  // Use a different port
+       .UsePort(2927)  // Use a different port
        .Build();
 
 Authentication Error

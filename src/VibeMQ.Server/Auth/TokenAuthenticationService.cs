@@ -1,4 +1,5 @@
 using VibeMQ.Interfaces;
+using VibeMQ.Server.Auth.Models;
 
 namespace VibeMQ.Server.Auth;
 
@@ -13,8 +14,14 @@ public sealed class TokenAuthenticationService : IAuthenticationService {
     }
 
     /// <inheritdoc />
+    [Obsolete("Use AuthenticateAsync(username, password) for new deployments.")]
     public Task<bool> AuthenticateAsync(string token, CancellationToken cancellationToken = default) {
         var isValid = string.Equals(_expectedToken, token, StringComparison.Ordinal);
         return Task.FromResult(isValid);
+    }
+
+    // Token-based service does not support username/password authentication.
+    Task<AuthResult?> IAuthenticationService.AuthenticateAsync(string username, string password, CancellationToken cancellationToken) {
+        return Task.FromResult<AuthResult?>(null);
     }
 }

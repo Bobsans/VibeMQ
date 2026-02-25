@@ -7,6 +7,7 @@ using VibeMQ.Server.Auth;
 using VibeMQ.Server.Connections;
 using VibeMQ.Server.Delivery;
 using VibeMQ.Server.Handlers;
+using VibeMQ.Server.Handlers.Admin;
 using VibeMQ.Metrics;
 using VibeMQ.Server.Queues;
 using VibeMQ.Server.Security;
@@ -39,7 +40,10 @@ public sealed class BrokerBuilder {
         _options.MaxConnections = options.MaxConnections;
         _options.MaxMessageSize = options.MaxMessageSize;
         _options.EnableAuthentication = options.EnableAuthentication;
+#pragma warning disable CS0618
         _options.AuthToken = options.AuthToken;
+#pragma warning restore CS0618
+        _options.Authorization = options.Authorization;
         _options.QueueDefaults = options.QueueDefaults;
         _options.Tls = options.Tls;
         _options.RateLimit = options.RateLimit;
@@ -58,11 +62,25 @@ public sealed class BrokerBuilder {
     }
 
     /// <summary>
-    /// Enables authentication with the specified token.
+    /// Enables legacy token-based authentication with the specified token.
     /// </summary>
+    [Obsolete("Use UseAuthorization() for new deployments.")]
     public BrokerBuilder UseAuthentication(string token) {
         _options.EnableAuthentication = true;
+#pragma warning disable CS0618
         _options.AuthToken = token;
+#pragma warning restore CS0618
+        return this;
+    }
+
+    /// <summary>
+    /// Enables username/password authorization with per-queue ACL stored in SQLite.
+    /// </summary>
+    public BrokerBuilder UseAuthorization(Action<AuthorizationOptions> configure) {
+        var authOptions = new AuthorizationOptions();
+        configure(authOptions);
+        _options.Authorization = authOptions;
+        _options.EnableAuthentication = true;
         return this;
     }
 
@@ -138,10 +156,32 @@ public sealed class BrokerBuilder {
     /// Builds the broker server instance with all configured components.
     /// </summary>
     public BrokerServer Build() {
-        // Authentication
+        // Authorization (new username/password mode)
+        IPasswordAuthenticationService? passwordAuthService = null;
+        IAuthorizationService? authorizationService = null;
+        AuthBootstrapper? authBootstrapper = null;
+
+        if (_options.Authorization is not null) {
+            var repository = new SqliteAuthRepository(_options.Authorization.DatabasePath);
+            var passwordAuth = new PasswordAuthenticationService(repository);
+            passwordAuthService = passwordAuth;
+            authorizationService = new AuthorizationService();
+            authBootstrapper = new AuthBootstrapper(
+                repository,
+                _options.Authorization,
+                _loggerFactory.CreateLogger<AuthBootstrapper>()
+            );
+        }
+
+        // Legacy token authentication
         IAuthenticationService? authService = null;
-        if (_options.EnableAuthentication && !string.IsNullOrEmpty(_options.AuthToken)) {
-            authService = new TokenAuthenticationService(_options.AuthToken);
+        if (passwordAuthService is null && _options.EnableAuthentication) {
+#pragma warning disable CS0618
+            var token = _options.AuthToken;
+#pragma warning restore CS0618
+            if (!string.IsNullOrEmpty(token)) {
+                authService = new TokenAuthenticationService(token);
+            }
         }
 
         // Metrics
@@ -180,20 +220,34 @@ public sealed class BrokerBuilder {
         );
 
         // Command handlers
-        var handlers = new ICommandHandler[] {
-            new ConnectHandler(_options, authService, _loggerFactory.CreateLogger<ConnectHandler>()),
+        var handlerList = new List<ICommandHandler> {
+            new ConnectHandler(_options, authService, passwordAuthService, _loggerFactory.CreateLogger<ConnectHandler>()),
             new PingHandler(),
-            new PublishHandler(queueManager, _loggerFactory.CreateLogger<PublishHandler>()),
-            new SubscribeHandler(queueManager, _loggerFactory.CreateLogger<SubscribeHandler>()),
+            new PublishHandler(queueManager, authorizationService, _loggerFactory.CreateLogger<PublishHandler>()),
+            new SubscribeHandler(queueManager, authorizationService, _loggerFactory.CreateLogger<SubscribeHandler>()),
             new UnsubscribeHandler(_loggerFactory.CreateLogger<UnsubscribeHandler>()),
             new AckHandler(queueManager, _loggerFactory.CreateLogger<AckHandler>()),
-            new CreateQueueHandler(queueManager, _loggerFactory.CreateLogger<CreateQueueHandler>()),
-            new DeleteQueueHandler(queueManager, _loggerFactory.CreateLogger<DeleteQueueHandler>()),
-            new QueueInfoHandler(queueManager, _loggerFactory.CreateLogger<QueueInfoHandler>()),
-            new ListQueuesHandler(queueManager, _loggerFactory.CreateLogger<ListQueuesHandler>()),
+            new CreateQueueHandler(queueManager, authorizationService, _loggerFactory.CreateLogger<CreateQueueHandler>()),
+            new DeleteQueueHandler(queueManager, authorizationService, _loggerFactory.CreateLogger<DeleteQueueHandler>()),
+            new QueueInfoHandler(queueManager, authorizationService, _loggerFactory.CreateLogger<QueueInfoHandler>()),
+            new ListQueuesHandler(queueManager, authorizationService, _loggerFactory.CreateLogger<ListQueuesHandler>()),
         };
 
-        var dispatcher = new CommandDispatcher(handlers, _loggerFactory.CreateLogger<CommandDispatcher>());
+        // Register admin handlers only when authorization is enabled
+        if (authBootstrapper is not null) {
+            var repository = new SqliteAuthRepository(_options.Authorization!.DatabasePath);
+            handlerList.AddRange([
+                new CreateUserHandler(repository, _loggerFactory.CreateLogger<CreateUserHandler>()),
+                new DeleteUserHandler(repository, _loggerFactory.CreateLogger<DeleteUserHandler>()),
+                new ChangePasswordHandler(repository, _loggerFactory.CreateLogger<ChangePasswordHandler>()),
+                new GrantPermissionHandler(repository, _loggerFactory.CreateLogger<GrantPermissionHandler>()),
+                new RevokePermissionHandler(repository, _loggerFactory.CreateLogger<RevokePermissionHandler>()),
+                new ListUsersHandler(repository, _loggerFactory.CreateLogger<ListUsersHandler>()),
+                new GetUserPermissionsHandler(repository, _loggerFactory.CreateLogger<GetUserPermissionsHandler>()),
+            ]);
+        }
+
+        var dispatcher = new CommandDispatcher(handlerList, _loggerFactory.CreateLogger<CommandDispatcher>());
 
         // Security
         var rateLimiter = new RateLimiter(
@@ -210,6 +264,7 @@ public sealed class BrokerBuilder {
             rateLimiter,
             storageProvider,
             metrics,
+            authBootstrapper,
             _loggerFactory.CreateLogger<BrokerServer>()
         );
     }

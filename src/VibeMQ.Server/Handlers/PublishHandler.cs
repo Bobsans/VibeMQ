@@ -4,6 +4,7 @@ using VibeMQ.Enums;
 using VibeMQ.Interfaces;
 using VibeMQ.Models;
 using VibeMQ.Protocol;
+using VibeMQ.Server.Auth;
 using VibeMQ.Server.Connections;
 
 namespace VibeMQ.Server.Handlers;
@@ -13,10 +14,12 @@ namespace VibeMQ.Server.Handlers;
 /// </summary>
 public sealed partial class PublishHandler : ICommandHandler {
     private readonly IQueueManager _queueManager;
+    private readonly IAuthorizationService? _authz;
     private readonly ILogger<PublishHandler> _logger;
 
-    public PublishHandler(IQueueManager queueManager, ILogger<PublishHandler> logger) {
+    public PublishHandler(IQueueManager queueManager, IAuthorizationService? authz, ILogger<PublishHandler> logger) {
         _queueManager = queueManager;
+        _authz = authz;
         _logger = logger;
     }
 
@@ -28,7 +31,13 @@ public sealed partial class PublishHandler : ICommandHandler {
         CancellationToken cancellationToken = default
     ) {
         if (string.IsNullOrEmpty(message.Queue)) {
-            await connection.SendErrorAsync("INVALID_QUEUE", "Queue name is required for publish.", cancellationToken)
+            await connection.SendErrorAsync(message.Id, "INVALID_QUEUE", "Queue name is required for publish.", cancellationToken)
+                .ConfigureAwait(false);
+            return;
+        }
+
+        if (_authz is not null && !await _authz.IsAuthorizedAsync(connection, QueueOperation.Publish, message.Queue, cancellationToken).ConfigureAwait(false)) {
+            await connection.SendErrorAsync(message.Id, "NOT_AUTHORIZED", "Access denied.", cancellationToken)
                 .ConfigureAwait(false);
             return;
         }

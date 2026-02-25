@@ -9,9 +9,9 @@ namespace VibeMQ.Configuration;
 /// </summary>
 public sealed class BrokerOptions {
     /// <summary>
-    /// TCP port to listen on. Default: 8080.
+    /// TCP port to listen on. Default: 2925 (VibeMQ standard port).
     /// </summary>
-    public int Port { get; set; } = 8080;
+    public int Port { get; set; } = 2925;
 
     /// <summary>
     /// Maximum number of concurrent client connections. Default: 1000.
@@ -31,7 +31,14 @@ public sealed class BrokerOptions {
     /// <summary>
     /// Token used for simple authentication when <see cref="EnableAuthentication"/> is true.
     /// </summary>
+    [Obsolete("Use Authorization with username/password instead. AuthToken is ignored when UseAuthorization() is configured.")]
     public string? AuthToken { get; set; }
+
+    /// <summary>
+    /// Authorization configuration for username/password authentication with per-queue ACL.
+    /// When set (non-null), username/password auth is active and <see cref="AuthToken"/> is ignored.
+    /// </summary>
+    public AuthorizationOptions? Authorization { get; set; }
 
     /// <summary>
     /// Default options applied to newly created queues.

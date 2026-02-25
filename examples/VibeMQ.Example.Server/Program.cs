@@ -13,8 +13,9 @@ using var loggerFactory = LoggerFactory.Create(builder => {
         .AddConsole();
 });
 
+#pragma warning disable CS0618
 var broker = BrokerBuilder.Create()
-    .UsePort(8080)
+    .UsePort(2925)
     .UseAuthentication("my-secret-token")
     .UseMaxConnections(500)
     .UseMaxMessageSize(1_048_576) // 1 MB
@@ -30,12 +31,13 @@ var broker = BrokerBuilder.Create()
     })
     .UseLoggerFactory(loggerFactory)
     .Build();
+#pragma warning restore CS0618
 
 Console.WriteLine("╔══════════════════════════════════════════╗");
 Console.WriteLine("║          VibeMQ Message Broker            ║");
 Console.WriteLine("╚══════════════════════════════════════════╝");
 Console.WriteLine();
-Console.WriteLine("  Port:            8080");
+Console.WriteLine("  Port:            2925");
 Console.WriteLine("  Auth:            Enabled (token-based)");
 Console.WriteLine("  Max connections: 500");
 Console.WriteLine("  Queue auto-create: Yes");

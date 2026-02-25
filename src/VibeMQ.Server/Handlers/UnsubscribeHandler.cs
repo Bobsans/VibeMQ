@@ -22,7 +22,7 @@ public sealed partial class UnsubscribeHandler : ICommandHandler {
         CancellationToken cancellationToken = default
     ) {
         if (string.IsNullOrEmpty(message.Queue)) {
-            await connection.SendErrorAsync("INVALID_QUEUE", "Queue name is required for unsubscribe.", cancellationToken)
+            await connection.SendErrorAsync(message.Id, "INVALID_QUEUE", "Queue name is required for unsubscribe.", cancellationToken)
                 .ConfigureAwait(false);
             return;
         }

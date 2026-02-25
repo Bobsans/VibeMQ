@@ -152,7 +152,7 @@ VibeMQ.Server
 .. code-block:: csharp
 
    var broker = BrokerBuilder.Create()
-       .UsePort(8080)
+       .UsePort(2925)
        .UseAuthentication("token")
        .ConfigureQueues(options => { ... })
        .Build();

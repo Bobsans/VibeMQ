@@ -1,7 +1,9 @@
 using System.Text.Json;
 using Microsoft.Extensions.Logging;
+using VibeMQ.Enums;
 using VibeMQ.Interfaces;
 using VibeMQ.Protocol;
+using VibeMQ.Server.Auth;
 using VibeMQ.Server.Connections;
 
 namespace VibeMQ.Server.Handlers;
@@ -11,10 +13,12 @@ namespace VibeMQ.Server.Handlers;
 /// </summary>
 public sealed partial class QueueInfoHandler : ICommandHandler {
     private readonly IQueueManager _queueManager;
+    private readonly IAuthorizationService? _authz;
     private readonly ILogger<QueueInfoHandler> _logger;
 
-    public QueueInfoHandler(IQueueManager queueManager, ILogger<QueueInfoHandler> logger) {
+    public QueueInfoHandler(IQueueManager queueManager, IAuthorizationService? authz, ILogger<QueueInfoHandler> logger) {
         _queueManager = queueManager;
+        _authz = authz;
         _logger = logger;
     }
 
@@ -26,7 +30,13 @@ public sealed partial class QueueInfoHandler : ICommandHandler {
         CancellationToken cancellationToken = default
     ) {
         if (string.IsNullOrEmpty(message.Queue)) {
-            await connection.SendErrorAsync("INVALID_QUEUE", "Queue name is required for QueueInfo.", cancellationToken)
+            await connection.SendErrorAsync(message.Id, "INVALID_QUEUE", "Queue name is required for QueueInfo.", cancellationToken)
+                .ConfigureAwait(false);
+            return;
+        }
+
+        if (_authz is not null && !await _authz.IsAuthorizedAsync(connection, QueueOperation.GetQueueInfo, message.Queue, cancellationToken).ConfigureAwait(false)) {
+            await connection.SendErrorAsync(message.Id, "NOT_AUTHORIZED", "Access denied.", cancellationToken)
                 .ConfigureAwait(false);
             return;
         }

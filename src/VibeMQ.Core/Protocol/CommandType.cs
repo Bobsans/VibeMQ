@@ -31,6 +31,15 @@ public enum CommandType {
     QueueInfo = 42,
     ListQueues = 43,
 
+    // Admin (superuser only)
+    AdminCreateUser = 50,
+    AdminDeleteUser = 51,
+    AdminChangePassword = 52,
+    AdminGrantPermission = 53,
+    AdminRevokePermission = 54,
+    AdminListUsers = 55,
+    AdminGetUserPermissions = 56,
+
     // Errors
     Error = 99,
 }

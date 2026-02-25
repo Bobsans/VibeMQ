@@ -34,7 +34,7 @@ Start the server:
    using VibeMQ.Enums;
 
    var broker = BrokerBuilder.Create()
-       .UsePort(8080)
+       .UsePort(2925)
        .UseAuthentication("my-secret-token")
        .ConfigureQueues(options => {
            options.DefaultDeliveryMode = DeliveryMode.RoundRobin;
@@ -52,7 +52,7 @@ Connect the client:
 
    await using var client = await VibeMQClient.ConnectAsync(
        "localhost",
-       8080,
+       2925,
        new ClientOptions { AuthToken = "my-secret-token" }
    );
 
@@ -91,8 +91,10 @@ Connect the client:
    :caption: Setup & Usage
 
    docs/server-setup
+   docs/docker
    docs/client-usage
    docs/configuration
+   docs/authorization
    docs/di-integration
    docs/storage
 
@@ -145,7 +147,8 @@ Connect the client:
 
 **Security:**
 
-- Token-based authentication
+- Username/password authentication with per-queue ACL (BCrypt + SQLite)
+- Legacy token-based authentication
 - TLS/SSL encryption support
 - Rate limiting for overload protection
 
@@ -196,7 +199,7 @@ Server with Dependency Injection:
    var host = Host.CreateDefaultBuilder(args)
        .ConfigureServices(services => {
            services.AddVibeMQBroker(options => {
-               options.Port = 8080;
+               options.Port = 2925;
                options.EnableAuthentication = true;
                options.AuthToken = "my-secret-token";
                options.QueueDefaults.DefaultDeliveryMode = DeliveryMode.RoundRobin;
@@ -217,7 +220,7 @@ Client with Dependency Injection:
        .ConfigureServices(services => {
            services.AddVibeMQClient(settings => {
                settings.Host = "localhost";
-               settings.Port = 8080;
+               settings.Port = 2925;
                settings.ClientOptions.AuthToken = "my-secret-token";
            });
        })

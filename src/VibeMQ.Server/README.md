@@ -15,7 +15,7 @@ using VibeMQ.Server;
 using VibeMQ.Core.Enums;
 
 var broker = BrokerBuilder.Create()
-    .UsePort(8080)
+    .UsePort(2925)
     .UseAuthentication("my-secret-token")
     .ConfigureQueues(options => {
         options.DefaultDeliveryMode = DeliveryMode.RoundRobin;

@@ -1,0 +1,533 @@
+# VibeMQ Documentation (Russian).
+# Copyright (C) 2026, Darkboy
+# This file is distributed under the same license as the VibeMQ package.
+# Darkboy, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: VibeMQ 1.0.0\n"
+"Report-Msgid-Bugs-To: https://github.com/DarkBoy/VibeMQ/issues\n"
+"POT-Creation-Date: 2026-02-25 20:44+0300\n"
+"PO-Revision-Date: 2026-02-24 12:00+0300\n"
+"Last-Translator: Darkboy\n"
+"Language: ru\n"
+"Language-Team: Russian <https://github.com/DarkBoy/VibeMQ>\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../docs/authorization.rst:3 ce1cd9511abb45b1a83d8eab0dc04f78
+msgid "Authorization"
+msgstr "Авторизация"
+
+#: ../../docs/authorization.rst:5 2ca99baa8c3948c18d6e5843922e6eac
+msgid ""
+"This guide describes the username/password authorization system with per-"
+"queue ACL in VibeMQ."
+msgstr ""
+"Это руководство описывает систему авторизации на основе логина/пароля с "
+"ACL на уровне очередей в VibeMQ."
+
+#: ../../docs/authorization.rst:9 e2df6ffdfdf94d6d96f38df2bc99e082
+msgid "Contents"
+msgstr "Содержание"
+
+#: ../../docs/authorization.rst:12 cab59557117b4bc0988b2b9b03eaca35
+msgid "Overview"
+msgstr "Обзор"
+
+#: ../../docs/authorization.rst:14 6dc79f1506a644fbbb30aca544a699ee
+msgid "VibeMQ supports two authentication modes:"
+msgstr "VibeMQ поддерживает два режима аутентификации:"
+
+#: ../../docs/authorization.rst:20 cdb9546365bc4772a8e4bbc4eb147628
+msgid "Mode"
+msgstr "Режим"
+
+#: ../../docs/authorization.rst:21 ../../docs/authorization.rst:81
+#: ../../docs/authorization.rst:232 9b96cbc42396400980d803082b54cca4
+#: ae72d54dcee249e98088b5a44bea700f c8d609b899964c7c843a020f7b88420e
+msgid "Description"
+msgstr "Описание"
+
+#: ../../docs/authorization.rst:22 dc18ffa2b11243afaac7bbfa2942c105
+msgid "When to use"
+msgstr "Когда использовать"
+
+#: ../../docs/authorization.rst:23 739af35263a4401c920c78c369df4e4b
+#, fuzzy
+msgid "**Legacy token**"
+msgstr "Устаревший токен"
+
+#: ../../docs/authorization.rst:24 5d79ade84c854a30b0cde1a4356989ff
+msgid "Single shared token for all clients"
+msgstr "Единый общий токен для всех клиентов"
+
+#: ../../docs/authorization.rst:25 84442bf23d9f4b0baa18bac9fb67c4b6
+msgid "Simple setups, backward compatibility"
+msgstr "Простые конфигурации, обратная совместимость"
+
+#: ../../docs/authorization.rst:26 bb1783ecdbf94070b74bb8663d4d36f6
+#, fuzzy
+msgid "**Username/password + ACL**"
+msgstr "Логин/пароль + ACL"
+
+#: ../../docs/authorization.rst:27 01c61b6c6ec543859a37e326ac508ff4
+msgid "Per-user BCrypt passwords with per-queue ACL stored in SQLite"
+msgstr "BCrypt-пароли для каждого пользователя с ACL на уровне очередей в SQLite"
+
+#: ../../docs/authorization.rst:28 e0a1a4b8ae5a4ab9bae76591c75cc863
+msgid "Production, multi-tenant, fine-grained access control"
+msgstr "Продакшн, мультитенантность, гранулярное управление доступом"
+
+#: ../../docs/authorization.rst:30 16b07347392d41fc8072cf5edfce4ecf
+msgid ""
+"When authorization is enabled via ``UseAuthorization()``, the legacy "
+"token mode is automatically disabled. Without any auth configured, the "
+"broker accepts all connections anonymously."
+msgstr ""
+"При включении авторизации через ``UseAuthorization()`` устаревший "
+"токен-режим автоматически отключается. Без настроенной аутентификации "
+"брокер принимает все подключения анонимно."
+
+#: ../../docs/authorization.rst:35 9b50a5dbb49e42489e25d099ef918f7f
+msgid "Quick Start"
+msgstr "Быстрый старт"
+
+#: ../../docs/authorization.rst:48 797015d88e6e4fa7ada6a7a95bebb0e6
+msgid "Connect the client:"
+msgstr "Подключение клиента:"
+
+#: ../../docs/authorization.rst:62 64c68f8c3e9d4307af8d310851145f67
+msgid "Configuration"
+msgstr "Конфигурация"
+
+#: ../../docs/authorization.rst:65 2add2d1b79544cac88e1b3e4b030c4d2
+msgid "AuthorizationOptions"
+msgstr "AuthorizationOptions"
+
+#: ../../docs/authorization.rst:79 e53d284750c347e0b544eb76cd3c4af4
+msgid "Property"
+msgstr "Свойство"
+
+#: ../../docs/authorization.rst:80 da1603cabcac4828b321d75db2e03c3d
+msgid "Default"
+msgstr "Значение по умолчанию"
+
+#: ../../docs/authorization.rst:82 020e0e0a680b43aca60249d4aecaec3d
+msgid "``SuperuserUsername``"
+msgstr "``SuperuserUsername``"
+
+#: ../../docs/authorization.rst:83 02d70572a223459b90b6b966bce1150e
+msgid "``\"vibemq\"``"
+msgstr ""
+
+#: ../../docs/authorization.rst:84 5d4f6bff3f4a4555912aa81b08013ae4
+msgid "Username for the built-in superuser account."
+msgstr "Имя пользователя встроенного суперпользователя."
+
+#: ../../docs/authorization.rst:85 53331e1a3bbc42c59ced90529694ece2
+msgid "``SuperuserPassword``"
+msgstr "``SuperuserPassword``"
+
+#: ../../docs/authorization.rst:86 7baaa583afe740a0b992b481f3ff2f68
+#, fuzzy
+msgid "``\"\"``"
+msgstr "``*``"
+
+#: ../../docs/authorization.rst:87 fd6459e65aed4689bf6378a651b33813
+msgid ""
+"Password for the superuser. **Must be set** before the first run. If "
+"empty and the account does not exist yet, the broker throws on startup."
+msgstr ""
+"Пароль суперпользователя. **Должен быть задан** до первого запуска. Если "
+"пуст и аккаунт ещё не существует, брокер выбрасывает исключение при "
+"старте."
+
+#: ../../docs/authorization.rst:89 702107cc3d884f97b3dbab4928eb7864
+msgid "``DatabasePath``"
+msgstr "``DatabasePath``"
+
+#: ../../docs/authorization.rst:90 1fa12d72869346b8b0c34ff00602f9de
+msgid "``\"auth.db\"``"
+msgstr ""
+
+#: ../../docs/authorization.rst:91 5e2f46ca862c4cb4b4396899b1c29bc0
+msgid ""
+"Path to the SQLite file that stores users and ACL entries. Separate from "
+"the message storage database."
+msgstr ""
+"Путь к SQLite-файлу, хранящему пользователей и ACL-записи. Отдельная база"
+" данных от хранилища сообщений."
+
+#: ../../docs/authorization.rst:96 a6ac0325d42a49e9b2faea1712fd2d08
+msgid ""
+"The superuser account is seeded automatically on the first broker start "
+"when the database is empty. If ``SuperuserPassword`` is empty at that "
+"point, the broker will throw and refuse to start. Store the password "
+"securely (e.g. environment variable, secrets manager)."
+msgstr ""
+"Аккаунт суперпользователя создаётся автоматически при первом запуске "
+"брокера, когда база данных пуста. Если ``SuperuserPassword`` пуст в этот "
+"момент, брокер выбросит исключение и откажется запускаться. Храните "
+"пароль безопасно (например, в переменных окружения или менеджере "
+"секретов)."
+
+#: ../../docs/authorization.rst:102 a0f133a271f54b37b5b0453ed958e07e
+msgid "Superuser"
+msgstr "Суперпользователь"
+
+#: ../../docs/authorization.rst:104 8decea167a33476cbbd98b48816243d6
+msgid ""
+"The superuser account is a special account that bypasses all permission "
+"checks. It is the only account that can execute admin commands "
+"(create/delete users, grant/revoke permissions)."
+msgstr ""
+"Аккаунт суперпользователя — это специальный аккаунт, который обходит все "
+"проверки разрешений. Это единственный аккаунт, который может выполнять "
+"административные команды (создавать/удалять пользователей, "
+"выдавать/отзывать права)."
+
+#: ../../docs/authorization.rst:108 2be3e11769334bbb881976c70bf3031b
+msgid "**Properties of the superuser:**"
+msgstr "**Свойства суперпользователя:**"
+
+#: ../../docs/authorization.rst:110 642a012d105e4893bb33ee2b6e8e3374
+msgid "Always authorized for every queue and every operation."
+msgstr "Всегда авторизован для любой очереди и любой операции."
+
+#: ../../docs/authorization.rst:111 768bde6d66d949e7801f5bb548b8cbc5
+msgid ""
+"Cannot be deleted via the ``AdminDeleteUser`` command (lockout "
+"protection)."
+msgstr "Не может быть удалён командой ``AdminDeleteUser`` (защита от блокировки)."
+
+#: ../../docs/authorization.rst:112 2c1f0f22f6ff48ccb9eb2b8dc140a0ef
+msgid ""
+"Password can be changed by any authenticated superuser via "
+"``AdminChangePassword``."
+msgstr ""
+"Пароль может быть изменён любым аутентифицированным суперпользователем "
+"через ``AdminChangePassword``."
+
+#: ../../docs/authorization.rst:115 479f9d4fef2f43219ca1f1b98dd8b9ee
+msgid "Users and Passwords"
+msgstr "Пользователи и пароли"
+
+#: ../../docs/authorization.rst:117 515e030a8f9f4f4b9d4e796830adce4c
+msgid ""
+"Passwords are hashed using **BCrypt** with a work factor of 12. The hash "
+"is stored in the ``auth.db`` SQLite database."
+msgstr ""
+"Пароли хешируются с использованием **BCrypt** с коэффициентом работы 12. "
+"Хеш хранится в SQLite-базе ``auth.db``."
+
+#: ../../docs/authorization.rst:120 7a59bdc51648449688f8483bd05caf4b
+msgid "Creating users (admin protocol command):"
+msgstr "Создание пользователей (административная команда протокола):"
+
+#: ../../docs/authorization.rst:129 f8abc4b2fec844d4999a5115312af5f6
+msgid "Changing passwords:"
+msgstr "Изменение паролей:"
+
+#: ../../docs/authorization.rst:138 78e791008d4e4049817dc17166e93946
+msgid "Deleting users:"
+msgstr "Удаление пользователей:"
+
+#: ../../docs/authorization.rst:147 7a9313468b274509a4428165619e0516
+msgid "Per-Queue ACL"
+msgstr "ACL на уровне очередей"
+
+#: ../../docs/authorization.rst:149 89cc4c8487c846718ee7819a7bb87619
+msgid ""
+"Every user has a list of *permission entries*. Each entry associates a "
+"**queue pattern** (glob) with a set of **allowed operations**."
+msgstr ""
+"Каждый пользователь имеет список *записей разрешений*. Каждая запись "
+"связывает **шаблон очереди** (glob) с набором **разрешённых операций**."
+
+#: ../../docs/authorization.rst:153 0190dfeb6a3745f1b588e2239442a25e
+msgid "QueueOperation"
+msgstr "QueueOperation"
+
+#: ../../docs/authorization.rst:168 2481202d983d4f4a9cc25047ea748edd
+msgid "Glob Patterns"
+msgstr "Glob-шаблоны"
+
+#: ../../docs/authorization.rst:170 22742ab3c8074472ac4c90e2d6a8ea0a
+msgid ""
+"Queue patterns use ``*`` as a wildcard that matches **any sequence of "
+"characters, including dots**. Matching is case-insensitive."
+msgstr ""
+"Шаблоны очередей используют ``*`` в качестве символа подстановки, который"
+" совпадает с **любой последовательностью символов, включая точки**. "
+"Сравнение нечувствительно к регистру."
+
+#: ../../docs/authorization.rst:177 37e4eab80ad04256b6d4c81c3e004c7b
+msgid "Pattern"
+msgstr "Шаблон"
+
+#: ../../docs/authorization.rst:178 e76b6e98b5d14468b86c8cf7025097c0
+msgid "Matches"
+msgstr "Совпадает с"
+
+#: ../../docs/authorization.rst:179 4ca7c2a6c64242f1ac964d2a9b8c79a5
+msgid "``*``"
+msgstr "``*``"
+
+#: ../../docs/authorization.rst:180 5f8258f1cbb7474dac88b4c2a639e96e
+msgid "Any queue name."
+msgstr "Любое имя очереди."
+
+#: ../../docs/authorization.rst:181 53b10b694be9414392f48067a0565816
+msgid "``orders.*``"
+msgstr "``orders.*``"
+
+#: ../../docs/authorization.rst:182 39046b5a087c4bc38f2d69989a2e83b8
+msgid "``orders.new``, ``orders.shipped``, ``orders.test.deep``, …"
+msgstr "``orders.new``, ``orders.shipped``, ``orders.test.deep``, …"
+
+#: ../../docs/authorization.rst:183 b9994464388a4a77b0628846af1b3c90
+msgid "``*.events``"
+msgstr "``*.events``"
+
+#: ../../docs/authorization.rst:184 216a7908ad614be281c8553920d21d42
+msgid "``orders.events``, ``payments.events``, …"
+msgstr "``orders.events``, ``payments.events``, …"
+
+#: ../../docs/authorization.rst:185 64388097e22b4c338509e9e43bc55808
+msgid "``tenant.alice.*``"
+msgstr "``tenant.alice.*``"
+
+#: ../../docs/authorization.rst:186 7834caceaee7459ea1a704821b46c561
+msgid "Any queue under the ``tenant.alice.`` namespace."
+msgstr "Любая очередь в пространстве имён ``tenant.alice.``."
+
+#: ../../docs/authorization.rst:187 3017f2f227814acdaf2b330d4c21ce51
+msgid "``invoices``"
+msgstr "``invoices``"
+
+#: ../../docs/authorization.rst:188 5e7b8a05fd0f447995dbd6a8664f1855
+msgid "Exactly ``invoices`` (case-insensitive)."
+msgstr "Точно ``invoices`` (нечувствительно к регистру)."
+
+#: ../../docs/authorization.rst:190 e8d87d7934de4b788d7dfa0470707262
+msgid ""
+"**Union semantics:** when a user has multiple matching entries, the "
+"effective permission is the **union** of all matched operations."
+msgstr ""
+"**Объединение разрешений:** при наличии нескольких совпадающих записей "
+"итоговое разрешение является **объединением** всех совпавших операций."
+
+#: ../../docs/authorization.rst:193 9081361a6cf74160b20f2290fdb2107e
+msgid "Granting permissions (admin protocol command):"
+msgstr "Выдача разрешений (административная команда протокола):"
+
+#: ../../docs/authorization.rst:203 f2c9c5708fc74aeaa2d40e01f9e317e6
+msgid "Revoking permissions:"
+msgstr "Отзыв разрешений:"
+
+#: ../../docs/authorization.rst:213 3a8f1f8015cd478fa6c31a345196e661
+msgid "Permission Caching"
+msgstr "Кеширование разрешений"
+
+#: ../../docs/authorization.rst:215 cf3304b9bb924ea683e05d6ff6e35dc0
+msgid ""
+"When a client connects and authenticates successfully, the server loads "
+"all permission entries for that user and stores them in the session. All "
+"subsequent authorization checks use this in-memory cache — no database "
+"I/O per request."
+msgstr ""
+"При подключении и успешной аутентификации клиента сервер загружает все "
+"записи разрешений для этого пользователя и сохраняет их в сессии. Все "
+"последующие проверки авторизации используют этот кеш в памяти — без "
+"обращений к базе данных на каждый запрос."
+
+#: ../../docs/authorization.rst:219 c3c5333a8a8b4d93bd64fb9a4656365f
+msgid ""
+"**Implication:** if you grant or revoke permissions for a connected user,"
+" the change takes effect only after the user reconnects."
+msgstr ""
+"**Важно:** если вы выдаёте или отзываете разрешения для подключённого "
+"пользователя, изменение вступит в силу только после переподключения."
+
+#: ../../docs/authorization.rst:223 989bf2e38bef4fbb89eb9f7c9961431b
+msgid "Admin Protocol Commands"
+msgstr "Административные команды протокола"
+
+#: ../../docs/authorization.rst:225 d9a14bf8b4614f4180549c063525d91c
+msgid "Admin commands are available **only to superuser** sessions."
+msgstr "Административные команды доступны **только** суперпользователям."
+
+#: ../../docs/authorization.rst:231 7cfa0f44bc7b494f9ad87fc7960da614
+msgid "Command"
+msgstr "Команда"
+
+#: ../../docs/authorization.rst:233 42fb9f5a5d7b48ecb999bafee03fa442
+msgid "``AdminCreateUser``"
+msgstr "``AdminCreateUser``"
+
+#: ../../docs/authorization.rst:234 6ddef4d5325f402dbf461b4a79262a92
+msgid "Create a new user with a BCrypt-hashed password."
+msgstr "Создать нового пользователя с BCrypt-хешированным паролем."
+
+#: ../../docs/authorization.rst:235 d83c8fdb9ffa4d2d88fdb71ef2aa47cd
+msgid "``AdminDeleteUser``"
+msgstr "``AdminDeleteUser``"
+
+#: ../../docs/authorization.rst:236 e3b7fdc64c6444b39709fecdcf27ca80
+msgid "Delete a user (superusers cannot be deleted)."
+msgstr "Удалить пользователя (суперпользователей удалять нельзя)."
+
+#: ../../docs/authorization.rst:237 463014f18e394270adcffceef41cdb8b
+msgid "``AdminChangePassword``"
+msgstr "``AdminChangePassword``"
+
+#: ../../docs/authorization.rst:238 80fa6f90f34e4fe5bde16897fc9f5786
+msgid "Change a user's password (superuser: any user; regular: own only)."
+msgstr ""
+"Изменить пароль пользователя (суперпользователь: любой; обычный: только "
+"свой)."
+
+#: ../../docs/authorization.rst:239 6a2f79f649a4428399b6e10aeef8c6a9
+msgid "``AdminGrantPermission``"
+msgstr "``AdminGrantPermission``"
+
+#: ../../docs/authorization.rst:240 f99a8199aab246de91d405c1a569a593
+msgid "Add a permission entry (queue pattern + operations) for a user."
+msgstr "Добавить запись разрешения (шаблон очереди + операции) для пользователя."
+
+#: ../../docs/authorization.rst:241 d0ee255220fe4ce5b37650774b41e02a
+msgid "``AdminRevokePermission``"
+msgstr "``AdminRevokePermission``"
+
+#: ../../docs/authorization.rst:242 097c0d0ace5e4c708cc115800a429f13
+msgid "Remove a specific permission entry for a user."
+msgstr "Удалить конкретную запись разрешения для пользователя."
+
+#: ../../docs/authorization.rst:243 d22817695e5e49ba98769a4da0bcc49e
+msgid "``AdminListUsers``"
+msgstr "``AdminListUsers``"
+
+#: ../../docs/authorization.rst:244 6aff4c0f831049f69e02a98650505368
+msgid "List all users (returns username, isSuperuser, createdAt)."
+msgstr "Список всех пользователей (возвращает username, isSuperuser, createdAt)."
+
+#: ../../docs/authorization.rst:245 54e71545bc404d3eb5e0259801ca2522
+msgid "``AdminGetUserPermissions``"
+msgstr "``AdminGetUserPermissions``"
+
+#: ../../docs/authorization.rst:246 614bbe26af894870bd81e80567f2048e
+msgid "List all ACL entries for a specific user."
+msgstr "Список всех ACL-записей для конкретного пользователя."
+
+#: ../../docs/authorization.rst:249 7cb56c7b1f84457fbbfa3c5492d44ff0
+msgid "ListQueues Filtering"
+msgstr "Фильтрация ListQueues"
+
+#: ../../docs/authorization.rst:251 c3d4a6671fc54ba8aec64a6e438d9955
+msgid ""
+"When authorization is enabled, ``ListQueues`` returns only the queues "
+"that match at least one of the user's permission patterns with the "
+"``ListQueues`` operation. Superusers always see all queues."
+msgstr ""
+"При включённой авторизации ``ListQueues`` возвращает только те очереди, "
+"которые соответствуют хотя бы одному шаблону разрешений пользователя с "
+"операцией ``ListQueues``. Суперпользователи всегда видят все очереди."
+
+#: ../../docs/authorization.rst:256 d4c88d20eedf41e18bbfc939a21adcad
+msgid "Security Recommendations"
+msgstr "Рекомендации по безопасности"
+
+#: ../../docs/authorization.rst:260 1eddf56ff08040058e448f4c86a67666
+msgid "Follow these guidelines for production deployments:"
+msgstr "Следуйте этим рекомендациям для продакшн-развёртываний:"
+
+#: ../../docs/authorization.rst:262 66abb1bef90841f6aa8d381f622350b0
+msgid ""
+"Store ``SuperuserPassword`` in an environment variable or secrets "
+"manager; never hard-code it."
+msgstr ""
+"Храните ``SuperuserPassword`` в переменной окружения или менеджере "
+"секретов; никогда не хардкодируйте."
+
+#: ../../docs/authorization.rst:264 4460faa74b8649f5a7482e7b17faf85e
+msgid ""
+"Use a dedicated ``DatabasePath`` outside the application directory with "
+"appropriate file system permissions (readable only by the broker "
+"process)."
+msgstr ""
+"Используйте выделенный ``DatabasePath`` за пределами каталога приложения "
+"с соответствующими правами доступа к файловой системе (только для "
+"процесса брокера)."
+
+#: ../../docs/authorization.rst:266 634c73df4fab4e2a809f15e0f365ba8f
+msgid ""
+"Combine authorization with TLS (:doc:`server-setup`) so credentials are "
+"never transmitted in cleartext."
+msgstr ""
+"Совмещайте авторизацию с TLS (:doc:`server-setup`), чтобы учётные данные "
+"никогда не передавались в открытом виде."
+
+#: ../../docs/authorization.rst:268 415c4ecaec5d4771a71de9eedcd63e97
+msgid ""
+"Apply the *principle of least privilege*: grant each user only the "
+"operations and queue patterns they actually need."
+msgstr ""
+"Применяйте *принцип минимальных привилегий*: предоставляйте каждому "
+"пользователю только те операции и шаблоны очередей, которые действительно"
+" необходимы."
+
+#: ../../docs/authorization.rst:270 31827962cb2c40ffa38604725b67e7e8
+msgid "Rotate passwords regularly using ``AdminChangePassword``."
+msgstr "Регулярно меняйте пароли с помощью ``AdminChangePassword``."
+
+#: ../../docs/authorization.rst:273 13a735d8fdcf4c79a77c6160fa7fee0b
+msgid "Examples"
+msgstr "Примеры"
+
+#: ../../docs/authorization.rst:276 3ee6700b38204a26919d6be67e66d6d2
+msgid "Multi-tenant Setup"
+msgstr "Мультитенантная настройка"
+
+#: ../../docs/authorization.rst:289 e9708617f1ff472b98c38de6f8efbc17
+msgid ""
+"After startup, create tenants via admin commands (pseudocode — replace "
+"with a management tool or admin client that sends raw protocol messages):"
+msgstr ""
+"После запуска создайте тенантов через административные команды (псевдокод"
+" — замените инструментом управления или клиентом, отправляющим сырые "
+"сообщения протокола):"
+
+#: ../../docs/authorization.rst:300 c0088a74f3a54645a8a62f352139da8c
+msgid "Connect as tenant:"
+msgstr "Подключение как тенант:"
+
+#: ../../docs/authorization.rst:313 511b221bc8564686b1a26c651fa65892
+msgid "Worker Pool (Publish-only)"
+msgstr "Пул воркеров (только публикация)"
+
+#: ../../docs/authorization.rst:330 4261f8e6a8bf412c9c6baa8188408b60
+msgid "Next Steps"
+msgstr "Следующие шаги"
+
+#: ../../docs/authorization.rst:332 822f28db61e748dc8f796ed87796ba82
+#, fuzzy
+msgid ":doc:`server-setup` — TLS encryption for secure credential transmission"
+msgstr ""
+"- :doc:`server-setup` — TLS-шифрование для безопасной передачи учётных "
+"данных"
+
+#: ../../docs/authorization.rst:333 33d20ebd3a694a139bceed808eca868d
+#, fuzzy
+msgid ":doc:`configuration` — full BrokerOptions and ClientOptions reference"
+msgstr "- :doc:`configuration` — полный справочник BrokerOptions и ClientOptions"
+
+#: ../../docs/authorization.rst:334 9eec1183aece4428a2c4d7de7f96f588
+#, fuzzy
+msgid ":doc:`features` — all broker features overview"
+msgstr "- :doc:`features` — обзор всех возможностей брокера"
+

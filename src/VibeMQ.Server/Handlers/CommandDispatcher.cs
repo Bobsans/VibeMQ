@@ -30,7 +30,7 @@ public sealed partial class CommandDispatcher {
             await handler.HandleAsync(connection, message, cancellationToken).ConfigureAwait(false);
         } else {
             LogUnknownCommand(message.Type, connection.Id);
-            await connection.SendErrorAsync("UNKNOWN_COMMAND", $"Unknown command type: {message.Type}", cancellationToken)
+            await connection.SendErrorAsync(message.Id, "UNKNOWN_COMMAND", $"Unknown command type: {message.Type}", cancellationToken)
                 .ConfigureAwait(false);
         }
     }

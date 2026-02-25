@@ -20,7 +20,7 @@ Enabling Health Checks
 
    .ConfigureHealthChecks(options => {
        options.Enabled = true;
-       options.Port = 8081;
+       options.Port = 2926;
    })
 
 Endpoints
@@ -35,7 +35,7 @@ Returns server health status.
 
 .. code-block:: bash
 
-   curl http://localhost:8081/health/
+   curl http://localhost:2926/health/
 
 **Response (200 OK):**
 
@@ -73,7 +73,7 @@ Returns detailed server metrics.
 
 .. code-block:: bash
 
-   curl http://localhost:8081/metrics/
+   curl http://localhost:2926/metrics/
 
 **Response:**
 
@@ -468,7 +468,7 @@ Logging Configuration
    });
 
    var broker = BrokerBuilder.Create()
-       .UsePort(8080)
+       .UsePort(2925)
        .UseLoggerFactory(loggerFactory)
        .Build();
 
@@ -516,8 +516,8 @@ Log Examples
 
 .. code-block:: text
 
-   [10:30:00 INF] VibeMQ server starting on port 8080
-   [10:30:00 INF] Health check server started on port 8081
+   [10:30:00 INF] VibeMQ server starting on port 2925
+   [10:30:00 INF] Health check server started on port 2926
    [10:30:00 INF] Server ready to accept connections
 
 **Client connection:**

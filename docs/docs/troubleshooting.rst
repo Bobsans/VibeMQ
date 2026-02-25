@@ -33,23 +33,23 @@ Connection Issues
 
    // Check that server is running
    var broker = BrokerBuilder.Create()
-       .UsePort(8080)  // Correct port
+       .UsePort(2925)  // Correct port
        .Build();
    
    await broker.RunAsync(cancellationToken);
 
    // Check that client connects to correct port
-   var client = await VibeMQClient.ConnectAsync("localhost", 8080);
+   var client = await VibeMQClient.ConnectAsync("localhost", 2925);
 
 **Check:**
 
 .. code-block:: bash
 
    # Check that port is listening
-   netstat -an | grep 8080
+   netstat -an | grep 2925
 
    # PowerShell
-   Get-NetTCPConnection -LocalPort 8080
+   Get-NetTCPConnection -LocalPort 2925
 
 "Connection timeout"
 --------------------
@@ -72,7 +72,7 @@ Connection Issues
 
    var client = await VibeMQClient.ConnectAsync(
        "localhost",
-       8080,
+       2925,
        new ClientOptions {
            CommandTimeout = TimeSpan.FromSeconds(30)  // Increase timeout
        }
@@ -100,7 +100,7 @@ Connection Issues
    // Check host
    var client = await VibeMQClient.ConnectAsync(
        "vibemq-server",  // Correct hostname
-       8080
+       2925
    );
 
 **DNS check:**
@@ -136,7 +136,7 @@ Authentication Issues
    // Client
    var client = await VibeMQClient.ConnectAsync(
        "localhost",
-       8080,
+       2925,
        new ClientOptions {
            AuthToken = "my-secret-token"  // Same token
        }
@@ -163,7 +163,7 @@ Authentication Issues
 
    var client = await VibeMQClient.ConnectAsync(
        "localhost",
-       8080,
+       2925,
        new ClientOptions {
            AuthToken = "my-token"  // Provide token
        }
@@ -288,7 +288,7 @@ Slow Message Delivery
 
 .. code-block:: bash
 
-   curl http://localhost:8081/metrics/ | jq .average_delivery_latency_ms
+   curl http://localhost:2926/metrics/ | jq .average_delivery_latency_ms
 
 "Message timeout"
 -----------------
@@ -363,7 +363,7 @@ Memory Issues
 
 .. code-block:: bash
 
-   curl http://localhost:8081/health/ | jq .memory_usage_mb
+   curl http://localhost:2926/health/ | jq .memory_usage_mb
 
 Backpressure
 ------------
@@ -402,7 +402,7 @@ Frequent Disconnections
 
    var client = await VibeMQClient.ConnectAsync(
        "localhost",
-       8080,
+       2925,
        new ClientOptions {
            ReconnectPolicy = new ReconnectPolicy {
                MaxAttempts = 50,  // Increase attempts
@@ -433,7 +433,7 @@ Frequent Disconnections
    try {
        var client = await VibeMQClient.ConnectAsync(
            "localhost",
-           8080,
+           2925,
            new ClientOptions {
                ReconnectPolicy = new ReconnectPolicy {
                    MaxAttempts = 100  // Increase
@@ -469,7 +469,7 @@ TLS/SSL Issues
 
    var client = await VibeMQClient.ConnectAsync(
        "localhost",
-       8080,
+       2925,
        new ClientOptions {
            UseTls = true,
            SkipCertificateValidation = true  // Tests only!
@@ -582,7 +582,7 @@ Enabling Verbose Logging
    });
 
    var broker = BrokerBuilder.Create()
-       .UsePort(8080)
+       .UsePort(2925)
        .UseLoggerFactory(loggerFactory)
        .Build();
 
@@ -592,10 +592,10 @@ Health Check
 .. code-block:: bash
 
    # Health check
-   curl http://localhost:8081/health/
+   curl http://localhost:2926/health/
 
    # Metrics
-   curl http://localhost:8081/metrics/ | jq
+   curl http://localhost:2926/metrics/ | jq
 
 Queue Check
 -----------------

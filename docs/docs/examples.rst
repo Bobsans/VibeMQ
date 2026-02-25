@@ -27,7 +27,7 @@ Simple Publisher
 
    await using var publisher = await VibeMQClient.ConnectAsync(
        "localhost",
-       8080,
+       2925,
        new ClientOptions { AuthToken = "my-token" },
        logger
    );
@@ -62,7 +62,7 @@ Simple Subscriber
 
    await using var subscriber = await VibeMQClient.ConnectAsync(
        "localhost",
-       8080,
+       2925,
        new ClientOptions { AuthToken = "my-token" },
        logger
    );
@@ -91,7 +91,7 @@ Server
    });
 
    var broker = BrokerBuilder.Create()
-       .UsePort(8080)
+       .UsePort(2925)
        .UseAuthentication("my-token")
        .ConfigureQueues(options => {
            options.DefaultDeliveryMode = DeliveryMode.RoundRobin;
@@ -100,7 +100,7 @@ Server
        })
        .ConfigureHealthChecks(options => {
            options.Enabled = true;
-           options.Port = 8081;
+           options.Port = 2926;
        })
        .UseLoggerFactory(loggerFactory)
        .Build();
@@ -217,7 +217,7 @@ Order Processing
        .ConfigureServices(services => {
            services.AddVibeMQClient(settings => {
                settings.Host = "localhost";
-               settings.Port = 8080;
+               settings.Port = 2925;
                settings.ClientOptions.AuthToken = "my-token";
            });
 
@@ -274,7 +274,7 @@ Using class-based handlers with automatic subscription:
        .ConfigureServices(services => {
            services.AddVibeMQClient(settings => {
                settings.Host = "localhost";
-               settings.Port = 8080;
+               settings.Port = 2925;
                settings.ClientOptions.AuthToken = "my-token";
            });
 
@@ -653,7 +653,7 @@ Custom Logger
        builder.AddProvider(new FileLoggerProvider("logs/vibemq.log")));
 
    var broker = BrokerBuilder.Create()
-       .UsePort(8080)
+       .UsePort(2925)
        .UseLoggerFactory(loggerFactory)
        .Build();
 

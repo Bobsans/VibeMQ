@@ -19,7 +19,7 @@ Main server configuration class:
 .. code-block:: csharp
 
    public sealed class BrokerOptions {
-       public int Port { get; set; } = 8080;
+       public int Port { get; set; } = 2925;
        public int MaxConnections { get; set; } = 1000;
        public int MaxMessageSize { get; set; } = 1_048_576;
        public bool EnableAuthentication { get; set; }
@@ -33,6 +33,8 @@ Main server configuration class:
        public int CompressionThreshold { get; set; } = 1024;  // 1 KB
    }
 
+**Authorization** (default: ``null``) enables username/password authentication with per-queue ACL. When set, legacy ``AuthToken`` is ignored. See :doc:`authorization` for full details.
+
 **StorageType** (default: ``InMemory``) selects the persistence backend: ``InMemory`` (no durability) or ``Sqlite`` (durable, single-node). See :doc:`storage` for details.
 
 **SupportedCompressions** (default: ``Brotli, GZip``) and **CompressionThreshold** (default: ``1024`` bytes) control frame-level compression. Use ``ConfigureFrom(BrokerOptions)`` to set them; see :doc:`protocol` for negotiation and framing.
@@ -45,13 +47,13 @@ Port
 
 **Type:** ``int``
 
-**Default:** ``8080``
+**Default:** ``2925``
 
 TCP port for client connections:
 
 .. code-block:: csharp
 
-   .UsePort(8080)
+   .UsePort(2925)
 
 .. note::
 
@@ -111,7 +113,11 @@ AuthToken
 
 **Default:** ``null``
 
-Token for client authentication:
+.. deprecated::
+
+   Use ``UseAuthorization()`` for new deployments.
+
+Token for client authentication (legacy mode):
 
 .. code-block:: csharp
 
@@ -120,6 +126,54 @@ Token for client authentication:
 .. warning::
 
    Use complex tokens (32+ characters) in production.
+
+Authorization
+~~~~~~~~~~~~~
+
+**Type:** ``AuthorizationOptions?``
+
+**Default:** ``null``
+
+Enables username/password authentication with per-queue ACL stored in SQLite.
+When set, legacy token authentication is automatically disabled.
+
+.. code-block:: csharp
+
+   .UseAuthorization(o => {
+       o.SuperuserUsername = "admin";
+       o.SuperuserPassword = Environment.GetEnvironmentVariable("VIBEMQ_ADMIN_PASS");
+       o.DatabasePath = "/var/lib/vibemq/auth.db";
+   })
+
+See :doc:`authorization` for full details on users, ACL, and admin commands.
+
+AuthorizationOptions
+~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: csharp
+
+   public sealed class AuthorizationOptions {
+       public string SuperuserUsername { get; set; } = "vibemq";
+       public string SuperuserPassword { get; set; } = "";
+       public string DatabasePath { get; set; } = "auth.db";
+   }
+
+.. list-table::
+   :header-rows: 1
+   :widths: 28 14 48
+
+   * - Property
+     - Default
+     - Description
+   * - ``SuperuserUsername``
+     - ``"vibemq"``
+     - Username for the built-in superuser account.
+   * - ``SuperuserPassword``
+     - ``""``
+     - Password for the superuser. Must be set before the first run.
+   * - ``DatabasePath``
+     - ``"auth.db"``
+     - Path to the dedicated SQLite ACL database.
 
 QueueDefaults
 -------------
@@ -331,6 +385,22 @@ ClientOptions
        public IList<QueueDeclaration> QueueDeclarations { get; set; } = [];
    }
 
+Username / Password
+~~~~~~~~~~~~~~~~~~~
+
+**Type:** ``string?``
+
+**Default:** ``null``
+
+Credentials for username/password authentication (new mode):
+
+.. code-block:: csharp
+
+   Username = "alice",
+   Password = "alice-secret"
+
+When both ``Username`` and ``Password`` are set, they take priority over ``AuthToken``.
+
 AuthToken
 ~~~~~~~~~
 
@@ -338,7 +408,11 @@ AuthToken
 
 **Default:** ``null``
 
-Token for authentication:
+.. deprecated::
+
+   Use ``Username`` and ``Password`` for new deployments.
+
+Token for authentication (legacy mode):
 
 .. code-block:: csharp
 
@@ -628,7 +702,7 @@ HealthCheckOptions
 
    public sealed class HealthCheckOptions {
        public bool Enabled { get; set; } = true;
-       public int Port { get; set; } = 8081;
+       public int Port { get; set; } = 2926;
    }
 
 Enabled
@@ -651,7 +725,7 @@ Port
 
 **Type:** ``int``
 
-**Default:** ``8081``
+**Default:** ``2926``
 
 HTTP port for health checks:
 
@@ -670,7 +744,7 @@ Minimal
 .. code-block:: csharp
 
    var broker = BrokerBuilder.Create()
-       .UsePort(8080)
+       .UsePort(2925)
        .Build();
 
 Development
@@ -679,7 +753,7 @@ Development
 .. code-block:: csharp
 
    var broker = BrokerBuilder.Create()
-       .UsePort(8080)
+       .UsePort(2925)
        .UseAuthentication("dev-token")
        .ConfigureQueues(options => {
            options.DefaultDeliveryMode = DeliveryMode.RoundRobin;
@@ -694,7 +768,7 @@ Production
 .. code-block:: csharp
 
    var broker = BrokerBuilder.Create()
-       .UsePort(8080)
+       .UsePort(2925)
        .UseAuthentication(Environment.GetEnvironmentVariable("VIBEMQ_TOKEN"))
        .UseMaxConnections(5000)
        .UseMaxMessageSize(2_097_152)
@@ -715,7 +789,7 @@ Production
        })
        .ConfigureHealthChecks(options => {
            options.Enabled = true;
-           options.Port = 8081;
+           options.Port = 2926;
        })
        .Build();
 
@@ -745,7 +819,7 @@ Microservices
 .. code-block:: csharp
 
    var broker = BrokerBuilder.Create()
-       .UsePort(8080)
+       .UsePort(2925)
        .UseAuthentication("microservice-token")
        .ConfigureQueues(options => {
            options.DefaultDeliveryMode = DeliveryMode.FanOutWithAck;
@@ -754,7 +828,26 @@ Microservices
        })
        .ConfigureHealthChecks(options => {
            options.Enabled = true;
-           options.Port = 8081;
+           options.Port = 2926;
+       })
+       .Build();
+
+With Authorization
+------------------
+
+.. code-block:: csharp
+
+   var broker = BrokerBuilder.Create()
+       .UsePort(2925)
+       .UseAuthorization(o => {
+           o.SuperuserUsername = "admin";
+           o.SuperuserPassword = Environment.GetEnvironmentVariable("VIBEMQ_ADMIN_PASS");
+           o.DatabasePath = "/var/lib/vibemq/auth.db";
+       })
+       .UseMaxConnections(5000)
+       .UseTls(options => {
+           options.CertificatePath = "/etc/ssl/vibemq.pfx";
+           options.CertificatePassword = Environment.GetEnvironmentVariable("CERT_PASSWORD");
        })
        .Build();
 
@@ -762,5 +855,6 @@ Next Steps
 ==========
 
 - :doc:`server-setup` — server setup
+- :doc:`authorization` — authorization and ACL
 - :doc:`di-integration` — DI integration
 - :doc:`monitoring` — monitoring

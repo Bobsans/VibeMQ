@@ -10,6 +10,7 @@ public class SecurityTests : IAsyncLifetime {
 
     [Fact]
     public async Task Connect_WithInvalidToken_ThrowsOrFails() {
+#pragma warning disable CS0618
         var options = new ClientOptions {
             AuthToken = "wrong-token",
             CommandTimeout = TimeSpan.FromSeconds(3),
@@ -19,6 +20,7 @@ public class SecurityTests : IAsyncLifetime {
         await Assert.ThrowsAsync<InvalidOperationException>(
             () => VibeMQClient.ConnectAsync("127.0.0.1", _fixture.Port, options)
         );
+#pragma warning restore CS0618
     }
 
     [Fact]

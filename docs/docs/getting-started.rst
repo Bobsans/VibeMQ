@@ -48,7 +48,7 @@ Create a ``Program.cs`` file with the server startup code:
 
    // Create and configure the broker
    var broker = BrokerBuilder.Create()
-       .UsePort(8080)
+       .UsePort(2925)
        .UseAuthentication("my-secret-token")
        .ConfigureQueues(options => {
            options.DefaultDeliveryMode = DeliveryMode.RoundRobin;
@@ -58,7 +58,7 @@ Create a ``Program.cs`` file with the server startup code:
        .UseLoggerFactory(loggerFactory)
        .Build();
 
-   Console.WriteLine("Starting VibeMQ server on port 8080...");
+   Console.WriteLine("Starting VibeMQ server on port 2925...");
 
    // Start the server
    await broker.RunAsync(CancellationToken.None);
@@ -96,7 +96,7 @@ Edit ``Program.cs``:
    // Connect to the server
    await using var client = await VibeMQClient.ConnectAsync(
        "localhost",
-       8080,
+       2925,
        new ClientOptions {
            AuthToken = "my-secret-token",
            ReconnectPolicy = new ReconnectPolicy {
@@ -152,7 +152,7 @@ Create two separate applications:
 
    using VibeMQ.Client;
 
-   await using var publisher = await VibeMQClient.ConnectAsync("localhost", 8080, new ClientOptions {
+   await using var publisher = await VibeMQClient.ConnectAsync("localhost", 2925, new ClientOptions {
        AuthToken = "my-secret-token"
    });
 
@@ -177,7 +177,7 @@ Create two separate applications:
 
    using VibeMQ.Client;
 
-   await using var subscriber = await VibeMQClient.ConnectAsync("localhost", 8080, new ClientOptions {
+   await using var subscriber = await VibeMQClient.ConnectAsync("localhost", 2925, new ClientOptions {
        AuthToken = "my-secret-token"
    });
 

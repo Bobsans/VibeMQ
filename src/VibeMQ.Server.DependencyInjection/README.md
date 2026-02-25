@@ -19,7 +19,7 @@ using VibeMQ.Core.Enums;
 var host = Host.CreateDefaultBuilder(args)
     .ConfigureServices(services => {
         services.AddVibeMQBroker(options => {
-            options.Port = 8080;
+            options.Port = 2925;
             options.EnableAuthentication = true;
             options.AuthToken = "my-secret-token";
             options.QueueDefaults.DefaultDeliveryMode = DeliveryMode.RoundRobin;

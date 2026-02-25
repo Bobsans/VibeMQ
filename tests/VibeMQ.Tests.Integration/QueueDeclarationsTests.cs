@@ -1,3 +1,4 @@
+#pragma warning disable CS0618 // Uses legacy AuthToken for existing test coverage
 using VibeMQ.Client;
 using VibeMQ.Client.Exceptions;
 using VibeMQ.Configuration;

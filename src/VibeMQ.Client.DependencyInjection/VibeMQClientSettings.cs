@@ -11,9 +11,9 @@ public sealed class VibeMQClientSettings {
     public string Host { get; set; } = "localhost";
 
     /// <summary>
-    /// Broker port. Default: 8080.
+    /// Broker port. Default: 2925.
     /// </summary>
-    public int Port { get; set; } = 8080;
+    public int Port { get; set; } = 2925;
 
     /// <summary>
     /// Client options (auth, reconnect, keep-alive, TLS, etc.).

@@ -1,0 +1,31 @@
+# VibeMQ broker — local run with Docker Compose
+# From repo root: docker compose -f docker/docker-compose.yml up -d
+# Clients: connect to localhost:2925
+
+services:
+  vibemq:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    image: vibemq:latest
+    container_name: vibemq
+    ports:
+      - "2925:2925"
+    environment:
+      # Override port if needed (must match ports above)
+      - VibeMQ__Port=2925
+      # Optional: enable auth and set token (legacy)
+      # - VibeMQ__EnableAuthentication=true
+      # - VibeMQ__AuthToken=your-secret-token
+      # Optional: username/password auth with SQLite (persist auth.db in a volume)
+      # - VibeMQ__EnableAuthentication=true
+      # - VibeMQ__Authorization__SuperuserUsername=admin
+      # - VibeMQ__Authorization__SuperuserPassword=${VIBEMQ_ADMIN_PASS}
+      # - VibeMQ__Authorization__DatabasePath=/data/auth.db
+    # Optional: persist auth DB and/or SQLite queue storage
+    # volumes:
+    #   - vibemq-data:/data
+    # restart: unless-stopped
+
+# volumes:
+#   vibemq-data:

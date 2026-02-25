@@ -1,3 +1,4 @@
+#pragma warning disable CS0618 // Tests legacy AuthenticateAsync(string) method
 using VibeMQ.Server.Auth;
 
 namespace VibeMQ.Tests.Unit.Security;

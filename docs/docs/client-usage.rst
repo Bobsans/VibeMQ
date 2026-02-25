@@ -22,7 +22,7 @@ In ASP.NET Core or Worker Service you can inject **``IVibeMQClient``** and use i
    services.AddLogging();
    services.AddVibeMQClient(settings => {
        settings.Host = "localhost";
-       settings.Port = 8080;
+       settings.Port = 2925;
        settings.ClientOptions.AuthToken = "my-token";
    });
 
@@ -50,7 +50,7 @@ Basic Connection
 
    await using var client = await VibeMQClient.ConnectAsync(
        "localhost",
-       8080
+       2925
    );
 
    Console.WriteLine($"Connected: {client.IsConnected}");
@@ -62,7 +62,7 @@ Connection with Authentication
 
    var client = await VibeMQClient.ConnectAsync(
        "localhost",
-       8080,
+       2925,
        new ClientOptions {
            AuthToken = "my-secret-token"
        }
@@ -83,7 +83,7 @@ Connection with Logging
 
    var client = await VibeMQClient.ConnectAsync(
        "localhost",
-       8080,
+       2925,
        new ClientOptions { AuthToken = "my-token" },
        logger
    );
@@ -325,7 +325,7 @@ Use the fluent ``DeclareQueue`` helper on ``ClientOptions``:
 
    await using var client = await VibeMQClient.ConnectAsync(
        "localhost",
-       8080,
+       2925,
        new ClientOptions {
            AuthToken = "my-token",
        }
@@ -425,7 +425,7 @@ When ``OnConflict = Fail`` and a conflict is detected, ``ConnectAsync`` throws
    using VibeMQ.Client.Exceptions;
 
    try {
-       await using var client = await VibeMQClient.ConnectAsync("localhost", 8080, options);
+       await using var client = await VibeMQClient.ConnectAsync("localhost", 2925, options);
    } catch (QueueConflictException ex) {
        Console.WriteLine($"Queue '{ex.QueueName}' has conflicting settings:");
        foreach (var diff in ex.Conflicts) {
@@ -491,7 +491,7 @@ Call ``DeclareQueue`` directly on ``settings.ClientOptions``:
 
    services.AddVibeMQClient(settings => {
        settings.Host = "localhost";
-       settings.Port = 8080;
+       settings.Port = 2925;
 
        settings.ClientOptions
            .DeclareQueue("orders", q => {
@@ -600,7 +600,7 @@ Connection with TLS:
 
    var client = await VibeMQClient.ConnectAsync(
        "localhost",
-       8080,
+       2925,
        new ClientOptions {
            UseTls = true,
            AuthToken = "my-token"
@@ -624,7 +624,7 @@ Client automatically reconnects on connection loss:
 
    var client = await VibeMQClient.ConnectAsync(
        "localhost",
-       8080,
+       2925,
        new ClientOptions {
            ReconnectPolicy = new ReconnectPolicy {
                MaxAttempts = 10,
@@ -679,7 +679,7 @@ Using Using
 
 .. code-block:: csharp
 
-   await using var client = await VibeMQClient.ConnectAsync("localhost", 8080);
+   await using var client = await VibeMQClient.ConnectAsync("localhost", 2925);
 
    // Work with client
 
@@ -701,7 +701,7 @@ Simple Publisher
 
    using VibeMQ.Client;
 
-   await using var publisher = await VibeMQClient.ConnectAsync("localhost", 8080, new ClientOptions {
+   await using var publisher = await VibeMQClient.ConnectAsync("localhost", 2925, new ClientOptions {
        AuthToken = "my-token"
    });
 
@@ -726,7 +726,7 @@ Simple Subscriber
 
    using VibeMQ.Client;
 
-   await using var subscriber = await VibeMQClient.ConnectAsync("localhost", 8080, new ClientOptions {
+   await using var subscriber = await VibeMQClient.ConnectAsync("localhost", 2925, new ClientOptions {
        AuthToken = "my-token"
    });
 
@@ -841,7 +841,7 @@ Connection Error
    // Check connection parameters
    var client = await VibeMQClient.ConnectAsync(
        "localhost",  // Or correct host
-       8080,         // Or correct port
+       2925,         // Or correct port
        new ClientOptions { ... }
    );
 

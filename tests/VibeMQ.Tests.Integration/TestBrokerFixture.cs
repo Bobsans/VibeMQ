@@ -22,12 +22,14 @@ public sealed class TestBrokerFixture : IAsyncLifetime {
         Port = GetFreePort();
         _cts = new CancellationTokenSource();
 
+#pragma warning disable CS0618
         _server = BrokerBuilder.Create()
             .UsePort(Port)
             .UseAuthentication(AUTH_TOKEN)
             .UseMaxConnections(100)
             .ConfigureRateLimiting(o => o.Enabled = false)
             .Build();
+#pragma warning restore CS0618
 
         _serverTask = _server.RunAsync(_cts.Token);
 
@@ -36,6 +38,7 @@ public sealed class TestBrokerFixture : IAsyncLifetime {
     }
 
     public async Task<VibeMQClient> CreateClientAsync(bool authenticate = true) {
+#pragma warning disable CS0618
         var options = new ClientOptions {
             AuthToken = authenticate ? AUTH_TOKEN : null,
             CommandTimeout = TimeSpan.FromSeconds(5),
@@ -43,6 +46,7 @@ public sealed class TestBrokerFixture : IAsyncLifetime {
         };
 
         var client = await VibeMQClient.ConnectAsync("127.0.0.1", Port, options);
+#pragma warning restore CS0618
         return client;
     }
 

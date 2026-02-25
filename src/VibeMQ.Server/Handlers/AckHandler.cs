@@ -25,7 +25,7 @@ public sealed partial class AckHandler : ICommandHandler {
         CancellationToken cancellationToken = default
     ) {
         if (string.IsNullOrEmpty(message.Id)) {
-            await connection.SendErrorAsync("INVALID_MESSAGE", "Message ID is required for acknowledgment.", cancellationToken)
+            await connection.SendErrorAsync(message.Id, "INVALID_MESSAGE", "Message ID is required for acknowledgment.", cancellationToken)
                 .ConfigureAwait(false);
             return;
         }

@@ -380,7 +380,7 @@ needs as part of ``ClientOptions``. On every ``ConnectAsync`` the client:
 
    await using var client = await VibeMQClient.ConnectAsync(
        "localhost",
-       8080,
+       2925,
        new ClientOptions()
            // Production queue — any drift is a deploy error
            .DeclareQueue("orders", q => {
@@ -454,7 +454,7 @@ Active connections are maintained using the keep-alive mechanism:
 
    var client = await VibeMQClient.ConnectAsync(
        "localhost",
-       8080,
+       2925,
        new ClientOptions {
            KeepAliveInterval = TimeSpan.FromSeconds(30)
        }
@@ -471,7 +471,7 @@ The client automatically reconnects when the connection is lost.
 
    var client = await VibeMQClient.ConnectAsync(
        "localhost",
-       8080,
+       2925,
        new ClientOptions {
            ReconnectPolicy = new ReconnectPolicy {
                MaxAttempts = 10,
@@ -515,7 +515,7 @@ Token-based authentication:
 
    var client = await VibeMQClient.ConnectAsync(
        "localhost",
-       8080,
+       2925,
        new ClientOptions {
            AuthToken = "my-secret-token"
        }
@@ -546,7 +546,7 @@ Transport encryption support:
 
    var client = await VibeMQClient.ConnectAsync(
        "localhost",
-       8080,
+       2925,
        new ClientOptions {
            UseTls = true,
            SkipCertificateValidation = false  // Only for tests!
@@ -618,7 +618,7 @@ HTTP endpoints for monitoring:
 
    .ConfigureHealthChecks(options => {
        options.Enabled = true;
-       options.Port = 8081;
+       options.Port = 2926;
    })
 
 **Endpoints:**
@@ -696,7 +696,7 @@ All state is kept in memory — zero configuration, maximum performance. All dat
 .. code-block:: csharp
 
    var broker = BrokerBuilder.Create()
-       .UsePort(8080)
+       .UsePort(2925)
        .UseSqliteStorage(options => {
            options.DatabasePath = "/data/vibemq.db";
        })

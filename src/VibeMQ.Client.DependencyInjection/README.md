@@ -19,7 +19,7 @@ using VibeMQ.Client.DependencyInjection;
 // In Program.cs or Startup
 services.AddVibeMQClient(settings => {
     settings.Host = "localhost";
-    settings.Port = 8080;
+    settings.Port = 2925;
     settings.ClientOptions.AuthToken = "your-token";
 });
 

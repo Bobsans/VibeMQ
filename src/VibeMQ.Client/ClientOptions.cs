@@ -10,9 +10,20 @@ namespace VibeMQ.Client;
 /// </summary>
 public sealed class ClientOptions {
     /// <summary>
-    /// Authentication token. If null, no authentication is performed.
+    /// Authentication token for legacy token-based auth. If null, no legacy auth is performed.
     /// </summary>
+    [Obsolete("Use Username and Password for new deployments.")]
     public string? AuthToken { get; set; }
+
+    /// <summary>
+    /// Username for username/password authentication.
+    /// </summary>
+    public string? Username { get; set; }
+
+    /// <summary>
+    /// Password for username/password authentication.
+    /// </summary>
+    public string? Password { get; set; }
 
     /// <summary>
     /// Reconnection policy for handling connection drops.

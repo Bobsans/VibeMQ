@@ -13,6 +13,7 @@
     <PackageReference Include="xunit" Version="2.*" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.*" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.*" />
+    <PackageReference Include="BCrypt.Net-Next" Version="4.*" />
   </ItemGroup>
 
   <ItemGroup>
