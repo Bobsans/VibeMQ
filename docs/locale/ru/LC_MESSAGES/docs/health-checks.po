@@ -389,6 +389,3 @@ msgstr ":doc:`troubleshooting` — устранение неполадок"
 msgid ":doc:`configuration` — configuration"
 msgstr ":doc:`configuration` — конфигурация"
 
-#~ msgid "8081"
-#~ msgstr "8081"
-

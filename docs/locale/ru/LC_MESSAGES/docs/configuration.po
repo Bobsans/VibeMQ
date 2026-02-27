@@ -925,15 +925,3 @@ msgstr ":doc:`di-integration` — интеграция DI"
 msgid ":doc:`monitoring` — monitoring"
 msgstr ":doc:`monitoring` — мониторинг"
 
-#~ msgid "Token for client authentication:"
-#~ msgstr "Токен для аутентификации клиентов:"
-
-#~ msgid "Token for authentication:"
-#~ msgstr "Токен для аутентификации:"
-
-#~ msgid "**Default:** ``8080``"
-#~ msgstr "**По умолчанию:** ``8080``"
-
-#~ msgid "**Default:** ``8081``"
-#~ msgstr "**По умолчанию:** ``8081``"
-

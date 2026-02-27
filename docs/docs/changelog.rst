@@ -67,7 +67,7 @@ Version 1.5.0
 
 **Date:** February 2026
 
-**Status:** Current Stable Version
+**Status:** Stable
 
 **New features:**
 
@@ -229,9 +229,6 @@ Backlog (Version 2.0+)
 - Clustering for horizontal scaling
 - Support for other protocols (AMQP, MQTT, HTTP)
 - Advanced monitoring (Prometheus, Grafana)
-- Web management interface
-- Protocol-level compression
-- Granular authorization
 - Delayed messages
 - Transactional messages
 
@@ -349,4 +346,4 @@ Links
 - `Issues <https://github.com/DarkBoy/VibeMQ/issues>`_
 - `Discussions <https://github.com/DarkBoy/VibeMQ/discussions>`_
 
-Last updated: February 20, 2026
+Last updated: February 27, 2026

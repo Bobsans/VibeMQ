@@ -262,6 +262,3 @@ msgstr ""
 "он использует :doc:`di-integration` и привязывает :doc:`configuration` "
 "из секции ``VibeMQ``."
 
-#~ msgid "Build and run:"
-#~ msgstr "Сборка и запуск:"
-

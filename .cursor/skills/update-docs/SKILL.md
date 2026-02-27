@@ -49,6 +49,7 @@ After `sphinx-build -b gettext` and `sphinx-intl update`, **always** review chan
 
 - Incorrect or irrelevant strings often appear in `.po`; fix or remove them before committing.
 - Edit Russian translations in `.po` for any new or modified strings.
+- **Remove obsolete entries:** delete unused translations that start with `#~` (obsolete/obsoleted). These are left by gettext when strings were removed from the source; keeping them clutters the file and can cause confusion.
 
 ### Step 4 — Keep PO reference lines
 
@@ -86,7 +87,7 @@ cd docs
 sphinx-build -b gettext . _build/gettext
 sphinx-intl update -p _build/gettext -l ru
 # REQUIRED: Review changed .po files and fix incorrect/irrelevant translations
-# 4. Edit .po files with new Russian translations (keep #: reference lines)
+# 4. Remove obsolete entries (#~) from .po files; edit new Russian translations (keep #: reference lines)
 # 5. (Optional) Test HTML build
 sphinx-build -b html -D language=en . _build/html/en
 sphinx-build -b html -D language=ru . _build/html/ru
@@ -107,6 +108,7 @@ cd ..
 - [ ] Changelog entry in `docs/docs/changelog.rst` for significant changes
 - [ ] `sphinx-build -b gettext` and `sphinx-intl update -p _build/gettext -l ru` run from `docs/`
 - [ ] Changed `.po` files reviewed; bad/irrelevant strings fixed or removed
+- [ ] Obsolete entries (`#~`) removed from `.po` files
 - [ ] New/modified strings translated in `.po`; `#:` reference lines kept
 - [ ] `docs/_build/` and all `docs/locale/**/*.mo` removed before commit
 - [ ] Git status has no `_build/` or `.mo` staged
