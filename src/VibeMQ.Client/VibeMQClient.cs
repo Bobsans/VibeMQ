@@ -53,6 +53,41 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
     public bool IsConnected => _isConnected && _tcpClient?.Connected == true;
 
     /// <summary>
+    /// Connects to a VibeMQ broker using a connection string (URL or key=value format).
+    /// </summary>
+    /// <param name="connectionString">Connection string, e.g. <c>vibemq://host:2925</c> or <c>Host=localhost;Port=2925</c>.</param>
+    /// <param name="logger">Optional logger.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>Connected client.</returns>
+    /// <exception cref="VibeMQConnectionStringException">The connection string is invalid.</exception>
+    public static async Task<VibeMQClient> ConnectAsync(
+        string connectionString,
+        ILogger<VibeMQClient>? logger = null,
+        CancellationToken cancellationToken = default
+    ) {
+        return await ConnectAsync(connectionString, logger, serviceProvider: null, cancellationToken).ConfigureAwait(false);
+    }
+
+    /// <summary>
+    /// Connects to a VibeMQ broker using a connection string with DI support.
+    /// </summary>
+    /// <param name="connectionString">Connection string, e.g. <c>vibemq://host:2925</c> or <c>Host=localhost;Port=2925</c>.</param>
+    /// <param name="logger">Optional logger.</param>
+    /// <param name="serviceProvider">Optional service provider for resolving message handlers.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>Connected client.</returns>
+    /// <exception cref="VibeMQConnectionStringException">The connection string is invalid.</exception>
+    public static async Task<VibeMQClient> ConnectAsync(
+        string connectionString,
+        ILogger<VibeMQClient>? logger,
+        IServiceProvider? serviceProvider,
+        CancellationToken cancellationToken
+    ) {
+        var parsed = VibeMQConnectionString.Parse(connectionString);
+        return await ConnectAsync(parsed.Host, parsed.Port, parsed.Options, logger, serviceProvider, cancellationToken).ConfigureAwait(false);
+    }
+
+    /// <summary>
     /// Connects to a VibeMQ broker and returns an initialized client.
     /// </summary>
     public static async Task<VibeMQClient> ConnectAsync(

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: VibeMQ 1.0.0\n"
 "Report-Msgid-Bugs-To: https://github.com/DarkBoy/VibeMQ/issues\n"
-"POT-Creation-Date: 2026-02-23 15:59+0300\n"
+"POT-Creation-Date: 2026-02-27 19:30+0300\n"
 "PO-Revision-Date: 2026-02-24 12:00+0300\n"
 "Last-Translator: Darkboy\n"
 "Language: ru\n"
@@ -19,11 +19,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.18.0\n"
 
-#: ../../docs/di-integration.rst:3 3611dc9ef8974fe1a96123dc5a1b020c
+#: ../../docs/di-integration.rst:3 98d7b6061d6e4f4f8b7ab3b9b41543c4
 msgid "DI Integration"
 msgstr "Интеграция с DI"
 
-#: ../../docs/di-integration.rst:5 3de5e961ca954b6c9395a32e4ec273e1
+#: ../../docs/di-integration.rst:5 de11657c72a14a3583b936de2aa302ff
 msgid ""
 "This guide describes VibeMQ integration with "
 "Microsoft.Extensions.DependencyInjection."
@@ -31,27 +31,27 @@ msgstr ""
 "Это руководство описывает интеграцию VibeMQ с "
 "Microsoft.Extensions.DependencyInjection."
 
-#: ../../docs/di-integration.rst:9 9f6b0304f7a643c68a1ce766fd856ef5
+#: ../../docs/di-integration.rst:9 1b92a8e1a8704ee19e0f0b04b698921a
 msgid "Contents"
 msgstr "Содержание"
 
-#: ../../docs/di-integration.rst:12 3dd3748304f64b23aa4b8d3a55e91472
+#: ../../docs/di-integration.rst:12 fc571c10bf04484195d0adb4606a7454
 msgid "Overview"
 msgstr "Обзор"
 
-#: ../../docs/di-integration.rst:14 5d40e93713a341318b631c3cff689bf5
+#: ../../docs/di-integration.rst:14 d5f4fc5e550f42b3a88eadbb836fe36d
 msgid "VibeMQ provides packages for convenient Dependency Injection integration:"
 msgstr "VibeMQ предоставляет пакеты для удобной интеграции с Dependency Injection:"
 
-#: ../../docs/di-integration.rst:16 d4231b1f7e794f0daf20239ae3282498
+#: ../../docs/di-integration.rst:16 a47c3e3664b9470fb1b159d10d6249ed
 msgid "``VibeMQ.Server.DependencyInjection`` — for server"
 msgstr "``VibeMQ.Server.DependencyInjection`` — для сервера"
 
-#: ../../docs/di-integration.rst:17 0cb8b5731ca445f686afe46ca6589651
+#: ../../docs/di-integration.rst:17 c745e6b1e85349f487bd5a14b7fd6e8f
 msgid "``VibeMQ.Client.DependencyInjection`` — for client"
 msgstr "``VibeMQ.Client.DependencyInjection`` — для клиента"
 
-#: ../../docs/di-integration.rst:19 6de99969347743439bb5d8a22bebc077
+#: ../../docs/di-integration.rst:19 89eb47c8beb54d8e8b2c49b8e8e22822
 msgid ""
 "These packages register necessary services in the DI container and "
 "automatically manage component lifecycle."
@@ -59,57 +59,58 @@ msgstr ""
 "Эти пакеты регистрируют необходимые сервисы в DI-контейнере и "
 "автоматически управляют жизненным циклом компонентов."
 
-#: ../../docs/di-integration.rst:22
+#: ../../docs/di-integration.rst:22 9412dfd54f534ad98c1a3e47ef94ea06
 msgid "Package Installation"
 msgstr "Установка пакетов"
 
-#: ../../docs/di-integration.rst:30
+#: ../../docs/di-integration.rst:30 cebe2ce4fb1c48cfb05616df24e7d01a
 msgid "Server Integration"
 msgstr "Интеграция сервера"
 
 #: ../../docs/di-integration.rst:33 ../../docs/di-integration.rst:167
-#: b5be5722e8d8430d93adca0279642dd2 d65106fbd3cf4fb1a9a2fa11816d4b69
+#: 0be17b6c382d40708e23094a7426148f 72b44624658748d2bfaf2ba022c86d67
 msgid "Basic Registration"
 msgstr "Базовая регистрация"
 
-#: ../../docs/di-integration.rst:47 955c41a06e2f441babd8065991868db7
+#: ../../docs/di-integration.rst:47 f88899f208fa47be92f4452b1dc4a982
 msgid "The server will start automatically when the host starts."
 msgstr "Сервер будет запущен автоматически при старте хоста."
 
-#: ../../docs/di-integration.rst:50 ../../docs/di-integration.rst:190
-#: 47202d412d694d199186a673683ac841 844cc81fecf046019aba78e09716f06a
+#: ../../docs/di-integration.rst:50 ../../docs/di-integration.rst:234
+#: 375a5b9390304bb0a2872de2101b39b2 76ffe509da4042ccb4b2b31bf1056bca
 msgid "Registration with Configuration"
 msgstr "Регистрация с конфигурацией"
 
-#: ../../docs/di-integration.rst:73 ../../docs/di-integration.rst:207
-#: 2e4c635f867745729fcfd0457130eed7 d10259b099df470ca32b28f00c1243c9
+#: ../../docs/di-integration.rst:73 ../../docs/di-integration.rst:251
+#: 40fbcf3a39e04527898f35d447735e20 e133c8ef33564d9394c183310c33b73d
 msgid "Configuration from appsettings.json"
 msgstr "Конфигурация из appsettings.json"
 
-#: ../../docs/di-integration.rst:75 ../../docs/di-integration.rst:209
-#: 04b62ba311c34951b2e27571e57824ae 387dc2646f9942ac867f721bc39765fc
+#: ../../docs/di-integration.rst:75 ../../docs/di-integration.rst:221
+#: ../../docs/di-integration.rst:253 09c60f9b6abd402e8c9bee8fa9a322c4
+#: 6cf0350f8a13460798cc46872305fc5f ada713e5590b49eea6c8aff5a0e54264
 msgid "**appsettings.json:**"
 msgstr "**appsettings.json:**"
 
-#: ../../docs/di-integration.rst:92 ../../docs/di-integration.rst:231
-#: ../../docs/di-integration.rst:596 02982baaaedc45c1b42b4652a1fdedea
-#: 542a1c7bc8f2466e87bc118ac909f78a ea427a2237cb43b49c34a82e64c036ad
+#: ../../docs/di-integration.rst:92 ../../docs/di-integration.rst:275
+#: ../../docs/di-integration.rst:641 0878c71d169b4de0bf41c76ebc24f795
+#: ae4ab2cd4e4048f29012acd4f46c6388 f894b2ef720441b0860689ee8582dada
 msgid "**Program.cs:**"
 msgstr "**Program.cs:**"
 
-#: ../../docs/di-integration.rst:112
+#: ../../docs/di-integration.rst:114 e5798b504dc64f89a013d3d4f87921ed
 msgid "Advanced Configuration"
 msgstr "Расширенная конфигурация"
 
-#: ../../docs/di-integration.rst:158
+#: ../../docs/di-integration.rst:158 b8217a03c03049b6b58bdc9b20400af3
 msgid "Client Integration"
 msgstr "Интеграция клиента"
 
-#: ../../docs/di-integration.rst:160
+#: ../../docs/di-integration.rst:160 3ff3e90e174a4b5fa351966e1fa4d5fc
 msgid "A single call to ``AddVibeMQClient`` registers:"
 msgstr "Один вызов ``AddVibeMQClient`` регистрирует:"
 
-#: ../../docs/di-integration.rst:162 ea4083a5fc07449ca30d18993d8ce13a
+#: ../../docs/di-integration.rst:162 a3a066f638834a76afa0f2cd88d45980
 msgid ""
 "**``IVibeMQClient``** — a shared, lazily-connected client (Singleton). "
 "Inject it into any service and use ``PublishAsync`` / ``SubscribeAsync``;"
@@ -118,61 +119,91 @@ msgid ""
 "lifecycle."
 msgstr ""
 "**``IVibeMQClient``** — общий клиент с ленивым подключением (Singleton). "
-"Внедряйте его в любой сервис и используйте ``PublishAsync`` / ``SubscribeAsync``; "
-"подключение устанавливается при первом использовании. Не нужно вызывать "
-"``ConnectAsync`` или освобождать клиент — жизненным циклом управляет хост."
+"Внедряйте его в любой сервис и используйте ``PublishAsync`` / "
+"``SubscribeAsync``; подключение устанавливается при первом использовании."
+" Не нужно вызывать ``ConnectAsync`` или освобождать клиент — жизненным "
+"циклом управляет хост."
 
-#: ../../docs/di-integration.rst:164 54ffde6df3004c91952fd4d0c74149e6
+#: ../../docs/di-integration.rst:164 defea8a61f584819bfa23efe11239987
 msgid ""
 "**``IVibeMQClientFactory``** — use when you need a dedicated client "
 "instance that you create and dispose yourself (e.g. ``await using var "
 "client = await factory.CreateAsync()``)."
 msgstr ""
-"**``IVibeMQClientFactory``** — используйте, когда нужен отдельный экземпляр "
-"клиента, который вы создаёте и освобождаете сами (например, ``await using var "
-"client = await factory.CreateAsync()``)."
+"**``IVibeMQClientFactory``** — используйте, когда нужен отдельный "
+"экземпляр клиента, который вы создаёте и освобождаете сами (например, "
+"``await using var client = await factory.CreateAsync()``)."
 
-#: ../../docs/di-integration.rst:249
+#: ../../docs/di-integration.rst:190 538f27c4ebc5465eb798321a7ab0bc46
+msgid "Registration with Connection String"
+msgstr "Регистрация со строкой подключения"
+
+#: ../../docs/di-integration.rst:192 02ef0cd169f74d508a0241c7b237c526
+msgid ""
+"You can register the client from a single connection string (URL or "
+"key=value):"
+msgstr ""
+
+#: ../../docs/di-integration.rst:205 bdf9716daadb423c9e22d6d3dfc11634
+msgid "Registration from IConfiguration"
+msgstr "Регистрация из IConfiguration"
+
+#: ../../docs/di-integration.rst:207 22be7957f74c4c9c89966e45e67fb34e
+msgid ""
+"The client can read the connection string from configuration. The first "
+"non-empty value is used: ``ConnectionStrings:VibeMQ`` or "
+"``VibeMQ:Client:ConnectionString``."
+msgstr ""
+
+#: ../../docs/di-integration.rst:231 df389ec8e7924562ae905886eba6210d
+msgid ""
+"Or use environment variable "
+"``ConnectionStrings__VibeMQ=vibemq://localhost:2925``."
+msgstr ""
+
+#: ../../docs/di-integration.rst:294 8170f3558c2d40b18fb4afe276931bdc
 msgid "Advanced Client Configuration"
 msgstr "Расширенная конфигурация клиента"
 
-#: ../../docs/di-integration.rst:279
+#: ../../docs/di-integration.rst:324 250cf962cb904f45afc0bcb84acb3875
 msgid "Using in Services"
 msgstr "Использование в сервисах"
 
-#: ../../docs/di-integration.rst:282 d5e5b2fa13d7469586f6054b31c4e45e
+#: ../../docs/di-integration.rst:327 399662e319c14ddab0f9f89c6ea7c4e2
 msgid "Publishing Messages from Service (IVibeMQClient)"
 msgstr "Публикация сообщений из сервиса (IVibeMQClient)"
 
-#: ../../docs/di-integration.rst:284 fb478902f7ff47f5b7529e5e34bac4a3
+#: ../../docs/di-integration.rst:329 2c800b3aa30549c69275d834afd62c6e
 msgid ""
 "The simplest approach is to inject ``IVibeMQClient``. The client connects"
 " lazily on first use; no manual ``ConnectAsync`` or disposal in your "
 "service."
 msgstr ""
-"Самый простой способ — внедрить ``IVibeMQClient``. Клиент подключается лениво "
-"при первом использовании; не нужны ручные ``ConnectAsync`` или освобождение в сервисе."
+"Самый простой способ — внедрить ``IVibeMQClient``. Клиент подключается "
+"лениво при первом использовании; не нужны ручные ``ConnectAsync`` или "
+"освобождение в сервисе."
 
-#: ../../docs/di-integration.rst:311 c6de6962217d4bb3a54f34a3b6bc9485
+#: ../../docs/di-integration.rst:356 4c75a04835fd4b87929a2ffbf5e4db0c
 msgid "Service registration:"
 msgstr "Регистрация сервиса:"
 
-#: ../../docs/di-integration.rst:318 969a65e69e924860b6234f70d44f57c9
+#: ../../docs/di-integration.rst:363 c7227df092f34653992b6a39fd330963
 msgid "Publishing with IVibeMQClientFactory (dedicated client)"
 msgstr "Публикация с IVibeMQClientFactory (выделенный клиент)"
 
-#: ../../docs/di-integration.rst:320 e151fd7a8dd04a4cbd8f348e1014521d
+#: ../../docs/di-integration.rst:365 f9edf8053de646ee824a6b2355cd4a0e
 msgid ""
 "If you prefer a dedicated client instance per operation (you create and "
 "dispose it):"
 msgstr ""
-"Если нужен отдельный экземпляр клиента на операцию (вы создаёте и освобождаете его):"
+"Если нужен отдельный экземпляр клиента на операцию (вы создаёте и "
+"освобождаете его):"
 
-#: ../../docs/di-integration.rst:352
+#: ../../docs/di-integration.rst:397 82ee5ea2872a4a27b1881876d2e1fb9d
 msgid "Subscribing to Messages in Background Service"
 msgstr "Подписка на сообщения в фоновом сервисе"
 
-#: ../../docs/di-integration.rst:354 be5fc71990ac4e5ab6cef80d1d6ee3f7
+#: ../../docs/di-integration.rst:399 a970d498d9554b8a921126cd3689b514
 msgid ""
 "You can use either ``IVibeMQClient`` (shared, lazy-connected) or "
 "``IVibeMQClientFactory``. Example with ``IVibeMQClient``:"
@@ -180,62 +211,65 @@ msgstr ""
 "Можно использовать ``IVibeMQClient`` (общий, ленивое подключение) или "
 "``IVibeMQClientFactory``. Пример с ``IVibeMQClient``:"
 
-#: ../../docs/di-integration.rst:400 e151ebcb25c54efd88150eac5f9aa864
+#: ../../docs/di-integration.rst:445 618e703ba78c495f9dbfad6ccb968d81
 msgid "Background service registration:"
 msgstr "Регистрация фонового сервиса:"
 
-#: ../../docs/di-integration.rst:407 4dee65340568454cac8c10ff1d2bc24f
+#: ../../docs/di-integration.rst:452 f6514e64884b4497a476da0954dfa0bd
 msgid "Class-based Subscriptions with Automatic Registration"
 msgstr "Подписки на основе классов с автоматической регистрацией"
 
-#: ../../docs/di-integration.rst:409 200bd3396a9949a4af107c7edacb4178
+#: ../../docs/di-integration.rst:454 faa68aff9973402d811f01490fa9dc7d
 msgid ""
 "You can use class-based message handlers with automatic subscription on "
 "application start:"
 msgstr ""
-"Можно использовать обработчики сообщений на основе классов с автоматической "
-"подпиской при запуске приложения:"
+"Можно использовать обработчики сообщений на основе классов с "
+"автоматической подпиской при запуске приложения:"
 
-#: ../../docs/di-integration.rst:440 5210a07cda2644958203e4e3f71dabbf
+#: ../../docs/di-integration.rst:485 b79c936959124c7a80da8acfcc61ee61
 msgid "Alternatively, scan assembly for all handlers:"
 msgstr "Либо отсканировать сборку для всех обработчиков:"
 
-#: ../../docs/di-integration.rst:448 460a25c4fbfa448ba8d831c3c8da297e
+#: ../../docs/di-integration.rst:493 8e5e323f67664dafa1f1f1c02ff04441
 msgid "Handlers are resolved from DI container, so you can inject dependencies:"
-msgstr "Обработчики создаются из DI-контейнера, поэтому можно внедрять зависимости:"
+msgstr ""
+"Обработчики создаются из DI-контейнера, поэтому можно внедрять "
+"зависимости:"
 
-#: ../../docs/di-integration.rst:473
+#: ../../docs/di-integration.rst:518 e44312fcd9c44a3395352a2b3229df12
 msgid "Event Bus with DI"
 msgstr "Шина событий с DI"
 
-#: ../../docs/di-integration.rst:475 7b58268a0bf049728e1c2263016982d8
+#: ../../docs/di-integration.rst:520 44d71360ad3646e5ab323c01279f97b7
 msgid ""
 "A thin event-bus wrapper around ``IVibeMQClient`` (shared client, lazy "
 "connection):"
 msgstr ""
-"Тонкая обёртка шины событий вокруг ``IVibeMQClient`` (общий клиент, ленивое подключение):"
+"Тонкая обёртка шины событий вокруг ``IVibeMQClient`` (общий клиент, "
+"ленивое подключение):"
 
-#: ../../docs/di-integration.rst:513 fc23852bc0fd4b51ad644dbed47796ff
+#: ../../docs/di-integration.rst:558 b68de1af48994ab49fb584d0323a8e6a
 msgid "Registration:"
 msgstr "Регистрация:"
 
-#: ../../docs/di-integration.rst:519
+#: ../../docs/di-integration.rst:564 6e066459fa3c40ce939ffc9878b75d66
 msgid "Usage:"
 msgstr "Использование:"
 
-#: ../../docs/di-integration.rst:540
+#: ../../docs/di-integration.rst:585 4aa03d227a664363ae7a361fa646e209
 msgid "Combined Usage"
 msgstr "Совместное использование"
 
-#: ../../docs/di-integration.rst:543
+#: ../../docs/di-integration.rst:588 f6bcd22909394cf8b800e8a3ff6110e6
 msgid "Server + Client in One Application"
 msgstr "Сервер и клиент в одном приложении"
 
-#: ../../docs/di-integration.rst:571 576e576b5fe74a13912af4fe8bcc4da5
+#: ../../docs/di-integration.rst:616 b3dc5d273cf944e990eaf2212432097c
 msgid "Multiple brokers"
 msgstr "Несколько брокеров"
 
-#: ../../docs/di-integration.rst:573 af9ea1cec0e64d0b9970a1d691b42012
+#: ../../docs/di-integration.rst:618 f0a16fd327c843cdb4678b07f7a30982
 msgid ""
 "To use multiple brokers, register multiple named configurations and "
 "resolve the appropriate factory or client by name (e.g. via a custom "
@@ -243,85 +277,88 @@ msgid ""
 "``AddVibeMQClient`` call registers a single shared ``IVibeMQClient`` and "
 "one ``IVibeMQClientFactory`` for that configuration."
 msgstr ""
-"Для использования нескольких брокеров зарегистрируйте несколько именованных "
-"конфигураций и получайте нужную фабрику или клиент по имени (например, через "
-"кастомную фабрику или keyed-сервисы). По умолчанию один вызов ``AddVibeMQClient`` "
-"регистрирует один общий ``IVibeMQClient`` и одну ``IVibeMQClientFactory`` для этой конфигурации."
+"Для использования нескольких брокеров зарегистрируйте несколько "
+"именованных конфигураций и получайте нужную фабрику или клиент по имени "
+"(например, через кастомную фабрику или keyed-сервисы). По умолчанию один "
+"вызов ``AddVibeMQClient`` регистрирует один общий ``IVibeMQClient`` и "
+"одну ``IVibeMQClientFactory`` для этой конфигурации."
 
-#: ../../docs/di-integration.rst:576
+#: ../../docs/di-integration.rst:621 fc86a3e1fdb1482cbaa46ae06bbd785e
 msgid "Configuration via Environment Variables"
 msgstr "Конфигурация через переменные окружения"
 
-#: ../../docs/di-integration.rst:578 285bdb8dd2564e1a84ffca7bd49b74c0
+#: ../../docs/di-integration.rst:623 cf1f441978ff4a9e87eb6ce70b6222d7
 msgid "For Docker and cloud deployments:"
 msgstr "Для Docker и cloud-развёртываний:"
 
-#: ../../docs/di-integration.rst:580 c71429470313474a93a91bf242c54efd
+#: ../../docs/di-integration.rst:625 9340d396a3a44ec4b041cc98aacc0f02
 msgid "**Environment variables:**"
 msgstr "**Переменные окружения:**"
 
-#: ../../docs/di-integration.rst:615
+#: ../../docs/di-integration.rst:666 0531ff678bf9493287acbf6e6fffd9f7
 msgid "Docker Compose Example"
 msgstr "Пример Docker Compose"
 
-#: ../../docs/di-integration.rst:642
+#: ../../docs/di-integration.rst:693 0446cb3412ab489785a71475a6fe1ecc
 msgid "Troubleshooting"
 msgstr "Устранение неполадок"
 
-#: ../../docs/di-integration.rst:645
+#: ../../docs/di-integration.rst:696 f7b851ea47d742858256499132d595dc
 msgid "Error: \"Broker already registered\""
 msgstr "Ошибка: «Broker already registered»"
 
-#: ../../docs/di-integration.rst:647 e4af539b86ba4993843c2c4ccb80dc6a
+#: ../../docs/di-integration.rst:698 0d503c12d8b649c4bf8876638d722cc3
 msgid "**Cause:** Attempting to register broker multiple times."
 msgstr "**Причина:** Попытка зарегистрировать брокер несколько раз."
 
-#: ../../docs/di-integration.rst:649 7cb90a9901af4820a83a9c3efe9e3b7e
+#: ../../docs/di-integration.rst:700 7ef8602a86bf4922b111dbfc65336aa6
 msgid "**Solution:** Make sure ``AddVibeMQBroker`` is called only once."
 msgstr "**Решение:** Убедитесь, что ``AddVibeMQBroker`` вызывается один раз."
 
-#: ../../docs/di-integration.rst:652
+#: ../../docs/di-integration.rst:703 d889effac06a4edd9c2f8825f935f18d
 msgid "Error: \"Unable to connect\""
 msgstr "Ошибка: «Unable to connect»"
 
-#: ../../docs/di-integration.rst:654 4dedcbdbb651435c8bfd7e811a37774a
+#: ../../docs/di-integration.rst:705 e46093a0de6a4c00978c2fe47eb02db4
 msgid "**Cause:** Server is not started yet when creating client."
 msgstr "**Причина:** Сервер ещё не запущен при создании клиента."
 
-#: ../../docs/di-integration.rst:656 b6ec49793eb748f3a35e00a89cb12058
+#: ../../docs/di-integration.rst:707 574c3eb5ff824877aaa24be0b0aeba33
 msgid ""
 "**Solution:** When using ``IVibeMQClient``, the client connects lazily on"
 " first use (e.g. first ``PublishAsync`` or ``SubscribeAsync``), so ensure"
 " the broker is running by then. When using ``IVibeMQClientFactory``, "
 "create the client after the host (and broker) have started:"
 msgstr ""
-"**Решение:** При использовании ``IVibeMQClient`` клиент подключается лениво при "
-"первом использовании (например, первом ``PublishAsync`` или ``SubscribeAsync``), поэтому "
-"убедитесь, что брокер уже запущен. При использовании ``IVibeMQClientFactory`` "
-"создавайте клиента после запуска хоста (и брокера):"
+"**Решение:** При использовании ``IVibeMQClient`` клиент подключается "
+"лениво при первом использовании (например, первом ``PublishAsync`` или "
+"``SubscribeAsync``), поэтому убедитесь, что брокер уже запущен. При "
+"использовании ``IVibeMQClientFactory`` создавайте клиента после запуска "
+"хоста (и брокера):"
 
-#: ../../docs/di-integration.rst:666
+#: ../../docs/di-integration.rst:717 bd0053533c0245e68d2767156708fd03
 msgid "Auto-start Server"
 msgstr "Автозапуск сервера"
 
-#: ../../docs/di-integration.rst:668 221a6d0c1efb4650b0b06e2ae6324f89
+#: ../../docs/di-integration.rst:719 cd4656b88f1f4eaf862373ba8ef8c3c4
 msgid "Server starts automatically as ``IHostedService``. For manual control:"
 msgstr ""
 "Сервер запускается автоматически как ``IHostedService``. Для ручного "
 "управления:"
 
-#: ../../docs/di-integration.rst:678
+#: ../../docs/di-integration.rst:729 f76165c729aa45b6a2cba9e26e47f339
 msgid "Next Steps"
 msgstr "Дальнейшие шаги"
 
-#: ../../docs/di-integration.rst:680
+#: ../../docs/di-integration.rst:731 203efa5a77664402878a5c4331b65ee1
 msgid ":doc:`server-setup` — server setup"
 msgstr ":doc:`server-setup` — настройка сервера"
 
-#: ../../docs/di-integration.rst:681
+#: ../../docs/di-integration.rst:732 3ae61c85c0a44071b5b2f7fa157de74b
 msgid ":doc:`client-usage` — client usage"
 msgstr ":doc:`client-usage` — использование клиента"
 
-#: ../../docs/di-integration.rst:682
+#: ../../docs/di-integration.rst:733 e872b0ac33674e9387af0cfc605cc0bf
 msgid ":doc:`monitoring` — monitoring"
 msgstr ":doc:`monitoring` — мониторинг"
+

@@ -8,13 +8,16 @@
     <Project Path="examples/VibeMQ.Example.Server/VibeMQ.Example.Server.csproj" />
     <Project Path="examples/VibeMQ.Example.Server.DI/VibeMQ.Example.Server.DI.csproj" />
   </Folder>
+  <Folder Name="/docker/">
+    <Project Path="docker/VibeMQ.Server.Host/VibeMQ.Server.Host.csproj" />
+    <Project Path="docker/VibeMQ.Server.Host.WebUI/VibeMQ.Server.Host.WebUI.csproj" />
+  </Folder>
   <Folder Name="/src/">
     <Project Path="src/VibeMQ.Client/VibeMQ.Client.csproj" />
     <Project Path="src/VibeMQ.Client.DependencyInjection/VibeMQ.Client.DependencyInjection.csproj" />
     <Project Path="src/VibeMQ.Core/VibeMQ.Core.csproj" />
     <Project Path="src/VibeMQ.Server/VibeMQ.Server.csproj" />
     <Project Path="src/VibeMQ.Server.DependencyInjection/VibeMQ.Server.DependencyInjection.csproj" />
-    <Project Path="src/VibeMQ.Server.Host/VibeMQ.Server.Host.csproj" />
     <Project Path="src/VibeMQ.Server.WebUI/VibeMQ.Server.WebUI.csproj" />
     <Project Path="src/VibeMQ.Server.Storage.Sqlite/VibeMQ.Server.Storage.Sqlite.csproj" />
   </Folder>

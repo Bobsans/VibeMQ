@@ -127,4 +127,4 @@ Image details
 - **Working directory:** ``/app``
 - **Exposed port:** 2925 (override with ``VibeMQ__Port`` and republish)
 
-The host project is ``VibeMQ.Server.Host`` in the repository; it uses :doc:`di-integration` and binds :doc:`configuration` from the ``VibeMQ`` section.
+The host project is ``VibeMQ.Server.Host`` in the ``docker/`` folder of the repository; it uses :doc:`di-integration` and binds :doc:`configuration` from the ``VibeMQ`` section.

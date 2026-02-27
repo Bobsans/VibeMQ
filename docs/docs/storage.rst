@@ -1,6 +1,6 @@
-====================
+=====================
 Persistence & Storage
-====================
+=====================
 
 This guide describes the persistence layer in VibeMQ — how messages, queues, and dead-letter entries survive server restarts.
 

@@ -20,10 +20,12 @@ Version 1.7.0 (unreleased)
 - **``RunWithWebUIAsync()``** — extension method to run broker and Web UI in one call
 - **``WebUIServer``** — HttpListener-based server; API endpoints ``/api/health``, ``/api/metrics``, ``/api/queues``, ``/api/queues/{name}``
 - **BrokerServer** — new read-only API for dashboard: ``QueueCount``, ``ListQueuesAsync()``, ``GetQueueInfoAsync(name)``
+- **Connection string** — connect using a single URL (e.g. ``vibemq://user:pass@host:2925?tls=true``) or key=value string (e.g. ``Host=localhost;Port=2925``). ``VibeMQConnectionString.Parse`` / ``TryParse``; ``VibeMQClient.ConnectAsync(connectionString)``; ``AddVibeMQClient(services, connectionString)`` and ``AddVibeMQClient(services, IConfiguration)`` reading ``ConnectionStrings:VibeMQ`` or ``VibeMQ:Client:ConnectionString``. Optional query/keys: TLS, keep-alive, compression, reconnect policy, ``queues`` (declare-on-connect). ``VibeMQConnectionStringException`` for invalid strings.
 
 **Documentation:**
 
 - New :doc:`web-ui` guide (quick start, options, API, building frontend)
+- Client usage and DI integration: connection string format, examples, configuration keys
 
 Version 1.6.0
 -------------

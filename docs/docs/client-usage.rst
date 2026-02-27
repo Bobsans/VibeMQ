@@ -41,6 +41,41 @@ The concrete type ``VibeMQClient`` implements ``IVibeMQClient``. For manual conn
 Connecting to Server
 ====================
 
+Connection String
+-----------------
+
+You can connect using a single connection string (URL or key=value format). This is convenient for
+environment variables (e.g. ``VIBEMQ_CONNECTION_STRING``) or configuration (e.g. ``ConnectionStrings:VibeMQ``).
+
+**URL format:** ``vibemq://[username[:password]@]host[:port][?query]``
+
+.. code-block:: csharp
+
+   using VibeMQ.Client;
+
+   // Minimal
+   await using var client = await VibeMQClient.ConnectAsync("vibemq://localhost");
+
+   // With port and options
+   await using var client2 = await VibeMQClient.ConnectAsync(
+       "vibemq://user:secret@broker.example.com:2925?tls=true&keepAlive=60&compression=brotli,gzip"
+   );
+
+**Key=value format:** ``Host=...;Port=...;Username=...;Password=...;UseTls=...`` (semicolon-separated pairs).
+
+.. code-block:: csharp
+
+   await using var client = await VibeMQClient.ConnectAsync(
+       "Host=localhost;Port=2925;Username=user;Password=secret;UseTls=true"
+   );
+
+Supported query/keys: ``tls``, ``skipCertValidation``, ``keepAlive``, ``commandTimeout``,
+``compression`` (``none``, ``brotli``, ``gzip`` or comma-separated), ``compressionThreshold``,
+``reconnectMaxAttempts``, ``reconnectInitialDelay``, ``reconnectMaxDelay``, ``reconnectExponentialBackoff``,
+``queues`` (comma-separated queue names for declare-on-connect). Invalid strings throw
+``VibeMQConnectionStringException``. Use ``VibeMQConnectionString.Parse`` or ``TryParse`` to obtain
+host, port, and ``ClientOptions`` without connecting.
+
 Basic Connection
 ----------------
 

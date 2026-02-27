@@ -1,0 +1,54 @@
+# ============================================================
+#  VibeMQ Message Broker + Web UI — Docker Image
+#  Builds Vue frontend, then .NET host that runs broker + dashboard.
+#
+#  Build (from repo root):  docker build -f docker/Dockerfile.webui -t vibemq-webui .
+#  Run:                    docker run -p 2925:2925 -p 12925:12925 vibemq-webui
+#  Configure: same as base image; Web UI port 12925 (override via VibeMQ:WebUI:Port in config).
+# ============================================================
+
+# --- Frontend: build Vue SPA ---
+FROM node:22-bookworm-slim AS frontend
+WORKDIR /frontend
+
+COPY src/VibeMQ.Server.WebUI/App/package.json src/VibeMQ.Server.WebUI/App/package-lock.json ./
+RUN npm ci
+COPY src/VibeMQ.Server.WebUI/App ./
+RUN npm run build
+
+# --- .NET build (uses pre-built frontend; no Node in this stage) ---
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+WORKDIR /src
+
+COPY Directory.Build.props ./
+COPY src/VibeMQ.Core/VibeMQ.Core.csproj src/VibeMQ.Core/
+COPY src/VibeMQ.Server/VibeMQ.Server.csproj src/VibeMQ.Server/
+COPY src/VibeMQ.Server.DependencyInjection/VibeMQ.Server.DependencyInjection.csproj src/VibeMQ.Server.DependencyInjection/
+COPY src/VibeMQ.Server.Storage.Sqlite/VibeMQ.Server.Storage.Sqlite.csproj src/VibeMQ.Server.Storage.Sqlite/
+COPY src/VibeMQ.Server.WebUI/VibeMQ.Server.WebUI.csproj src/VibeMQ.Server.WebUI/
+COPY docker/VibeMQ.Server.Host.WebUI/VibeMQ.Server.Host.WebUI.csproj docker/VibeMQ.Server.Host.WebUI/
+
+RUN dotnet restore docker/VibeMQ.Server.Host.WebUI/VibeMQ.Server.Host.WebUI.csproj -f net8.0
+
+COPY src/ src/
+COPY docker/ docker/
+COPY --from=frontend /frontend/dist src/VibeMQ.Server.WebUI/App/dist
+
+RUN dotnet publish docker/VibeMQ.Server.Host.WebUI/VibeMQ.Server.Host.WebUI.csproj \
+    -c Release \
+    -f net8.0 \
+    -o /app/publish \
+    -p:SkipFrontendBuild=true \
+    --no-restore
+
+# --- Runtime image ---
+FROM mcr.microsoft.com/dotnet/runtime:8.0 AS runtime
+WORKDIR /app
+
+COPY --from=build /app/publish .
+
+EXPOSE 2925 12925
+
+ENV VIBEMQ_CONFIG_PATH=
+
+ENTRYPOINT ["dotnet", "VibeMQ.Server.Host.WebUI.dll"]

@@ -186,6 +186,50 @@ Basic Registration
    await using var dedicatedClient = await factory.CreateAsync();
    await dedicatedClient.PublishAsync("queue", new { Message = "Hello" });
 
+Registration with Connection String
+-----------------------------------
+
+You can register the client from a single connection string (URL or key=value):
+
+.. code-block:: csharp
+
+   using VibeMQ.Client.DependencyInjection;
+
+   // From string (e.g. from environment or config)
+   services.AddVibeMQClient("vibemq://localhost:2925");
+
+   // Or key=value style
+   services.AddVibeMQClient("Host=localhost;Port=2925;Username=user;Password=secret");
+
+Registration from IConfiguration
+--------------------------------
+
+The client can read the connection string from configuration. The first non-empty value is used:
+``ConnectionStrings:VibeMQ`` or ``VibeMQ:Client:ConnectionString``.
+
+.. code-block:: csharp
+
+   using Microsoft.Extensions.Configuration;
+   using VibeMQ.Client.DependencyInjection;
+
+   var host = Host.CreateDefaultBuilder(args)
+       .ConfigureServices((context, services) => {
+           services.AddVibeMQClient(context.Configuration);
+       })
+       .Build();
+
+**appsettings.json:**
+
+.. code-block:: json
+
+   {
+     "ConnectionStrings": {
+       "VibeMQ": "vibemq://user:secret@localhost:2925"
+     }
+   }
+
+Or use environment variable ``ConnectionStrings__VibeMQ=vibemq://localhost:2925``.
+
 Registration with Configuration
 -------------------------------
 
@@ -574,7 +618,7 @@ Multiple brokers
 To use multiple brokers, register multiple named configurations and resolve the appropriate factory or client by name (e.g. via a custom factory or keyed services if your app supports them). By default, one ``AddVibeMQClient`` call registers a single shared ``IVibeMQClient`` and one ``IVibeMQClientFactory`` for that configuration.
 
 Configuration via Environment Variables
-======================================
+========================================
 
 For Docker and cloud deployments:
 

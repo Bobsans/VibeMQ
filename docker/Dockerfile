@@ -11,21 +11,24 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
 # Copy project files first for better layer caching.
-# Only projects needed for VibeMQ.Server.Host: Host -> DI + Storage.Sqlite -> Server -> Core.
+# Host lives in docker/; dependencies in src/.
 COPY Directory.Build.props ./
 COPY src/VibeMQ.Core/VibeMQ.Core.csproj src/VibeMQ.Core/
 COPY src/VibeMQ.Server/VibeMQ.Server.csproj src/VibeMQ.Server/
 COPY src/VibeMQ.Server.DependencyInjection/VibeMQ.Server.DependencyInjection.csproj src/VibeMQ.Server.DependencyInjection/
-COPY src/VibeMQ.Server.Host/VibeMQ.Server.Host.csproj src/VibeMQ.Server.Host/
 COPY src/VibeMQ.Server.Storage.Sqlite/VibeMQ.Server.Storage.Sqlite.csproj src/VibeMQ.Server.Storage.Sqlite/
+COPY docker/VibeMQ.Server.Host/VibeMQ.Server.Host.csproj docker/VibeMQ.Server.Host/
 
-RUN dotnet restore src/VibeMQ.Server.Host/VibeMQ.Server.Host.csproj
+# Restore and publish for net8.0 only (SDK 8.0 image does not support net10.0)
+RUN dotnet restore docker/VibeMQ.Server.Host/VibeMQ.Server.Host.csproj -f net8.0
 
 COPY src/ src/
+COPY docker/ docker/
 
 # Publish the Host (production-ready entry point with config support)
-RUN dotnet publish src/VibeMQ.Server.Host/VibeMQ.Server.Host.csproj \
+RUN dotnet publish docker/VibeMQ.Server.Host/VibeMQ.Server.Host.csproj \
     -c Release \
+    -f net8.0 \
     -o /app/publish \
     --no-restore
 

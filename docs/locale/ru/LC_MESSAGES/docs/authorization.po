@@ -58,9 +58,8 @@ msgid "When to use"
 msgstr "Когда использовать"
 
 #: ../../docs/authorization.rst:23 739af35263a4401c920c78c369df4e4b
-#, fuzzy
 msgid "**Legacy token**"
-msgstr "Устаревший токен"
+msgstr "**Устаревший токен**"
 
 #: ../../docs/authorization.rst:24 5d79ade84c854a30b0cde1a4356989ff
 msgid "Single shared token for all clients"
@@ -71,9 +70,8 @@ msgid "Simple setups, backward compatibility"
 msgstr "Простые конфигурации, обратная совместимость"
 
 #: ../../docs/authorization.rst:26 bb1783ecdbf94070b74bb8663d4d36f6
-#, fuzzy
 msgid "**Username/password + ACL**"
-msgstr "Логин/пароль + ACL"
+msgstr "**Логин/пароль + ACL**"
 
 #: ../../docs/authorization.rst:27 01c61b6c6ec543859a37e326ac508ff4
 msgid "Per-user BCrypt passwords with per-queue ACL stored in SQLite"
@@ -123,7 +121,7 @@ msgstr "``SuperuserUsername``"
 
 #: ../../docs/authorization.rst:83 02d70572a223459b90b6b966bce1150e
 msgid "``\"vibemq\"``"
-msgstr ""
+msgstr "``\"vibemq\"``"
 
 #: ../../docs/authorization.rst:84 5d4f6bff3f4a4555912aa81b08013ae4
 msgid "Username for the built-in superuser account."
@@ -134,9 +132,8 @@ msgid "``SuperuserPassword``"
 msgstr "``SuperuserPassword``"
 
 #: ../../docs/authorization.rst:86 7baaa583afe740a0b992b481f3ff2f68
-#, fuzzy
 msgid "``\"\"``"
-msgstr "``*``"
+msgstr "``\"\"``"
 
 #: ../../docs/authorization.rst:87 fd6459e65aed4689bf6378a651b33813
 msgid ""
@@ -515,19 +512,16 @@ msgid "Next Steps"
 msgstr "Следующие шаги"
 
 #: ../../docs/authorization.rst:332 822f28db61e748dc8f796ed87796ba82
-#, fuzzy
 msgid ":doc:`server-setup` — TLS encryption for secure credential transmission"
 msgstr ""
-"- :doc:`server-setup` — TLS-шифрование для безопасной передачи учётных "
+":doc:`server-setup` — TLS-шифрование для безопасной передачи учётных "
 "данных"
 
 #: ../../docs/authorization.rst:333 33d20ebd3a694a139bceed808eca868d
-#, fuzzy
 msgid ":doc:`configuration` — full BrokerOptions and ClientOptions reference"
-msgstr "- :doc:`configuration` — полный справочник BrokerOptions и ClientOptions"
+msgstr ":doc:`configuration` — полный справочник BrokerOptions и ClientOptions"
 
 #: ../../docs/authorization.rst:334 9eec1183aece4428a2c4d7de7f96f588
-#, fuzzy
 msgid ":doc:`features` — all broker features overview"
-msgstr "- :doc:`features` — обзор всех возможностей брокера"
+msgstr ":doc:`features` — обзор всех возможностей брокера"
 

@@ -11,7 +11,7 @@ For running the broker in Docker with environment-based configuration, see :doc:
    :depth: 2
 
 Basic Configuration
-=================
+===================
 
 Minimal Configuration
 ------------------------
@@ -73,7 +73,7 @@ Advanced Configuration
    await broker.RunAsync(CancellationToken.None);
 
 Configuration Parameters
-======================
+========================
 
 Basic Parameters
 ------------------
@@ -207,7 +207,7 @@ Each message is delivered to one subscriber cyclically:
 - Task queues
 
 Fan-out with Acknowledgment
-------------------------
+---------------------------
 
 Message delivered to all subscribers with delivery guarantee:
 
@@ -224,7 +224,7 @@ Message delivered to all subscribers with delivery guarantee:
 - Audit and logging
 
 Fan-out without Acknowledgment
--------------------------
+------------------------------
 
 Message delivered to all subscribers without acknowledgment:
 
@@ -382,8 +382,7 @@ See :doc:`authorization` for full details (users, ACL patterns, admin commands).
 Legacy Token Authentication
 ============================
 
-.. deprecated::
-
+.. deprecated:: 2.0
    Use ``UseAuthorization()`` for new deployments.
 
 Enabling Authentication:
@@ -444,10 +443,10 @@ TLS Configuration:
    Do not use ``SkipCertificateValidation = true`` in production!
 
 Starting and Stopping
-==================
+=====================
 
 Starting Server
---------------
+---------------
 
 **Async start:**
 
@@ -525,7 +524,7 @@ Logging Configuration:
 - ``Critical`` — critical errors
 
 Configuration Examples
-====================
+======================
 
 Minimal Server for Development
 ---------------------------------

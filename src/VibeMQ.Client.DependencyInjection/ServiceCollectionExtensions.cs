@@ -1,9 +1,11 @@
 using System.Reflection;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using VibeMQ.Client;
+using VibeMQ.Client.Exceptions;
 using VibeMQ.Interfaces;
 
 namespace VibeMQ.Client.DependencyInjection;
@@ -43,6 +45,42 @@ public static class ServiceCollectionExtensions {
         ArgumentNullException.ThrowIfNull(configureOptions);
         services.Configure(configureOptions);
         return services.AddVibeMQClient();
+    }
+
+    /// <summary>
+    /// Adds the VibeMQ client and configures it from a connection string (URL or key=value format).
+    /// </summary>
+    /// <param name="services">The service collection.</param>
+    /// <param name="connectionString">Connection string, e.g. <c>vibemq://host:2925</c> or <c>Host=localhost;Port=2925</c>.</param>
+    /// <returns>The service collection for chaining.</returns>
+    /// <exception cref="VibeMQConnectionStringException">The connection string is invalid.</exception>
+    public static IServiceCollection AddVibeMQClient(this IServiceCollection services, string connectionString) {
+        ArgumentException.ThrowIfNullOrWhiteSpace(connectionString);
+        var parsed = VibeMQConnectionString.Parse(connectionString);
+        return services.AddVibeMQClient(settings => {
+            settings.Host = parsed.Host;
+            settings.Port = parsed.Port;
+            settings.ClientOptions = parsed.Options;
+        });
+    }
+
+    /// <summary>
+    /// Adds the VibeMQ client and configures it from configuration.
+    /// Reads connection string from <c>ConnectionStrings:VibeMQ</c> or <c>VibeMQ:Client:ConnectionString</c> (first non-empty wins).
+    /// </summary>
+    /// <param name="services">The service collection.</param>
+    /// <param name="configuration">Application configuration.</param>
+    /// <returns>The service collection for chaining.</returns>
+    /// <exception cref="VibeMQConnectionStringException">The connection string is missing or invalid.</exception>
+    public static IServiceCollection AddVibeMQClient(this IServiceCollection services, IConfiguration configuration) {
+        ArgumentNullException.ThrowIfNull(configuration);
+        var connectionString = configuration["ConnectionStrings:VibeMQ"]
+            ?? configuration["VibeMQ:Client:ConnectionString"];
+        if (string.IsNullOrWhiteSpace(connectionString)) {
+            throw new VibeMQConnectionStringException(
+                "VibeMQ connection string not found. Set ConnectionStrings:VibeMQ or VibeMQ:Client:ConnectionString in configuration.");
+        }
+        return services.AddVibeMQClient(connectionString.Trim());
     }
 
     /// <summary>

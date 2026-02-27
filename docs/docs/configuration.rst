@@ -113,8 +113,7 @@ AuthToken
 
 **Default:** ``null``
 
-.. deprecated::
-
+.. deprecated:: 2.0
    Use ``UseAuthorization()`` for new deployments.
 
 Token for client authentication (legacy mode):
@@ -408,8 +407,7 @@ AuthToken
 
 **Default:** ``null``
 
-.. deprecated::
-
+.. deprecated:: 2.0
    Use ``Username`` and ``Password`` for new deployments.
 
 Token for authentication (legacy mode):
@@ -693,7 +691,7 @@ Use exponential backoff:
    UseExponentialBackoff = true
 
 Health Check Configuration
-=========================
+==========================
 
 HealthCheckOptions
 ------------------
@@ -736,7 +734,7 @@ HTTP port for health checks:
    })
 
 Configuration Examples
-=====================
+======================
 
 Minimal
 -------
@@ -814,7 +812,7 @@ IoT Scenario
        .Build();
 
 Microservices
-------------
+-------------
 
 .. code-block:: csharp
 

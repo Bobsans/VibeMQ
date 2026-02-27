@@ -29,7 +29,7 @@ Enabling Health Checks
        .Build();
 
 Configuration Parameters
------------------------
+------------------------
 
 .. list-table::
    :header-rows: 1
@@ -419,7 +419,7 @@ Automatic Monitoring
            sys.exit(1)
 
 Integration with Monitoring Systems
-==================================
+===================================
 
 Prometheus
 ----------
@@ -483,7 +483,7 @@ Troubleshooting
 ==================
 
 Health check not responding
-------------------------
+---------------------------
 
 **Problem:** ``curl: (7) Failed to connect to localhost port 2926``
 

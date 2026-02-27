@@ -73,7 +73,7 @@ gettext_compact = False
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
 html_theme = 'sphinx_rtd_theme'
-html_static_path = ['_static']
+html_static_path = ['_static'] if os.path.isdir('_static') else []
 html_logo = '_static/logo.png' if os.path.exists('_static/logo.png') else None
 html_favicon = '_static/favicon.ico' if os.path.exists('_static/favicon.ico') else None
 

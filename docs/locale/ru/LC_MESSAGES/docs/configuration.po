@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: VibeMQ 1.0.0\n"
 "Report-Msgid-Bugs-To: https://github.com/DarkBoy/VibeMQ/issues\n"
-"POT-Creation-Date: 2026-02-25 20:44+0300\n"
+"POT-Creation-Date: 2026-02-27 19:30+0300\n"
 "PO-Revision-Date: 2026-02-24 12:00+0300\n"
 "Last-Translator: Darkboy\n"
 "Language: ru\n"
@@ -19,31 +19,31 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.18.0\n"
 
-#: ../../docs/configuration.rst:3 23b6db9b31604b13adb43618ee864a13
+#: ../../docs/configuration.rst:3 ba37bc4e2fd64b468c515681ccc1f2c2
 msgid "Configuration"
 msgstr "Конфигурация"
 
-#: ../../docs/configuration.rst:5 c14fbdf9776a46869ed697c855214046
+#: ../../docs/configuration.rst:5 1b80cc3db4444c079df019068c93c455
 msgid "This guide describes all configuration parameters for VibeMQ."
 msgstr "Это руководство описывает все параметры конфигурации VibeMQ."
 
-#: ../../docs/configuration.rst:9 eb4915b6e08346179ba126e20e36419e
+#: ../../docs/configuration.rst:9 a0db9309a80743df990dc43129e7543c
 msgid "Contents"
 msgstr "Содержание"
 
-#: ../../docs/configuration.rst:12 823f9e656cab4301a20da7ff34574224
+#: ../../docs/configuration.rst:12 81b36b4dfdd341b7a3b1e041e0ceafce
 msgid "Server Configuration"
 msgstr "Конфигурация сервера"
 
-#: ../../docs/configuration.rst:15 5e2bde89d6184ba081162f2a0de278c6
+#: ../../docs/configuration.rst:15 cbb1da1c837046648b7af0fa7c74f41c
 msgid "BrokerOptions"
 msgstr "BrokerOptions"
 
-#: ../../docs/configuration.rst:17 c5c2a4363c684c8a84cafa441e712570
+#: ../../docs/configuration.rst:17 3fa43d934f534a90a6f28a1cde546b30
 msgid "Main server configuration class:"
 msgstr "Основной класс конфигурации сервера:"
 
-#: ../../docs/configuration.rst:36 1a8ff3f2bed9437e92e9312c96a0a9f6
+#: ../../docs/configuration.rst:36 ad927992dec3487e94f9a4504c4ea936
 msgid ""
 "**Authorization** (default: ``null``) enables username/password "
 "authentication with per-queue ACL. When set, legacy ``AuthToken`` is "
@@ -53,7 +53,7 @@ msgstr ""
 "логину/паролю с ACL на уровне очередей. При установке устаревший "
 "``AuthToken`` игнорируется. Подробнее: :doc:`authorization`."
 
-#: ../../docs/configuration.rst:38 b4a1537f1aac40f6a92b7b19cb7b25f0
+#: ../../docs/configuration.rst:38 015530a984544d09a80bf73a6bcc4464
 msgid ""
 "**StorageType** (default: ``InMemory``) selects the persistence backend: "
 "``InMemory`` (no durability) or ``Sqlite`` (durable, single-node). See "
@@ -63,147 +63,153 @@ msgstr ""
 "персистентности: ``InMemory`` (без сохранения) или ``Sqlite`` (с "
 "сохранением, один узел). Подробнее см. :doc:`storage`."
 
-#: ../../docs/configuration.rst:40 2528b48d7e54488c84347402e4483108
+#: ../../docs/configuration.rst:40 89cdae39ab144507a12a1c39e6bc7bac
 msgid ""
 "**SupportedCompressions** (default: ``Brotli, GZip``) and "
 "**CompressionThreshold** (default: ``1024`` bytes) control frame-level "
 "compression. Use ``ConfigureFrom(BrokerOptions)`` to set them; see "
 ":doc:`protocol` for negotiation and framing."
 msgstr ""
+"**SupportedCompressions** (по умолчанию: ``Brotli, GZip``) и "
+"**CompressionThreshold** (по умолчанию: ``1024`` байт) управляют сжатием "
+"на уровне фреймов. Задаются через ``ConfigureFrom(BrokerOptions)``; см. "
+":doc:`protocol` по согласованию и формату."
 
-#: ../../docs/configuration.rst:43 7aec77cabd38423fbad7b32f6c5048b8
+#: ../../docs/configuration.rst:43 49efae5eb42846bba9e7bc8ad77235d6
 msgid "Basic Parameters"
 msgstr "Основные параметры"
 
-#: ../../docs/configuration.rst:46 ../../docs/configuration.rst:724
-#: 624782b8ddda4c908d7668b950d3a132 dd0f72db62374e3fa7d119daba118f0d
+#: ../../docs/configuration.rst:46 ../../docs/configuration.rst:722
+#: 0eb11e47a18447a98bd58c7188cb2978 732ea06346394d0b85e90fbc69b37c56
 msgid "Port"
 msgstr "Port"
 
 #: ../../docs/configuration.rst:48 ../../docs/configuration.rst:65
-#: ../../docs/configuration.rst:82 ../../docs/configuration.rst:214
-#: ../../docs/configuration.rst:331 ../../docs/configuration.rst:357
-#: ../../docs/configuration.rst:433 ../../docs/configuration.rst:646
-#: ../../docs/configuration.rst:726 0f8b07c02be34ed09eac763be4f16d5b
-#: 20b4cef6cbd54451aa758301ac9d85a9 6adad0b52b5a40c9a83c956678dd1987
-#: 935de9373b594fb39bf4c8b12bf0c96d b166ff8e66ba4923b661f3bc537be852
-#: bbbe97e6633b478e819137bc1de0042b cd1dad7bf72846e6b0decdf3e3f84c82
-#: d1c289d2fe684650b392378b3582bec4 dff1cdaea114464e83c2fff7f98c64e5
+#: ../../docs/configuration.rst:82 ../../docs/configuration.rst:213
+#: ../../docs/configuration.rst:330 ../../docs/configuration.rst:356
+#: ../../docs/configuration.rst:431 ../../docs/configuration.rst:644
+#: ../../docs/configuration.rst:724 2897c6530ea34f4390cb0a175cb9c930
+#: 452214d0c0b543658f18441dca51c5ad 459975de21124776b2ae0bc91cfe417a
+#: 4600851183de422682a8b1408bdbf559 548205b84efc4238b1c633e4e4ab8a36
+#: 60c017db8f674c8682e49f02c6dc8c1e ad34a82eed464b5a98b730ee36a11566
+#: cad50fea62474636823da9a5e4879325 f99e97ba2d2543c585139bcf76e1b7b2
 msgid "**Type:** ``int``"
 msgstr "**Тип:** ``int``"
 
-#: ../../docs/configuration.rst:50 883aeb56337d470d8082c5d442037c07
-msgid "**Default:** ``8080``"
-msgstr "**По умолчанию:** ``8080``"
+#: ../../docs/configuration.rst:50 3ec17bc91f76405a90845c687d77b755
+msgid "**Default:** ``2925``"
+msgstr "**По умолчанию:** ``2925``"
 
-#: ../../docs/configuration.rst:52 c5176a9f402442a2a7a86a4bf45f2eb6
+#: ../../docs/configuration.rst:52 7903128e3b9e442e9adbdb089d544363
 msgid "TCP port for client connections:"
 msgstr "TCP порт для подключений клиентов:"
 
-#: ../../docs/configuration.rst:60 66bb7c39085b4367a3a0498d7c9cbadd
+#: ../../docs/configuration.rst:60 9697de158b97421f8d4ce753b07e7b3b
 msgid "Make sure the port is not occupied by other applications."
 msgstr "Убедитесь, что порт не занят другими приложениями."
 
-#: ../../docs/configuration.rst:63 3aacf052afd44bab9edcefe864b11bee
+#: ../../docs/configuration.rst:63 2a4f4a7fd094407d83f5bf5a95ca1128
 msgid "MaxConnections"
 msgstr "MaxConnections"
 
-#: ../../docs/configuration.rst:67 ../../docs/configuration.rst:359
-#: 6621928ccf4b4662a9b47c42a81fea5f c296901e042144c095df02ce11b5b049
+#: ../../docs/configuration.rst:67 ../../docs/configuration.rst:358
+#: 0288682e03c84bde9a8a7894ccbb6e3d 03754cbe7f7a41df8cae6cad1da821c1
 msgid "**Default:** ``1000``"
 msgstr "**По умолчанию:** ``1000``"
 
-#: ../../docs/configuration.rst:69 a708219d483d42c2bc3abf072963af11
+#: ../../docs/configuration.rst:69 555b38630de94ff895f0b54bd53c0563
 msgid "Maximum number of simultaneous connections:"
 msgstr "Максимальное количество одновременных подключений:"
 
-#: ../../docs/configuration.rst:77 59a9c3f3a38b4c5f953147fb406faf39
+#: ../../docs/configuration.rst:77 df18816cbaec47b48aa098f49f377179
 msgid "Increase for high-load scenarios."
 msgstr "Увеличьте для high-load сценариев."
 
-#: ../../docs/configuration.rst:80 5926874d70fa421581213a80da584b63
+#: ../../docs/configuration.rst:80 9c0a03bc56e44f9ba0a34e06d915371e
 msgid "MaxMessageSize"
 msgstr "MaxMessageSize"
 
-#: ../../docs/configuration.rst:84 a4976b929b21499db6e4813c308a32b8
+#: ../../docs/configuration.rst:84 0b8651471b9a4837b4cadcf5151952b5
 msgid "**Default:** ``1_048_576`` (1 MB)"
 msgstr "**По умолчанию:** ``1_048_576`` (1 MB)"
 
-#: ../../docs/configuration.rst:86 7932a6b074604a4eae1fe651aae91231
+#: ../../docs/configuration.rst:86 defdaa94f849445ea9441504f28e5c88
 msgid "Maximum message size in bytes:"
 msgstr "Максимальный размер сообщения в байтах:"
 
-#: ../../docs/configuration.rst:94 5dce3e61d12841b8b18eefcd531f4a59
+#: ../../docs/configuration.rst:94 ad843d70ad6047648e34de83c98214bc
 msgid "Large messages increase memory usage."
 msgstr "Большие сообщения увеличивают использование памяти."
 
-#: ../../docs/configuration.rst:97 2c7bdaf76ce04560abd55694025bc1bb
+#: ../../docs/configuration.rst:97 13c4a4a7376544e687ae1a2d3509f6e0
 msgid "EnableAuthentication"
 msgstr "EnableAuthentication"
 
-#: ../../docs/configuration.rst:99 ../../docs/configuration.rst:227
-#: ../../docs/configuration.rst:259 ../../docs/configuration.rst:316
-#: ../../docs/configuration.rst:484 ../../docs/configuration.rst:497
-#: ../../docs/configuration.rst:685 ../../docs/configuration.rst:711
-#: 0194de67722a4298b3a5af436a8846b3 1dc44739205649f7a4487a67eea5039b
-#: 241ba5acaf0f455d9a3f2d2903a1e8c9 76d6e812c1fb4e85a045056282541790
-#: 85af58403da94b4c80596c3b8bda964d bcd30960acac4cd284676a2d5316ca00
-#: fcf9ef1aa4b04c5798e491182f31a453 ff5704bc22b34789a791cd58ea3c0366
+#: ../../docs/configuration.rst:99 ../../docs/configuration.rst:226
+#: ../../docs/configuration.rst:258 ../../docs/configuration.rst:315
+#: ../../docs/configuration.rst:482 ../../docs/configuration.rst:495
+#: ../../docs/configuration.rst:683 ../../docs/configuration.rst:709
+#: 32e4303c169d4d2c80483ead41179272 38f0b631166748b599ba157297f3e784
+#: 61cb2175721a493295de5304cd423905 7f8e50011b4a4a208d253275d2b62f4d
+#: 91846a7e6ffa44edb62c715bcfdeb6b2 93ba19e2dd9e47b9a58955abdd457b0f
+#: cd50ff07746f46cfbbbfd1154708eed1 d8e215008493485b97231445befcce67
 msgid "**Type:** ``bool``"
 msgstr "**Тип:** ``bool``"
 
-#: ../../docs/configuration.rst:101 ../../docs/configuration.rst:261
-#: ../../docs/configuration.rst:486 ../../docs/configuration.rst:499
-#: 3379d421fbf649b2b4993a1d7628a1fc bd38b5a3a5ee45eaa89e3def40719f26
-#: dafc58d5bce24014898087609fb38974 db34daef76d14f3d9e80dec82b61dd06
+#: ../../docs/configuration.rst:101 ../../docs/configuration.rst:260
+#: ../../docs/configuration.rst:484 ../../docs/configuration.rst:497
+#: 0bc5f27978ec46038c8284f2790663f0 1de264e6233f4834a8905a5c26c49410
+#: 36792046028d4c6c93dbd939e2123c8b 81b8dc8df8cc48d1954e1a39e337da7d
 msgid "**Default:** ``false``"
 msgstr "**По умолчанию:** ``false``"
 
-#: ../../docs/configuration.rst:103 c2f7c1ceaa33476b8078a8ca34f663cc
+#: ../../docs/configuration.rst:103 760784bd4ef742b8a4e75ba501848a84
 msgid "Enable authentication:"
 msgstr "Включить аутентификацию:"
 
-#: ../../docs/configuration.rst:110 ../../docs/configuration.rst:405
-#: 43dc8b93673f421ea6bd0f42b66a1b0b 9867d1eeff6f4b23960c579cc4f894b5
+#: ../../docs/configuration.rst:110 ../../docs/configuration.rst:404
+#: a4ed6f714d804670a633c9e0f3758b9d af5654b1481a43628cbd896fb4dca13c
 msgid "AuthToken"
 msgstr "AuthToken"
 
-#: ../../docs/configuration.rst:112 ../../docs/configuration.rst:276
-#: ../../docs/configuration.rst:289 ../../docs/configuration.rst:391
-#: ../../docs/configuration.rst:407 11b40f6eb0874642983b12055f9000fd
-#: 4c0af575c15c4247845e8af33d3cd56f 70b4a60802034f75a64f41e3d649de2a
-#: dd0cf376c9684eadbcd4cbd43bdac3d8 fbc9272c4ec04cfdab674460d88cdc3a
+#: ../../docs/configuration.rst:112 ../../docs/configuration.rst:275
+#: ../../docs/configuration.rst:288 ../../docs/configuration.rst:390
+#: ../../docs/configuration.rst:406 1c185c4cc8cc4f2588cd82c99d8adb6d
+#: 4750b5a560ff46f0b8dd0a9d2384f99c 4d435a7110f94b1b83857ae790d2c844
+#: 56ebbe6518cf42b5995dc43fb5f33f1d caaca908f0634cf2a87e8404f83bd4f2
 msgid "**Type:** ``string?``"
 msgstr "**Тип:** ``string?``"
 
-#: ../../docs/configuration.rst:114 ../../docs/configuration.rst:135
-#: ../../docs/configuration.rst:278 ../../docs/configuration.rst:291
-#: ../../docs/configuration.rst:393 ../../docs/configuration.rst:409
-#: 0aa2b01eb367427b8e1d6952378a9a04 246292c9d84e4bf08f5d4c87657a4ebc
-#: 4ba3d80fa43845e9a7feda757e9d15ef 7543eb66ac6b47aba7e33be71c23daa9
-#: c2433166e61b4dd99175884e02f5d8b6 caaee7b60148407f9eb2603cfd4c2980
+#: ../../docs/configuration.rst:114 ../../docs/configuration.rst:134
+#: ../../docs/configuration.rst:277 ../../docs/configuration.rst:290
+#: ../../docs/configuration.rst:392 ../../docs/configuration.rst:408
+#: 02aa01c1cb1142d59b5f69e88004b2c4 09e2f7825c5847038e2b8e9507a55101
+#: 757657c6957940578d57323807b8d5cc 8b5b955babe3419e8c011e4e25e62e49
+#: 9717c1e41b824972a6744f185b2bd662 9ac3b7eff9db41529c53484d18bf7a7d
 msgid "**Default:** ``null``"
 msgstr "**По умолчанию:** ``null``"
 
-#: ../../docs/configuration.rst:120 b3dfb159bf6c42768c4c05b3613018fd
-#, fuzzy
-msgid "Token for client authentication (legacy mode):"
-msgstr "Токен для аутентификации (устаревший режим):"
+#: ../../docs/configuration.rst:116 321a076db786454f909ac6531a2b3323
+msgid "Use ``UseAuthorization()`` for new deployments."
+msgstr "Для новых развёртываний используйте ``UseAuthorization()``."
 
-#: ../../docs/configuration.rst:128 89d915dd5aba44e093ee0a0ce68e25b7
+#: ../../docs/configuration.rst:119 a06e1159aee94ce38e0f57c1ee5fe480
+msgid "Token for client authentication (legacy mode):"
+msgstr "Токен для аутентификации клиента (устаревший режим):"
+
+#: ../../docs/configuration.rst:127 b228e1736d98408cb56e7a6bf86af7de
 msgid "Use complex tokens (32+ characters) in production."
 msgstr "Используйте сложные токены (32+ символа) в production."
 
-#: ../../docs/configuration.rst:131 89b66a9d126241ad9056ebfd9ab7ba0b
+#: ../../docs/configuration.rst:130 b54d24ea075d4023b8c8176a373b29f0
 msgid "Authorization"
 msgstr "Авторизация"
 
-#: ../../docs/configuration.rst:133 7df2db60345c45a791e4c2d6235928c0
-#, fuzzy
+#: ../../docs/configuration.rst:132 c07a95050c6547558d2dafed36f426b9
 msgid "**Type:** ``AuthorizationOptions?``"
-msgstr "AuthorizationOptions"
+msgstr "**Тип:** ``AuthorizationOptions?``"
 
-#: ../../docs/configuration.rst:137 6a9cac763464413c965c232abf31c8bb
+#: ../../docs/configuration.rst:136 ff89a58d3db1400483217d52bcb134a2
 msgid ""
 "Enables username/password authentication with per-queue ACL stored in "
 "SQLite. When set, legacy token authentication is automatically disabled."
@@ -212,7 +218,7 @@ msgstr ""
 "SQLite. При установке устаревшая токен-аутентификация автоматически "
 "отключается."
 
-#: ../../docs/configuration.rst:148 abd9f1ae45424a6b942ab9ad3c569b2a
+#: ../../docs/configuration.rst:147 943792dd6e814349b6e7bdce333c9bb6
 msgid ""
 "See :doc:`authorization` for full details on users, ACL, and admin "
 "commands."
@@ -220,69 +226,67 @@ msgstr ""
 "Подробнее о пользователях, ACL и административных командах: "
 ":doc:`authorization`."
 
-#: ../../docs/configuration.rst:151 4fe25b0cebc549ebba12a5f199af5ba9
+#: ../../docs/configuration.rst:150 af0c91ae7c294df598877854df4b61e9
 msgid "AuthorizationOptions"
 msgstr "AuthorizationOptions"
 
-#: ../../docs/configuration.rst:165 ../../docs/configuration.rst:554
-#: 9f98a00955b24b77898979673c6b2f23 e06c90bfea9a4f8dbb7b202d548ceb6c
+#: ../../docs/configuration.rst:164 ../../docs/configuration.rst:552
+#: b84307be796849f398573f4b9bd66aa1 e74d45800c5143939bff2815c267f636
 msgid "Property"
 msgstr "Свойство"
 
-#: ../../docs/configuration.rst:166 ../../docs/configuration.rst:556
-#: 3a6e225ce3544defac0096d76538d81e 5df999ba485d47b0afcc929c7b1121c1
+#: ../../docs/configuration.rst:165 ../../docs/configuration.rst:554
+#: 18a8787cbae544d6b19946d77685b4f3 a3262b2b7eff40ffa9bb4b3db972aa6e
 msgid "Default"
 msgstr "По умолчанию"
 
-#: ../../docs/configuration.rst:167 ../../docs/configuration.rst:557
-#: ../../docs/configuration.rst:618 56399baf5fd240c3a575ccfa98f837c6
-#: b9fc322b444c40db9fd089cc774fa9f2 e0140173202c4ea2911fb7ee9c3617d3
+#: ../../docs/configuration.rst:166 ../../docs/configuration.rst:555
+#: ../../docs/configuration.rst:616 044cffbf12d74b79ac6383be8bd63ca3
+#: 15b0b6765a56441e98fde9848db71648 59a0aea70a9b4ea48bb464e04a331139
 msgid "Description"
 msgstr "Описание"
 
-#: ../../docs/configuration.rst:168 a5b3994a95e24b4fb09417c3b74a6b18
-#, fuzzy
+#: ../../docs/configuration.rst:167 1d56323bf7dc441893abc08c4c4973e6
 msgid "``SuperuserUsername``"
-msgstr "``QueueName``"
+msgstr "``SuperuserUsername``"
 
-#: ../../docs/configuration.rst:169 14ec530341bf4d38909484686148bf00
+#: ../../docs/configuration.rst:168 9d61736d828c4e0fabf22b8a00daf894
 msgid "``\"vibemq\"``"
-msgstr ""
+msgstr "``\"vibemq\"``"
 
-#: ../../docs/configuration.rst:170 bb6edaa0402e472986f03acfde674305
+#: ../../docs/configuration.rst:169 a71b3690755a45c4815c14223bd33855
 msgid "Username for the built-in superuser account."
 msgstr "Имя пользователя встроенного суперпользователя."
 
-#: ../../docs/configuration.rst:171 93ea22dc11d4445681378dbcfb8a4eaa
-#, fuzzy
+#: ../../docs/configuration.rst:170 2630d670e864469fa41f12b088d57c35
 msgid "``SuperuserPassword``"
-msgstr "Username / Password"
+msgstr "``SuperuserPassword``"
 
-#: ../../docs/configuration.rst:172 ac203cac01a5449c944fe1beac63b528
+#: ../../docs/configuration.rst:171 f753c05ae36d4c439216e1064e654259
 msgid "``\"\"``"
-msgstr ""
+msgstr "``\"\"``"
 
-#: ../../docs/configuration.rst:173 71b9370c5f7b46b0936026c83849c8bb
+#: ../../docs/configuration.rst:172 7fddbd8c4870413d9efd9c06892a818a
 msgid "Password for the superuser. Must be set before the first run."
 msgstr "Пароль суперпользователя. Должен быть задан до первого запуска."
 
-#: ../../docs/configuration.rst:174 ae8e43630b6a4253974dffdfd22be01c
+#: ../../docs/configuration.rst:173 49b63b52f11342c385224c7311ce8c34
 msgid "``DatabasePath``"
-msgstr ""
+msgstr "``DatabasePath``"
 
-#: ../../docs/configuration.rst:175 0abb6a0125c8443e8eddc9f08be17983
+#: ../../docs/configuration.rst:174 3072ac7ab8e34df1badadba373512ced
 msgid "``\"auth.db\"``"
-msgstr ""
+msgstr "``\"auth.db\"``"
 
-#: ../../docs/configuration.rst:176 542966ffbc68454b802d6e191f414d86
+#: ../../docs/configuration.rst:175 e3f450d2842f4bd8841273e89baeb8e6
 msgid "Path to the dedicated SQLite ACL database."
 msgstr "Путь к выделенной SQLite-базе данных ACL."
 
-#: ../../docs/configuration.rst:179 f5bdccd9bfd94def81e24c697b8a039b
+#: ../../docs/configuration.rst:178 c8c50de7dc3f4eef9ce8dd93910cf89e
 msgid "QueueDefaults"
 msgstr "QueueDefaults"
 
-#: ../../docs/configuration.rst:181 f455bbd17f644965ab14a5a15a2858f3
+#: ../../docs/configuration.rst:180 3950fed399074d5487cda8038e1e8592
 msgid ""
 "Server-side default settings for auto-created queues (used by "
 "``ConfigureQueues``). Only these three properties are configurable as "
@@ -298,70 +302,70 @@ msgstr ""
 "явном создании очереди методом ``CreateQueueAsync`` на клиенте или при "
 "создании очереди с особыми параметрами."
 
-#: ../../docs/configuration.rst:192 7cd4a1c47281463bb5be6c04462bcd7f
+#: ../../docs/configuration.rst:191 b5f3777fe7b946c184f6c6c2d54fba37
 msgid "DefaultDeliveryMode"
 msgstr "DefaultDeliveryMode"
 
-#: ../../docs/configuration.rst:194 9f559d5b63074d9395315cd01a5c3c4b
+#: ../../docs/configuration.rst:193 89eb67b57d484b8285648f35cc64fc53
 msgid "**Type:** ``DeliveryMode``"
 msgstr "**Тип:** ``DeliveryMode``"
 
-#: ../../docs/configuration.rst:196 6a006a289ed14d17825342d7310bbb6d
+#: ../../docs/configuration.rst:195 b66c1740e880408d8f837fa8fc647aaf
 msgid "**Default:** ``RoundRobin``"
 msgstr "**По умолчанию:** ``RoundRobin``"
 
-#: ../../docs/configuration.rst:198 6cd3a4fa78c2431bb141c91a1f87afaa
+#: ../../docs/configuration.rst:197 22cb79ca5b1349b18938dc1e6f5775c2
 msgid "Default delivery mode:"
 msgstr "Режим доставки по умолчанию:"
 
-#: ../../docs/configuration.rst:204 478ce2f8d4b1476183f7e746e8904771
+#: ../../docs/configuration.rst:203 153e9e955eae44a1bb952645d58f6fde
 msgid "**Possible values:**"
 msgstr "**Возможные значения:**"
 
-#: ../../docs/configuration.rst:206 d8e3e631e04e499480d779f47f0dc3ff
+#: ../../docs/configuration.rst:205 19a5df48ad4b420d92155dd2b255c82c
 msgid "``RoundRobin`` — round-robin delivery to one subscriber"
 msgstr "``RoundRobin`` — доставка по кругу одному подписчику"
 
-#: ../../docs/configuration.rst:207 bae6c9e5bf7c48d58f3bec5735c114b0
+#: ../../docs/configuration.rst:206 97efa17bc2f1484991b9292762bb4957
 msgid "``FanOutWithAck`` — to all with acknowledgment"
 msgstr "``FanOutWithAck`` — всем с подтверждением"
 
-#: ../../docs/configuration.rst:208 740b202c6c6f470fad6583df8a8dfd3b
+#: ../../docs/configuration.rst:207 67293aecc10547c48ed0ed53c7fbcc07
 msgid "``FanOutWithoutAck`` — to all without acknowledgment"
 msgstr "``FanOutWithoutAck`` — всем без подтверждения"
 
-#: ../../docs/configuration.rst:209 85abb9417ed64bb5b5456a4f9abc56ff
+#: ../../docs/configuration.rst:208 68a905ab02ac4d1ba3b846e22502a90e
 msgid "``PriorityBased`` — by priority"
 msgstr "``PriorityBased`` — по приоритету"
 
-#: ../../docs/configuration.rst:212 c76f2fc79e604e99be2e4574c6cdd61d
+#: ../../docs/configuration.rst:211 06e923ea64e3420a898794b5a32764ea
 msgid "MaxQueueSize"
 msgstr "MaxQueueSize"
 
-#: ../../docs/configuration.rst:216 2e8d6c6b6ab34797a53ec51251383ffa
+#: ../../docs/configuration.rst:215 5f7c3bb5022f48e4ab9940d83fd8aa91
 msgid "**Default:** ``10_000``"
 msgstr "**По умолчанию:** ``10_000``"
 
-#: ../../docs/configuration.rst:218 39b32e9b9f0e45adbaaf055c07cdd7dd
+#: ../../docs/configuration.rst:217 31706f29e2a846968cc32aebae67d96d
 msgid "Maximum number of messages in queue:"
 msgstr "Максимальное количество сообщений в очереди:"
 
-#: ../../docs/configuration.rst:225 818934d8eee748e797850e54736e1062
+#: ../../docs/configuration.rst:224 52ce57bcefeb4be4a99cab800abed0b1
 msgid "EnableAutoCreate"
 msgstr "EnableAutoCreate"
 
-#: ../../docs/configuration.rst:229 ../../docs/configuration.rst:318
-#: ../../docs/configuration.rst:687 ../../docs/configuration.rst:713
-#: 6594eaf0fe494c43ac9431d6cce9dc6f 9779d81c26f042b1bcfe5a6634d4c650
-#: d19e22fc0744462b99ddd8f936feeccd d5a649be4a1941d7b28901dd2ce5979a
+#: ../../docs/configuration.rst:228 ../../docs/configuration.rst:317
+#: ../../docs/configuration.rst:685 ../../docs/configuration.rst:711
+#: 272354c89d8647f1993727ff36212e02 31e2512969a54c1ab22412a9ca808ebc
+#: 362c09ff517a4f0095ae662b35d6f295 5c6f1bd7ccb14c24bd5c0860f07164bb
 msgid "**Default:** ``true``"
 msgstr "**По умолчанию:** ``true``"
 
-#: ../../docs/configuration.rst:231 158282dd8b5e4342ba72706c773da277
+#: ../../docs/configuration.rst:230 2cb697a35d584f61a01ffbac2a891346
 msgid "Automatically create queues on first publish:"
 msgstr "Автоматическое создание очередей при первой публикации:"
 
-#: ../../docs/configuration.rst:239 c5477b8534f44249878d295f9c6cb0ca
+#: ../../docs/configuration.rst:238 8596763c20004e14a600c1ec30d901bf
 msgid ""
 "Disable for strict queue control. Per-queue options (MessageTtl, "
 "EnableDeadLetterQueue, OverflowStrategy, MaxRetryAttempts) are available "
@@ -373,109 +377,109 @@ msgstr ""
 "``QueueOptions`` при создании очереди через "
 "``client.CreateQueueAsync(name, options)``."
 
-#: ../../docs/configuration.rst:242 e2c0fcd6fc2c485d910927407c3ecd4e
+#: ../../docs/configuration.rst:241 34ac6779ac144411b4a52f8fc8d015ea
 msgid "TlsOptions"
 msgstr "TlsOptions"
 
-#: ../../docs/configuration.rst:244 c3cee27633d94ffaa1478e50e7cbc942
+#: ../../docs/configuration.rst:243 f561c1f343224caea16724d3552e40bd
 msgid "TLS/SSL settings:"
 msgstr "Настройки TLS/SSL:"
 
-#: ../../docs/configuration.rst:257 ../../docs/configuration.rst:314
-#: ../../docs/configuration.rst:709 2cfe94e022d44de49494bf5fbcd02109
-#: 552f336e35454c5d84f649e7c5dbf411 f588f71600bf4da1ae9c88e240925ce9
+#: ../../docs/configuration.rst:256 ../../docs/configuration.rst:313
+#: ../../docs/configuration.rst:707 25c8177125434a33b83d73e8a67eb9ac
+#: 618678ea604b434eb4b700f8eaaa4143 dea59750d64244e095c82f2b2c9528c1
 msgid "Enabled"
 msgstr "Enabled"
 
-#: ../../docs/configuration.rst:263 01649314e61940a2907e737329db8917
+#: ../../docs/configuration.rst:262 3af32d12be8d48ca9b75d03ed3560e70
 msgid "Enable TLS:"
 msgstr "Включить TLS:"
 
-#: ../../docs/configuration.rst:274 354741f6ec4e4593a412a086e6f4cdc0
+#: ../../docs/configuration.rst:273 05d44d60587d4892b0153c3e7f997035
 msgid "CertificatePath"
 msgstr "CertificatePath"
 
-#: ../../docs/configuration.rst:280 21a6b2c56b96484095b9f1fb50323b49
+#: ../../docs/configuration.rst:279 119d578465ab43d485b8da8eba2048ed
 msgid "Path to PFX certificate:"
 msgstr "Путь к PFX-сертификату:"
 
-#: ../../docs/configuration.rst:287 6b1be4e65fd64494b6eda00851894420
+#: ../../docs/configuration.rst:286 2e9445ee9a724801afa1befd7e23fa5c
 msgid "CertificatePassword"
 msgstr "CertificatePassword"
 
-#: ../../docs/configuration.rst:293 deaae7eb98554e5a80284af6485115b6
+#: ../../docs/configuration.rst:292 8d6fbad684214e818cdf46324330e8ca
 msgid "Certificate password:"
 msgstr "Пароль к сертификату:"
 
-#: ../../docs/configuration.rst:300 d39fcdce1c2e4ad782595966120ef1b2
+#: ../../docs/configuration.rst:299 a234593d8323409fa5557df2a81480e7
 msgid "RateLimitOptions"
 msgstr "RateLimitOptions"
 
-#: ../../docs/configuration.rst:302 b4c603c9bec643a796371cc373269bf4
+#: ../../docs/configuration.rst:301 fee613d69ec04da99a12082e2ea2bb55
 msgid "Rate limiting settings:"
 msgstr "Настройки rate limiting:"
 
-#: ../../docs/configuration.rst:320 50999280201f4a24a9a64b43bfa25b47
+#: ../../docs/configuration.rst:319 04ad366824424978bb7783a31f4c0326
 msgid "Enable rate limiting:"
 msgstr "Включить rate limiting:"
 
-#: ../../docs/configuration.rst:329 91a080725f5a4f8ba3e55d5d38474425
+#: ../../docs/configuration.rst:328 fbb17054c503408b84e9d28203cb15a9
 msgid "MaxConnectionsPerIpPerWindow"
 msgstr "MaxConnectionsPerIpPerWindow"
 
-#: ../../docs/configuration.rst:333 8b0869df3b884936a1301fce20f50e8f
+#: ../../docs/configuration.rst:332 474c3005fabb4e38b6231119a12ec2d0
 msgid "**Default:** ``20``"
 msgstr "**По умолчанию:** ``20``"
 
-#: ../../docs/configuration.rst:335 532ac28be88644bb9989a475455228a9
+#: ../../docs/configuration.rst:334 934d2633ff9f43d39d2b0cc0e2b1087c
 msgid "Maximum number of connections from one IP per time window:"
 msgstr "Максимальное количество подключений с одного IP в окно времени:"
 
-#: ../../docs/configuration.rst:342 3c805eda84b94691bebd905e5f186f80
+#: ../../docs/configuration.rst:341 e36953f4e26149e281b666c7d3dec71d
 msgid "ConnectionWindow"
 msgstr "ConnectionWindow"
 
-#: ../../docs/configuration.rst:344 ../../docs/configuration.rst:458
-#: ../../docs/configuration.rst:471 ../../docs/configuration.rst:659
-#: ../../docs/configuration.rst:672 109f305de1344ea2ab2b869d803ae1ef
-#: 2929819860ce45cc9990287c6562cccc 57c59372235e4638b62b8cfbe2a2911f
-#: 6ee94c41910044bf9be9173c2e4a7fe4 baa4781f7acc4a72a8d718c9f5c7eb14
+#: ../../docs/configuration.rst:343 ../../docs/configuration.rst:456
+#: ../../docs/configuration.rst:469 ../../docs/configuration.rst:657
+#: ../../docs/configuration.rst:670 0eb00aa7753c447e8c6b1f7de2415507
+#: 131dc2cbb46647a4a2a4092197643194 5189b689aadf4129a1f36c7d7bebee73
+#: e52e7af880c24044a97f89984a2f1b07 f8c6197c1e804224ac09ac452989be07
 msgid "**Type:** ``TimeSpan``"
 msgstr "**Тип:** ``TimeSpan``"
 
-#: ../../docs/configuration.rst:346 80f46fd3f61848f0a5aeb4958f99a6ed
+#: ../../docs/configuration.rst:345 4c4e4b2f6b4343e2b4df0b8817fd00cf
 msgid "**Default:** ``60 seconds``"
 msgstr "**По умолчанию:** ``60 секунд``"
 
-#: ../../docs/configuration.rst:348 03509af0b69e480ebf716addc2028d34
+#: ../../docs/configuration.rst:347 4dc8fc241b444d88904d467de2cb91b2
 msgid "Time window for connection limiting:"
 msgstr "Окно времени для ограничения подключений:"
 
-#: ../../docs/configuration.rst:355 6ce107f374c743818842cb2c3a7d3914
+#: ../../docs/configuration.rst:354 3cdcab6b0c324c9a820894522a8841a9
 msgid "MaxMessagesPerClientPerSecond"
 msgstr "MaxMessagesPerClientPerSecond"
 
-#: ../../docs/configuration.rst:361 09fd37713e2040e49700178456ca45f1
+#: ../../docs/configuration.rst:360 f6b0d64a97224c7885eb4351399756d0
 msgid "Maximum number of messages from client per second:"
 msgstr "Максимальное количество сообщений от клиента в секунду:"
 
-#: ../../docs/configuration.rst:368 5167c7c857a049c091b1b580bcd97d65
+#: ../../docs/configuration.rst:367 919164dfec164fac8daa6b13138f7dcd
 msgid "Client Configuration"
 msgstr "Конфигурация клиента"
 
-#: ../../docs/configuration.rst:371 42175960bea4418686929dc0b99e5fac
+#: ../../docs/configuration.rst:370 3a944aeef6624bdc9537afa5663d402d
 msgid "ClientOptions"
 msgstr "ClientOptions"
 
-#: ../../docs/configuration.rst:389 e798f893426e49eba6ab947445ea448f
+#: ../../docs/configuration.rst:388 ddce8c72c7184ed48887a24e3c166b1a
 msgid "Username / Password"
 msgstr "Username / Password"
 
-#: ../../docs/configuration.rst:395 4938683463474c4f937a61a4e29923c6
+#: ../../docs/configuration.rst:394 57ab3f35bf3d42d4943a31ead6266af9
 msgid "Credentials for username/password authentication (new mode):"
 msgstr "Учётные данные для аутентификации по логину/паролю (новый режим):"
 
-#: ../../docs/configuration.rst:402 69de44344456422382745026e0e2e32c
+#: ../../docs/configuration.rst:401 064fb87693b44e77860ef0f4f4bc7a7d
 msgid ""
 "When both ``Username`` and ``Password`` are set, they take priority over "
 "``AuthToken``."
@@ -483,114 +487,120 @@ msgstr ""
 "Когда заданы оба поля ``Username`` и ``Password``, они имеют приоритет "
 "над ``AuthToken``."
 
-#: ../../docs/configuration.rst:415 5b4b261070dc4ebfbc3035ec09b00d5b
+#: ../../docs/configuration.rst:410 77ace691cc4d438aa89a77cdddaa4351
+msgid "Use ``Username`` and ``Password`` for new deployments."
+msgstr ""
+
+#: ../../docs/configuration.rst:413 0d65d50b31454760aad05f0ffc0aab87
 msgid "Token for authentication (legacy mode):"
 msgstr "Токен для аутентификации (устаревший режим):"
 
-#: ../../docs/configuration.rst:422 a0a0138594f04d4c803e957618ed8b48
+#: ../../docs/configuration.rst:420 beceb417b6714222aafafaa6cbbc8bdb
 msgid "PreferredCompressions"
-msgstr ""
+msgstr "PreferredCompressions"
 
-#: ../../docs/configuration.rst:424 61240eb4b593416f9eddf73964e20dec
+#: ../../docs/configuration.rst:422 9d0d4a861da24f60a4e4dfd949d3d1b3
 msgid "**Type:** ``IReadOnlyList<CompressionAlgorithm>``"
-msgstr ""
+msgstr "**Тип:** ``IReadOnlyList<CompressionAlgorithm>``"
 
-#: ../../docs/configuration.rst:426 169372109d85420a804d811a453552c7
-#, fuzzy
+#: ../../docs/configuration.rst:424 7d5c6aa5ff9048779e4c7dfdb58c6171
 msgid "**Default:** ``[Brotli, GZip]``"
-msgstr "**По умолчанию:** ``[]``"
+msgstr "**По умолчанию:** ``[Brotli, GZip]``"
 
-#: ../../docs/configuration.rst:428 892438e73497417c8ea86626607fabb8
+#: ../../docs/configuration.rst:426 71fb00d7514b41e59deef8e91fb5f1d5
 msgid ""
 "Compression algorithms the client prefers (descending priority). Empty "
 "list disables compression. See :doc:`protocol` for negotiation."
 msgstr ""
+"Алгоритмы сжатия, предпочитаемые клиентом (по убыванию приоритета). "
+"Пустой список отключает сжатие. См. :doc:`protocol` по согласованию."
 
-#: ../../docs/configuration.rst:431 83ab16b3ff9245849fb4c7027012d957
+#: ../../docs/configuration.rst:429 98d4e16d88f341cc94be853f224b44c0
 msgid "CompressionThreshold"
-msgstr ""
+msgstr "CompressionThreshold"
 
-#: ../../docs/configuration.rst:435 8f046b48be9c45a9991f017bddb12bcb
-#, fuzzy
+#: ../../docs/configuration.rst:433 954e0de998f74d93a671fea60273de97
 msgid "**Default:** ``1024`` (1 KB)"
-msgstr "**По умолчанию:** ``1_048_576`` (1 MB)"
+msgstr "**По умолчанию:** ``1024`` (1 КБ)"
 
-#: ../../docs/configuration.rst:437 7a4de9c573e84f9c9277c2394bdda493
+#: ../../docs/configuration.rst:435 3d0bbf88ed94489e8bdaea101ce5a254
 msgid ""
 "Minimum serialized body size in bytes to apply compression. Bodies "
 "smaller than this are sent uncompressed."
 msgstr ""
+"Минимальный размер сериализованного тела в байтах для применения сжатия. "
+"Сообщения меньше этого размера отправляются без сжатия."
 
-#: ../../docs/configuration.rst:440 ../../docs/configuration.rst:632
-#: 520ca54565af43b2b69387d2e9d39266 b8e30beae0364f2fa65fd0f1e487e540
+#: ../../docs/configuration.rst:438 ../../docs/configuration.rst:630
+#: 85443ce516084030b54ff37fcfb13ede fd793ec9ea5d43c1bf8d3cfb70645b79
 msgid "ReconnectPolicy"
 msgstr "ReconnectPolicy"
 
-#: ../../docs/configuration.rst:442 a3a5f049735a4b5f9dd4c40e62f952be
+#: ../../docs/configuration.rst:440 37e5cfd3602b44cc95671d4adc8eb1f9
 msgid "**Type:** ``ReconnectPolicy``"
 msgstr "**Тип:** ``ReconnectPolicy``"
 
-#: ../../docs/configuration.rst:444 64b85844fc414a38affee4d499bb0ce1
+#: ../../docs/configuration.rst:442 7e36844ee7ef44f28dfcf4125a93cf08
 msgid "Reconnection policy:"
 msgstr "Политика переподключения:"
 
-#: ../../docs/configuration.rst:456 7501930b1380475cbc574d77e5a1d724
+#: ../../docs/configuration.rst:454 1c69098204e94e9f8507c98d4ef9dfb1
 msgid "KeepAliveInterval"
 msgstr "KeepAliveInterval"
 
-#: ../../docs/configuration.rst:460 ae8d6181e4734c1d9197958dca0f399e
+#: ../../docs/configuration.rst:458 b90e9d01c3074648824d2b4f5a6ffc28
 msgid "**Default:** ``30 seconds``"
 msgstr "**По умолчанию:** ``30 секунд``"
 
-#: ../../docs/configuration.rst:462 b391551a5aa7452985cc5fc2954b8215
+#: ../../docs/configuration.rst:460 8fd8e66e1c4440b0a835e0dd52f36082
 msgid "PING send interval:"
 msgstr "Интервал отправки PING:"
 
-#: ../../docs/configuration.rst:469 1932d10002e949e19c658e721507b47a
+#: ../../docs/configuration.rst:467 90c07e16f25944c38e461fc126b10e42
 msgid "CommandTimeout"
 msgstr "CommandTimeout"
 
-#: ../../docs/configuration.rst:473 2a8b0448470b4521975d4d4bcc96823f
+#: ../../docs/configuration.rst:471 2f1f46e0ea4b455ca52c4a0e4fe8af5f
 msgid "**Default:** ``10 seconds``"
 msgstr "**По умолчанию:** ``10 секунд``"
 
-#: ../../docs/configuration.rst:475 ca655c7595c24d6b9bf176779dde46e6
+#: ../../docs/configuration.rst:473 a564419aa6cc4accb2502aa53b19690c
 msgid "Command timeout:"
 msgstr "Таймаут для команд:"
 
-#: ../../docs/configuration.rst:482 a50fb38002c945928d437c950b01e917
+#: ../../docs/configuration.rst:480 f1502c907bae4abdbd8c13809061edd3
 msgid "UseTls"
 msgstr "UseTls"
 
-#: ../../docs/configuration.rst:488 fb7e336caae04144a04d458301acfa9c
+#: ../../docs/configuration.rst:486 2cf9e8e842a146b58698017d27e80436
 msgid "Use TLS:"
 msgstr "Использовать TLS:"
 
-#: ../../docs/configuration.rst:495 a1f9e19308b34d6d8a3e76f3909a1905
+#: ../../docs/configuration.rst:493 882196dde5e745529fc03bcdd748f23e
 msgid "SkipCertificateValidation"
 msgstr "SkipCertificateValidation"
 
-#: ../../docs/configuration.rst:501 89674a61c14d481c98df667c3e60076b
+#: ../../docs/configuration.rst:499 7bc12edf22bb40d0a066bd7fe6670a07
 msgid "Skip certificate validation:"
 msgstr "Пропускать валидацию сертификата:"
 
-#: ../../docs/configuration.rst:509 1d32980c436d4705bc870355bf85b4f9
+#: ../../docs/configuration.rst:507 0793e0b452b144408cb7e4f50285484e
 msgid "Do not use in production!"
 msgstr "Не используйте в production!"
 
-#: ../../docs/configuration.rst:512 12fbc0a0526a4f5ba0c80bef2b95c8b7
+#: ../../docs/configuration.rst:510 3369cc8d6908400aaaf4222f9c8fad51
 msgid "QueueDeclarations"
 msgstr "QueueDeclarations"
 
-#: ../../docs/configuration.rst:514 8184ea9bd9d040c894c760fcb8bd8035
+#: ../../docs/configuration.rst:512 d9312fbfa88d4f068e435559e04a7f9d
 msgid "**Type:** ``IList<QueueDeclaration>``"
 msgstr "**Тип:** ``IList<QueueDeclaration>``"
 
-#: ../../docs/configuration.rst:516 8b6a1c53925445c18ab06cbe7c23ac7c
+#: ../../docs/configuration.rst:514 28b46d2a081240f48de3e702a43e0170
 msgid "**Default:** ``[]``"
 msgstr "**По умолчанию:** ``[]``"
 
-#: ../../docs/configuration.rst:518 10c3aceb1575468a9f748ef0e05c3193
+#: ../../docs/configuration.rst:516 43192948573e4a2387669b10cd01a62d
 msgid ""
 "Queues to automatically create or verify on every ``ConnectAsync``. Use "
 "the fluent ``DeclareQueue`` helper to populate this list:"
@@ -598,7 +608,7 @@ msgstr ""
 "Очереди для автоматического создания или проверки при каждом "
 "``ConnectAsync``. Заполняйте список через цепочку ``DeclareQueue``:"
 
-#: ../../docs/configuration.rst:534 2c52a6a166c04f9ba7528387b561ca1d
+#: ../../docs/configuration.rst:532 e24b670ac9ff4e64bd4f34b157af78ba
 msgid ""
 "Declarations are evaluated sequentially. See :doc:`client-usage` for full"
 " details."
@@ -606,79 +616,79 @@ msgstr ""
 "Объявления обрабатываются последовательно. Подробности в :doc:`client-"
 "usage`."
 
-#: ../../docs/configuration.rst:537 a2db5d1d7b23425c928e8e15f175e405
+#: ../../docs/configuration.rst:535 13eead19e72147c2b36518f16e2faea1
 msgid "QueueDeclaration"
 msgstr "QueueDeclaration"
 
-#: ../../docs/configuration.rst:539 13120f2fdfd740a09b6c398c6efe5b97
+#: ../../docs/configuration.rst:537 a89240b39b5c4d4b99ba1cb595486ffa
 msgid "Describes a single queue to provision at connection time."
 msgstr "Описание одной очереди для провизионирования при подключении."
 
-#: ../../docs/configuration.rst:555 80e7d088d288483d877954b871b081fa
+#: ../../docs/configuration.rst:553 0e952fbf580d42fc8fa26fa1ac1410dd
 msgid "Type"
 msgstr "Тип"
 
-#: ../../docs/configuration.rst:558 0486ad96644f499b817eb322cded9cd0
+#: ../../docs/configuration.rst:556 b91492ca6c1d465fb26fe50fa20b8d46
 msgid "``QueueName``"
 msgstr "``QueueName``"
 
-#: ../../docs/configuration.rst:559 b0cf9043f11247629332eb39d07cea07
+#: ../../docs/configuration.rst:557 2d8593e0ba6e4a69b36f244a35f373b2
 msgid "``string``"
 msgstr "``string``"
 
-#: ../../docs/configuration.rst:560 a04b2f11a088461c9ff919cdb05aa4b4
+#: ../../docs/configuration.rst:558 3093e7cc7a2c452191bd4b53c9b389c1
 msgid "required"
 msgstr "обязательно"
 
-#: ../../docs/configuration.rst:561 2b446a24359848b5a8c693297393bdd9
+#: ../../docs/configuration.rst:559 7f7182c4a8bb49709e2ce36094935f36
 msgid "Name of the queue to provision."
 msgstr "Имя очереди для провизионирования."
 
-#: ../../docs/configuration.rst:562 3902f8b6b1644702b84c677e451e9b02
+#: ../../docs/configuration.rst:560 2c6c596119554db384963df26455ac81
 msgid "``Options``"
 msgstr "``Options``"
 
-#: ../../docs/configuration.rst:563 7032eb9f8808484b986d1760d506f06c
+#: ../../docs/configuration.rst:561 4a84b019b67f4bc197ec2c13fdf6d5aa
 msgid "``QueueOptions``"
 msgstr "``QueueOptions``"
 
-#: ../../docs/configuration.rst:564 40420ca230524d50bffca55ab65240f7
+#: ../../docs/configuration.rst:562 e07fc6062d474f96b08fe057f739b4b5
 msgid "defaults"
 msgstr "по умолчанию"
 
-#: ../../docs/configuration.rst:565 ee05297f7f3f4a4b8bc36909d4f9637e
+#: ../../docs/configuration.rst:563 906d5a1855d64f489baeb7de4e30df58
 msgid "Desired queue settings."
 msgstr "Желаемые настройки очереди."
 
-#: ../../docs/configuration.rst:566 3276077241554bdb9fb9a5ac0324b7d6
+#: ../../docs/configuration.rst:564 b23a3b54888b46678bccc330f7f4e3aa
 msgid "``OnConflict``"
 msgstr "``OnConflict``"
 
-#: ../../docs/configuration.rst:567 e9429ba1920643229a2085333ca89403
+#: ../../docs/configuration.rst:565 a25b12a762564019b41f6d3bb27d3b5b
 msgid "``QueueConflictResolution``"
 msgstr "``QueueConflictResolution``"
 
-#: ../../docs/configuration.rst:568 05873dd0bacf410bae72de532aa81f6d
+#: ../../docs/configuration.rst:566 81ea69ab0b20454d8c2d0234ed40b393
 msgid "Ignore"
 msgstr "Ignore"
 
-#: ../../docs/configuration.rst:569 a15b5688d9614cd190d36e04c19438a9
+#: ../../docs/configuration.rst:567 9ca9c32c94c24a6f84e308c03b8241cd
 msgid "Strategy when Soft or Hard differences are found."
 msgstr "Стратегия при обнаружении различий Soft или Hard."
 
-#: ../../docs/configuration.rst:570 af12aed4b8c243d8a4bac29efc15fbc8
+#: ../../docs/configuration.rst:568 c4b21aa7c35b41998d29f70c36a6347d
 msgid "``FailOnProvisioningError``"
 msgstr "``FailOnProvisioningError``"
 
-#: ../../docs/configuration.rst:571 7e8d9735cc1a4994b1915a6283db14ae
+#: ../../docs/configuration.rst:569 ec6d90977b0646869b9ae7f5cfac6ef2
 msgid "``bool``"
 msgstr "``bool``"
 
-#: ../../docs/configuration.rst:572 1ae63da9d814439487b7fd5f83e36ce9
+#: ../../docs/configuration.rst:570 7163eb7f631845269b78ac7c1daad191
 msgid "``true``"
 msgstr "``true``"
 
-#: ../../docs/configuration.rst:573 538c66cd0ea6470899b132e5d441e465
+#: ../../docs/configuration.rst:571 c25c456534b647f9838faafdefe0b96d
 msgid ""
 "Abort ``ConnectAsync`` on provisioning errors. Set ``false`` to log and "
 "skip instead. Does not affect conflict handling."
@@ -686,11 +696,11 @@ msgstr ""
 "Прерывать ``ConnectAsync`` при ошибках провизионирования. При ``false`` —"
 " логировать и пропускать. На обработку конфликтов не влияет."
 
-#: ../../docs/configuration.rst:577 2375062cec0d46ef9dbb100d9bd9efd5
+#: ../../docs/configuration.rst:575 f3596cfcbe444c5b8380110d08f965f2
 msgid "QueueConflictResolution"
 msgstr "QueueConflictResolution"
 
-#: ../../docs/configuration.rst:579 b7cab60f506b4042b41c8f8c53fe14e4
+#: ../../docs/configuration.rst:577 e52f802d81e34e7f8fc8acd07539dc62
 msgid ""
 "Controls what happens when an existing queue has settings that differ "
 "from the declaration. Only ``Soft`` and ``Hard`` differences trigger this"
@@ -701,20 +711,20 @@ msgstr ""
 "объявлением. Стратегию вызывают только различия ``Soft`` и ``Hard``; "
 "``Info`` всегда логируется на уровне Debug."
 
-#: ../../docs/configuration.rst:591 ../../docs/configuration.rst:616
-#: 1e45c1d4454840b5938e74105ee3b8af c690bf43248b4572a3e360949b9dbbdb
+#: ../../docs/configuration.rst:589 ../../docs/configuration.rst:614
+#: 007aba2f7a04433a9058b0ceef035334 21124e21102741d79af430dc00aa2ccb
 msgid "Value"
 msgstr "Значение"
 
-#: ../../docs/configuration.rst:592 6a96cf0caaf8404096831b66c17c3453
+#: ../../docs/configuration.rst:590 6264e4ef0cb3419fac097aed610a935c
 msgid "Behavior"
 msgstr "Поведение"
 
-#: ../../docs/configuration.rst:593 28d8c6b10a964543afbc7db9c13c644a
+#: ../../docs/configuration.rst:591 1976c020b5d641a094da6711eb612332
 msgid "``Ignore``"
 msgstr "``Ignore``"
 
-#: ../../docs/configuration.rst:594 15a9b4997b15478abab935d79288a516
+#: ../../docs/configuration.rst:592 e7a00f27bf8c45dc9c3a261f9d9b0f88
 msgid ""
 "Keep the existing queue unchanged. Log the diff at Warning (Soft) or "
 "Error (Hard) level. **Default.**"
@@ -722,11 +732,11 @@ msgstr ""
 "Оставить существующую очередь без изменений. Логировать расхождения на "
 "уровне Warning (Soft) или Error (Hard). **По умолчанию.**"
 
-#: ../../docs/configuration.rst:596 19e407b4c4ac472788f9fb66eb7e2507
+#: ../../docs/configuration.rst:594 9ae1a51001c946f189baf6b8b6d132fe
 msgid "``Fail``"
 msgstr "``Fail``"
 
-#: ../../docs/configuration.rst:597 981cc8463868448e9cd03c67b80900fa
+#: ../../docs/configuration.rst:595 f420f6e838404f36912f256df97aced5
 msgid ""
 "Throw ``QueueConflictException``. Treat settings drift as a deployment "
 "error. Recommended for production."
@@ -734,11 +744,11 @@ msgstr ""
 "Выбросить ``QueueConflictException``. Расхождение настроек считается "
 "ошибкой развёртывания. Рекомендуется для production."
 
-#: ../../docs/configuration.rst:599 94ba4f643e5c433bb7c220adf9146527
+#: ../../docs/configuration.rst:597 f01eeb004d214a77856219c536887d55
 msgid "``Override``"
 msgstr "``Override``"
 
-#: ../../docs/configuration.rst:600 8ede386d30fb49f9b7d153028813741f
+#: ../../docs/configuration.rst:598 24b19cd7bc34496f85877f1907d998c6
 msgid ""
 "Delete and recreate the queue with the declared settings. **All existing "
 "messages are permanently lost.** Use with caution."
@@ -747,27 +757,27 @@ msgstr ""
 "существующие сообщения безвозвратно теряются.** Использовать с "
 "осторожностью."
 
-#: ../../docs/configuration.rst:604 38dae7c6f303459584766167c4c95310
+#: ../../docs/configuration.rst:602 d44c4c56ce9d47cd94ee649fc17ec7a3
 msgid "ConflictSeverity"
 msgstr "ConflictSeverity"
 
-#: ../../docs/configuration.rst:606 a8d04f68892b411dbb6dc14b3222eaaf
+#: ../../docs/configuration.rst:604 fb3f838573fc42f58e6426e252691901
 msgid "Severity level assigned to each setting difference."
 msgstr "Уровень важности для каждого расхождения настроек."
 
-#: ../../docs/configuration.rst:617 f19e1e1d390a4a1fb5911e943625bba4
+#: ../../docs/configuration.rst:615 884b5c1f5f7745109f1ba04cec545dd6
 msgid "Logs"
 msgstr "Лог"
 
-#: ../../docs/configuration.rst:619 b10620fb508d449cbf7c2b3561362402
+#: ../../docs/configuration.rst:617 f93abc3f64e04cb19d42283583f1e311
 msgid "``Info``"
 msgstr "``Info``"
 
-#: ../../docs/configuration.rst:620 349910a37ba241898a4155a47c1f4297
+#: ../../docs/configuration.rst:618 eb0622f5920c4698aacc833a86e324df
 msgid "Debug"
 msgstr "Debug"
 
-#: ../../docs/configuration.rst:621 1727711704f347b28d657647214fa8c6
+#: ../../docs/configuration.rst:619 051ec1f7b997485d8e06db202b4c5412
 msgid ""
 "Additive or neutral change. Not a conflict; ``OnConflict`` is never "
 "triggered."
@@ -775,15 +785,15 @@ msgstr ""
 "Добавочное или нейтральное изменение. Не конфликт; ``OnConflict`` не "
 "вызывается."
 
-#: ../../docs/configuration.rst:623 4c1730dcceaf4f5d85d97688f174ccb8
+#: ../../docs/configuration.rst:621 016f809d970b462992b1de97526df943
 msgid "``Soft``"
 msgstr "``Soft``"
 
-#: ../../docs/configuration.rst:624 e7af91aa648f40deb28652740f689d68
+#: ../../docs/configuration.rst:622 6e4557dde496415e9ebf4f65a23ef2c2
 msgid "Warn"
 msgstr "Warn"
 
-#: ../../docs/configuration.rst:625 8594780cb8af4d0c8e557b96a1ee41f8
+#: ../../docs/configuration.rst:623 ad11c6d91d59462b886f084bd31051ef
 msgid ""
 "Behavioral change that may affect in-flight messages. ``OnConflict`` is "
 "applied."
@@ -791,127 +801,127 @@ msgstr ""
 "Поведенческое изменение, может затронуть сообщения в обработке. "
 "Применяется ``OnConflict``."
 
-#: ../../docs/configuration.rst:627 7fee15f5de444cad8a03f9c87663514d
+#: ../../docs/configuration.rst:625 79b7b3e257bb45bc860e0f8fa218b215
 msgid "``Hard``"
 msgstr "``Hard``"
 
-#: ../../docs/configuration.rst:628 7030bbf316394c2da0201319eb7bd2b3
+#: ../../docs/configuration.rst:626 d33f71b7874d48398293a042a079337e
 msgid "Error"
 msgstr "Error"
 
-#: ../../docs/configuration.rst:629 2ca9eabde62140b1be1338f71d50f982
+#: ../../docs/configuration.rst:627 6a0cdc0a784243b0b7f30e27d379aecd
 msgid "Breaking semantic change. ``OnConflict`` is applied."
 msgstr "Критическое семантическое изменение. Применяется ``OnConflict``."
 
-#: ../../docs/configuration.rst:644 94b6a22e436e4a749c5e191aa49ced24
+#: ../../docs/configuration.rst:642 77040b40946d464391266c15981c8e55
 msgid "MaxAttempts"
 msgstr "MaxAttempts"
 
-#: ../../docs/configuration.rst:648 c1864ab6f369439e8860901780c7985d
+#: ../../docs/configuration.rst:646 9df9336a8683438b8285f40fd29a30aa
 msgid "**Default:** ``int.MaxValue``"
 msgstr "**По умолчанию:** ``int.MaxValue``"
 
-#: ../../docs/configuration.rst:650 5472a1aa496744b187921cac0f39919c
+#: ../../docs/configuration.rst:648 100e125c356a45479c7bd423ff47f94e
 msgid "Maximum number of attempts:"
 msgstr "Максимальное количество попыток:"
 
-#: ../../docs/configuration.rst:657 320202a61f9344998fddb408954bf111
+#: ../../docs/configuration.rst:655 8b9cd29d362c4956a3852e51d309d8fe
 msgid "InitialDelay"
 msgstr "InitialDelay"
 
-#: ../../docs/configuration.rst:661 a643f5523bf6450c961d5e7dc14d5c78
+#: ../../docs/configuration.rst:659 b731c71b958d4c8caa5b8c0d417e7c0c
 msgid "**Default:** ``1 second``"
 msgstr "**По умолчанию:** ``1 секунда``"
 
-#: ../../docs/configuration.rst:663 697a8b8c857b4675ac93fbbb742f7ef1
+#: ../../docs/configuration.rst:661 a1b64e359dae491abf05409ea4f869f9
 msgid "Initial delay between attempts:"
 msgstr "Начальная задержка между попытками:"
 
-#: ../../docs/configuration.rst:670 04c80768c98545939a923b16bba5c10d
+#: ../../docs/configuration.rst:668 d1ea5d3f4e004eeba6e67c8570533b99
 msgid "MaxDelay"
 msgstr "MaxDelay"
 
-#: ../../docs/configuration.rst:674 b7c31e66bb22431a9a43257730c18495
+#: ../../docs/configuration.rst:672 f18b1ddb7df64dd7b43e6f082f7f61a9
 msgid "**Default:** ``5 minutes``"
 msgstr "**По умолчанию:** ``5 минут``"
 
-#: ../../docs/configuration.rst:676 bc3d4ee637f147de923bdf6bfb97c6ac
+#: ../../docs/configuration.rst:674 f13b7d9b4e69485888f0c811dde85b9f
 msgid "Maximum delay:"
 msgstr "Максимальная задержка:"
 
-#: ../../docs/configuration.rst:683 cb871aefcc7845d19ad722ca366cd956
+#: ../../docs/configuration.rst:681 84663e97fffc4a2aabd2291cff9b270e
 msgid "UseExponentialBackoff"
 msgstr "UseExponentialBackoff"
 
-#: ../../docs/configuration.rst:689 ef4c49437f63442699bc5a7d1efb184f
+#: ../../docs/configuration.rst:687 1311b32c29954b4996528149c21418fe
 msgid "Use exponential backoff:"
 msgstr "Использовать экспоненциальное увеличение задержки:"
 
-#: ../../docs/configuration.rst:696 29a85aa3b4a5414782e87d79f5b301fe
+#: ../../docs/configuration.rst:694 a78ebfa1480d47dbb8f6de458fa0d1d3
 msgid "Health Check Configuration"
 msgstr "Конфигурация health check"
 
-#: ../../docs/configuration.rst:699 04c7bcb11e5a48e5a3e13654f858104e
+#: ../../docs/configuration.rst:697 3136775a20a54aa6800462933927983c
 msgid "HealthCheckOptions"
 msgstr "HealthCheckOptions"
 
-#: ../../docs/configuration.rst:715 2bcd525747f24e05be0e9b7fbf973301
+#: ../../docs/configuration.rst:713 1c17501aa890476bac918e9f395ae61e
 msgid "Enable health check server:"
 msgstr "Включить health check сервер:"
 
-#: ../../docs/configuration.rst:728 40c110c449134c94b40a7ee0bc341cfb
-msgid "**Default:** ``8081``"
-msgstr "**По умолчанию:** ``8081``"
+#: ../../docs/configuration.rst:726 fa4b6375e9044a75b42422f95cca3138
+msgid "**Default:** ``2926``"
+msgstr "**По умолчанию:** ``2926``"
 
-#: ../../docs/configuration.rst:730 78a28b0fba7342fc835563f32ed72bae
+#: ../../docs/configuration.rst:728 d54582fcfd804b339c54cc639cc1b15e
 msgid "HTTP port for health checks:"
 msgstr "HTTP порт для health checks:"
 
-#: ../../docs/configuration.rst:739 ca7ab3410e3e4b44a7e92b3e2686fe77
+#: ../../docs/configuration.rst:737 aca1020a149c4faf9f46d66c8ff74b8a
 msgid "Configuration Examples"
 msgstr "Примеры конфигурации"
 
-#: ../../docs/configuration.rst:742 fcb11fea6464481f85d651af73a10219
+#: ../../docs/configuration.rst:740 89e25570f6204340888ab2dedb7147dd
 msgid "Minimal"
 msgstr "Минимальная"
 
-#: ../../docs/configuration.rst:751 ffb4dd9e39674618947432c6cd93c2aa
+#: ../../docs/configuration.rst:749 ab4c4ec544e6491294111c943af58f61
 msgid "Development"
 msgstr "Разработка"
 
-#: ../../docs/configuration.rst:766 836835d5a7894ae084d6e176e52aec1a
+#: ../../docs/configuration.rst:764 38f69d6e92b546bcb4cd20cd8d52f5a5
 msgid "Production"
 msgstr "Production"
 
-#: ../../docs/configuration.rst:797 aa27c35eca044949a977d1bc3246f5c5
+#: ../../docs/configuration.rst:795 8faf0eb1e0464fa78186626c79d12d4d
 msgid "IoT Scenario"
 msgstr "Сценарий IoT"
 
-#: ../../docs/configuration.rst:817 76e5f01181a0482481cc5adcf5cb3fa6
+#: ../../docs/configuration.rst:815 81f43f6f85f342b1861dcb937f075ae9
 msgid "Microservices"
 msgstr "Микросервисы"
 
-#: ../../docs/configuration.rst:836 26cd786627a7442c983f6428bad2c388
+#: ../../docs/configuration.rst:834 76bbe80ba5194cc3986fe1491f745dfe
 msgid "With Authorization"
 msgstr "С авторизацией"
 
-#: ../../docs/configuration.rst:855 d0e00b303b80446883761ee259487438
+#: ../../docs/configuration.rst:853 824ef5bcc47f4150a4365ef179d797f4
 msgid "Next Steps"
 msgstr "Дальнейшие шаги"
 
-#: ../../docs/configuration.rst:857 2f13e1543d744b55b6d0d4c8c2d75c78
+#: ../../docs/configuration.rst:855 9834292d340d4594be7bede68324f18e
 msgid ":doc:`server-setup` — server setup"
 msgstr ":doc:`server-setup` — настройка сервера"
 
-#: ../../docs/configuration.rst:858 4c319b0f58404a1fb66dc5396c747e5c
+#: ../../docs/configuration.rst:856 2571f354bc3c412d9fa899d52c4c811f
 msgid ":doc:`authorization` — authorization and ACL"
 msgstr ":doc:`authorization` — авторизация и ACL"
 
-#: ../../docs/configuration.rst:859 f2fb802f71c84106b00109608e28b9e0
+#: ../../docs/configuration.rst:857 00eea2a5a6e5448abad3fb3450dbd191
 msgid ":doc:`di-integration` — DI integration"
 msgstr ":doc:`di-integration` — интеграция DI"
 
-#: ../../docs/configuration.rst:860 cd276285b8074e72ad941160e3908399
+#: ../../docs/configuration.rst:858 0c42f6bd3eba48baab004d7a19fd6190
 msgid ":doc:`monitoring` — monitoring"
 msgstr ":doc:`monitoring` — мониторинг"
 
@@ -920,4 +930,10 @@ msgstr ":doc:`monitoring` — мониторинг"
 
 #~ msgid "Token for authentication:"
 #~ msgstr "Токен для аутентификации:"
+
+#~ msgid "**Default:** ``8080``"
+#~ msgstr "**По умолчанию:** ``8080``"
+
+#~ msgid "**Default:** ``8081``"
+#~ msgstr "**По умолчанию:** ``8081``"
 

@@ -386,7 +386,7 @@ Reconnection Issues
 ======================
 
 Frequent Disconnections
------------------
+-----------------------
 
 **Problem:** Client frequently disconnects.
 

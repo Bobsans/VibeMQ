@@ -1,6 +1,6 @@
-=================
+======================
 Communication Protocol
-=================
+======================
 
 This guide describes the VibeMQ message exchange protocol.
 
@@ -194,28 +194,40 @@ The logical structure of messages (shown as JSON for clarity):
 Message Fields
 --------------
 
-+-------------------+------------------+----------------------------------+
-| Field             | Type             | Description                       |
-+===================+==================+==================================+
-| ``id``            | string           | Unique identifier                 |
-+-------------------+------------------+----------------------------------+
-| ``type``          | CommandType      | Command type                      |
-+-------------------+------------------+----------------------------------+
-| ``queue``         | string?          | Queue name                        |
-+-------------------+------------------+----------------------------------+
-| ``payload``       | JsonElement?     | Payload                           |
-+-------------------+------------------+----------------------------------+
-| ``headers``       | object?          | Headers                           |
-+-------------------+------------------+----------------------------------+
-| ``version``       | int              | Protocol version (default: 1)     |
-+-------------------+------------------+----------------------------------+
-| ``errorCode``     | string?          | Error code (for Error)            |
-+-------------------+------------------+----------------------------------+
-| ``errorMessage``  | string?          | Error message                     |
-+-------------------+------------------+----------------------------------+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 18 36
+
+   * - Field
+     - Type
+     - Description
+   * - ``id``
+     - string
+     - Unique identifier
+   * - ``type``
+     - CommandType
+     - Command type
+   * - ``queue``
+     - string?
+     - Queue name
+   * - ``payload``
+     - JsonElement?
+     - Payload
+   * - ``headers``
+     - object?
+     - Headers
+   * - ``version``
+     - int
+     - Protocol version (default: 1)
+   * - ``errorCode``
+     - string?
+     - Error code (for Error)
+   * - ``errorMessage``
+     - string?
+     - Error message
 
 Command Types (CommandType)
-=========================
+===========================
 
 .. code-block:: csharp
 
@@ -252,7 +264,7 @@ Command Types (CommandType)
    }
 
 Command Descriptions
-===============
+====================
 
 Connection Management
 ----------------------
@@ -472,7 +484,7 @@ Deliver
    }
 
 Acknowledgment
--------------
+--------------
 
 Ack
 ~~~
@@ -612,21 +624,24 @@ Error
 Error Codes
 ~~~~~~~~~~~
 
-+------------------------+----------------------------------+
-| Code                    | Description                       |
-+========================+==================================+
-| ``AUTH_FAILED``        | Authentication error              |
-+------------------------+----------------------------------+
-| ``INVALID_MESSAGE``    | Invalid message format            |
-+------------------------+----------------------------------+
-| ``QUEUE_NOT_FOUND``    | Queue not found                   |
-+------------------------+----------------------------------+
-| ``QUEUE_EXISTS``       | Queue already exists               |
-+------------------------+----------------------------------+
-| ``RATE_LIMITED``       | Rate limit exceeded               |
-+------------------------+----------------------------------+
-| ``SERVER_ERROR``       | Internal server error             |
-+------------------------+----------------------------------+
+.. list-table::
+   :header-rows: 1
+   :widths: 28 40
+
+   * - Code
+     - Description
+   * - ``AUTH_FAILED``
+     - Authentication error
+   * - ``INVALID_MESSAGE``
+     - Invalid message format
+   * - ``QUEUE_NOT_FOUND``
+     - Queue not found
+   * - ``QUEUE_EXISTS``
+     - Queue already exists
+   * - ``RATE_LIMITED``
+     - Rate limit exceeded
+   * - ``SERVER_ERROR``
+     - Internal server error
 
 Headers
 ===================
@@ -634,62 +649,70 @@ Headers
 Common Headers
 ---------------
 
-+------------------------+----------------------------------+
-| Header                  | Description                       |
-+========================+==================================+
-| ``authToken``          | Authentication token              |
-+------------------------+----------------------------------+
-| ``clientVersion``      | Client version                    |
-+------------------------+----------------------------------+
-| ``serverVersion``      | Server version                    |
-+------------------------+----------------------------------+
-| ``connectionId``       | Connection identifier             |
-+------------------------+----------------------------------+
+.. list-table::
+   :header-rows: 1
+   :widths: 28 40
+
+   * - Header
+     - Description
+   * - ``authToken``
+     - Authentication token
+   * - ``clientVersion``
+     - Client version
+   * - ``serverVersion``
+     - Server version
+   * - ``connectionId``
+     - Connection identifier
 
 Message Headers
 -------------------
 
-+------------------------+----------------------------------+
-| Header                  | Description                       |
-+========================+==================================+
-| ``priority``           | Priority (Low, Normal, High,     |
-|                        | Critical)                         |
-+------------------------+----------------------------------+
-| ``correlationId``      | ID for request correlation        |
-+------------------------+----------------------------------+
-| ``timestamp``          | Creation time (ISO 8601)           |
-+------------------------+----------------------------------+
-| ``deliveryAttempts``   | Number of delivery attempts       |
-+------------------------+----------------------------------+
-| ``messageId``          | Message ID                        |
-+------------------------+----------------------------------+
-| ``queueName``          | Queue name                        |
-+------------------------+----------------------------------+
-| ``subscriptionId``     | Subscription ID                   |
-+------------------------+----------------------------------+
+.. list-table::
+   :header-rows: 1
+   :widths: 28 40
+
+   * - Header
+     - Description
+   * - ``priority``
+     - Priority (Low, Normal, High, Critical)
+   * - ``correlationId``
+     - ID for request correlation
+   * - ``timestamp``
+     - Creation time (ISO 8601)
+   * - ``deliveryAttempts``
+     - Number of delivery attempts
+   * - ``messageId``
+     - Message ID
+   * - ``queueName``
+     - Queue name
+   * - ``subscriptionId``
+     - Subscription ID
 
 Queue Headers
 ------------------
 
-+------------------------+----------------------------------+
-| Header                  | Description                       |
-+========================+==================================+
-| ``deliveryMode``       | Delivery mode                     |
-+------------------------+----------------------------------+
-| ``maxQueueSize``       | Maximum size                      |
-+------------------------+----------------------------------+
-| ``messageTtl``         | TTL in milliseconds              |
-+------------------------+----------------------------------+
-| ``enableDeadLetterQueue`` | Enable DLQ                      |
-+------------------------+----------------------------------+
-| ``maxRetryAttempts``   | Max delivery attempts             |
-+------------------------+----------------------------------+
+.. list-table::
+   :header-rows: 1
+   :widths: 28 40
+
+   * - Header
+     - Description
+   * - ``deliveryMode``
+     - Delivery mode
+   * - ``maxQueueSize``
+     - Maximum size
+   * - ``messageTtl``
+     - TTL in milliseconds
+   * - ``enableDeadLetterQueue``
+     - Enable DLQ
+   * - ``maxRetryAttempts``
+     - Max delivery attempts
 
 Exchange Examples
-==============
+=================
 
 Connection Establishment
---------------------
+------------------------
 
 .. code-block:: text
 
@@ -782,7 +805,7 @@ Keep-alive
    }
 
 Protocol Versions
-================
+=================
 
 Current version: **1.1**
 

@@ -9,7 +9,7 @@ This guide answers common questions about VibeMQ.
    :depth: 2
 
 General Questions
-=============
+=================
 
 What is VibeMQ?
 -----------------
@@ -24,7 +24,7 @@ What is VibeMQ?
 - Health checks for orchestrators
 
 How is VibeMQ different from RabbitMQ/Kafka?
------------------------------------------
+--------------------------------------------
 
 **VibeMQ vs RabbitMQ:**
 
@@ -68,7 +68,7 @@ Technical Questions
 ===================
 
 How does delivery guarantee work?
--------------------------------
+---------------------------------
 
 VibeMQ uses acknowledgment (ACK) mechanism:
 
@@ -145,7 +145,7 @@ What delivery modes are supported?
 - **Priority-based** — by priority
 
 How does Dead Letter Queue work?
--------------------------------
+---------------------------------
 
 DLQ stores messages that could not be delivered. Enable it when creating a queue (server queue defaults do not include DLQ options):
 
@@ -218,7 +218,7 @@ How to use with Kubernetes?
              periodSeconds: 10
 
 How to configure for production?
------------------------------
+---------------------------------
 
 **Recommendations:**
 
@@ -327,7 +327,7 @@ Do I need to use TLS?
 - TLS terminates at load balancer level
 
 How to protect against DDoS?
----------------------
+----------------------------
 
 **Rate limiting:**
 
@@ -346,7 +346,7 @@ How to protect against DDoS?
 - Monitor anomalies
 
 Integration
-==========
+===========
 
 How to use with ASP.NET Core?
 --------------------------------
@@ -439,7 +439,7 @@ Why high latency?
 - Check network
 
 Why frequent disconnections?
--------------------------
+-----------------------------
 
 **Causes:**
 

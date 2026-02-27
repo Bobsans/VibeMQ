@@ -11,11 +11,10 @@ on:
         required: false
 
 jobs:
-  build-test-publish:
+  # Stage 1: build, test, pack. No publishing.
+  build-and-test:
+    name: Build and test
     runs-on: ubuntu-latest
-    permissions:
-      contents: write  # Required to create GitHub Release and upload assets
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -32,6 +31,15 @@ jobs:
           echo "version=$VERSION" >> $GITHUB_OUTPUT
           echo "version_num=${VERSION#v}" >> $GITHUB_OUTPUT
           echo "Version: $VERSION"
+
+      - name: Verify version format
+        shell: bash
+        run: |
+          VERSION="${{ steps.get_version.outputs.version }}"
+          if [[ ! "$VERSION" =~ ^v[0-9]+\.[0-9]+\.[0-9]+ ]]; then
+            echo "Error: Invalid version format. Expected format: vX.Y.Z"
+            exit 1
+          fi
 
       - name: Setup .NET SDK
         uses: actions/setup-dotnet@v4
@@ -61,18 +69,49 @@ jobs:
       - name: Pack NuGet packages
         run: dotnet pack --no-build --configuration Release --output ./artifacts -p:Version=${{ steps.get_version.outputs.version_num }} -p:PackageVersion=${{ steps.get_version.outputs.version_num }}
 
-      - name: Verify version format
+      - name: Upload NuGet artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: nuget-packages
+          path: ./artifacts/*.nupkg
+          retention-days: 90
+
+  # Stage 2a: publish to NuGet and create GitHub Release (runs after build-and-test succeeds)
+  publish-nuget:
+    name: Publish to NuGet and GitHub Release
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Get version from tag
+        id: get_version
         shell: bash
         run: |
-          VERSION="${{ steps.get_version.outputs.version }}"
-          if [[ ! "$VERSION" =~ ^v[0-9]+\.[0-9]+\.[0-9]+ ]]; then
-            echo "Error: Invalid version format. Expected format: vX.Y.Z"
-            exit 1
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ] && [ -n "${{ github.event.inputs.tag }}" ]; then
+            VERSION="${{ github.event.inputs.tag }}"
+          else
+            VERSION=${GITHUB_REF#refs/tags/}
           fi
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "version_num=${VERSION#v}" >> $GITHUB_OUTPUT
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Download NuGet packages
+        uses: actions/download-artifact@v4
+        with:
+          name: nuget-packages
 
       - name: Publish to NuGet.org
         run: |
-          for package in ./artifacts/*.nupkg; do
+          for package in ./*.nupkg; do
             dotnet nuget push "$package" \
               --api-key "${{ secrets.NUGET_API_KEY }}" \
               --source https://api.nuget.org/v3/index.json \
@@ -98,16 +137,12 @@ jobs:
             See [changelog](https://github.com/${{ github.repository }}/blob/main/docs/docs/changelog.rst) for details.
           draft: false
           prerelease: false
-          files: ./artifacts/*.nupkg
+          files: ./*.nupkg
 
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: nuget-packages
-          path: ./artifacts/*.nupkg
-          retention-days: 90
-
+  # Stage 2b: build and push Docker images (runs after build-and-test succeeds, in parallel with publish-nuget)
   docker:
+    name: Publish to Docker Hub
+    needs: build-and-test
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -136,7 +171,7 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build and push Docker image
+      - name: Build and push Docker image (broker only)
         uses: docker/build-push-action@v6
         with:
           context: .
@@ -145,5 +180,17 @@ jobs:
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/vibemq:${{ steps.get_version.outputs.version_num }}
             ${{ secrets.DOCKERHUB_USERNAME }}/vibemq:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Build and push Docker image (broker + Web UI)
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./docker/Dockerfile.webui
+          push: true
+          tags: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/vibemq-webui:${{ steps.get_version.outputs.version_num }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/vibemq-webui:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max

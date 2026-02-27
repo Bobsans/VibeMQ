@@ -1,6 +1,6 @@
-============
+================
 Web UI Dashboard
-============
+================
 
 Optional web dashboard for monitoring the VibeMQ broker: health, metrics, and queues in a browser. The dashboard runs on a separate HTTP port (default **12925**) and does not require ASP.NET Core.
 
@@ -90,7 +90,7 @@ Configuration
      - URL path prefix (must start and end with ``/``)
 
 API Endpoints
-============
+=============
 
 All responses are JSON with ``snake_case`` property names.
 
@@ -133,7 +133,7 @@ All responses are JSON with ``snake_case`` property names.
      - Delete the queue and all its messages
 
 Building the Frontend
-====================
+=====================
 
 The dashboard UI is a Vue 3 + Vite application. To refresh the embedded assets after changing the UI:
 

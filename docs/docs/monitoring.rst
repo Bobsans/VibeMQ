@@ -269,7 +269,7 @@ AverageDeliveryLatencyMs
 **Alert:** > 50 ms — requires optimization
 
 Monitoring with Prometheus
-=======================
+==========================
 
 Example metrics exporter:
 
@@ -395,7 +395,7 @@ Registration:
    server.Start();
 
 Grafana Dashboard
----------------
+-----------------
 
 Example JSON dashboard for Grafana:
 

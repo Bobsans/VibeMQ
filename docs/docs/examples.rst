@@ -338,7 +338,7 @@ Event Bus
 ============
 
 EventBus Implementation
--------------------
+-----------------------
 
 .. code-block:: csharp
 
@@ -441,10 +441,10 @@ EventBus Implementation
    }
 
 Microservices
-============
+=============
 
 Data Synchronization Between Services
-------------------------------------
+--------------------------------------
 
 **User Service (Users.cs):**
 
@@ -524,7 +524,7 @@ Data Synchronization Between Services
    }
 
 CQRS with VibeMQ
--------------
+----------------
 
 **Commands:**
 
@@ -658,7 +658,7 @@ Custom Logger
        .Build();
 
 Application Metrics
-------------------
+-------------------
 
 .. code-block:: csharp
 
