@@ -1,0 +1,10 @@
+---
+description: Vue component formatting — 2 spaces in all sections
+globs: **/*.vue
+alwaysApply: false
+---
+
+# Vue: formatting
+
+- In all `.vue` files, use exactly **2 spaces** for indentation in every section (`template`, `script`, `style`).
+- Do not use tabs or mixed indentation.

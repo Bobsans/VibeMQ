@@ -11,6 +11,7 @@ namespace VibeMQ.Server.Queues;
 public sealed class MessageQueue {
     private readonly ConcurrentQueue<BrokerMessage> _messages = new();
     private readonly ConcurrentDictionary<string, BrokerMessage> _unacknowledged = new();
+    private readonly object _sync = new();
     private int _roundRobinIndex;
 
     public MessageQueue(string name, QueueOptions options)
@@ -55,12 +56,14 @@ public sealed class MessageQueue {
     /// Returns true if the message was accepted.
     /// </summary>
     public bool Enqueue(BrokerMessage message) {
-        if (_messages.Count >= Options.MaxQueueSize) {
-            return ApplyOverflowStrategy(message);
-        }
+        lock (_sync) {
+            if (_messages.Count >= Options.MaxQueueSize) {
+                return ApplyOverflowStrategy(message);
+            }
 
-        _messages.Enqueue(message);
-        return true;
+            _messages.Enqueue(message);
+            return true;
+        }
     }
 
     /// <summary>
@@ -68,18 +71,53 @@ public sealed class MessageQueue {
     /// For PriorityBased mode, returns the highest priority message.
     /// </summary>
     public BrokerMessage? Dequeue() {
-        if (Options.Mode == DeliveryMode.PriorityBased) {
-            return DequeuePriority();
-        }
+        lock (_sync) {
+            if (Options.Mode == DeliveryMode.PriorityBased) {
+                return DequeuePriority();
+            }
 
-        return _messages.TryDequeue(out var message) ? message : null;
+            return _messages.TryDequeue(out var message) ? message : null;
+        }
     }
 
     /// <summary>
     /// Peeks at all messages without removing them (for fan-out modes).
     /// </summary>
     public IReadOnlyList<BrokerMessage> PeekAll() {
-        return _messages.ToArray();
+        lock (_sync) {
+            return _messages.ToArray();
+        }
+    }
+
+    /// <summary>
+    /// Removes a single message by id from the pending queue (not from unacknowledged).
+    /// Returns true if the message was found and removed.
+    /// </summary>
+    public bool RemoveMessageById(string messageId) {
+        lock (_sync) {
+            var list = new List<BrokerMessage>();
+            while (_messages.TryDequeue(out var m)) {
+                list.Add(m);
+            }
+
+            var removed = list.RemoveAll(m => m.Id == messageId) > 0;
+            foreach (var m in list) {
+                _messages.Enqueue(m);
+            }
+
+            return removed;
+        }
+    }
+
+    /// <summary>
+    /// Clears all pending messages from the queue (used for purge). Does not touch unacknowledged.
+    /// </summary>
+    public void ClearPending() {
+        lock (_sync) {
+            while (_messages.TryDequeue(out _)) {
+                // drain
+            }
+        }
     }
 
     /// <summary>
@@ -158,6 +196,7 @@ public sealed class MessageQueue {
     }
 
     private bool ApplyOverflowStrategy(BrokerMessage message) {
+        // Called from Enqueue, already inside _sync
         switch (Options.OverflowStrategy) {
             case OverflowStrategy.DropOldest:
                 _messages.TryDequeue(out _);

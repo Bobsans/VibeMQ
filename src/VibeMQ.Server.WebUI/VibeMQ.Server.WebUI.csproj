@@ -1,0 +1,56 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net8.0;net10.0</TargetFrameworks>
+    <RootNamespace>VibeMQ.Server.WebUI</RootNamespace>
+    <Description>Web dashboard for VibeMQ broker. Optional package; embed Vue SPA and expose /api/health, /api/metrics, /api/queues on a separate port.</Description>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\VibeMQ.Server\VibeMQ.Server.csproj" />
+    <ProjectReference Include="..\VibeMQ.Core\VibeMQ.Core.csproj" />
+  </ItemGroup>
+
+  <!-- Treat frontend sources as build inputs so changes trigger a rebuild (and thus rerun npm build when needed). -->
+  <ItemGroup>
+    <FrontendInputs Include="App\src\**\*"
+                    Exclude="App\node_modules\**\*;App\dist\**\*" />
+    <FrontendInputs Include="App\index.html;App\vite.config.*;App\package.json;App\package-lock.json"
+                    Exclude="App\node_modules\**\*;App\dist\**\*" />
+
+    <!-- VS / design-time up-to-date check -->
+    <UpToDateCheckInput Include="@(FrontendInputs)" />
+    <UpToDateCheckBuilt Include="App\dist\index.html" />
+  </ItemGroup>
+
+  <!-- Build frontend once (only for net8.0) to avoid running npm twice when building both TFMs. Set SkipFrontendBuild=true to skip (e.g. CI without Node). -->
+  <Target Name="BuildFrontend"
+          BeforeTargets="BeforeBuild"
+          Inputs="@(FrontendInputs)"
+          Outputs="$(ProjectDir)App\dist\index.html"
+          Condition="'$(SkipFrontendBuild)' != 'true' and '$(TargetFramework)' == 'net8.0'">
+    <Message Importance="high" Text="Building Web UI frontend (npm install + npm run build)..." />
+    <Exec Command="npm install --prefix App" WorkingDirectory="$(ProjectDir)" />
+    <Exec Command="npm run build --prefix App" WorkingDirectory="$(ProjectDir)" />
+  </Target>
+
+  <!-- Collect and embed frontend from App/dist after BuildFrontend (so Vite output hashes are current) -->
+  <Target Name="IncludeEmbeddedFrontend"
+          BeforeTargets="BeforeBuild"
+          DependsOnTargets="BuildFrontend"
+          Condition="Exists('App\dist')">
+    <ItemGroup>
+      <EmbeddedResource Include="App\dist\**\*" />
+    </ItemGroup>
+  </Target>
+
+</Project>

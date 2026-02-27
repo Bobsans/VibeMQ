@@ -1,0 +1,11 @@
+---
+description: Web UI tech stack — styles SCSS, scripts TypeScript
+globs: **/*.vue,**/*.scss,**/VibeMQ.Server.WebUI/**
+alwaysApply: false
+---
+
+# Web UI: tech stack
+
+- **Styles**: always **SCSS**. Use `<style lang="scss">` in Vue components (no `scoped`). Rely on **SCSS nesting** and a **root class** per component (e.g. `.dashboard-page`, `.queue-detail`) so styles stay local without scoped.
+- **Scripts**: always **TypeScript**. Use `<script setup lang="ts">` in Vue; no JavaScript.
+- **Templates**: use component tags in **kebab-case** (e.g. `<confirm-modal>`, `<message-modal>`, `<modal>`), not PascalCase.

@@ -4,7 +4,7 @@ Server Setup
 
 This guide describes various ways to configure and run the VibeMQ server.
 
-For running the broker in Docker with environment-based configuration, see :doc:`docker`.
+For running the broker in Docker with environment-based configuration, see :doc:`docker`. For an optional Web dashboard (health, metrics, queues), see :doc:`web-ui`.
 
 .. contents:: Contents
    :local:

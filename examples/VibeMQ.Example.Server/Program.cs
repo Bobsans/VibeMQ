@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Logging;
 using VibeMQ.Enums;
 using VibeMQ.Server;
+using VibeMQ.Server.WebUI;
 
 // ============================================================
 //  VibeMQ Example Server
@@ -41,6 +42,7 @@ Console.WriteLine("  Port:            2925");
 Console.WriteLine("  Auth:            Enabled (token-based)");
 Console.WriteLine("  Max connections: 500");
 Console.WriteLine("  Queue auto-create: Yes");
+Console.WriteLine("  Web UI:          http://localhost:12925/");
 Console.WriteLine();
 Console.WriteLine("Press Ctrl+C to shutdown gracefully...");
 Console.WriteLine();
@@ -55,7 +57,7 @@ Console.CancelKeyPress += (_, e) => {
 };
 
 try {
-    await broker.RunAsync(cts.Token);
+    await broker.RunWithWebUIAsync(cts.Token);
 } catch (OperationCanceledException) {
     // Expected
 }

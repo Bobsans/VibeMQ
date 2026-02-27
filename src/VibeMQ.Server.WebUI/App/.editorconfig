@@ -1,0 +1,13 @@
+# Frontend (Vite + Vue + TypeScript): 2 spaces in script and style
+
+[*.vue]
+indent_style = space
+indent_size = 2
+
+[*.{ts,tsx,js,jsx,css,scss}]
+indent_style = space
+indent_size = 2
+
+[*.json]
+indent_style = space
+indent_size = 2

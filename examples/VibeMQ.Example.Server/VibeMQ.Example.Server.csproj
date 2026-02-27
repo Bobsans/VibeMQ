@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\VibeMQ.Server\VibeMQ.Server.csproj" />
+    <ProjectReference Include="..\..\src\VibeMQ.Server.WebUI\VibeMQ.Server.WebUI.csproj" />
   </ItemGroup>
 
 </Project>

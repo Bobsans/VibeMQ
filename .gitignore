@@ -1,3 +1,6 @@
+## Local/IDE
+.claude/settings.local.json
+
 ## .NET
 bin/
 obj/

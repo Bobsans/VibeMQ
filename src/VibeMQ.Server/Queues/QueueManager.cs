@@ -119,6 +119,73 @@ public sealed partial class QueueManager : IQueueManager {
         return Task.FromResult(names);
     }
 
+    /// <summary>
+    /// Returns a slice of pending messages for the dashboard (peek only). Includes in-memory pending only.
+    /// </summary>
+    public Task<IReadOnlyList<BrokerMessage>> GetPendingMessagesForDashboardAsync(string name, int limit, int offset, CancellationToken cancellationToken = default) {
+        if (!_queues.TryGetValue(name, out var queue)) {
+            return Task.FromResult<IReadOnlyList<BrokerMessage>>(Array.Empty<BrokerMessage>());
+        }
+
+        var all = queue.PeekAll();
+        var skip = Math.Max(0, offset);
+        var take = Math.Max(0, Math.Min(limit, 100));
+        var slice = all.Skip(skip).Take(take).ToArray();
+        return Task.FromResult<IReadOnlyList<BrokerMessage>>(slice);
+    }
+
+    /// <summary>
+    /// Returns a single message by id from a queue (pending or unacknowledged) for dashboard view.
+    /// </summary>
+    public Task<BrokerMessage?> GetMessageForDashboardAsync(string name, string messageId, CancellationToken cancellationToken = default) {
+        if (!_queues.TryGetValue(name, out var queue)) {
+            return Task.FromResult<BrokerMessage?>(null);
+        }
+
+        var pending = queue.PeekAll();
+        var found = pending.FirstOrDefault(m => m.Id == messageId);
+        if (found is not null) {
+            return Task.FromResult<BrokerMessage?>(found);
+        }
+
+        var unack = queue.GetUnacknowledged();
+        found = unack.FirstOrDefault(m => m.Id == messageId);
+        return Task.FromResult<BrokerMessage?>(found);
+    }
+
+    /// <summary>
+    /// Removes a message from the queue and storage (dashboard admin). Only pending messages; in-flight are not removed.
+    /// </summary>
+    public async Task<bool> RemoveMessageFromQueueAsync(string name, string messageId, CancellationToken cancellationToken = default) {
+        if (!_queues.TryGetValue(name, out var queue)) {
+            return false;
+        }
+
+        if (!queue.RemoveMessageById(messageId)) {
+            return false;
+        }
+
+        await _storageProvider.RemoveMessageAsync(messageId, cancellationToken).ConfigureAwait(false);
+        return true;
+    }
+
+    /// <summary>
+    /// Purges all pending messages from a queue (dashboard admin). Removes from memory and storage.
+    /// </summary>
+    public async Task<bool> PurgeQueueAsync(string name, CancellationToken cancellationToken = default) {
+        if (!_queues.TryGetValue(name, out var queue)) {
+            return false;
+        }
+
+        var pending = queue.PeekAll();
+        foreach (var message in pending) {
+            await _storageProvider.RemoveMessageAsync(message.Id, cancellationToken).ConfigureAwait(false);
+        }
+
+        queue.ClearPending();
+        return true;
+    }
+
     /// <inheritdoc />
     public async Task PublishAsync(BrokerMessage message, CancellationToken cancellationToken = default) {
         if (!_queues.TryGetValue(message.QueueName, out var queue)) {

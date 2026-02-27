@@ -11,6 +11,20 @@ VibeMQ project change history.
 Version History
 ================
 
+Version 1.7.0 (unreleased)
+--------------------------
+
+**New features:**
+
+- **Web UI dashboard** — optional package ``VibeMQ.Server.WebUI``; Vue 3 SPA for monitoring (health, metrics, queues) on a separate HTTP port (default 12925)
+- **``RunWithWebUIAsync()``** — extension method to run broker and Web UI in one call
+- **``WebUIServer``** — HttpListener-based server; API endpoints ``/api/health``, ``/api/metrics``, ``/api/queues``, ``/api/queues/{name}``
+- **BrokerServer** — new read-only API for dashboard: ``QueueCount``, ``ListQueuesAsync()``, ``GetQueueInfoAsync(name)``
+
+**Documentation:**
+
+- New :doc:`web-ui` guide (quick start, options, API, building frontend)
+
 Version 1.6.0
 -------------
 

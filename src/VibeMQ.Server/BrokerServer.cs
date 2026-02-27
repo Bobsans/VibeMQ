@@ -10,6 +10,7 @@ using VibeMQ.Server.Connections;
 using VibeMQ.Server.Delivery;
 using VibeMQ.Server.Handlers;
 using VibeMQ.Server.Queues;
+using VibeMQ.Models;
 using VibeMQ.Server.Security;
 
 namespace VibeMQ.Server;
@@ -72,6 +73,53 @@ public sealed partial class BrokerServer : IAsyncDisposable {
     /// Number of unacknowledged in-flight messages.
     /// </summary>
     public int InFlightMessages => _ackTracker.PendingCount;
+
+    /// <summary>
+    /// Number of active queues. Used by dashboard and health.
+    /// </summary>
+    public int QueueCount => _queueManager.QueueCount;
+
+    /// <summary>
+    /// Lists all queue names. Used by the Web UI dashboard (read-only).
+    /// </summary>
+    public Task<IReadOnlyList<string>> ListQueuesAsync(CancellationToken cancellationToken = default) =>
+        _queueManager.ListQueuesAsync(cancellationToken);
+
+    /// <summary>
+    /// Returns metadata for a single queue. Used by the Web UI dashboard (read-only).
+    /// </summary>
+    public Task<QueueInfo?> GetQueueInfoAsync(string name, CancellationToken cancellationToken = default) =>
+        _queueManager.GetQueueInfoAsync(name, cancellationToken);
+
+    /// <summary>
+    /// Returns a slice of pending messages for the dashboard (peek). Used by Web UI.
+    /// </summary>
+    public Task<IReadOnlyList<BrokerMessage>> GetPendingMessagesForDashboardAsync(string name, int limit, int offset, CancellationToken cancellationToken = default) =>
+        _queueManager.GetPendingMessagesForDashboardAsync(name, limit, offset, cancellationToken);
+
+    /// <summary>
+    /// Returns a single message by id from a queue for dashboard view.
+    /// </summary>
+    public Task<BrokerMessage?> GetMessageForDashboardAsync(string name, string messageId, CancellationToken cancellationToken = default) =>
+        _queueManager.GetMessageForDashboardAsync(name, messageId, cancellationToken);
+
+    /// <summary>
+    /// Removes a message from the queue and storage (dashboard admin).
+    /// </summary>
+    public Task<bool> RemoveMessageFromQueueAsync(string name, string messageId, CancellationToken cancellationToken = default) =>
+        _queueManager.RemoveMessageFromQueueAsync(name, messageId, cancellationToken);
+
+    /// <summary>
+    /// Purges all pending messages from a queue (dashboard admin).
+    /// </summary>
+    public Task<bool> PurgeQueueAsync(string name, CancellationToken cancellationToken = default) =>
+        _queueManager.PurgeQueueAsync(name, cancellationToken);
+
+    /// <summary>
+    /// Deletes a queue and all its messages (dashboard admin).
+    /// </summary>
+    public Task DeleteQueueAsync(string name, CancellationToken cancellationToken = default) =>
+        _queueManager.DeleteQueueAsync(name, cancellationToken);
 
     /// <summary>
     /// Starts the broker and blocks until shutdown is requested.

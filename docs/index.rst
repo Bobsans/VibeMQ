@@ -104,6 +104,7 @@ Connect the client:
 
    docs/monitoring
    docs/health-checks
+   docs/web-ui
    docs/troubleshooting
 
 .. toctree::
@@ -156,6 +157,7 @@ Connect the client:
 
 - Built-in performance metrics
 - HTTP endpoints for health checks
+- Optional Web UI dashboard (VibeMQ.Server.WebUI)
 - Statistics for queues and connections
 
 📦 Modular Architecture
@@ -185,6 +187,8 @@ VibeMQ consists of several NuGet packages:
      - Client DI integration
    * - ``VibeMQ.Server.Storage.Sqlite``
      - SQLite persistence provider
+   * - ``VibeMQ.Server.WebUI``
+     - Optional Web dashboard (health, metrics, queues) on a separate port
 
 💡 Usage Examples
 ==================
