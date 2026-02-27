@@ -121,7 +121,19 @@ msgstr ""
 "``AdminRevokePermission``, ``AdminListUsers``, "
 "``AdminGetUserPermissions`` (только для суперпользователя)"
 
-#: ../../docs/changelog.rst:29 9d50e250e7d8413db4bfe34cadc8f9d8
+#: ../../docs/changelog.rst:29 0a1b2c3d4e5f67890abcdef12345678
+msgid ""
+"**Client admin API** — ``CreateUserAsync``, ``DeleteUserAsync``, "
+"``ChangePasswordAsync``, ``GrantPermissionAsync``, "
+"``RevokePermissionAsync``, ``ListUsersAsync``, "
+"``GetUserPermissionsAsync`` on ``VibeMQClient`` (superuser-only)"
+msgstr ""
+"**Клиентский API администрирования** — ``CreateUserAsync``, "
+"``DeleteUserAsync``, ``ChangePasswordAsync``, ``GrantPermissionAsync``, "
+"``RevokePermissionAsync``, ``ListUsersAsync``, "
+"``GetUserPermissionsAsync`` в ``VibeMQClient`` (только для суперпользователя)"
+
+#: ../../docs/changelog.rst:30 9d50e250e7d8413db4bfe34cadc8f9d8
 msgid ""
 "**``ClientOptions.Username`` / ``ClientOptions.Password``** — new client "
 "credentials; take priority over legacy ``AuthToken``"

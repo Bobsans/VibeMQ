@@ -40,6 +40,7 @@ Version 1.6.0
 - **Session permission cache** — permissions loaded once at login into ``ClientConnection.CachedPermissions``; no per-request DB I/O
 - **Filtered ListQueues** — regular users see only queues matching their ACL patterns with ``ListQueues`` operation
 - **7 admin protocol commands** — ``AdminCreateUser``, ``AdminDeleteUser``, ``AdminChangePassword``, ``AdminGrantPermission``, ``AdminRevokePermission``, ``AdminListUsers``, ``AdminGetUserPermissions`` (superuser-only)
+- **Client admin API** — ``CreateUserAsync``, ``DeleteUserAsync``, ``ChangePasswordAsync``, ``GrantPermissionAsync``, ``RevokePermissionAsync``, ``ListUsersAsync``, ``GetUserPermissionsAsync`` on ``VibeMQClient`` (superuser-only)
 - **``ClientOptions.Username`` / ``ClientOptions.Password``** — new client credentials; take priority over legacy ``AuthToken``
 - **``BrokerBuilder.UseAuthorization(Action<AuthorizationOptions>)``** — fluent API to enable the new auth mode
 - **Backward compatibility** — legacy ``UseAuthentication(token)`` / ``AuthToken`` still works unchanged
