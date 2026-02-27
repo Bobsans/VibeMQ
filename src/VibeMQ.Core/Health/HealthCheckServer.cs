@@ -112,34 +112,57 @@ public sealed partial class HealthCheckServer : IAsyncDisposable {
 
     private async Task HandleHealthAsync(HttpListenerContext context) {
         var status = _statusProvider();
-
-        context.Response.StatusCode = status.IsHealthy ? 200 : 503;
-        context.Response.ContentType = "application/json";
-
-        await JsonSerializer.SerializeAsync(
-            context.Response.OutputStream, status, _jsonOptions
-        ).ConfigureAwait(false);
-
+        var (statusCode, contentType, writeBody) = ProcessRequest("/health", status, _metricsProvider?.Invoke());
+        context.Response.StatusCode = statusCode;
+        if (contentType is not null) {
+            context.Response.ContentType = contentType;
+        }
+        if (writeBody is not null) {
+            await writeBody(context.Response.OutputStream).ConfigureAwait(false);
+        }
         context.Response.Close();
     }
 
     private async Task HandleMetricsAsync(HttpListenerContext context) {
-        if (_metricsProvider is null) {
-            context.Response.StatusCode = 404;
-            context.Response.Close();
-            return;
+        var (statusCode, contentType, writeBody) = ProcessRequest("/metrics", _statusProvider(), _metricsProvider?.Invoke());
+        context.Response.StatusCode = statusCode;
+        if (contentType is not null) {
+            context.Response.ContentType = contentType;
         }
-
-        var snapshot = _metricsProvider();
-
-        context.Response.StatusCode = 200;
-        context.Response.ContentType = "application/json";
-
-        await JsonSerializer.SerializeAsync(
-            context.Response.OutputStream, snapshot, _jsonOptions
-        ).ConfigureAwait(false);
-
+        if (writeBody is not null) {
+            await writeBody(context.Response.OutputStream).ConfigureAwait(false);
+        }
         context.Response.Close();
+    }
+
+    /// <summary>
+    /// Pure request processing: path + providers -> status code, content type, and optional body writer.
+    /// Internal for unit testing without HttpListener.
+    /// </summary>
+    internal static (int StatusCode, string? ContentType, Func<Stream, Task>? WriteBody) ProcessRequest(
+        string path,
+        HealthStatus healthStatus,
+        MetricsSnapshot? metricsSnapshot
+    ) {
+        switch (path) {
+            case "/health":
+                return (
+                    healthStatus.IsHealthy ? 200 : 503,
+                    "application/json",
+                    async stream => await JsonSerializer.SerializeAsync(stream, healthStatus, _jsonOptions)
+                );
+            case "/metrics":
+                if (metricsSnapshot is null) {
+                    return (404, null, null);
+                }
+                return (
+                    200,
+                    "application/json",
+                    async stream => await JsonSerializer.SerializeAsync(stream, metricsSnapshot, _jsonOptions)
+                );
+            default:
+                return (404, null, null);
+        }
     }
 
     public async ValueTask DisposeAsync() {

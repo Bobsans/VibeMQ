@@ -264,4 +264,150 @@ public class AuthorizationTests : IAsyncLifetime {
             () => client.PublishAsync("other.tenant.queue", new { Data = "x" })
         );
     }
+
+    // ─── Admin commands (superuser) ─────────────────────────────────────────
+
+    [Fact]
+    public async Task Admin_CreateUser_Superuser_Succeeds() {
+        await using var su = await _fixture.ConnectAsSuperuserAsync();
+
+        await su.CreateUserAsync("admin-created", "Secret123");
+
+        var users = await su.ListUsersAsync();
+        var created = users.FirstOrDefault(u => u.Username == "admin-created");
+        Assert.NotNull(created);
+        Assert.False(created.IsSuperuser);
+
+        await using var client = await _fixture.ConnectAsync("admin-created", "Secret123");
+        Assert.True(client.IsConnected);
+    }
+
+    [Fact]
+    public async Task Admin_CreateUser_Duplicate_Throws() {
+        await _fixture.CreateUserAsync("existing-user", "pass");
+
+        await using var su = await _fixture.ConnectAsSuperuserAsync();
+
+        await Assert.ThrowsAsync<InvalidOperationException>(
+            () => su.CreateUserAsync("existing-user", "other-pass")
+        );
+    }
+
+    [Fact]
+    public async Task Admin_DeleteUser_Superuser_Succeeds() {
+        await _fixture.CreateUserAsync("to-delete", "pass");
+
+        await using var su = await _fixture.ConnectAsSuperuserAsync();
+        await su.DeleteUserAsync("to-delete");
+
+        var users = await su.ListUsersAsync();
+        Assert.DoesNotContain(users, u => u.Username == "to-delete");
+
+        await Assert.ThrowsAsync<InvalidOperationException>(
+            () => _fixture.ConnectAsync("to-delete", "pass")
+        );
+    }
+
+    [Fact]
+    public async Task Admin_DeleteUser_NonExistent_Throws() {
+        await using var su = await _fixture.ConnectAsSuperuserAsync();
+
+        await Assert.ThrowsAsync<InvalidOperationException>(
+            () => su.DeleteUserAsync("no-such-user")
+        );
+    }
+
+    [Fact]
+    public async Task Admin_ChangePassword_Superuser_Succeeds() {
+        await _fixture.CreateUserAsync("pw-user", "old-pass");
+
+        await using var su = await _fixture.ConnectAsSuperuserAsync();
+        await su.ChangePasswordAsync("pw-user", "new-pass");
+
+        await Assert.ThrowsAsync<InvalidOperationException>(
+            () => _fixture.ConnectAsync("pw-user", "old-pass")
+        );
+        await using var client = await _fixture.ConnectAsync("pw-user", "new-pass");
+        Assert.True(client.IsConnected);
+    }
+
+    [Fact]
+    public async Task Admin_GrantPermission_Superuser_Succeeds() {
+        await using var su = await _fixture.ConnectAsSuperuserAsync();
+        await su.CreateUserAsync("grant-user", "pass");
+        await su.GrantPermissionAsync("grant-user", "grant-user.*",
+            [QueueOperation.Publish, QueueOperation.CreateQueue]);
+
+        await su.CreateQueueAsync("grant-user.orders");
+        await using var client = await _fixture.ConnectAsync("grant-user", "pass");
+        await client.PublishAsync("grant-user.orders", new { Id = 1 });
+    }
+
+    [Fact]
+    public async Task Admin_RevokePermission_Superuser_Succeeds() {
+        await _fixture.CreateUserAsync("revoke-user", "pass");
+        await _fixture.GrantPermissionAsync("revoke-user", "revoke-user.*",
+            [QueueOperation.Publish, QueueOperation.CreateQueue]);
+
+        await using var su = await _fixture.ConnectAsSuperuserAsync();
+        await su.CreateQueueAsync("revoke-user.data");
+        await su.RevokePermissionAsync("revoke-user", "revoke-user.*");
+
+        await using var client = await _fixture.ConnectAsync("revoke-user", "pass");
+        await Assert.ThrowsAsync<InvalidOperationException>(
+            () => client.PublishAsync("revoke-user.data", new { X = 1 })
+        );
+    }
+
+    [Fact]
+    public async Task Admin_GetUserPermissions_Superuser_ReturnsGranted() {
+        await _fixture.CreateUserAsync("perm-user", "pass");
+        await _fixture.GrantPermissionAsync("perm-user", "perm-user.a.*", [QueueOperation.Publish]);
+        await _fixture.GrantPermissionAsync("perm-user", "perm-user.b.*", [QueueOperation.Subscribe]);
+
+        await using var su = await _fixture.ConnectAsSuperuserAsync();
+        var perms = await su.GetUserPermissionsAsync("perm-user");
+
+        Assert.Equal(2, perms.Count);
+        var a = perms.FirstOrDefault(p => p.QueuePattern == "perm-user.a.*");
+        var b = perms.FirstOrDefault(p => p.QueuePattern == "perm-user.b.*");
+        Assert.NotNull(a);
+        Assert.NotNull(b);
+        Assert.Contains("Publish", a.Operations);
+        Assert.Contains("Subscribe", b.Operations);
+    }
+
+    [Fact]
+    public async Task Admin_GetUserPermissions_NoUser_ReturnsEmpty() {
+        await using var su = await _fixture.ConnectAsSuperuserAsync();
+
+        var perms = await su.GetUserPermissionsAsync("nonexistent");
+
+        Assert.Empty(perms);
+    }
+
+    [Fact]
+    public async Task Admin_ListUsers_Superuser_ReturnsAll() {
+        await _fixture.CreateUserAsync("list-a", "pass");
+        await _fixture.CreateUserAsync("list-b", "pass");
+
+        await using var su = await _fixture.ConnectAsSuperuserAsync();
+        var users = await su.ListUsersAsync();
+
+        Assert.Contains(users, u => u.Username == AuthBrokerFixture.SuperuserUsername);
+        Assert.Contains(users, u => u.Username == "list-a");
+        Assert.Contains(users, u => u.Username == "list-b");
+    }
+
+    [Fact]
+    public async Task Admin_RegularUser_CannotCallAdminCommand_Throws() {
+        await _fixture.CreateUserAsync("regular", "pass");
+        await _fixture.GrantPermissionAsync("regular", "regular.*", [QueueOperation.CreateQueue]);
+
+        await using var client = await _fixture.ConnectAsync("regular", "pass");
+
+        await Assert.ThrowsAsync<InvalidOperationException>(
+            () => client.CreateUserAsync("hacker-created", "pwd")
+        );
+    }
 }

@@ -7,12 +7,8 @@ namespace VibeMQ.Server.Handlers;
 /// <summary>
 /// Handles Unsubscribe commands: removes the client from a queue's subscriber list.
 /// </summary>
-public sealed partial class UnsubscribeHandler : ICommandHandler {
-    private readonly ILogger<UnsubscribeHandler> _logger;
-
-    public UnsubscribeHandler(ILogger<UnsubscribeHandler> logger) {
-        _logger = logger;
-    }
+public sealed partial class UnsubscribeHandler(ILogger<UnsubscribeHandler> logger) : ICommandHandler {
+    private readonly ILogger<UnsubscribeHandler> _logger = logger;
 
     public CommandType CommandType => CommandType.Unsubscribe;
 

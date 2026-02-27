@@ -10,14 +10,8 @@ namespace VibeMQ.Server.Handlers.Admin;
 /// Admin command: revokes a user's permission on a queue pattern. Superuser-only.
 /// Payload: { "username": "...", "queuePattern": "..." }
 /// </summary>
-public sealed partial class RevokePermissionHandler : ICommandHandler {
-    private readonly IAuthRepository _repository;
-    private readonly ILogger<RevokePermissionHandler> _logger;
-
-    public RevokePermissionHandler(IAuthRepository repository, ILogger<RevokePermissionHandler> logger) {
-        _repository = repository;
-        _logger = logger;
-    }
+public sealed partial class RevokePermissionHandler(IAuthRepository repository, ILogger<RevokePermissionHandler> logger) : ICommandHandler {
+    private readonly ILogger<RevokePermissionHandler> _logger = logger;
 
     public CommandType CommandType => CommandType.AdminRevokePermission;
 
@@ -41,7 +35,7 @@ public sealed partial class RevokePermissionHandler : ICommandHandler {
             return;
         }
 
-        await _repository.RevokePermissionAsync(username, queuePattern, cancellationToken).ConfigureAwait(false);
+        await repository.RevokePermissionAsync(username, queuePattern, cancellationToken).ConfigureAwait(false);
 
         LogPermissionRevoked(connection.Username ?? "<superuser>", username, queuePattern);
 

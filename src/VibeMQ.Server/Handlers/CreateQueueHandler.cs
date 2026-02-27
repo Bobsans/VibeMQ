@@ -12,16 +12,8 @@ namespace VibeMQ.Server.Handlers;
 /// <summary>
 /// Handles CreateQueue commands: creates a new queue with optional configuration.
 /// </summary>
-public sealed partial class CreateQueueHandler : ICommandHandler {
-    private readonly IQueueManager _queueManager;
-    private readonly IAuthorizationService? _authz;
-    private readonly ILogger<CreateQueueHandler> _logger;
-
-    public CreateQueueHandler(IQueueManager queueManager, IAuthorizationService? authz, ILogger<CreateQueueHandler> logger) {
-        _queueManager = queueManager;
-        _authz = authz;
-        _logger = logger;
-    }
+public sealed partial class CreateQueueHandler(IQueueManager queueManager, IAuthorizationService? authz, ILogger<CreateQueueHandler> logger) : ICommandHandler {
+    private readonly ILogger<CreateQueueHandler> _logger = logger;
 
     public CommandType CommandType => CommandType.CreateQueue;
 
@@ -36,7 +28,7 @@ public sealed partial class CreateQueueHandler : ICommandHandler {
             return;
         }
 
-        if (_authz is not null && !await _authz.IsAuthorizedAsync(connection, QueueOperation.CreateQueue, message.Queue, cancellationToken).ConfigureAwait(false)) {
+        if (authz is not null && !await authz.IsAuthorizedAsync(connection, QueueOperation.CreateQueue, message.Queue, cancellationToken).ConfigureAwait(false)) {
             await connection.SendErrorAsync(message.Id, "NOT_AUTHORIZED", "Access denied.", cancellationToken)
                 .ConfigureAwait(false);
             return;
@@ -47,7 +39,7 @@ public sealed partial class CreateQueueHandler : ICommandHandler {
             options = message.Payload.Value.Deserialize<QueueOptions>(ProtocolSerializer.Options);
         }
 
-        await _queueManager.CreateQueueAsync(message.Queue, options, cancellationToken).ConfigureAwait(false);
+        await queueManager.CreateQueueAsync(message.Queue, options, cancellationToken).ConfigureAwait(false);
 
         LogQueueCreated(connection.Id, message.Queue);
 

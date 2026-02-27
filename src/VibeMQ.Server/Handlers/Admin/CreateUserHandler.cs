@@ -11,14 +11,8 @@ namespace VibeMQ.Server.Handlers.Admin;
 /// Admin command: creates a new user. Superuser-only.
 /// Payload: { "username": "...", "password": "..." }
 /// </summary>
-public sealed partial class CreateUserHandler : ICommandHandler {
-    private readonly IAuthRepository _repository;
-    private readonly ILogger<CreateUserHandler> _logger;
-
-    public CreateUserHandler(IAuthRepository repository, ILogger<CreateUserHandler> logger) {
-        _repository = repository;
-        _logger = logger;
-    }
+public sealed partial class CreateUserHandler(IAuthRepository repository, ILogger<CreateUserHandler> logger) : ICommandHandler {
+    private readonly ILogger<CreateUserHandler> _logger = logger;
 
     public CommandType CommandType => CommandType.AdminCreateUser;
 
@@ -42,7 +36,7 @@ public sealed partial class CreateUserHandler : ICommandHandler {
             return;
         }
 
-        var existing = await _repository.FindUserAsync(username, cancellationToken).ConfigureAwait(false);
+        var existing = await repository.FindUserAsync(username, cancellationToken).ConfigureAwait(false);
         if (existing is not null) {
             await connection.SendErrorAsync(message.Id, "USER_EXISTS", $"User '{username}' already exists.", cancellationToken).ConfigureAwait(false);
             return;
@@ -57,7 +51,7 @@ public sealed partial class CreateUserHandler : ICommandHandler {
             UpdatedAt = now,
         };
 
-        await _repository.CreateUserAsync(record, cancellationToken).ConfigureAwait(false);
+        await repository.CreateUserAsync(record, cancellationToken).ConfigureAwait(false);
 
         LogUserCreated(connection.Username ?? "<superuser>", username);
 

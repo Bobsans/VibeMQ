@@ -197,25 +197,18 @@ public sealed class MessageQueue {
 
     private bool ApplyOverflowStrategy(BrokerMessage message) {
         // Called from Enqueue, already inside _sync
-        switch (Options.OverflowStrategy) {
-            case OverflowStrategy.DropOldest:
-                _messages.TryDequeue(out _);
-                _messages.Enqueue(message);
-                return true;
-
-            case OverflowStrategy.DropNewest:
-                return false;
-
-            case OverflowStrategy.BlockPublisher:
-                // In async context, caller should handle backpressure
-                return false;
-
-            case OverflowStrategy.RedirectToDlq:
-                // Caller (QueueManager) handles DLQ redirect
-                return false;
-
-            default:
-                return false;
+        bool DropOldestAndEnqueue() {
+            _messages.TryDequeue(out _);
+            _messages.Enqueue(message);
+            return true;
         }
+
+        return Options.OverflowStrategy switch {
+            OverflowStrategy.DropOldest => DropOldestAndEnqueue(),
+            OverflowStrategy.DropNewest => false,
+            OverflowStrategy.BlockPublisher => false, // In async context, caller should handle backpressure
+            OverflowStrategy.RedirectToDlq => false, // Caller (QueueManager) handles DLQ redirect
+            _ => false,
+        };
     }
 }

@@ -11,6 +11,9 @@ namespace VibeMQ.Tests.Integration;
 public sealed class TestBrokerFixture : IAsyncLifetime {
     private const string AUTH_TOKEN = "test-secret-token";
 
+    /// <summary>Token used by the broker for authentication. Use in client settings when connecting.</summary>
+    public static string AuthToken => AUTH_TOKEN;
+
     private BrokerServer? _server;
     private Task? _serverTask;
     private CancellationTokenSource? _cts;

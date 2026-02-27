@@ -10,16 +10,8 @@ namespace VibeMQ.Server.Handlers;
 /// <summary>
 /// Handles DeleteQueue commands: removes a queue by name.
 /// </summary>
-public sealed partial class DeleteQueueHandler : ICommandHandler {
-    private readonly IQueueManager _queueManager;
-    private readonly IAuthorizationService? _authz;
-    private readonly ILogger<DeleteQueueHandler> _logger;
-
-    public DeleteQueueHandler(IQueueManager queueManager, IAuthorizationService? authz, ILogger<DeleteQueueHandler> logger) {
-        _queueManager = queueManager;
-        _authz = authz;
-        _logger = logger;
-    }
+public sealed partial class DeleteQueueHandler(IQueueManager queueManager, IAuthorizationService? authz, ILogger<DeleteQueueHandler> logger) : ICommandHandler {
+    private readonly ILogger<DeleteQueueHandler> _logger = logger;
 
     public CommandType CommandType => CommandType.DeleteQueue;
 
@@ -34,13 +26,13 @@ public sealed partial class DeleteQueueHandler : ICommandHandler {
             return;
         }
 
-        if (_authz is not null && !await _authz.IsAuthorizedAsync(connection, QueueOperation.DeleteQueue, message.Queue, cancellationToken).ConfigureAwait(false)) {
+        if (authz is not null && !await authz.IsAuthorizedAsync(connection, QueueOperation.DeleteQueue, message.Queue, cancellationToken).ConfigureAwait(false)) {
             await connection.SendErrorAsync(message.Id, "NOT_AUTHORIZED", "Access denied.", cancellationToken)
                 .ConfigureAwait(false);
             return;
         }
 
-        await _queueManager.DeleteQueueAsync(message.Queue, cancellationToken).ConfigureAwait(false);
+        await queueManager.DeleteQueueAsync(message.Queue, cancellationToken).ConfigureAwait(false);
 
         LogQueueDeleted(connection.Id, message.Queue);
 

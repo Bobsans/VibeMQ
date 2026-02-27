@@ -11,14 +11,8 @@ namespace VibeMQ.Server.Handlers.Admin;
 /// Payload: { "username": "..." }
 /// Returns: [{ queuePattern, operations }]
 /// </summary>
-public sealed partial class GetUserPermissionsHandler : ICommandHandler {
-    private readonly IAuthRepository _repository;
-    private readonly ILogger<GetUserPermissionsHandler> _logger;
-
-    public GetUserPermissionsHandler(IAuthRepository repository, ILogger<GetUserPermissionsHandler> logger) {
-        _repository = repository;
-        _logger = logger;
-    }
+public sealed partial class GetUserPermissionsHandler(IAuthRepository repository, ILogger<GetUserPermissionsHandler> logger) : ICommandHandler {
+    private readonly ILogger<GetUserPermissionsHandler> _logger = logger;
 
     public CommandType CommandType => CommandType.AdminGetUserPermissions;
 
@@ -39,7 +33,7 @@ public sealed partial class GetUserPermissionsHandler : ICommandHandler {
             return;
         }
 
-        var permissions = await _repository.GetPermissionsAsync(username, cancellationToken).ConfigureAwait(false);
+        var permissions = await repository.GetPermissionsAsync(username, cancellationToken).ConfigureAwait(false);
 
         var result = permissions.Select(p => new {
             queuePattern = p.QueuePattern,

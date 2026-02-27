@@ -10,6 +10,7 @@ using VibeMQ.Client.Exceptions;
 using VibeMQ.Configuration;
 using VibeMQ.Interfaces;
 using VibeMQ.Models;
+using VibeMQ.Enums;
 using VibeMQ.Protocol;
 using VibeMQ.Protocol.Compression;
 using VibeMQ.Protocol.Framing;
@@ -406,6 +407,143 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
         }
 
         return response.Payload.Value.Deserialize<List<string>>(ProtocolSerializer.Options) ?? [];
+    }
+
+    // ─── Admin (superuser) ───────────────────────────────────────────────────
+
+    /// <summary>
+    /// Creates a new user. Superuser-only.
+    /// </summary>
+    public async Task CreateUserAsync(string username, string password, CancellationToken cancellationToken = default) {
+        ArgumentException.ThrowIfNullOrWhiteSpace(username);
+        ArgumentException.ThrowIfNullOrEmpty(password);
+
+        var message = new ProtocolMessage {
+            Type = CommandType.AdminCreateUser,
+            Payload = JsonSerializer.SerializeToElement(new { username, password }, ProtocolSerializer.Options),
+        };
+
+        var response = await SendAndWaitAsync(message, cancellationToken).ConfigureAwait(false);
+        if (response.Type == CommandType.Error) {
+            throw new InvalidOperationException($"CreateUser failed: {response.ErrorMessage}");
+        }
+    }
+
+    /// <summary>
+    /// Deletes a user. Superuser-only. Cannot delete another superuser.
+    /// </summary>
+    public async Task DeleteUserAsync(string username, CancellationToken cancellationToken = default) {
+        ArgumentException.ThrowIfNullOrWhiteSpace(username);
+
+        var message = new ProtocolMessage {
+            Type = CommandType.AdminDeleteUser,
+            Payload = JsonSerializer.SerializeToElement(new { username }, ProtocolSerializer.Options),
+        };
+
+        var response = await SendAndWaitAsync(message, cancellationToken).ConfigureAwait(false);
+        if (response.Type == CommandType.Error) {
+            throw new InvalidOperationException($"DeleteUser failed: {response.ErrorMessage}");
+        }
+    }
+
+    /// <summary>
+    /// Changes a user's password. Superuser can change any user; regular users can only change their own.
+    /// </summary>
+    public async Task ChangePasswordAsync(string username, string newPassword, CancellationToken cancellationToken = default) {
+        ArgumentException.ThrowIfNullOrWhiteSpace(username);
+        ArgumentException.ThrowIfNullOrEmpty(newPassword);
+
+        var message = new ProtocolMessage {
+            Type = CommandType.AdminChangePassword,
+            Payload = JsonSerializer.SerializeToElement(new { username, newPassword }, ProtocolSerializer.Options),
+        };
+
+        var response = await SendAndWaitAsync(message, cancellationToken).ConfigureAwait(false);
+        if (response.Type == CommandType.Error) {
+            throw new InvalidOperationException($"ChangePassword failed: {response.ErrorMessage}");
+        }
+    }
+
+    /// <summary>
+    /// Grants permissions on a queue pattern to a user. Superuser-only.
+    /// </summary>
+    public async Task GrantPermissionAsync(string username, string queuePattern, QueueOperation[] operations, CancellationToken cancellationToken = default) {
+        ArgumentException.ThrowIfNullOrWhiteSpace(username);
+        ArgumentException.ThrowIfNullOrWhiteSpace(queuePattern);
+        ArgumentNullException.ThrowIfNull(operations);
+        if (operations.Length == 0) {
+            throw new ArgumentException("At least one operation is required.", nameof(operations));
+        }
+
+        var opsStrings = operations.Select(o => o.ToString()).ToArray();
+        var message = new ProtocolMessage {
+            Type = CommandType.AdminGrantPermission,
+            Payload = JsonSerializer.SerializeToElement(new { username, queuePattern, operations = opsStrings }, ProtocolSerializer.Options),
+        };
+
+        var response = await SendAndWaitAsync(message, cancellationToken).ConfigureAwait(false);
+        if (response.Type == CommandType.Error) {
+            throw new InvalidOperationException($"GrantPermission failed: {response.ErrorMessage}");
+        }
+    }
+
+    /// <summary>
+    /// Revokes a user's permission on a queue pattern. Superuser-only.
+    /// </summary>
+    public async Task RevokePermissionAsync(string username, string queuePattern, CancellationToken cancellationToken = default) {
+        ArgumentException.ThrowIfNullOrWhiteSpace(username);
+        ArgumentException.ThrowIfNullOrWhiteSpace(queuePattern);
+
+        var message = new ProtocolMessage {
+            Type = CommandType.AdminRevokePermission,
+            Payload = JsonSerializer.SerializeToElement(new { username, queuePattern }, ProtocolSerializer.Options),
+        };
+
+        var response = await SendAndWaitAsync(message, cancellationToken).ConfigureAwait(false);
+        if (response.Type == CommandType.Error) {
+            throw new InvalidOperationException($"RevokePermission failed: {response.ErrorMessage}");
+        }
+    }
+
+    /// <summary>
+    /// Lists all users. Superuser-only.
+    /// </summary>
+    public async Task<IReadOnlyList<AdminUserInfo>> ListUsersAsync(CancellationToken cancellationToken = default) {
+        var message = new ProtocolMessage { Type = CommandType.AdminListUsers };
+
+        var response = await SendAndWaitAsync(message, cancellationToken).ConfigureAwait(false);
+        if (response.Type == CommandType.Error) {
+            throw new InvalidOperationException($"ListUsers failed: {response.ErrorMessage}");
+        }
+
+        if (!response.Payload.HasValue) {
+            return [];
+        }
+
+        return response.Payload.Value.Deserialize<List<AdminUserInfo>>(ProtocolSerializer.Options) ?? [];
+    }
+
+    /// <summary>
+    /// Returns permissions for a user. Superuser-only.
+    /// </summary>
+    public async Task<IReadOnlyList<AdminPermissionInfo>> GetUserPermissionsAsync(string username, CancellationToken cancellationToken = default) {
+        ArgumentException.ThrowIfNullOrWhiteSpace(username);
+
+        var message = new ProtocolMessage {
+            Type = CommandType.AdminGetUserPermissions,
+            Payload = JsonSerializer.SerializeToElement(new { username }, ProtocolSerializer.Options),
+        };
+
+        var response = await SendAndWaitAsync(message, cancellationToken).ConfigureAwait(false);
+        if (response.Type == CommandType.Error) {
+            throw new InvalidOperationException($"GetUserPermissions failed: {response.ErrorMessage}");
+        }
+
+        if (!response.Payload.HasValue) {
+            return [];
+        }
+
+        return response.Payload.Value.Deserialize<List<AdminPermissionInfo>>(ProtocolSerializer.Options) ?? [];
     }
 
     /// <summary>

@@ -10,14 +10,8 @@ namespace VibeMQ.Server.Handlers.Admin;
 /// Admin command: returns the list of all users. Superuser-only.
 /// Returns: [{ username, isSuperuser, createdAt }]
 /// </summary>
-public sealed partial class ListUsersHandler : ICommandHandler {
-    private readonly IAuthRepository _repository;
-    private readonly ILogger<ListUsersHandler> _logger;
-
-    public ListUsersHandler(IAuthRepository repository, ILogger<ListUsersHandler> logger) {
-        _repository = repository;
-        _logger = logger;
-    }
+public sealed partial class ListUsersHandler(IAuthRepository repository, ILogger<ListUsersHandler> logger) : ICommandHandler {
+    private readonly ILogger<ListUsersHandler> _logger = logger;
 
     public CommandType CommandType => CommandType.AdminListUsers;
 
@@ -27,7 +21,7 @@ public sealed partial class ListUsersHandler : ICommandHandler {
             return;
         }
 
-        var users = await _repository.ListUsersAsync(cancellationToken).ConfigureAwait(false);
+        var users = await repository.ListUsersAsync(cancellationToken).ConfigureAwait(false);
 
         var result = users.Select(u => new {
             username = u.Username,

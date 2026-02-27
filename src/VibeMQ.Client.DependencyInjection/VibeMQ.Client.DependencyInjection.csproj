@@ -21,4 +21,9 @@
     <ProjectReference Include="..\VibeMQ.Client\VibeMQ.Client.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <InternalsVisibleTo Include="VibeMQ.Tests.Unit" />
+    <InternalsVisibleTo Include="VibeMQ.Tests.Integration" />
+  </ItemGroup>
+
 </Project>

@@ -123,6 +123,7 @@ public sealed partial class QueueManager : IQueueManager {
     /// Returns a slice of pending messages for the dashboard (peek only). Includes in-memory pending only.
     /// </summary>
     public Task<IReadOnlyList<BrokerMessage>> GetPendingMessagesForDashboardAsync(string name, int limit, int offset, CancellationToken cancellationToken = default) {
+        cancellationToken.ThrowIfCancellationRequested();
         if (!_queues.TryGetValue(name, out var queue)) {
             return Task.FromResult<IReadOnlyList<BrokerMessage>>(Array.Empty<BrokerMessage>());
         }
@@ -138,6 +139,7 @@ public sealed partial class QueueManager : IQueueManager {
     /// Returns a single message by id from a queue (pending or unacknowledged) for dashboard view.
     /// </summary>
     public Task<BrokerMessage?> GetMessageForDashboardAsync(string name, string messageId, CancellationToken cancellationToken = default) {
+        cancellationToken.ThrowIfCancellationRequested();
         if (!_queues.TryGetValue(name, out var queue)) {
             return Task.FromResult<BrokerMessage?>(null);
         }

@@ -11,14 +11,8 @@ namespace VibeMQ.Server.Handlers.Admin;
 /// Admin command: grants a user permission on a queue pattern. Superuser-only.
 /// Payload: { "username": "...", "queuePattern": "...", "operations": ["Publish", "Subscribe", ...] }
 /// </summary>
-public sealed partial class GrantPermissionHandler : ICommandHandler {
-    private readonly IAuthRepository _repository;
-    private readonly ILogger<GrantPermissionHandler> _logger;
-
-    public GrantPermissionHandler(IAuthRepository repository, ILogger<GrantPermissionHandler> logger) {
-        _repository = repository;
-        _logger = logger;
-    }
+public sealed partial class GrantPermissionHandler(IAuthRepository repository, ILogger<GrantPermissionHandler> logger) : ICommandHandler {
+    private readonly ILogger<GrantPermissionHandler> _logger = logger;
 
     public CommandType CommandType => CommandType.AdminGrantPermission;
 
@@ -43,7 +37,7 @@ public sealed partial class GrantPermissionHandler : ICommandHandler {
             return;
         }
 
-        var user = await _repository.FindUserAsync(username, cancellationToken).ConfigureAwait(false);
+        var user = await repository.FindUserAsync(username, cancellationToken).ConfigureAwait(false);
         if (user is null) {
             await connection.SendErrorAsync(message.Id, "USER_NOT_FOUND", $"User '{username}' not found.", cancellationToken).ConfigureAwait(false);
             return;
@@ -60,7 +54,7 @@ public sealed partial class GrantPermissionHandler : ICommandHandler {
             return;
         }
 
-        await _repository.GrantPermissionAsync(username, queuePattern, ops, cancellationToken).ConfigureAwait(false);
+        await repository.GrantPermissionAsync(username, queuePattern, ops, cancellationToken).ConfigureAwait(false);
 
         LogPermissionGranted(connection.Username ?? "<superuser>", username, queuePattern);
 

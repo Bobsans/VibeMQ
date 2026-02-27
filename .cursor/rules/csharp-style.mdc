@@ -1,5 +1,5 @@
 ---
-description: C# brace style — K&R
+description: C# code style
 globs: **/*.cs
 alwaysApply: false
 ---
@@ -8,3 +8,14 @@ alwaysApply: false
 
 - Use **K&R** brace style for C# code (opening brace on the same line as the declaration).
 - Apply this style consistently in all C# files.
+
+# C#: pattern matching
+
+- Prefer **pattern matching** where it improves readability: `is` patterns, `switch` expressions, type patterns, property patterns, etc.
+- Use pattern matching instead of `is` + cast when you need both a type check and a variable (e.g. `if (x is string s)` instead of `if (x is string) { var s = (string)x; }`).
+- Prefer `switch` expressions over long `if`/`else if` chains when the logic is a choice of values or types.
+
+# C#: primary constructors
+
+- Prefer **primary constructors** when a class or struct only needs to capture constructor parameters into fields (e.g. `class Foo(ILogger logger)` instead of a separate constructor body and field declarations).
+- Use primary constructors for records and for simple DTOs/services where all parameters become stored state.

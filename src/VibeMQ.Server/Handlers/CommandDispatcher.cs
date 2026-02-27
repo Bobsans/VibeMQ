@@ -7,14 +7,9 @@ namespace VibeMQ.Server.Handlers;
 /// <summary>
 /// Routes incoming protocol messages to the appropriate <see cref="ICommandHandler"/>.
 /// </summary>
-public sealed partial class CommandDispatcher {
-    private readonly Dictionary<CommandType, ICommandHandler> _handlers;
-    private readonly ILogger<CommandDispatcher> _logger;
-
-    public CommandDispatcher(IEnumerable<ICommandHandler> handlers, ILogger<CommandDispatcher> logger) {
-        _handlers = handlers.ToDictionary(h => h.CommandType);
-        _logger = logger;
-    }
+public sealed partial class CommandDispatcher(IEnumerable<ICommandHandler> handlers, ILogger<CommandDispatcher> logger) {
+    private readonly Dictionary<CommandType, ICommandHandler> _handlers = handlers.ToDictionary(h => h.CommandType);
+    private readonly ILogger<CommandDispatcher> _logger = logger;
 
     /// <summary>
     /// Dispatches a message to the registered handler for its command type.

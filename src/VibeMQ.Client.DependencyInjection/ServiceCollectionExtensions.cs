@@ -101,8 +101,8 @@ public static class ServiceCollectionExtensions {
     /// <returns>The service collection for chaining.</returns>
     public static IServiceCollection AddMessageHandlerSubscriptions(this IServiceCollection services) {
         services.TryAddSingleton<MessageHandlerHostedService>();
-        services.TryAddEnumerable(ServiceDescriptor.Singleton<Microsoft.Extensions.Hosting.IHostedService>(
-            sp => sp.GetRequiredService<MessageHandlerHostedService>()));
+        services.TryAddEnumerable(ServiceDescriptor.Singleton<Microsoft.Extensions.Hosting.IHostedService, MessageHandlerHostedService>(
+            sp => (MessageHandlerHostedService)sp.GetRequiredService<MessageHandlerHostedService>()));
         return services;
     }
 }

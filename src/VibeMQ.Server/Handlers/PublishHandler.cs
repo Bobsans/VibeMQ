@@ -12,16 +12,8 @@ namespace VibeMQ.Server.Handlers;
 /// <summary>
 /// Handles Publish commands: validates, stores the message, and routes it to subscribers.
 /// </summary>
-public sealed partial class PublishHandler : ICommandHandler {
-    private readonly IQueueManager _queueManager;
-    private readonly IAuthorizationService? _authz;
-    private readonly ILogger<PublishHandler> _logger;
-
-    public PublishHandler(IQueueManager queueManager, IAuthorizationService? authz, ILogger<PublishHandler> logger) {
-        _queueManager = queueManager;
-        _authz = authz;
-        _logger = logger;
-    }
+public sealed partial class PublishHandler(IQueueManager queueManager, IAuthorizationService? authz, ILogger<PublishHandler> logger) : ICommandHandler {
+    private readonly ILogger<PublishHandler> _logger = logger;
 
     public CommandType CommandType => CommandType.Publish;
 
@@ -36,7 +28,7 @@ public sealed partial class PublishHandler : ICommandHandler {
             return;
         }
 
-        if (_authz is not null && !await _authz.IsAuthorizedAsync(connection, QueueOperation.Publish, message.Queue, cancellationToken).ConfigureAwait(false)) {
+        if (authz is not null && !await authz.IsAuthorizedAsync(connection, QueueOperation.Publish, message.Queue, cancellationToken).ConfigureAwait(false)) {
             await connection.SendErrorAsync(message.Id, "NOT_AUTHORIZED", "Access denied.", cancellationToken)
                 .ConfigureAwait(false);
             return;
@@ -55,7 +47,7 @@ public sealed partial class PublishHandler : ICommandHandler {
             Priority = priority,
         };
 
-        await _queueManager.PublishAsync(brokerMessage, cancellationToken).ConfigureAwait(false);
+        await queueManager.PublishAsync(brokerMessage, cancellationToken).ConfigureAwait(false);
 
         LogMessagePublished(message.Id, message.Queue);
 

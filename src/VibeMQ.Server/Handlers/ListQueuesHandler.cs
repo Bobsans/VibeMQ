@@ -11,16 +11,8 @@ namespace VibeMQ.Server.Handlers;
 /// Handles ListQueues commands: returns all queue names the client is allowed to see.
 /// Superusers see all queues; regular users see only queues matched by their permission patterns.
 /// </summary>
-public sealed partial class ListQueuesHandler : ICommandHandler {
-    private readonly IQueueManager _queueManager;
-    private readonly IAuthorizationService? _authz;
-    private readonly ILogger<ListQueuesHandler> _logger;
-
-    public ListQueuesHandler(IQueueManager queueManager, IAuthorizationService? authz, ILogger<ListQueuesHandler> logger) {
-        _queueManager = queueManager;
-        _authz = authz;
-        _logger = logger;
-    }
+public sealed partial class ListQueuesHandler(IQueueManager queueManager, IAuthorizationService? authz, ILogger<ListQueuesHandler> logger) : ICommandHandler {
+    private readonly ILogger<ListQueuesHandler> _logger = logger;
 
     public CommandType CommandType => CommandType.ListQueues;
 
@@ -29,11 +21,11 @@ public sealed partial class ListQueuesHandler : ICommandHandler {
         ProtocolMessage message,
         CancellationToken cancellationToken = default
     ) {
-        var queues = await _queueManager.ListQueuesAsync(cancellationToken).ConfigureAwait(false);
+        var queues = await queueManager.ListQueuesAsync(cancellationToken).ConfigureAwait(false);
 
         IReadOnlyList<string> visible;
 
-        if (_authz is null || connection.IsSuperuser) {
+        if (authz is null || connection.IsSuperuser) {
             // No authorization or superuser — return all queues
             visible = queues;
         } else {

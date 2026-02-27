@@ -10,14 +10,8 @@ namespace VibeMQ.Server.Handlers.Admin;
 /// Admin command: deletes a user. Superuser-only. Cannot delete other superusers (lockout protection).
 /// Payload: { "username": "..." }
 /// </summary>
-public sealed partial class DeleteUserHandler : ICommandHandler {
-    private readonly IAuthRepository _repository;
-    private readonly ILogger<DeleteUserHandler> _logger;
-
-    public DeleteUserHandler(IAuthRepository repository, ILogger<DeleteUserHandler> logger) {
-        _repository = repository;
-        _logger = logger;
-    }
+public sealed partial class DeleteUserHandler(IAuthRepository repository, ILogger<DeleteUserHandler> logger) : ICommandHandler {
+    private readonly ILogger<DeleteUserHandler> _logger = logger;
 
     public CommandType CommandType => CommandType.AdminDeleteUser;
 
@@ -38,7 +32,7 @@ public sealed partial class DeleteUserHandler : ICommandHandler {
             return;
         }
 
-        var target = await _repository.FindUserAsync(username, cancellationToken).ConfigureAwait(false);
+        var target = await repository.FindUserAsync(username, cancellationToken).ConfigureAwait(false);
         if (target is null) {
             await connection.SendErrorAsync(message.Id, "USER_NOT_FOUND", $"User '{username}' not found.", cancellationToken).ConfigureAwait(false);
             return;
@@ -49,7 +43,7 @@ public sealed partial class DeleteUserHandler : ICommandHandler {
             return;
         }
 
-        await _repository.DeleteUserAsync(username, cancellationToken).ConfigureAwait(false);
+        await repository.DeleteUserAsync(username, cancellationToken).ConfigureAwait(false);
 
         LogUserDeleted(connection.Username ?? "<superuser>", username);
 

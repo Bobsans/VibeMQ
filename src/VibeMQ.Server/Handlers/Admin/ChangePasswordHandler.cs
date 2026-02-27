@@ -12,14 +12,8 @@ namespace VibeMQ.Server.Handlers.Admin;
 /// Regular users can only change their own password.
 /// Payload: { "username": "...", "newPassword": "..." }
 /// </summary>
-public sealed partial class ChangePasswordHandler : ICommandHandler {
-    private readonly IAuthRepository _repository;
-    private readonly ILogger<ChangePasswordHandler> _logger;
-
-    public ChangePasswordHandler(IAuthRepository repository, ILogger<ChangePasswordHandler> logger) {
-        _repository = repository;
-        _logger = logger;
-    }
+public sealed partial class ChangePasswordHandler(IAuthRepository repository, ILogger<ChangePasswordHandler> logger) : ICommandHandler {
+    private readonly ILogger<ChangePasswordHandler> _logger = logger;
 
     public CommandType CommandType => CommandType.AdminChangePassword;
 
@@ -44,14 +38,14 @@ public sealed partial class ChangePasswordHandler : ICommandHandler {
             return;
         }
 
-        var target = await _repository.FindUserAsync(username, cancellationToken).ConfigureAwait(false);
+        var target = await repository.FindUserAsync(username, cancellationToken).ConfigureAwait(false);
         if (target is null) {
             await connection.SendErrorAsync(message.Id, "USER_NOT_FOUND", $"User '{username}' not found.", cancellationToken).ConfigureAwait(false);
             return;
         }
 
         var hash = BCrypt.Net.BCrypt.HashPassword(newPassword, workFactor: 12);
-        await _repository.UpdatePasswordHashAsync(username, hash, cancellationToken).ConfigureAwait(false);
+        await repository.UpdatePasswordHashAsync(username, hash, cancellationToken).ConfigureAwait(false);
 
         LogPasswordChanged(connection.Username ?? "<actor>", username);
 

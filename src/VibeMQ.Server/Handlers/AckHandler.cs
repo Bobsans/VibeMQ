@@ -8,14 +8,8 @@ namespace VibeMQ.Server.Handlers;
 /// <summary>
 /// Handles Ack commands: acknowledges successful processing of a delivered message.
 /// </summary>
-public sealed partial class AckHandler : ICommandHandler {
-    private readonly IQueueManager _queueManager;
-    private readonly ILogger<AckHandler> _logger;
-
-    public AckHandler(IQueueManager queueManager, ILogger<AckHandler> logger) {
-        _queueManager = queueManager;
-        _logger = logger;
-    }
+public sealed partial class AckHandler(IQueueManager queueManager, ILogger<AckHandler> logger) : ICommandHandler {
+    private readonly ILogger<AckHandler> _logger = logger;
 
     public CommandType CommandType => CommandType.Ack;
 
@@ -30,7 +24,7 @@ public sealed partial class AckHandler : ICommandHandler {
             return;
         }
 
-        var acknowledged = await _queueManager.AcknowledgeAsync(message.Id, cancellationToken).ConfigureAwait(false);
+        var acknowledged = await queueManager.AcknowledgeAsync(message.Id, cancellationToken).ConfigureAwait(false);
 
         if (acknowledged) {
             LogAcknowledged(message.Id, connection.Id);

@@ -11,16 +11,8 @@ namespace VibeMQ.Server.Handlers;
 /// <summary>
 /// Handles QueueInfo commands: returns metadata about a specific queue.
 /// </summary>
-public sealed partial class QueueInfoHandler : ICommandHandler {
-    private readonly IQueueManager _queueManager;
-    private readonly IAuthorizationService? _authz;
-    private readonly ILogger<QueueInfoHandler> _logger;
-
-    public QueueInfoHandler(IQueueManager queueManager, IAuthorizationService? authz, ILogger<QueueInfoHandler> logger) {
-        _queueManager = queueManager;
-        _authz = authz;
-        _logger = logger;
-    }
+public sealed partial class QueueInfoHandler(IQueueManager queueManager, IAuthorizationService? authz, ILogger<QueueInfoHandler> logger) : ICommandHandler {
+    private readonly ILogger<QueueInfoHandler> _logger = logger;
 
     public CommandType CommandType => CommandType.QueueInfo;
 
@@ -35,13 +27,13 @@ public sealed partial class QueueInfoHandler : ICommandHandler {
             return;
         }
 
-        if (_authz is not null && !await _authz.IsAuthorizedAsync(connection, QueueOperation.GetQueueInfo, message.Queue, cancellationToken).ConfigureAwait(false)) {
+        if (authz is not null && !await authz.IsAuthorizedAsync(connection, QueueOperation.GetQueueInfo, message.Queue, cancellationToken).ConfigureAwait(false)) {
             await connection.SendErrorAsync(message.Id, "NOT_AUTHORIZED", "Access denied.", cancellationToken)
                 .ConfigureAwait(false);
             return;
         }
 
-        var info = await _queueManager.GetQueueInfoAsync(message.Queue, cancellationToken).ConfigureAwait(false);
+        var info = await queueManager.GetQueueInfoAsync(message.Queue, cancellationToken).ConfigureAwait(false);
 
         LogQueueInfoRequested(connection.Id, message.Queue);
 
