@@ -27,12 +27,23 @@ Version 1.7.0 (unreleased)
 - New :doc:`web-ui` guide (quick start, options, API, building frontend)
 - Client usage and DI integration: connection string format, examples, configuration keys
 
-Version 1.6.0
+Version 1.6.1
 -------------
 
 **Date:** February 2026
 
 **Status:** Current Stable Version
+
+**Maintenance:**
+
+- Documentation and translation updates (changelog, obsolete .po cleanup, update-docs skill)
+
+Version 1.6.0
+-------------
+
+**Date:** February 2026
+
+**Status:** Stable
 
 **New features:**
 
