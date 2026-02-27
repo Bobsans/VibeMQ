@@ -26,6 +26,7 @@ Version 1.7.0 (unreleased)
 
 - New :doc:`web-ui` guide (quick start, options, API, building frontend)
 - Client usage and DI integration: connection string format, examples, configuration keys
+- Docker images: size-optimized Alpine builds (self-contained single-file) for broker and Web UI
 
 Version 1.6.1
 -------------

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: VibeMQ 1.3.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-27 19:30+0300\n"
+"POT-Creation-Date: 2026-02-27 21:07+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ru\n"
@@ -19,11 +19,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.18.0\n"
 
-#: ../../docs/web-ui.rst:3 f6bfbbff93e64d0fb8b7875beea6b76e
+#: ../../docs/web-ui.rst:3 0475cd92080549d3a788276f1ba3e246
 msgid "Web UI Dashboard"
 msgstr "Веб-дашборд"
 
-#: ../../docs/web-ui.rst:5 9c58ed1e7414448b802e11a49b0c025e
+#: ../../docs/web-ui.rst:5 7d68d489b4de4444b9b097c1b27d0fec
 msgid ""
 "Optional web dashboard for monitoring the VibeMQ broker: health, metrics,"
 " and queues in a browser. The dashboard runs on a separate HTTP port "
@@ -33,228 +33,244 @@ msgstr ""
 "метрики и очереди в браузере. Дашборд работает на отдельном HTTP-порту "
 "(по умолчанию **12925**) и не требует ASP.NET Core."
 
-#: ../../docs/web-ui.rst:9 81e81d1c0bbf4390b8ac82fd5c2e0b09
+#: ../../docs/web-ui.rst:9 1bcc77e9d9a64f5c8c612c2be8f731b2
 msgid "Contents"
 msgstr "Содержание"
 
-#: ../../docs/web-ui.rst:12 d00a64cc447142b3882b96942830ac3a
+#: ../../docs/web-ui.rst:12 b489547e2d8c4a1ba061ce98f2651828
 msgid "Overview"
 msgstr "Обзор"
 
-#: ../../docs/web-ui.rst:14 87971dc571614bc998f689c87cf90ac6
+#: ../../docs/web-ui.rst:14 15a15c6c026e4168a024709e94ed7d60
 msgid "The **VibeMQ.Server.WebUI** package provides:"
 msgstr "Пакет **VibeMQ.Server.WebUI** предоставляет:"
 
-#: ../../docs/web-ui.rst:16 9e9d5d7fc2c74f1ca9d3e0a395d83482
+#: ../../docs/web-ui.rst:16 0eda736192d6440cac9610ae40f3ca06
 msgid "A Vue 3 SPA served from the same process as the broker"
 msgstr "Vue 3 SPA, отдаётся из того же процесса, что и брокер"
 
-#: ../../docs/web-ui.rst:17 36a4d422827d4b358baac9abb2605a20
+#: ../../docs/web-ui.rst:17 dc2ac9a9a49f4a0d8ac830fccfcea341
 msgid "REST API endpoints for health, metrics, and queue list/detail"
 msgstr "REST API для состояния, метрик и списка/деталей очередей"
 
-#: ../../docs/web-ui.rst:18 c57445905983449f8bd2d2055d75641d
+#: ../../docs/web-ui.rst:18 d176c340335d48b79d08ca9368ada8a8
 msgid "Lightweight ``HttpListener``-based server (no Kestrel/ASP.NET)"
 msgstr "Лёгкий сервер на ``HttpListener`` (без Kestrel/ASP.NET)"
 
-#: ../../docs/web-ui.rst:19 845c4b2e87c3482ab5c2efcf56ff8aa6
+#: ../../docs/web-ui.rst:19 4bdf78a68fe948338f046a1b5e4084d5
 msgid "All UI assets embedded in the assembly after building the frontend"
 msgstr "Все ресурсы UI встраиваются в сборку после сборки фронтенда"
 
-#: ../../docs/web-ui.rst:22 2fdc0f09f0234c499b55e3e5374aa5cc
+#: ../../docs/web-ui.rst:22 532ab14b8e9b4a03be1b3a371fb8b88b
 msgid "Quick Start"
 msgstr "Быстрый старт"
 
-#: ../../docs/web-ui.rst:24 fcc89697f7d24e0cab180139311e7f2c
+#: ../../docs/web-ui.rst:24 9ae6eb9e8aef46bcbd4f0d562e6de630
 msgid "Add the package:"
 msgstr "Добавьте пакет:"
 
-#: ../../docs/web-ui.rst:30 417efe28ba704f1ca28cfb74dc39e109
+#: ../../docs/web-ui.rst:30 e7d5a7f1a63c494fafde59af05bfae6c
 msgid "Run the broker with the dashboard in one call:"
 msgstr "Запуск брокера с дашбордом одним вызовом:"
 
-#: ../../docs/web-ui.rst:44 b8549330d4f741c183cd4ec6fcc76248
+#: ../../docs/web-ui.rst:44 c92292f74abf49c291bbdd6dd1e5eaf7
 msgid "Open **http://localhost:12925/** in a browser to see the dashboard."
 msgstr "Откройте **http://localhost:12925/** в браузере для просмотра дашборда."
 
-#: ../../docs/web-ui.rst:47 6a27b1ea213b44d9979e1a94230d1a5a
+#: ../../docs/web-ui.rst:47 987114c324c740228a24712325eba782
+msgid "Docker"
+msgstr "Docker"
+
+#: ../../docs/web-ui.rst:49 77b15e0efcfb45eca667b6d1bb2c2e28
+msgid ""
+"Build and run the broker with the embedded dashboard (from repository "
+"root):"
+msgstr "Сборка и запуск брокера со встроенным дашбордом (из корня репозитория):"
+
+#: ../../docs/web-ui.rst:57 2e5c22e4033f4e8fab58a800aa8e6287
 msgid "With Options"
 msgstr "С опциями"
 
-#: ../../docs/web-ui.rst:58 0c6c7542cd0d4339893902d087681c94
+#: ../../docs/web-ui.rst:68 168cc1fa830f4b57b9598f58fc1508fb
 msgid "Manual Start"
 msgstr "Ручной запуск"
 
-#: ../../docs/web-ui.rst:60 1077e6f95a244193b9b4119642ae6e1e
+#: ../../docs/web-ui.rst:70 b35ee726becb4122b9cdb88202c4def4
 msgid "You can start the Web UI server yourself and run it alongside the broker:"
 msgstr "Можно запустить Web UI сервер отдельно и работать параллельно с брокером:"
 
-#: ../../docs/web-ui.rst:73 2bbc7ba206604c83bfa12befbdf70264
+#: ../../docs/web-ui.rst:83 951c8eded47e4bac8273ffbb25aee03d
 msgid "Configuration"
 msgstr "Конфигурация"
 
-#: ../../docs/web-ui.rst:79 38cf3644b8d94e688b52f6821dca9da4
+#: ../../docs/web-ui.rst:89 b083a18c890549a49d71bc35addaa410
 msgid "Parameter"
 msgstr "Параметр"
 
-#: ../../docs/web-ui.rst:80 6878ed2153084296b407a1967a34736e
+#: ../../docs/web-ui.rst:90 ba94ee67e87446f88c8193ead7aebb47
 msgid "Default"
 msgstr "По умолчанию"
 
-#: ../../docs/web-ui.rst:81 ../../docs/web-ui.rst:103
-#: 9a9c97ce7cbc4447b8b1aeea74ad45ff bf69f8edf08a48f88eadd44d399694ab
+#: ../../docs/web-ui.rst:91 ../../docs/web-ui.rst:113
+#: 15590cdcb0f944da92f70803ca80d8d2 a7bc3fb161fa44988b145ddf424a5095
 msgid "Description"
 msgstr "Описание"
 
-#: ../../docs/web-ui.rst:82 6fbf94ca0b0b4dd7bb84a0ca2e94ffbe
+#: ../../docs/web-ui.rst:92 a9133319c0544371aeb6d09ee2847ef3
 msgid "``Enabled``"
 msgstr ""
 
-#: ../../docs/web-ui.rst:83 f5cd10a535eb48cdaed688c83b5202f9
+#: ../../docs/web-ui.rst:93 b6d50cec62b241d598a1f5cf75393e9c
 msgid "true"
 msgstr ""
 
-#: ../../docs/web-ui.rst:84 abc043c6c48e4ab1832e587e8320a2ee
+#: ../../docs/web-ui.rst:94 58e37bcf33144e9fbd57c6a9a6ae4c57
 msgid "Whether the Web UI HTTP server is started"
 msgstr "Запускать ли HTTP-сервер Web UI"
 
-#: ../../docs/web-ui.rst:85 ef12e2345127429aabd39180d88f5b82
+#: ../../docs/web-ui.rst:95 8f03af7ae1204eefa22cb7abe02dd055
 msgid "``Port``"
 msgstr ""
 
-#: ../../docs/web-ui.rst:86 0c483e5acd0e48c08ebd4b353e7aaec1
+#: ../../docs/web-ui.rst:96 10b2ebe6d2c8479f92309c536e0634ba
 msgid "12925"
 msgstr ""
 
-#: ../../docs/web-ui.rst:87 458871f4c49b47a7945bf901bdfc93ea
+#: ../../docs/web-ui.rst:97 5e968e2b1f0640eaae7ef5f0d9929605
 msgid "HTTP port for the dashboard"
 msgstr "HTTP-порт дашборда"
 
-#: ../../docs/web-ui.rst:88 3666dcf3677040a7b5c22a457729d5f1
+#: ../../docs/web-ui.rst:98 cef190aedff043e1ae44c957af92bfda
 msgid "``PathPrefix``"
 msgstr ""
 
-#: ../../docs/web-ui.rst:89 5d26f71e7b534f22bbb2bcbd085ec26e
+#: ../../docs/web-ui.rst:99 7bbd04aa0cb34a878314bacc63abcad0
 msgid "\"/\""
 msgstr ""
 
-#: ../../docs/web-ui.rst:90 914399f0e1ea4f488bd8bf0d0ff4ef1b
+#: ../../docs/web-ui.rst:100 099472e3231e4f999521e5fe10ded766
 msgid "URL path prefix (must start and end with ``/``)"
 msgstr "Префикс URL-пути (должен начинаться и заканчиваться на ``/``)"
 
-#: ../../docs/web-ui.rst:93 ed1062f93be8454d80ded017aa4a19bd
+#: ../../docs/web-ui.rst:103 b1eb263d636e4607bab3a944ad0207c4
 msgid "API Endpoints"
 msgstr "API-эндпоинты"
 
-#: ../../docs/web-ui.rst:95 67336fb81fee44d785716ddb6b13dcc2
+#: ../../docs/web-ui.rst:105 4969d86aa4fa4c88856b373b22069e00
 msgid "All responses are JSON with ``snake_case`` property names."
 msgstr "Все ответы в JSON с именами свойств в ``snake_case``."
 
-#: ../../docs/web-ui.rst:101 747be7b472a74baaad191d434d1cce66
+#: ../../docs/web-ui.rst:111 fbe3c590c8de43808cb7e3fd4a8c69a8
 msgid "Method"
 msgstr "Метод"
 
-#: ../../docs/web-ui.rst:102 03c8a14cb20047b8a9736353ae043c6f
+#: ../../docs/web-ui.rst:112 99e174d69d79456f8f33be2cfe0d2147
 msgid "Path"
 msgstr "Путь"
 
-#: ../../docs/web-ui.rst:104 ../../docs/web-ui.rst:107
-#: ../../docs/web-ui.rst:110 ../../docs/web-ui.rst:113
-#: ../../docs/web-ui.rst:116 ../../docs/web-ui.rst:119
-#: ../../docs/web-ui.rst:122 05ce1d2aa8394c24981973c4cf3478cc
-#: 12c38fec7ec54633b3ac463ab9c914cc 8086656549484ff0993df9773a5c7130
-#: aea4673607f842bb867593efe3e0172f bff3ab89827f4cab8ac71af5f53d73e7
-#: d330ec4b331440d5bc3a95e504a49a08 da511b4dc3b64ebc82b66fd189283c4d
+#: ../../docs/web-ui.rst:114 ../../docs/web-ui.rst:117
+#: ../../docs/web-ui.rst:120 ../../docs/web-ui.rst:123
+#: ../../docs/web-ui.rst:126 ../../docs/web-ui.rst:129
+#: ../../docs/web-ui.rst:132 1471914b5ef9409e900df4a794a93cd8
+#: 497982c0ee2b4825a831d21ee45d99bf 749b7a527bd74ae3918b412c986bc5e2
+#: 7cf4267f05424725b1ced0cbcba92607 7d73b626e0584613b4833df2e075166d
+#: 96fd409fa05749f2954bfe8915698b85 d32e03eb636b43d9945af2ddf21f117e
 msgid "GET"
 msgstr ""
 
-#: ../../docs/web-ui.rst:105 c51bdf4f40624510bb2956d3fbe8aeee
+#: ../../docs/web-ui.rst:115 4ef03aafd95347429de32fbe99bba64a
 msgid "``/api/version``"
 msgstr ""
 
-#: ../../docs/web-ui.rst:106 400b946be47d4870b752a1a5fe9213e1
+#: ../../docs/web-ui.rst:116 1067ae4717744626a28d04be28933caa
 msgid ""
 "Server and Web UI assembly versions (``server_version``, "
 "``webui_version``)"
 msgstr "Версии сборок сервера и Web UI (``server_version``, ``webui_version``)"
 
-#: ../../docs/web-ui.rst:108 c7fca8e033194bd8919bc94b6afa5825
+#: ../../docs/web-ui.rst:118 7ea5c5958c3e437fb0c29f933ffd576c
 msgid "``/api/health``"
 msgstr ""
 
-#: ../../docs/web-ui.rst:109 aba1b7cf30f14072ba3444bdebfc8315
+#: ../../docs/web-ui.rst:119 67c30ee5ebb440f4b72a08fa1582ae94
 msgid "Broker health: connections, queue count, in-flight, memory, timestamp"
-msgstr "Состояние брокера: подключения, число очередей, in-flight, память, метка времени"
+msgstr ""
+"Состояние брокера: подключения, число очередей, in-flight, память, метка "
+"времени"
 
-#: ../../docs/web-ui.rst:111 3d161bf4343149918c861e8d86f7aec4
+#: ../../docs/web-ui.rst:121 3915e8513c774a19aad9a365f5cd4e9f
 msgid "``/api/metrics``"
 msgstr ""
 
-#: ../../docs/web-ui.rst:112 e6083a0ea88c4889a2fd5c0220a68f39
+#: ../../docs/web-ui.rst:122 0d857b45bf7847ed9a8c601ac5545a5b
 msgid "Full metrics snapshot (counters, gauges, latency, uptime)"
 msgstr "Полный снимок метрик (счётчики, датчики, задержка, uptime)"
 
-#: ../../docs/web-ui.rst:114 87998ea27c07438bb6f40479eb0ad83c
+#: ../../docs/web-ui.rst:124 8276879a455841f0a45d1fd1d8333836
 msgid "``/api/queues``"
 msgstr ""
 
-#: ../../docs/web-ui.rst:115 5f64d8b9fbe5423d8c23f81db6044ea4
+#: ../../docs/web-ui.rst:125 59c1c8781c504e4095915770e87c9c35
 msgid "List of queue names"
 msgstr "Список имён очередей"
 
-#: ../../docs/web-ui.rst:117 ../../docs/web-ui.rst:132
-#: af1830f9cd194b9bafac45189b9b65d4 f17a873502714ae88a8dd9f4fccd1495
+#: ../../docs/web-ui.rst:127 ../../docs/web-ui.rst:142
+#: 80a7cec766e04407ade0e7417f638456 e1dcefd4ae7b4c4c9d73ab978da232cf
 #, python-brace-format
 msgid "``/api/queues/{name}``"
 msgstr ""
 
-#: ../../docs/web-ui.rst:118 d8c256f9fbe2493dbf7057864438e67b
+#: ../../docs/web-ui.rst:128 cc70cbc9c95040b0b63fb614730be73c
 msgid "Single queue metadata (message count, subscribers, delivery mode, etc.)"
-msgstr "Метаданные одной очереди (кол-во сообщений, подписчики, режим доставки и т.д.)"
+msgstr ""
+"Метаданные одной очереди (кол-во сообщений, подписчики, режим доставки и "
+"т.д.)"
 
-#: ../../docs/web-ui.rst:120 ../../docs/web-ui.rst:129
-#: 209fc23d3a89413fa8fb339caa0d125d aaa3996fac6a45a885cf931ea71ae5fc
+#: ../../docs/web-ui.rst:130 ../../docs/web-ui.rst:139
+#: d2051af76c7444ffbdd3166b4f1fb0d7 e2a8a7fc8825450ca7e26f2f9c430a34
 #, python-brace-format
 msgid "``/api/queues/{name}/messages``"
 msgstr ""
 
-#: ../../docs/web-ui.rst:121 15d6e0a2f0c242ff8df5970839596c38
+#: ../../docs/web-ui.rst:131 96e8ed0011b94670b3272e935192613b
 msgid "List messages in queue (query: ``limit``, ``offset``). Peek only."
-msgstr "Список сообщений в очереди (параметры: ``limit``, ``offset``). Только просмотр."
+msgstr ""
+"Список сообщений в очереди (параметры: ``limit``, ``offset``). Только "
+"просмотр."
 
-#: ../../docs/web-ui.rst:123 ../../docs/web-ui.rst:126
-#: 16b544addcf74803bb5aad83b262f62b 5828b7a52c304e7495e75491efcd3f8c
+#: ../../docs/web-ui.rst:133 ../../docs/web-ui.rst:136
+#: 87056f908f204f24b408e0678b8b9579 a3dde254983d48499d8de089abd1e4e1
 #, python-brace-format
 msgid "``/api/queues/{name}/messages/{messageId}``"
 msgstr ""
 
-#: ../../docs/web-ui.rst:124 4826f9c837f049238d4e525f7a2e22b8
+#: ../../docs/web-ui.rst:134 8fb4bfa8ea7547d0afefa04577024972
 msgid "Single message (full body) for viewing"
 msgstr "Одно сообщение (полное тело) для просмотра"
 
-#: ../../docs/web-ui.rst:125 ../../docs/web-ui.rst:128
-#: ../../docs/web-ui.rst:131 24a741cb88fe450ba9ef28dc939aa74a
-#: 9551f878c32f4eabba772078c37073a6 9b53b83637a6448b9f3eff20ecdcc89b
+#: ../../docs/web-ui.rst:135 ../../docs/web-ui.rst:138
+#: ../../docs/web-ui.rst:141 1355cd4e9f5e43f8b8e717bbf07582dc
+#: 62cdaebeb69d49eb9b2822aa13fca341 e353e605147144b09bb975dfe32679bb
 msgid "DELETE"
 msgstr ""
 
-#: ../../docs/web-ui.rst:127 bdf4e317fa17487bbb76a470143cde55
+#: ../../docs/web-ui.rst:137 6fbe6eea78e949b4a569dc996fc62ee1
 msgid "Remove one message from the queue"
 msgstr "Удалить одно сообщение из очереди"
 
-#: ../../docs/web-ui.rst:130 c9a531a9ab3d49229571993c21b03a3a
+#: ../../docs/web-ui.rst:140 8eaaece36c4f48afa412373ff32fe0dc
 msgid "Purge all messages in the queue"
 msgstr "Очистить все сообщения в очереди"
 
-#: ../../docs/web-ui.rst:133 7aadf53e30db43718944b0c6de2b4e78
+#: ../../docs/web-ui.rst:143 511e3478624141e6b9699197e62c4527
 msgid "Delete the queue and all its messages"
 msgstr "Удалить очередь и все её сообщения"
 
-#: ../../docs/web-ui.rst:136 1d8b1df8f4614973b48f2c5abd70f115
+#: ../../docs/web-ui.rst:146 cf6bfeaf5c484397a0d23d4950caf521
 msgid "Building the Frontend"
 msgstr "Сборка фронтенда"
 
-#: ../../docs/web-ui.rst:138 473cf2ee09974c1c984a3158136050cc
+#: ../../docs/web-ui.rst:148 5d6ae60a00d84cf089272fdadbaa8437
 msgid ""
 "The dashboard UI is a Vue 3 + Vite application. To refresh the embedded "
 "assets after changing the UI:"
@@ -262,7 +278,7 @@ msgstr ""
 "Интерфейс дашборда — приложение Vue 3 + Vite. Чтобы обновить встроенные "
 "ресурсы после изменений в UI:"
 
-#: ../../docs/web-ui.rst:146 04ea4172225f45548a1339ea02bee2e1
+#: ../../docs/web-ui.rst:156 9eb22facfccf40ae8d8efe3eaea3e6b8
 msgid ""
 "Then rebuild the .NET project. The contents of ``App/dist/`` are embedded"
 " into the assembly. If ``dist/`` is missing, the project still builds, "
@@ -272,30 +288,29 @@ msgstr ""
 "сборку. Если ``dist/`` отсутствует, проект соберётся, но при открытии "
 "дашборда в браузере будет показана ошибка 503 с инструкциями."
 
-#: ../../docs/web-ui.rst:149 5987d958f36b44fd9f41ebcbdabd1a4d
+#: ../../docs/web-ui.rst:159 68aacbcb340d4eb183bf3a4a6022cfa4
 msgid "Requirements"
 msgstr "Требования"
 
-#: ../../docs/web-ui.rst:151 c41dd89a0bc7414e88a710bb8fc4db4f
+#: ../../docs/web-ui.rst:161 eb095431cc6146ce94768ebbb945ef1a
 msgid ".NET 8.0 or later"
 msgstr ".NET 8.0 или новее"
 
-#: ../../docs/web-ui.rst:152 bc479543a91c444fb0d3c817b3857aeb
+#: ../../docs/web-ui.rst:162 a9afdc6cc77f4ad99d19d3bef5aaa39b
 msgid "Reference ``VibeMQ.Server`` (and transitively ``VibeMQ.Core``)"
 msgstr "Ссылка на ``VibeMQ.Server`` (и транзитивно ``VibeMQ.Core``)"
 
-#: ../../docs/web-ui.rst:153 1ef43db2c1504196999075b912bb16c1
+#: ../../docs/web-ui.rst:163 567094af962042128d5892064912e3ec
 msgid ""
 "Node.js and npm only for **building** the frontend; not required at "
 "runtime"
-msgstr ""
-"Node.js и npm только для **сборки** фронтенда; в runtime не требуются"
+msgstr "Node.js и npm только для **сборки** фронтенда; в runtime не требуются"
 
-#: ../../docs/web-ui.rst:156 6ad6a49a1fcf456fbbbf8734bec8daba
+#: ../../docs/web-ui.rst:166 1eb2460234854555a111d9d4e95c12d1
 msgid "Security"
 msgstr "Безопасность"
 
-#: ../../docs/web-ui.rst:158 f97aeae1080941cabdaaa1a83d5d6362
+#: ../../docs/web-ui.rst:168 91819f9f16ba44709cd549adc33a1df8
 msgid ""
 "The dashboard is intended for trusted networks (e.g. internal admin). It "
 "has no built-in authentication. If you expose the dashboard port to the "

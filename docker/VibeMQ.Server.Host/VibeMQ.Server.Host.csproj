@@ -7,6 +7,8 @@
     <Description>Standalone host for VibeMQ broker. Use for Docker and production deployments with configuration from environment and config files.</Description>
     <IsPackable>false</IsPackable>
     <PackAsTool>false</PackAsTool>
+    <!-- Required for Alpine / chiseled runtime images (no ICU in container) -->
+    <InvariantGlobalization>true</InvariantGlobalization>
   </PropertyGroup>
 
   <ItemGroup>

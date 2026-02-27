@@ -20,6 +20,31 @@ Build and run (from repository root):
 
 Clients can connect to ``localhost:2925``. By default the broker runs without authentication.
 
+Image variants
+--------------
+
+The default ``docker/Dockerfile`` builds a **size-optimized** image (Alpine, self-contained single-file).
+If you prefer a **framework-dependent** image (runs via ``dotnet`` in the container), build the ``runtime`` target:
+
+.. code-block:: bash
+
+   docker build -f docker/Dockerfile --target runtime -t vibemq .
+
+.. note::
+
+   Docker images are built with **invariant globalization** mode for smaller base images.
+   If your application relies on culture-specific formatting/parsing, test accordingly.
+
+Broker + Web UI image
+---------------------
+
+To run the broker with the embedded dashboard (port **12925**), build the Web UI image:
+
+.. code-block:: bash
+
+   docker build -f docker/Dockerfile.webui -t vibemq-webui .
+   docker run -p 2925:2925 -p 12925:12925 vibemq-webui
+
 Using Docker Compose
 --------------------
 
