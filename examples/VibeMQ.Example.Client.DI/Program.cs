@@ -16,9 +16,8 @@ var host = Host.CreateDefaultBuilder(args)
         services.AddVibeMQClient(settings => {
             settings.Host = "localhost";
             settings.Port = 2925;
-    #pragma warning disable CS0618
-        settings.ClientOptions.AuthToken = "my-secret-token";
-#pragma warning restore CS0618
+            settings.ClientOptions.Username = "vibemq";
+            settings.ClientOptions.Password = "my-secret-password";
             settings.ClientOptions.ReconnectPolicy = new ReconnectPolicy {
                 MaxAttempts = 5,
                 UseExponentialBackoff = true,

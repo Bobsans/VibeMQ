@@ -3,7 +3,6 @@ using Microsoft.Extensions.Logging;
 using VibeMQ.Client;
 using VibeMQ.Configuration;
 using VibeMQ.Enums;
-using VibeMQ.Interfaces;
 
 // ============================================================
 //  VibeMQ Example Client
@@ -27,16 +26,15 @@ Console.WriteLine();
 // Connect to broker
 Console.WriteLine("Connecting to broker at localhost:2925...");
 
-#pragma warning disable CS0618
 await using var client = await VibeMQClient.ConnectAsync("localhost", 2925, new ClientOptions {
-    AuthToken = "my-secret-token",
+    Username = "vibemq",
+    Password = "my-secret-password",
     ReconnectPolicy = new ReconnectPolicy {
         MaxAttempts = 5,
         UseExponentialBackoff = true,
     },
     KeepAliveInterval = TimeSpan.FromSeconds(30),
 }, logger);
-#pragma warning restore CS0618
 
 Console.WriteLine("Connected!");
 Console.WriteLine();
@@ -72,39 +70,39 @@ Console.WriteLine();
 
 // --- Subscriptions ---
 var notificationCount = 0;
-// await using var subNotifications = await client.SubscribeAsync<Notification>("notifications", notification => {
-//     var n = Interlocked.Increment(ref notificationCount);
-//     Console.WriteLine($"  [notifications:{n}] {notification.Title} — {notification.Body} (priority: {notification.Priority})");
-//     return Task.CompletedTask;
-// });
-// Console.WriteLine("Subscribed: notifications (RoundRobin, small messages).");
-//
+await using var subNotifications = await client.SubscribeAsync<Notification>("notifications", notification => {
+    var n = Interlocked.Increment(ref notificationCount);
+    Console.WriteLine($"  [notifications:{n}] {notification.Title} — {notification.Body} (priority: {notification.Priority})");
+    return Task.CompletedTask;
+});
+Console.WriteLine("Subscribed: notifications (RoundRobin, small messages).");
+
 var alertCount = 0;
-// await using var subAlerts = await client.SubscribeAsync<AlertEvent>("alerts", alert => {
-//     var n = Interlocked.Increment(ref alertCount);
-//     Console.WriteLine($"  [alerts:{n}] {alert.Source} | {alert.Level}: {alert.Message} (ts: {alert.Timestamp})");
-//     return Task.CompletedTask;
-// });
-// Console.WriteLine("Subscribed: alerts (FanOutWithAck, medium messages).");
-//
+await using var subAlerts = await client.SubscribeAsync<AlertEvent>("alerts", alert => {
+    var n = Interlocked.Increment(ref alertCount);
+    Console.WriteLine($"  [alerts:{n}] {alert.Source} | {alert.Level}: {alert.Message} (ts: {alert.Timestamp})");
+    return Task.CompletedTask;
+});
+Console.WriteLine("Subscribed: alerts (FanOutWithAck, medium messages).");
+
 var broadcastCount = 0;
-// await using var subBroadcast = await client.SubscribeAsync<BroadcastMessage>("broadcast", msg => {
-//     var n = Interlocked.Increment(ref broadcastCount);
-//     Console.WriteLine($"  [broadcast:{n}] {msg.Channel}: {msg.Text?.Length ?? 0} chars");
-//     return Task.CompletedTask;
-// });
-// Console.WriteLine("Subscribed: broadcast (FanOutWithoutAck, no ack required).");
-//
+await using var subBroadcast = await client.SubscribeAsync<BroadcastMessage>("broadcast", msg => {
+    var n = Interlocked.Increment(ref broadcastCount);
+    Console.WriteLine($"  [broadcast:{n}] {msg.Channel}: {msg.Text?.Length ?? 0} chars");
+    return Task.CompletedTask;
+});
+Console.WriteLine("Subscribed: broadcast (FanOutWithoutAck, no ack required).");
+
 var jobCount = 0;
-// await using var subJobs = await client.SubscribeAsync<JobPayload>("jobs", job => {
-//     var n = Interlocked.Increment(ref jobCount);
-//     var size = job.Payload is null ? 0 : job.Payload.Length;
-//     Console.WriteLine($"  [jobs:{n}] id={job.JobId} type={job.JobType} payloadSize={size}");
-//     return Task.CompletedTask;
-// });
-// Console.WriteLine("Subscribed: jobs (PriorityBased, variable size).");
-//
-// Console.WriteLine();
+await using var subJobs = await client.SubscribeAsync<JobPayload>("jobs", job => {
+    var n = Interlocked.Increment(ref jobCount);
+    var size = job.Payload?.Length ?? 0;
+    Console.WriteLine($"  [jobs:{n}] id={job.JobId} type={job.JobType} payloadSize={size}");
+    return Task.CompletedTask;
+});
+Console.WriteLine("Subscribed: jobs (PriorityBased, variable size).");
+
+Console.WriteLine();
 
 // --- Publish: small messages (notifications) ---
 Console.WriteLine("Publishing small messages to 'notifications' (RoundRobin)...");

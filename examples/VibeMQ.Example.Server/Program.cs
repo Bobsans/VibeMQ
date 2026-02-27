@@ -14,10 +14,13 @@ using var loggerFactory = LoggerFactory.Create(builder => {
         .AddConsole();
 });
 
-#pragma warning disable CS0618
 var broker = BrokerBuilder.Create()
     .UsePort(2925)
-    .UseAuthentication("my-secret-token")
+    .UseAuthorization(opts => {
+        opts.SuperuserUsername = "vibemq";
+        opts.SuperuserPassword = "my-secret-password";
+        opts.DatabasePath = "auth.db";
+    })
     .UseMaxConnections(500)
     .UseMaxMessageSize(1_048_576) // 1 MB
     .ConfigureQueues(options => {
@@ -32,14 +35,13 @@ var broker = BrokerBuilder.Create()
     })
     .UseLoggerFactory(loggerFactory)
     .Build();
-#pragma warning restore CS0618
 
 Console.WriteLine("╔══════════════════════════════════════════╗");
 Console.WriteLine("║          VibeMQ Message Broker            ║");
 Console.WriteLine("╚══════════════════════════════════════════╝");
 Console.WriteLine();
 Console.WriteLine("  Port:            2925");
-Console.WriteLine("  Auth:            Enabled (token-based)");
+Console.WriteLine("  Auth:            Enabled (username/password)");
 Console.WriteLine("  Max connections: 500");
 Console.WriteLine("  Queue auto-create: Yes");
 Console.WriteLine("  Web UI:          http://localhost:12925/");

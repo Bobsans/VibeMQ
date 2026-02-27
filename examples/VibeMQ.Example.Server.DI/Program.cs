@@ -1,6 +1,6 @@
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using VibeMQ.Configuration;
 using VibeMQ.Enums;
 using VibeMQ.Server.DependencyInjection;
 
@@ -14,10 +14,11 @@ var host = Host.CreateDefaultBuilder(args)
     .ConfigureServices(services => {
         services.AddVibeMQBroker(options => {
             options.Port = 2925;
-#pragma warning disable CS0618
-            options.EnableAuthentication = true;
-            options.AuthToken = "my-secret-token";
-#pragma warning restore CS0618
+            options.Authorization = new AuthorizationOptions {
+                SuperuserUsername = "vibemq",
+                SuperuserPassword = "my-secret-password",
+                DatabasePath = "auth.db",
+            };
             options.MaxConnections = 500;
             options.MaxMessageSize = 1_048_576; // 1 MB
             options.QueueDefaults.DefaultDeliveryMode = DeliveryMode.RoundRobin;
@@ -39,7 +40,7 @@ Console.WriteLine("║     VibeMQ Message Broker (DI)           ║");
 Console.WriteLine("╚══════════════════════════════════════════╝");
 Console.WriteLine();
 Console.WriteLine("  Port:            2925");
-Console.WriteLine("  Auth:            Enabled (token-based)");
+Console.WriteLine("  Auth:            Enabled (username/password)");
 Console.WriteLine("  Max connections: 500");
 Console.WriteLine("  Queue auto-create: Yes");
 Console.WriteLine();
