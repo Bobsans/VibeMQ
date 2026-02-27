@@ -308,6 +308,12 @@ public sealed partial class BrokerServer : IAsyncDisposable {
                 continue;
             }
 
+            // Client-initiated graceful disconnect: exit read loop so connection is cleaned up in finally
+            if (message.Type == CommandType.Disconnect) {
+                LogClientDisconnected(connection.Id);
+                break;
+            }
+
             await _commandDispatcher.DispatchAsync(connection, message, cancellationToken).ConfigureAwait(false);
         }
     }
@@ -358,6 +364,9 @@ public sealed partial class BrokerServer : IAsyncDisposable {
 
     [LoggerMessage(Level = LogLevel.Warning, Message = "TLS handshake failed for client {clientId}.")]
     private partial void LogTlsHandshakeFailed(string clientId, Exception exception);
+
+    [LoggerMessage(Level = LogLevel.Information, Message = "Client {clientId} disconnected.")]
+    private partial void LogClientDisconnected(string clientId);
 
     [LoggerMessage(Level = LogLevel.Debug, Message = "Client {clientId} disconnected abruptly.")]
     private partial void LogClientDisconnectedAbruptly(string clientId);
