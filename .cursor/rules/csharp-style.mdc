@@ -1,0 +1,10 @@
+---
+description: C# brace style — K&R
+globs: **/*.cs
+alwaysApply: false
+---
+
+# C#: brace style
+
+- Use **K&R** brace style for C# code (opening brace on the same line as the declaration).
+- Apply this style consistently in all C# files.
