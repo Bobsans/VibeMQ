@@ -20,6 +20,7 @@
     <Project Path="src/VibeMQ.Server.DependencyInjection/VibeMQ.Server.DependencyInjection.csproj" />
     <Project Path="src/VibeMQ.Server.WebUI/VibeMQ.Server.WebUI.csproj" />
     <Project Path="src/VibeMQ.Server.Storage.Sqlite/VibeMQ.Server.Storage.Sqlite.csproj" />
+    <Project Path="src/VibeMQ.Server.Storage.Redis/VibeMQ.Server.Storage.Redis.csproj" />
   </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/VibeMQ.Tests.Integration/VibeMQ.Tests.Integration.csproj" />

@@ -25,6 +25,8 @@ bld/
 [Ll]og/
 [Ll]ogs/
 artifacts/
+benchmarks/publish-linux/
+benchmarks/publish-linux-arm64/
 
 ## NuGet
 *.nupkg

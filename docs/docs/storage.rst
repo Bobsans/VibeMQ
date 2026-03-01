@@ -30,8 +30,10 @@ Storage Providers
 +--------------------------------------+--------------------------------------------+
 | ``SqliteStorageProvider``            | SQLite-based. Zero-config, single-file DB. |
 +--------------------------------------+--------------------------------------------+
+| ``RedisStorageProvider``             | Redis-backed. Low latency, optional.       |
++--------------------------------------+--------------------------------------------+
 
-Future providers (RocksDB, PostgreSQL, Redis) are planned — see the project roadmap.
+Future providers (RocksDB, PostgreSQL) are planned — see the project roadmap.
 
 Quick Start
 ===========
@@ -91,6 +93,55 @@ Or via Dependency Injection:
 .. note::
 
    Register the storage provider **before** ``AddVibeMQBroker`` so that the broker picks it up from the DI container.
+
+Redis
+-----
+
+Install the package:
+
+.. code-block:: bash
+
+   dotnet add package VibeMQ.Server.Storage.Redis
+
+Configure via the fluent builder:
+
+.. code-block:: csharp
+
+   using VibeMQ.Server;
+   using VibeMQ.Server.Storage.Redis;
+
+   var broker = BrokerBuilder.Create()
+       .UsePort(2925)
+       .UseRedisStorage("localhost:6379", options => {
+           options.Database = 0;
+           options.KeyPrefix = "vibemq";
+       })
+       .Build();
+
+   await broker.RunAsync(cancellationToken);
+
+Or via Dependency Injection (connection string or configuration section):
+
+.. code-block:: csharp
+
+   using VibeMQ.Server.DependencyInjection;
+   using VibeMQ.Server.Storage.Redis;
+
+   services.AddVibeMQRedisStorage("localhost:6379", options => {
+       options.KeyPrefix = "vibemq";
+   });
+   services.AddVibeMQBroker(options => { options.Port = 2925; });
+
+With configuration (e.g. ``appsettings.json`` section ``VibeMQ:Storage:Redis`` or ``ConnectionStrings:Redis``):
+
+.. code-block:: csharp
+
+   services.AddVibeMQRedisStorage(configuration.GetSection("VibeMQ:Storage:Redis"));
+   services.AddVibeMQBroker(options => { options.Port = 2925; });
+
+.. note::
+
+   Redis is a network backend; ensure the instance is reachable and consider timeouts (``ConnectTimeoutMs``, ``SyncTimeoutMs``) for your environment.
 
 SQLite Configuration
 ====================
@@ -162,6 +213,30 @@ The SQLite provider automatically creates the following tables on first startup:
 .. note::
 
    Deleting a queue (``RemoveQueueAsync``) cascade-deletes all its messages via the foreign key constraint.
+
+Redis Configuration
+===================
+
+RedisStorageOptions
+-------------------
+
++---------------------------+----------------------+--------------------------------------------------+
+| Parameter                 | Default              | Description                                      |
++===========================+======================+==================================================+
+| ``ConnectionString``      | ``"localhost:6379"`` | Redis connection string (host:port, etc.)        |
++---------------------------+----------------------+--------------------------------------------------+
+| ``Database``              | ``0``                | Redis database number                            |
++---------------------------+----------------------+--------------------------------------------------+
+| ``KeyPrefix``             | ``"vibemq"``         | Key prefix for all VibeMQ keys                   |
++---------------------------+----------------------+--------------------------------------------------+
+| ``DefaultQueueTtlSeconds``| ``0``                | TTL for message keys (0 = no TTL)                |
++---------------------------+----------------------+--------------------------------------------------+
+| ``ConnectTimeoutMs``      | ``5000``             | Connection timeout in milliseconds               |
++---------------------------+----------------------+--------------------------------------------------+
+| ``SyncTimeoutMs``         | ``5000``             | Per-operation sync timeout in milliseconds       |
++---------------------------+----------------------+--------------------------------------------------+
+
+Redis uses LIST for pending message order, HASH for message and queue metadata, and a SET for queue names. Keys follow ``{KeyPrefix}:q:{queue}:meta``, ``{KeyPrefix}:q:{queue}:pending``, ``{KeyPrefix}:m:{id}``, etc.
 
 How Persistence Works
 =====================

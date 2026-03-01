@@ -16,6 +16,7 @@ Version 1.7.0 (unreleased)
 
 **New features:**
 
+- **Redis persistence provider** — optional package ``VibeMQ.Server.Storage.Redis``; ``RedisStorageProvider`` implements ``IStorageProvider`` using Redis (LIST + HASH). ``BrokerBuilder.UseRedisStorage(connectionString, configure)``, ``AddVibeMQRedisStorage(services, connectionString, configure)``, and ``AddVibeMQRedisStorage(services, IConfiguration)`` for config section ``VibeMQ:Storage:Redis`` or ``ConnectionStrings:Redis``. Options: ``ConnectionString``, ``Database``, ``KeyPrefix``, ``ConnectTimeoutMs``, ``SyncTimeoutMs``.
 - **Web UI dashboard** — optional package ``VibeMQ.Server.WebUI``; Vue 3 SPA for monitoring (health, metrics, queues) on a separate HTTP port (default 12925)
 - **``RunWithWebUIAsync()``** — extension method to run broker and Web UI in one call
 - **``WebUIServer``** — HttpListener-based server; API endpoints ``/api/health``, ``/api/metrics``, ``/api/queues``, ``/api/queues/{name}``
@@ -27,6 +28,7 @@ Version 1.7.0 (unreleased)
 - New :doc:`web-ui` guide (quick start, options, API, building frontend)
 - Client usage and DI integration: connection string format, examples, configuration keys
 - Docker images: size-optimized Alpine builds (self-contained single-file) for broker and Web UI
+- Storage guide: Redis provider quick start, options, and configuration examples
 
 Version 1.6.1
 -------------

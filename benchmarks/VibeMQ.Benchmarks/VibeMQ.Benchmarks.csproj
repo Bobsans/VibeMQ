@@ -5,7 +5,7 @@
     <RootNamespace>VibeMQ.Benchmarks</RootNamespace>
     <IsPackable>false</IsPackable>
     <!-- Relax code analysis for benchmark projects -->
-    <NoWarn>$(NoWarn);CA1001;CA1050;CA1305;CA1848</NoWarn>
+    <NoWarn>$(NoWarn);CA1001;CA1050;CA1305;CA1848;CA1822;CA1859</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,8 +13,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="..\linux\README.md" Link="README.md" CopyToPublishDirectory="PreserveNewest" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\..\src\VibeMQ.Core\VibeMQ.Core.csproj" />
     <ProjectReference Include="..\..\src\VibeMQ.Server\VibeMQ.Server.csproj" />
+    <ProjectReference Include="..\..\src\VibeMQ.Server.Storage.Sqlite\VibeMQ.Server.Storage.Sqlite.csproj" />
+    <ProjectReference Include="..\..\src\VibeMQ.Server.Storage.Redis\VibeMQ.Server.Storage.Redis.csproj" />
     <ProjectReference Include="..\..\src\VibeMQ.Client\VibeMQ.Client.csproj" />
   </ItemGroup>
 
