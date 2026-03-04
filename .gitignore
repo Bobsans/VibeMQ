@@ -75,3 +75,7 @@ desktop.ini
 ## Environment
 .env
 .env.*
+
+## Python (e.g. docs Sphinx venv)
+.venv/
+venv/
