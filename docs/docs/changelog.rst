@@ -11,8 +11,12 @@ VibeMQ project change history.
 Version History
 ================
 
-Version 1.7.0 (unreleased)
---------------------------
+Version 1.7.0
+-------------
+
+**Date:** March 2026
+
+**Status:** Current Stable Version
 
 **New features:**
 
@@ -31,6 +35,10 @@ Version 1.7.0 (unreleased)
 - Storage guide: Redis provider quick start, options, and configuration examples
 - Configuration and storage docs aligned with code: ``BrokerOptions`` no longer has ``StorageType`` (persistence is configured via ``UseSqliteStorage``/``UseRedisStorage``); ``ClientOptions`` documents ``Username``/``Password``; ``QueueDefaults`` does not include ``OverflowStrategy`` (use ``QueueOptions`` when creating queues); ``RedisStorageOptions`` table corrected (removed non-existent ``DefaultQueueTtlSeconds``)
 - Full docs pass: FAQ (persistence, server restart), features (MaxRetryAttempts in QueueOptions), examples (CQRS extra brace), docker (StorageType Host-specific note), installation (env vars ``VIBEMQ__*`` / ``VIBEMQCLIENT__*`` for .NET config)
+
+**Planned for 1.8.0:**
+
+- All APIs currently marked ``Obsolete`` (e.g. ``BrokerOptions.AuthToken``, ``ClientOptions.AuthToken``, ``UseAuthentication(token)``, ``IMessageStore``) will be **removed** in version 1.8.0. Migrate to ``UseAuthorization`` / ``Username``/``Password`` and ``IStorageProvider`` before upgrading to 1.8.0.
 
 Version 1.6.1
 -------------
