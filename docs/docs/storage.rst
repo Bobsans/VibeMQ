@@ -229,8 +229,6 @@ RedisStorageOptions
 +---------------------------+----------------------+--------------------------------------------------+
 | ``KeyPrefix``             | ``"vibemq"``         | Key prefix for all VibeMQ keys                   |
 +---------------------------+----------------------+--------------------------------------------------+
-| ``DefaultQueueTtlSeconds``| ``0``                | TTL for message keys (0 = no TTL)                |
-+---------------------------+----------------------+--------------------------------------------------+
 | ``ConnectTimeoutMs``      | ``5000``             | Connection timeout in milliseconds               |
 +---------------------------+----------------------+--------------------------------------------------+
 | ``SyncTimeoutMs``         | ``5000``             | Per-operation sync timeout in milliseconds       |
@@ -488,11 +486,13 @@ appsettings.json (SQLite)
    {
      "VibeMQ": {
        "Port": 2925,
-       "StorageType": "Sqlite",
        "EnableAuthentication": true,
        "AuthToken": "my-secret-token"
      }
    }
+
+Persistence is configured via ``UseSqliteStorage`` / ``UseRedisStorage`` on the
+builder or via DI (e.g. ``AddVibeMQSqliteStorage``), not via ``BrokerOptions``.
 
 Migration from Previous Versions
 =================================

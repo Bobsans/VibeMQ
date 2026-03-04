@@ -288,12 +288,12 @@ Remove oldest message on overflow:
 DropNewest
 ----------
 
-Reject new message:
+Reject new message. Set via ``QueueOptions`` when creating a queue (not in ``QueueDefaults``):
 
 .. code-block:: csharp
 
-   .ConfigureQueues(options => {
-       options.OverflowStrategy = OverflowStrategy.DropNewest;
+   await client.CreateQueueAsync("my-queue", new QueueOptions {
+       OverflowStrategy = OverflowStrategy.DropNewest
    });
 
 **When to use:**

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: VibeMQ 1.0.0\n"
 "Report-Msgid-Bugs-To: https://github.com/DarkBoy/VibeMQ/issues\n"
-"POT-Creation-Date: 2026-02-24 10:27+0300\n"
+"POT-Creation-Date: 2026-03-04 10:40+0300\n"
 "PO-Revision-Date: 2026-02-24 12:00+0300\n"
 "Last-Translator: Darkboy\n"
 "Language: ru\n"
@@ -19,11 +19,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.18.0\n"
 
-#: ../../docs/architecture.rst:3 8b1dfbef965c4a85a3af427ea0928a91
+#: ../../docs/architecture.rst:3 a6f34074c42d4260a9abe51623c40183
 msgid "Architecture"
 msgstr "Архитектура"
 
-#: ../../docs/architecture.rst:5 badd5de27c8e4be8ab0c876616c67a46
+#: ../../docs/architecture.rst:5 b92c9dea6b464e05950f5b30107b372f
 msgid ""
 "This guide describes the internal architecture of VibeMQ and its "
 "operating principles."
@@ -31,15 +31,15 @@ msgstr ""
 "В этом руководстве описывается внутренняя архитектура VibeMQ и принципы "
 "его работы."
 
-#: ../../docs/architecture.rst:9 9d196b4bf5b1475695abda6df51c411f
+#: ../../docs/architecture.rst:9 12a5e2babccb49f487856e3e26cf87b7
 msgid "Contents"
 msgstr "Содержание"
 
-#: ../../docs/architecture.rst:12 9e74f6c971084f19addd238f699c8e1a
+#: ../../docs/architecture.rst:12 f063edd8c24b43778dd3140a332b871c
 msgid "Architecture Overview"
 msgstr "Обзор архитектуры"
 
-#: ../../docs/architecture.rst:14 1f8528b322e949499c879ea145bb5356
+#: ../../docs/architecture.rst:14 6e86b5797e43486c96cd2b244e70aaab
 msgid ""
 "VibeMQ is built on a modular principle and consists of several "
 "independent components that interact through clearly defined interfaces."
@@ -48,579 +48,599 @@ msgstr ""
 "независимых компонентов, взаимодействующих через четко определенные "
 "интерфейсы."
 
-#: ../../docs/architecture.rst:51 0b823d6f8be3482ea39787596ab2ce1d
+#: ../../docs/architecture.rst:51 57e8c64bdb004229afd12c059c67a8cf
 msgid "System Components"
 msgstr "Компоненты системы"
 
-#: ../../docs/architecture.rst:54 8070cc8f9f8041a38413a2eed8bb3a73
+#: ../../docs/architecture.rst:54 09e44be772fa415b98a31d7cc9d438cb
 msgid "VibeMQ.Core"
 msgstr "VibeMQ.Core"
 
-#: ../../docs/architecture.rst:56 9942d3090b644ed1bc5679739266bb03
+#: ../../docs/architecture.rst:56 fac63b9fa5b34cada6a7f94fd319c535
 msgid "**Purpose:** Basic models, interfaces, and configuration."
 msgstr "**Цель:** Базовые модели, интерфейсы и конфигурации."
 
-#: ../../docs/architecture.rst:58 8596cfe7512b43ab8d7413124e336785
+#: ../../docs/architecture.rst:58 3d7ec531ce6f4903ba705d9265b82ac2
 msgid "**Main types:**"
 msgstr "**Основные типы:**"
 
-#: ../../docs/architecture.rst:64 f218e9be015b4510843372bcd1a4daff
+#: ../../docs/architecture.rst:64 16dcd8f2889148ebb36455c0f4bf520b
 msgid "Type"
 msgstr "Тип"
 
-#: ../../docs/architecture.rst:65 b9e05091891a466dbbae9e8526b49d0f
+#: ../../docs/architecture.rst:65 290febd053ae4acba8c6a6ca3eb72ec7
 msgid "Description"
 msgstr "Описание"
 
-#: ../../docs/architecture.rst:66 076447ea9b9d4b408c28940c003725ee
+#: ../../docs/architecture.rst:66 43d3c136d5e24f81a2bfec16cdeecc57
 msgid "``BrokerMessage``"
 msgstr "``BrokerMessage``"
 
-#: ../../docs/architecture.rst:67 d4874dde2af642f2881bb0021c6fa213
+#: ../../docs/architecture.rst:67 4e45504d1d1b4a24828f2c931c5ab429
 msgid "Broker message model"
 msgstr "Модель сообщения брокера"
 
-#: ../../docs/architecture.rst:68 96397c6a50704c9ea3caa6ac49f6f214
+#: ../../docs/architecture.rst:68 a7d4019dc5664155a6647e07663734fe
 msgid "``QueueInfo``"
 msgstr "``QueueInfo``"
 
-#: ../../docs/architecture.rst:69 14fa589f0f24442fb9db516529a46702
+#: ../../docs/architecture.rst:69 eea44a9e5d9343b0b885f899781d3571
 msgid "Queue state information"
 msgstr "Информация о состоянии очереди"
 
-#: ../../docs/architecture.rst:70 31fcceb3ef6b4912b592eb266ca3e27e
+#: ../../docs/architecture.rst:70 cc3168f313674aef84d6d03e6c77854e
 msgid "``BrokerOptions``"
 msgstr "``BrokerOptions``"
 
-#: ../../docs/architecture.rst:71 5f608aab168243d1b9233353639b8304
+#: ../../docs/architecture.rst:71 0e8a41605c4c4a6ea5da8a67cea23133
 msgid "Server configuration"
 msgstr "Конфигурация сервера"
 
-#: ../../docs/architecture.rst:72 2deaa4ca22df4fe19797ba0581abb6c7
+#: ../../docs/architecture.rst:72 ce08b4b4c6ed457dbc502f582ee6c94d
 msgid "``QueueOptions``"
 msgstr "``QueueOptions``"
 
-#: ../../docs/architecture.rst:73 fcae86696dd94bc585466c6ad0d01012
+#: ../../docs/architecture.rst:73 75df2775ccd64b60b7f70389d6ca7e0c
 msgid "Queue settings"
 msgstr "Настройки очереди"
 
-#: ../../docs/architecture.rst:74 800c209c191d4d9a8ff6e32b017552ff
+#: ../../docs/architecture.rst:74 3b817a976bd84fb1bfd704a14729a06f
 msgid "``ClientOptions``"
 msgstr "``ClientOptions``"
 
-#: ../../docs/architecture.rst:75 7cadcd431dfa40d0979f966d8e8693c5
+#: ../../docs/architecture.rst:75 47790f48d92a4314a72ac38742b9759d
 msgid "Client settings"
 msgstr "Настройки клиента"
 
-#: ../../docs/architecture.rst:76 984a58a73d6d4b38b18503c860872a8e
+#: ../../docs/architecture.rst:76 7e1a763d5b6844e28d7ca53644c0e4f6
 msgid "``IQueueManager``"
 msgstr "``IQueueManager``"
 
-#: ../../docs/architecture.rst:77 b0806415876e4e5ea1975eda14d719e0
+#: ../../docs/architecture.rst:77 790417ef345f4cb7a523c9d79f0ede9e
 msgid "Queue management interface"
 msgstr "Интерфейс управления очередью"
 
-#: ../../docs/architecture.rst:78 34a830a108ae40c9a9db788ec9f2911a
+#: ../../docs/architecture.rst:78 3bab0eba7d9847ea9f78f9a222bc0ecb
+msgid "``IStorageProvider``"
+msgstr ""
+
+#: ../../docs/architecture.rst:79 eab66ccf591e4d1a94a032bf241c42d9
+msgid "Persistence interface (messages, queues, DLQ). See :doc:`storage`."
+msgstr ""
+
+#: ../../docs/architecture.rst:80 4e9aa9fafe7d46fc873518986d292e78
 msgid "``IMessageStore``"
 msgstr "``IMessageStore``"
 
-#: ../../docs/architecture.rst:79 f869db2ee2804fce9ccd21d48cd7d91b
-msgid "Message store interface"
-msgstr "Интерфейс хранилища сообщений"
+#: ../../docs/architecture.rst:81 1386fb7947d345128ecc18b1a8f24ae2
+msgid "Deprecated; use ``IStorageProvider``."
+msgstr ""
 
-#: ../../docs/architecture.rst:80 6821b89752ae4e28a97187dcf181814d
+#: ../../docs/architecture.rst:82 f46a226500b74d87b73fd33355f9110c
 msgid "``IAuthenticationService``"
 msgstr "``IAuthenticationService``"
 
-#: ../../docs/architecture.rst:81 31faa95b2b16481488f21f0312921606
+#: ../../docs/architecture.rst:83 e8c056311b7c45e09657a9d82ea4d451
 msgid "Authentication interface"
 msgstr "Интерфейс аутентификации"
 
-#: ../../docs/architecture.rst:82 6f98ee5926934119b5e95341aa05069f
+#: ../../docs/architecture.rst:84 903f12089d5e478aae3a15748197f75d
 msgid "``IBrokerMetrics``"
 msgstr "``IBrokerMetrics``"
 
-#: ../../docs/architecture.rst:83 c6824f17964d49cab7431d4e420c242a
+#: ../../docs/architecture.rst:85 ba04727146564ca3af96c79b916fc368
 msgid "Metrics collection interface"
 msgstr "Интерфейс сбора метрик"
 
-#: ../../docs/architecture.rst:85 a7de6d17a562499bad7abbfba0d41b4d
+#: ../../docs/architecture.rst:87 4630d1833b9c42b6916132c65aa66102
 msgid "**Enumerations:**"
 msgstr "**Перечисления:**"
 
-#: ../../docs/architecture.rst:87 be5be20e69c043c18619c2c10ae832db
-msgid "``DeliveryMode`` — delivery mode (RoundRobin, FanOut, Priority)"
+#: ../../docs/architecture.rst:89 98e48e0414234f65bdb49bf20819f0e9
+#, fuzzy
+msgid ""
+"``DeliveryMode`` — delivery mode (RoundRobin, FanOutWithAck, "
+"FanOutWithoutAck, PriorityBased)"
 msgstr "``DeliveryMode`` — режим доставки (RoundRobin, FanOut, Priority)"
 
-#: ../../docs/architecture.rst:88 aaf9c5d9f5ed47f68004be606f244865
+#: ../../docs/architecture.rst:90 b7920eee315e4b6598fa2d623e31760d
 msgid "``MessagePriority`` — message priority (Low, Normal, High, Critical)"
 msgstr ""
 "``MessagePriority`` — приоритет сообщения (Низкий, Нормальный, Высокий, "
 "Критический)"
 
-#: ../../docs/architecture.rst:89 8d9c5c366bfd42c8ae5a198d7dce6dfb
+#: ../../docs/architecture.rst:91 d776e12f32574360be712dc67c5fd107
 msgid "``OverflowStrategy`` — overflow strategy"
 msgstr "``OverflowStrategy`` — стратегия переполнения"
 
-#: ../../docs/architecture.rst:90 5f5331b8c40944fdbb6d11c16646e1b9
+#: ../../docs/architecture.rst:92 673a65b61ae54549bfdca32f0b49c4de
 msgid "``FailureReason`` — failure reason"
 msgstr "``FailureReason`` — причина сбоя"
 
-#: ../../docs/architecture.rst:91 1db4485a5bf64f918016bd496d7b0a2b
+#: ../../docs/architecture.rst:93 7b25675a83eb4adebd00bab18f8c5e3d
 msgid "``CommandType`` — protocol command type"
 msgstr "``CommandType`` — тип команды протокола"
 
-#: ../../docs/architecture.rst:94 43aee04f7cc54aa4bd7557c03bf48fee
+#: ../../docs/architecture.rst:96 089297d1f0114d668d6d8e91c334ad81
 msgid "VibeMQ.Protocol"
 msgstr "VibeMQ.Протокол"
 
-#: ../../docs/architecture.rst:96 60c610e5806e48228ac5a6eaa7749984
+#: ../../docs/architecture.rst:98 ab7d58aa2a5c47aeae62eeaa42336edd
 msgid "**Purpose:** Message serialization and TCP transmission."
 msgstr "**Цель:** сериализация сообщений и передача по TCP."
 
-#: ../../docs/architecture.rst:98 80a7004f9d7d408a8ada15156775572a
+#: ../../docs/architecture.rst:100 37b622dbc264476d9214cb2151173d64
 msgid "**Framing:**"
 msgstr "**Кадрирование:**"
 
-#: ../../docs/architecture.rst:100 6304d01520c247c48ab3b90333a02ca6
-msgid "Uses length-prefix approach for message separation in TCP stream:"
-msgstr "Использует подход с префиксом длины для разделения сообщений в потоке TCP:"
+#: ../../docs/architecture.rst:102 e7e975fe89fd415d88f6da3f9ca76b3a
+msgid ""
+"Uses length-prefix framing with optional per-frame compression. See "
+":doc:`protocol` for details."
+msgstr ""
 
-#: ../../docs/architecture.rst:106 e1c85f5a332e44849319626660b08d1f
+#: ../../docs/architecture.rst:108 152a866b457144cf88698ed246486bd9
+msgid ""
+"The body is binary (not JSON on the wire). Compression flags: 0 = none, 1"
+" = GZip, 2 = Brotli."
+msgstr ""
+
+#: ../../docs/architecture.rst:110 db20c0dd2adc4569a79d7563e295bfc8
 msgid "**Components:**"
 msgstr "**Компоненты:**"
 
-#: ../../docs/architecture.rst:108 1a2d06458ddd4aca8e1353e7a2803b6e
+#: ../../docs/architecture.rst:112 1f20cbc0205e45fc99cd80bae37446ac
 msgid "``FrameReader`` — read frames from stream"
 msgstr "``FrameReader`` — прочитать кадры из потока"
 
-#: ../../docs/architecture.rst:109 ca0278a8c8cb4056a69fb82dddd30b48
+#: ../../docs/architecture.rst:113 ce0b0a4b1a0c414a98571020407e34ea
 msgid "``FrameWriter`` — write frames to stream"
 msgstr "``FrameWriter`` — запись кадров в поток"
 
-#: ../../docs/architecture.rst:110 70233c9bcf714d69ab4f3ff7e559b1f7
+#: ../../docs/architecture.rst:114 0be2ec27b9d44c5a85b32596015ef3f5
 msgid "``WriteBatcher`` — message batching for performance"
 msgstr ""
 "``WriteBatcher`` — пакетирование сообщений для повышения "
 "производительности"
 
-#: ../../docs/architecture.rst:111 a6964a053eea4a8b8306da894ae378a5
+#: ../../docs/architecture.rst:115 7f3a67d3ae55481c916c48ad1c29bb01
 msgid "``ProtocolMessage`` — base class for protocol message"
 msgstr "``ProtocolMessage`` — базовый класс для сообщения протокола"
 
-#: ../../docs/architecture.rst:113 e7d693201043416ba1f48bd5f55e7286
+#: ../../docs/architecture.rst:117 2d288c950c9e42ac821c0b5ac8cb3292
 msgid "**Message format:**"
 msgstr "**Формат сообщения:**"
 
-#: ../../docs/architecture.rst:130 8827d50a4dea4f5c9ed72572b260bc57
+#: ../../docs/architecture.rst:134 f78e56852a814e568c2815c09c2fbcf9
 msgid "VibeMQ.Server"
 msgstr "VibeMQ.Сервер"
 
-#: ../../docs/architecture.rst:132 109508dc73a241a0aadc937bb947fdf6
+#: ../../docs/architecture.rst:136 e97591c283c1436bbd46f72b39d0adc6
 msgid "**Purpose:** Broker server implementation."
 msgstr "**Цель:** Реализация брокерского сервера."
 
-#: ../../docs/architecture.rst:134 174dfc2fd6d843828ea566b57e4367a6
+#: ../../docs/architecture.rst:138 1e3de5d1b744496895e2abaabef57d92
 msgid "**Key components:**"
 msgstr "**Основные компоненты:**"
 
-#: ../../docs/architecture.rst:136 8bd630edb649473aa7adb6e6a0430b99
+#: ../../docs/architecture.rst:140 f4f8ceb2cdd145e9b00180e25b131496
 msgid "**BrokerServer** — main server class:"
 msgstr "**BrokerServer** — основной класс сервера:"
 
-#: ../../docs/architecture.rst:150 5f962fe2c99c42feb7fff6a4cf7a32d9
+#: ../../docs/architecture.rst:157 292620e0d3c94437b3b7b7977c0e6d3f
 msgid "**BrokerBuilder** — Fluent API for configuration:"
 msgstr "**BrokerBuilder** — Fluent API для настройки:"
 
-#: ../../docs/architecture.rst:160 0b5841ac81454edfa741bd2e72e65f39
+#: ../../docs/architecture.rst:167 8c192cabcd974b0aa423214ea7d16ab3
 msgid "**QueueManager** — queue management:"
 msgstr "**QueueManager** — управление очередью:"
 
-#: ../../docs/architecture.rst:162 3e6de79782394ec9a309be50406b8137
+#: ../../docs/architecture.rst:169 89a0949debb54213adb2a261362c3282
 msgid "Queue creation and deletion"
 msgstr "Создание и удаление очереди"
 
-#: ../../docs/architecture.rst:163 10de94c704e24e93bcdb92398ba38c6c
+#: ../../docs/architecture.rst:170 d73479050ea24b92a400cc91d37d850f
 msgid "Message publishing"
 msgstr "Публикация сообщений"
 
-#: ../../docs/architecture.rst:164 169952ddea3048aaa00e4d2605a78830
+#: ../../docs/architecture.rst:171 077c43f6645e49d3be2b79e8a3ae6c3c
 msgid "Client subscription and unsubscription"
 msgstr "Подписка и отписка клиента"
 
-#: ../../docs/architecture.rst:165 dafa050df7204698b2b79e18524ffce4
+#: ../../docs/architecture.rst:172 fc3b6314385c4680b11e452b157eb689
 msgid "Message acknowledgment"
 msgstr "Подтверждение сообщения"
 
-#: ../../docs/architecture.rst:167 7d195f2e59624c32bec4d2e5ebd92114
+#: ../../docs/architecture.rst:174 bc3e8286f2dd4c4086e18500f17d8aab
 msgid "**ConnectionManager** — connection management:"
 msgstr "**ConnectionManager** — управление соединениями:"
 
-#: ../../docs/architecture.rst:169 2eed93af597847b197324e2cd2e2fde6
+#: ../../docs/architecture.rst:176 5f6989becf8243a6be8b898b0e72192f
 msgid "Active connection tracking"
 msgstr "Активное отслеживание соединений"
 
-#: ../../docs/architecture.rst:170 7e3b3083eaea402a91ccc432ae3734e4
+#: ../../docs/architecture.rst:177 c4315c2a06004f5b80777b9e6c8df8ba
 msgid "Message routing to subscribers"
 msgstr "Маршрутизация сообщений подписчикам"
 
-#: ../../docs/architecture.rst:171 83bba3b94f44427a8c2ac68192e7cbe3
+#: ../../docs/architecture.rst:178 fc7fb1364d8547d4a486be9b74963e1b
 msgid "Connection lifecycle management"
 msgstr "Управление жизненным циклом соединения"
 
-#: ../../docs/architecture.rst:173 001dbb2164d84a988a079feb85e8cd1e
+#: ../../docs/architecture.rst:180 c341c16bd1c64f3aa5e1cbad9433abf8
 msgid "**CommandDispatcher** — command handling:"
 msgstr "**CommandDispatcher** — обработка команд:"
 
-#: ../../docs/architecture.rst:175 627acec3bc8d4af59ad5195f34e1c35d
+#: ../../docs/architecture.rst:182 2d5ed6f1ad844f0a9c3fe899c2519728
 msgid "``ConnectHandler`` — connection establishment"
 msgstr "``ConnectHandler`` — установление соединения"
 
-#: ../../docs/architecture.rst:176 e31c34f1ae404567a099f7c82c07b056
+#: ../../docs/architecture.rst:183 2864c26d85c54aa7bf391feadd5c2752
 msgid "``PublishHandler`` — message publishing"
 msgstr "``PublishHandler`` — публикация сообщения"
 
-#: ../../docs/architecture.rst:177 417f0044aaa34fdf962b3002b5055ad0
+#: ../../docs/architecture.rst:184 301e323f6c3b4a75a8af9f7b0a6ee304
 msgid "``SubscribeHandler`` — queue subscription"
 msgstr "``SubscribeHandler`` — подписка на очередь"
 
-#: ../../docs/architecture.rst:178 3183aee1fa024371a19ad80e5776d574
+#: ../../docs/architecture.rst:185 b4895cf0a5df4726bc514f46ceb98093
 msgid "``UnsubscribeHandler`` — queue unsubscription"
 msgstr "``UnsubscribeHandler`` — отписка от очереди"
 
-#: ../../docs/architecture.rst:179 90c715f9b9b647d497350e321aed4022
+#: ../../docs/architecture.rst:186 ccb4accf91684a0aa900b67f41c53a64
 msgid "``AckHandler`` — acknowledgment handling"
 msgstr "``AckHandler`` — обработка подтверждения"
 
-#: ../../docs/architecture.rst:180 ce8c37c6761d41f584045c7173d87494
+#: ../../docs/architecture.rst:187 3374974627324c30abad09301fee1db6
 msgid "``PingHandler`` — keep-alive"
 msgstr "``PingHandler`` — поддерживать активность"
 
-#: ../../docs/architecture.rst:182 7e484fec33dc43a98eb36cca46a2c453
+#: ../../docs/architecture.rst:189 0322f3b038f345a2a6a10efac0e7748b
 msgid "**AckTracker** — acknowledgment tracking:"
 msgstr "**AckTracker** — отслеживание подтверждений:"
 
-#: ../../docs/architecture.rst:184 5152363ab9b1480794a331fcc635c32e
+#: ../../docs/architecture.rst:191 426f0db5e71a4f9e8259c2ea5f3ab82f
 msgid "Unacknowledged message tracking"
 msgstr "Отслеживание неподтвержденных сообщений"
 
-#: ../../docs/architecture.rst:185 70f7bb3cc54546479cb82a91cb12c523
+#: ../../docs/architecture.rst:192 268ff193e96e476b979318845d3aee09
 msgid "Timeouts and retry attempts"
 msgstr "Тайм-ауты и повторные попытки"
 
-#: ../../docs/architecture.rst:186 1b588879c39a49659e73c9f74ce1f931
+#: ../../docs/architecture.rst:193 ec546c4182e049fdaf7e7053d59d3d03
 msgid "Exponential backoff between retries"
 msgstr "Экспоненциальная задержка между повторными попытками"
 
-#: ../../docs/architecture.rst:188 8e098ab42b6245039875bffa1b188e7b
+#: ../../docs/architecture.rst:195 106e425bb74446b9bd2179975b12e718
 msgid "**DeadLetterQueue** — failed message queue:"
 msgstr "**DeadLetterQueue** — очередь сообщений с ошибкой:"
 
-#: ../../docs/architecture.rst:190 78c932eb3bce447687d0465a4994ce14
+#: ../../docs/architecture.rst:197 9559627c96a841c597421c6479b06770
 msgid "Store messages with failed delivery"
 msgstr "Хранить сообщения с неудачной доставкой"
 
-#: ../../docs/architecture.rst:191 207a0ed94601476089e13bf27a9ff798
+#: ../../docs/architecture.rst:198 14b3cafdd3d24908ad834884eb1c91a3
 msgid "Re-processing mechanism"
 msgstr "Механизм повторной обработки"
 
-#: ../../docs/architecture.rst:193 35ae8bb95e25487a97f91d4c8ede269f
+#: ../../docs/architecture.rst:200 579554af13ff4169889aef6791ba4aef
 msgid "**RateLimiter** — rate limiting:"
 msgstr "**RateLimiter** — ограничение скорости:"
 
-#: ../../docs/architecture.rst:195 18dc781eea424bb99797f59111565971
+#: ../../docs/architecture.rst:202 3b6671ddf389469b8c3cab846627e64d
 msgid "IP-based rate limiting for connections"
 msgstr "Ограничение скорости соединений на основе IP"
 
-#: ../../docs/architecture.rst:196 57295833cb5f46cf8e6694ee466e9adf
+#: ../../docs/architecture.rst:203 d4c12f4d8b274318a6ecf900b6d5a63c
 msgid "Client-based rate limiting for messages"
 msgstr "Ограничение скорости сообщений на основе клиента"
 
-#: ../../docs/architecture.rst:199 7382d1459d3e4ff3a82aa83af829d9b5
+#: ../../docs/architecture.rst:206 6a7c9432725549a2bcefae40039a7c23
 msgid "VibeMQ.Client"
 msgstr "VibeMQ.Клиент"
 
-#: ../../docs/architecture.rst:201 dca12b22181942cb86c20d25e2e59563
+#: ../../docs/architecture.rst:208 3c8847d5baa24735ad27437b9aa4888f
 msgid "**Purpose:** Client for broker connection."
 msgstr "**Цель:** Клиент для подключения к брокеру."
 
-#: ../../docs/architecture.rst:203 da5eba5676f74a9283de0177a7f1969e
+#: ../../docs/architecture.rst:210 5a8f80829dc94d1085d543397cbd12c3
 msgid "**VibeMQClient** — main client class:"
 msgstr "**VibeMQClient** — основной клиентский класс:"
 
-#: ../../docs/architecture.rst:218 208a97d454c444329bf5e57153aad96c
+#: ../../docs/architecture.rst:225 ea9e3dbdb1a1470e8028b218b47119d0
 msgid "**ReconnectPolicy** — reconnection policy:"
 msgstr "**ReconnectPolicy** — политика переподключения:"
 
-#: ../../docs/architecture.rst:232 6547d9a9acd1481db78d21617a0fec1b
-msgid "VibeMQ.Health"
-msgstr "VibeMQ.Health"
+#: ../../docs/architecture.rst:239 694a043ab2eb4eccb0e8a10e0063294d
+msgid "Health checks (VibeMQ.Core, namespace ``VibeMQ.Health``)"
+msgstr ""
 
-#: ../../docs/architecture.rst:234 d7df54251bfd4ac0b770fdd07045e40c
-msgid "**Purpose:** HTTP server for health checks."
+#: ../../docs/architecture.rst:241 39114f6801344563acf3406bcd697f11
+#, fuzzy
+msgid ""
+"**Purpose:** HTTP server for health checks. Part of the ``VibeMQ.Core`` "
+"package."
 msgstr "**Цель:** HTTP-сервер для проверки работоспособности."
 
-#: ../../docs/architecture.rst:236 aad166228ce044bc8953dd7bfc6a181b
+#: ../../docs/architecture.rst:243 dfee86dae1a245c5a1d599e90064539c
 msgid "**HealthCheckServer** — HTTP server:"
 msgstr "**HealthCheckServer** — HTTP-сервер:"
 
-#: ../../docs/architecture.rst:245 79abe833f56d45d0a6eed48ac181b22c
+#: ../../docs/architecture.rst:252 41536f1ec7dd4eddb55942095ccde41f
 msgid "**Endpoints:**"
 msgstr "**Конечные точки:**"
 
-#: ../../docs/architecture.rst:247 baa4455991e4473a9a682b4db2a659b8
+#: ../../docs/architecture.rst:254 f501e8fa78264c2181acafd366015587
 msgid "``GET /health/`` — health status (200 OK or 503)"
 msgstr "``GET /health/`` — состояние здоровья (200 ОК или 503)"
 
-#: ../../docs/architecture.rst:248 bf71bf120ec242a8a1d11afb6d73cc8c
-msgid "``GET /metrics/`` — broker metrics (JSON)"
-msgstr "``GET /metrics/`` — метрики брокера (JSON)"
+#: ../../docs/architecture.rst:255 4f6586e3f2a343559f48b5ab8a150700
+msgid ""
+"``GET /metrics/`` — broker metrics (JSON). Responses use snake_case keys "
+"(e.g. ``active_connections``, ``queue_count``, ``memory_usage_mb``)."
+msgstr ""
 
-#: ../../docs/architecture.rst:250 a4d4f95f625b44749e27bfb104eca4b1
-msgid "**HealthStatus** — health status:"
-msgstr "**HealthStatus** — состояние здоровья:"
-
-#: ../../docs/architecture.rst:267 450100a383b542519edeaed842fdff97
+#: ../../docs/architecture.rst:258 d0daa1f06b5b4a97a114eaec6722af40
 msgid "Operating Principles"
 msgstr "Принципы работы"
 
-#: ../../docs/architecture.rst:270 afc5c61a7fa740858cb1d4ffe489a63d
+#: ../../docs/architecture.rst:261 3f0dbcde68d942aba5e3f56750c3e56d
 msgid "Message Lifecycle"
 msgstr "Жизненный цикл сообщения"
 
-#: ../../docs/architecture.rst:272 2451740f81f7492897d352a742b0ed41
+#: ../../docs/architecture.rst:263 047c4d4c9e804179af6f7fe6ea64389f
 msgid "**Publishing:**"
 msgstr "**Публикация:**"
 
-#: ../../docs/architecture.rst:274 5c62590a666f423294f516aa4bd85d19
+#: ../../docs/architecture.rst:265 a0c4ed04f82949e19e06e2dbdc43157f
 msgid "Client sends ``Publish`` command"
 msgstr "Клиент отправляет команду ``Publish``"
 
-#: ../../docs/architecture.rst:275 2359832fa92047769241803c3885bb06
+#: ../../docs/architecture.rst:266 472ff7b290af4060b743baf2c8ea6fae
 msgid "Server validates message"
 msgstr "Сервер проверяет сообщение"
 
-#: ../../docs/architecture.rst:276 b55ff536f70d4ae1a2b3b5a0a0c63946
+#: ../../docs/architecture.rst:267 c2236261567a4cb49f6df98b99d101ab
 msgid "Message is stored in queue"
 msgstr "Сообщение сохраняется в очереди"
 
-#: ../../docs/architecture.rst:277 fb23d309e0e04089b1e8c40acd708ede
+#: ../../docs/architecture.rst:268 5cfb44680cd04dafb499269edf85e716
 msgid "``PublishAck`` confirmation is sent"
 msgstr "``PublishAck`` подтверждение отправлено"
 
-#: ../../docs/architecture.rst:279 f0ebd949a9d74773a29dfde6824ab684
+#: ../../docs/architecture.rst:270 ea2eab517dff4a92bb33ef041e03db66
 msgid "**Routing:**"
 msgstr "**Маршрутизация:**"
 
-#: ../../docs/architecture.rst:281 800a83bc614848ddb3a4c6913f69d840
+#: ../../docs/architecture.rst:272 bafab17a07e84734b56bb0061c4e48c2
 msgid "``QueueManager`` determines delivery mode"
 msgstr "``QueueManager`` определяет режим доставки"
 
-#: ../../docs/architecture.rst:282 ccca496b1e064f838d143498aa7863f4
+#: ../../docs/architecture.rst:273 a44106f4d3d3488bb4d02a3f5d9ed393
 msgid "For Round-robin, next subscriber is selected"
 msgstr "В циклическом режиме выбирается следующий абонент."
 
-#: ../../docs/architecture.rst:283 ea052f32ee664670be2d27fa1a527708
+#: ../../docs/architecture.rst:274 ef428adfedaa463780c6065a52090125
 msgid "For Fan-out, message is copied to all subscribers"
 msgstr "При разветвлении сообщение копируется всем подписчикам."
 
-#: ../../docs/architecture.rst:284 960935437b914d0da7d6d2c27b3e6c71
+#: ../../docs/architecture.rst:275 9cef2eb5e0654df0b6639ea39b5beaa9
 msgid "For Priority-based, sorted by priority"
 msgstr "Для На основе приоритета, отсортировано по приоритету"
 
-#: ../../docs/architecture.rst:286 b0b26c7bfb6c4c94a03358f35d9b1f0d
+#: ../../docs/architecture.rst:277 debe741c4b734b3bb190152c10b28151
 msgid "**Delivery:**"
 msgstr "**Доставка:**"
 
-#: ../../docs/architecture.rst:288 aa40d5de8c244061b155b25f26a1cd05
+#: ../../docs/architecture.rst:279 187ada35644640adb994d25968c1d720
 msgid "Message is sent to subscriber via ``Deliver`` command"
 msgstr "Сообщение отправляется подписчику с помощью команды ``Deliver``."
 
-#: ../../docs/architecture.rst:289 303c0247babc40b6b4f62ad0466b5ffe
+#: ../../docs/architecture.rst:280 5cc2aa7be9e44214930ec41a5dc7b68d
 msgid "ACK wait timer is started"
 msgstr "Таймер ожидания ACK запущен"
 
-#: ../../docs/architecture.rst:290 2bfdcfe19e794e9bbc9c32568815982e
+#: ../../docs/architecture.rst:281 d66b7ec8ed25499d9e4a4f61bdcd3c65
 msgid "Message is marked as \"in-flight\""
 msgstr "Сообщение помечено как «в работе»"
 
-#: ../../docs/architecture.rst:292 a39b20c3b9304ad6aade659c14b9a549
+#: ../../docs/architecture.rst:283 40f456e6e91b40b9a7dd9685542ff41f
 msgid "**Acknowledgment:**"
 msgstr "**Подтверждение:**"
 
-#: ../../docs/architecture.rst:294 f8a49706ccbd4ae390265fdb7e054872
+#: ../../docs/architecture.rst:285 010c2dc1f8414579adde63fad360c4b6
 msgid "Subscriber sends ``Ack`` command"
 msgstr "Абонент отправляет команду ``Ack``"
 
-#: ../../docs/architecture.rst:295 d3902a5e24c842a291d71fc3299cdb7a
+#: ../../docs/architecture.rst:286 b5a6279a26464665b995cd1259cc1aac
 msgid "``AckTracker`` marks message as delivered"
 msgstr "``AckTracker`` отмечает сообщение как доставленное"
 
-#: ../../docs/architecture.rst:296 faee7d1a9f8d40818974b849849a6ff2
+#: ../../docs/architecture.rst:287 568fa59d5b2b41bea867fc6761e8559c
 msgid "Message is removed from in-flight"
 msgstr "Сообщение удалено из раздела \"В полете\""
 
-#: ../../docs/architecture.rst:297 8c2107d4880242e3942ba71db95ab88b
+#: ../../docs/architecture.rst:288 1073a1031aaf47348de9b93670e7c9e9
 msgid "Metrics are updated"
 msgstr "Метрики обновляются"
 
-#: ../../docs/architecture.rst:299 a31f965e22204b5fb6257032feb00cf2
+#: ../../docs/architecture.rst:290 54504c00c91544bd9d06436f70c3be5e
 msgid "**Retry (if no ACK):**"
 msgstr "**Повторить попытку (если нет подтверждения):**"
 
-#: ../../docs/architecture.rst:301 29da466ae2fe4645a96a6f26f395f80c
+#: ../../docs/architecture.rst:292 009740fffa82447294ed44eb56a734e5
 msgid "Timer expires"
 msgstr "Таймер истекает"
 
-#: ../../docs/architecture.rst:302 3f48a3a8eaf7498b9b0417ba68690c8b
+#: ../../docs/architecture.rst:293 a3d25be9e29a4109a5e5d5c7cce574cd
 msgid "Attempt counter is incremented"
 msgstr "Счетчик попыток увеличивается"
 
-#: ../../docs/architecture.rst:303 ea334b1d24284ea4b8b7a5e170f8495d
+#: ../../docs/architecture.rst:294 a3f1da30a80949b4ac945a07f29d0211
 msgid "If attempts not exhausted — resend"
 msgstr "Если попытки не исчерпаны — отправьте повторно"
 
-#: ../../docs/architecture.rst:304 21c76545e3904eb5aec13faca922b26a
+#: ../../docs/architecture.rst:295 b7df607f4db947eab94c7a8d6f1daab7
 msgid "If exhausted — move to Dead Letter Queue"
 msgstr "Если исчерпаны — перейдите в очередь недоставленных писем."
 
-#: ../../docs/architecture.rst:307 47d00ef72e934af785c5c1e16dab7764
+#: ../../docs/architecture.rst:298 6259c7ca2d934fb082c342f65f798cd9
 msgid "Delivery Modes"
 msgstr "Способы доставки"
 
-#: ../../docs/architecture.rst:309 854da823ade447e092d5bd68aeaa7626
+#: ../../docs/architecture.rst:300 2f5cc960d2aa436ea7d08a014e9a91e0
 msgid "**Round-robin:**"
 msgstr "**Круговой алгоритм:**"
 
-#: ../../docs/architecture.rst:318 ca9fa8ef3e0d416e811fa29442ac086a
+#: ../../docs/architecture.rst:309 4bb5b383b697409f817d4d2c614aaf2a
 msgid "Each message is delivered to one subscriber cyclically."
 msgstr "Каждое сообщение доставляется одному абоненту циклически."
 
-#: ../../docs/architecture.rst:320 f479bb4f9bb1423b865be64d1913c39e
+#: ../../docs/architecture.rst:311 d0363656dd244c93bc27bd0e3904bbdb
 msgid "**Fan-out with acknowledgment:**"
 msgstr "**Разветвление с подтверждением:**"
 
-#: ../../docs/architecture.rst:328 2deac49cf52d4545a778e08fbd7bf212
+#: ../../docs/architecture.rst:319 a3e5e57d04434c29bdd18b26bb77bab5
 msgid "Message is delivered to all subscribers, each must acknowledge."
 msgstr "Сообщение доставляется всем подписчикам, каждый должен подтвердить."
 
-#: ../../docs/architecture.rst:330 2c0fd0c557104814b37b9b52595c5120
+#: ../../docs/architecture.rst:321 70fb03ce828749b5ba16c18d98391dd0
 msgid "**Fan-out without acknowledgment:**"
 msgstr "**Разветвление без подтверждения:**"
 
-#: ../../docs/architecture.rst:338 6ce922d41f3244669eea4e2c49e0690e
+#: ../../docs/architecture.rst:329 4fd68493a0e8463dbbc612f005cf738b
 msgid "Message is delivered to all without acknowledgment."
 msgstr "Сообщение доставляется всем без подтверждения."
 
-#: ../../docs/architecture.rst:340 70db8de4b8e541eb81139bb85df174e6
+#: ../../docs/architecture.rst:331 463e038db89b493e8805a8f9e2debc03
 msgid "**Priority-based:**"
 msgstr "**В зависимости от приоритета:**"
 
-#: ../../docs/architecture.rst:348 e560f603520c41d5b9658abdb9b8fa2d
+#: ../../docs/architecture.rst:339 cdeea7c8c81840f68a0a2a268dc4c9e0
 msgid "Messages are delivered by priority."
 msgstr "Сообщения доставляются в приоритетном порядке."
 
-#: ../../docs/architecture.rst:351 e828c5f20c9d4b298f541c1d273f16e2
+#: ../../docs/architecture.rst:342 d10a79dbc40740a8bf23b14e9fb258ee
 msgid "Keep-alive Mechanism"
 msgstr "Механизм поддержания активности"
 
-#: ../../docs/architecture.rst:353 92ad4c4911d14f46a469817f174666de
+#: ../../docs/architecture.rst:344 54228fa8cedf48b8a75af7ba5659fc4f
 msgid "PING/PONG mechanism is used to maintain active connections:"
 msgstr "Для поддержания активных соединений используется механизм PING/PONG:"
 
-#: ../../docs/architecture.rst:364 57cb1f0a8e0e483da72f6ed4174d356a
+#: ../../docs/architecture.rst:355 6cd94121a7d24d8aaf761024f0867fdb
 msgid "If server doesn't receive PING within timeout, connection is closed."
 msgstr "Если сервер не получает PING в течение таймаута, соединение закрывается."
 
-#: ../../docs/architecture.rst:367 1d51d66a18dd49bba35161f62d6648e7
+#: ../../docs/architecture.rst:358 897836059ec340d990fcca3da1d6295e
 msgid "Automatic Reconnections"
 msgstr "Автоматические переподключения"
 
-#: ../../docs/architecture.rst:369 e490f6c75e4f4b1799c2646dbad7d1fc
+#: ../../docs/architecture.rst:360 1738930e56264506aa2513a1588111da
 msgid "Client automatically reconnects on connection loss:"
 msgstr "Клиент автоматически переподключается при потере соединения:"
 
-#: ../../docs/architecture.rst:381 15750d1ba3334848b0f569bdfa598a9b
+#: ../../docs/architecture.rst:372 64d094f360864b568000c1b5a8609e89
 msgid "Exponential backoff is used with 5 minute maximum."
 msgstr "Экспоненциальная задержка используется максимум 5 минут."
 
-#: ../../docs/architecture.rst:384 40f68faa343247d4bb7f296fb78c55f4
+#: ../../docs/architecture.rst:375 594f101c607945548ee8f20fb42e0410
 msgid "Graceful Shutdown"
 msgstr "Плавное завершение работы"
 
-#: ../../docs/architecture.rst:386 82bcb93655974d9587d475cdc0d1e453
+#: ../../docs/architecture.rst:377 3e86871c843a45e799c4417284227e47
 msgid "On server stop, graceful shutdown is performed:"
 msgstr "При остановке сервера выполняется корректное завершение работы:"
 
-#: ../../docs/architecture.rst:388 c5d7e07012624dc3ae411d5fa2ec44a1
+#: ../../docs/architecture.rst:379 dad2dd1599274930b47e17811c142c23
 msgid "Stop accepting new connections"
 msgstr "Прекращение приёма новых соединений"
 
-#: ../../docs/architecture.rst:389 698a6cb363db4ab19b90e38f6d20b1fa
+#: ../../docs/architecture.rst:380 168ff5f20d364859948000b3d5333d6e
 msgid "Send shutdown notification to clients"
 msgstr "Отправка уведомления об отключении клиентам"
 
-#: ../../docs/architecture.rst:390 bcaec5d5895c450d97c909c0872060bf
+#: ../../docs/architecture.rst:381 347c3f91e23a46158dcb4774d3892b29
 msgid "Wait for in-flight message processing (up to 30s)"
 msgstr "Ожидание обработки сообщения в полете (до 30 с)"
 
-#: ../../docs/architecture.rst:391 63f3c669ac694f18919b06944cab7488
+#: ../../docs/architecture.rst:382 83295a560c37407eacf78b5d8674f556
 msgid "Close all connections"
 msgstr "Закрытие всех соединений"
 
-#: ../../docs/architecture.rst:392 38539e9084794ff38d13a94a68efa859
+#: ../../docs/architecture.rst:383 7d7a5f2c3b004e5a84b4dc421ce93092
 msgid "Clean up resources"
 msgstr "Очистка ресурсов"
 
-#: ../../docs/architecture.rst:395 996131e3fdc34f47b58bbc4f58b25acb
+#: ../../docs/architecture.rst:386 113f5b9a708245b6ba1ee55680617f4a
 msgid "Memory Management"
 msgstr "Управление памятью"
 
-#: ../../docs/architecture.rst:398 253234f2a670411ead9ab68f5b7d5dc1
+#: ../../docs/architecture.rst:389 ad2bb48d525542b3b37453d87fe6f862
 msgid "Backpressure"
 msgstr "Противодавление"
 
-#: ../../docs/architecture.rst:400 7f33bbaa4bf0428fa0b34ba8783aa984
+#: ../../docs/architecture.rst:391 181bc135d15e4dc283b81afa8517e427
 msgid "When memory usage reaches high level:"
 msgstr "Когда использование памяти достигает высокого уровня:"
 
-#: ../../docs/architecture.rst:402 cf873214ab2240dd83ddec1d857c4ac5
+#: ../../docs/architecture.rst:393 4b5a8066407d46cb8d5afd731907aca5
 msgid "**Watermark 80%:** Backpressure enabled"
 msgstr "**Водяной знак 80 %:** Противодавление включено."
 
-#: ../../docs/architecture.rst:403 47c53cde1d114e7bbc92dfb819ec7bb1
+#: ../../docs/architecture.rst:394 84b3d08ec20a475e94124fed96d05576
 msgid "**Watermark 90%:** New publications blocked"
 msgstr "**Водяной знак 90 %:** Новые публикации заблокированы."
 
-#: ../../docs/architecture.rst:404 0ed08a2085444c098de6cb2346bad62c
+#: ../../docs/architecture.rst:395 81a2c5ee14b74b3597bea0a8f9e6d2e6
 msgid "**Watermark 95%:** Overflow strategy applied"
 msgstr "**Водяной знак 95 %:** Применена стратегия переполнения."
 
-#: ../../docs/architecture.rst:406 f41834d9bde349ceb6e1a467d21c6366
+#: ../../docs/architecture.rst:397 5455424bb5fe4671bcc44b8bcc60b31d
 msgid "Overflow strategies:"
 msgstr "Стратегии переполнения:"
 
-#: ../../docs/architecture.rst:408 3d138495c2034665b6eee4a34fc0e8eb
+#: ../../docs/architecture.rst:399 d8e85de133504d1d929a62d703c69cc0
 msgid "**DropOldest** — drop oldest message"
 msgstr "**DropOldest** — удалить самое старое сообщение."
 
-#: ../../docs/architecture.rst:409 eccd10e119f04fef9b2544a3d1e937c1
+#: ../../docs/architecture.rst:400 c6bd6a81150e4f0b89302c80dd625b48
 msgid "**DropNewest** — reject new message"
 msgstr "**DropNewest** — отклонить новое сообщение"
 
-#: ../../docs/architecture.rst:410 1afd3b487e6d4b5cb4cd72daa9f46046
+#: ../../docs/architecture.rst:401 0d653144d42a442e9f349effb39453c9
 msgid "**BlockPublisher** — block publisher"
 msgstr "**BlockPublisher** — заблокировать издателя"
 
-#: ../../docs/architecture.rst:411 7acf7cd570f34d5b89f9c698142cabcf
+#: ../../docs/architecture.rst:402 f36da3c244e641f59641c9d3d1c208b6
 msgid "**RedirectToDlq** — redirect to DLQ"
 msgstr "**RedirectToDlq** — перенаправление на DLQ"
 
-#: ../../docs/architecture.rst:414 9d7a726714cb438588a1ac1b1dcb6ce0
+#: ../../docs/architecture.rst:405 fa362c2382794656a61067b5cb9b7fa7
 msgid "Object Pool"
 msgstr "Пул объектов"
 
-#: ../../docs/architecture.rst:416 1cfa51821c8f4039b9b3aae893dfd8ba
+#: ../../docs/architecture.rst:407 10c38e66a8054f7b96179eeab48ef671
 msgid ""
 "Protocol message object pool is used to reduce allocations on hot paths "
 "(publish/deliver):"
@@ -628,91 +648,92 @@ msgstr ""
 "Пул объектов протокольных сообщений используется для сокращения выделений"
 " на горячих путях (публикация/доставка):"
 
-#: ../../docs/architecture.rst:428 2be26a940c6d4da582a363fc11afc4d5
+#: ../../docs/architecture.rst:419 4c3948d9937f4b4b9e596b5927e69403
 msgid "Metrics and Monitoring"
 msgstr "Метрики и мониторинг"
 
-#: ../../docs/architecture.rst:430 d34a5bcf60794a16a93d9e2a3894e892
+#: ../../docs/architecture.rst:421 c6373570e19d4ca4a8df65e9abcc3847
 msgid "Collected metrics:"
 msgstr "Собранные метрики:"
 
-#: ../../docs/architecture.rst:432 198e250262494cb582104434e1d916ee
+#: ../../docs/architecture.rst:423 bed85ca4e3864125a56b6bd403eacf53
 msgid "**Counters:**"
 msgstr "**Счетчики:**"
 
-#: ../../docs/architecture.rst:434 c1ccaf800af044d7896c3911133989eb
+#: ../../docs/architecture.rst:425 8ee7d7f829c740128ece64b9cfe55317
 msgid "``TotalMessagesPublished`` — total published"
 msgstr "``TotalMessagesPublished`` — всего опубликовано"
 
-#: ../../docs/architecture.rst:435 abc6d60104a9435795bc0c53b8d63c7b
+#: ../../docs/architecture.rst:426 93b65c7e942b403e831dccccee93d1e8
 msgid "``TotalMessagesDelivered`` — total delivered"
 msgstr "``TotalMessagesDelivered`` — общее количество доставленных"
 
-#: ../../docs/architecture.rst:436 a900bb38df6b47b4b243b3963c7ffbbf
+#: ../../docs/architecture.rst:427 1fc751d9a9c54d41ba225ddc964b41cd
 msgid "``TotalMessagesAcknowledged`` — total acknowledged"
 msgstr "``TotalMessagesAcknowledged`` — общее количество подтверждено"
 
-#: ../../docs/architecture.rst:437 322ba53224b94cf8b8679be1c926d912
+#: ../../docs/architecture.rst:428 b9138544201e4085a3abcdad437f96a0
 msgid "``TotalRetries`` — total retries"
 msgstr "``TotalRetries`` — общее количество повторов"
 
-#: ../../docs/architecture.rst:438 8dd842ff06ad4e67885c8d8efb8027ed
+#: ../../docs/architecture.rst:429 bd386360aff74cdf9f8e2962f981f9cb
 msgid "``TotalDeadLettered`` — total in DLQ"
 msgstr "``TotalDeadLettered`` — итого в DLQ"
 
-#: ../../docs/architecture.rst:439 208ca5b64b7146869bb5492ebc312f08
+#: ../../docs/architecture.rst:430 106e51dd8de04ed2903f1ac4cfe80c65
 msgid "``TotalErrors`` — total errors"
 msgstr "``TotalErrors`` — общее количество ошибок"
 
-#: ../../docs/architecture.rst:440 f747bff4c5f64c60b93ed1f5b60bcf54
+#: ../../docs/architecture.rst:431 e2ac8c61a1de4cbbb75f532c7f900e50
 msgid "``TotalConnectionsAccepted`` — total connections"
 msgstr "``TotalConnectionsAccepted`` — общее количество подключений"
 
-#: ../../docs/architecture.rst:441 7e2ba52e2b4f45e7865bc8d771a50454
+#: ../../docs/architecture.rst:432 a04e7d24ddb346d99fec47229d409e3a
 msgid "``TotalConnectionsRejected`` — total rejections"
 msgstr "``TotalConnectionsRejected`` — общее количество отказов"
 
-#: ../../docs/architecture.rst:443 ffd1427136a94abda7b97698bf117d04
+#: ../../docs/architecture.rst:434 d4740cb347594556bcb5110a9d198f37
 msgid "**Gauge metrics:**"
 msgstr "**Показатели датчика:**"
 
-#: ../../docs/architecture.rst:445 6b8b076f4f8d4415a9fc4cf5db0bb448
+#: ../../docs/architecture.rst:436 b79f918052c647d7b5a5a5d7409b343b
 msgid "``ActiveConnections`` — active connections"
 msgstr "``ActiveConnections`` — активные соединения"
 
-#: ../../docs/architecture.rst:446 b27c0e78de05447797f7cc7fa6801404
+#: ../../docs/architecture.rst:437 30882774d3df4f4ebd171503ccc67457
 msgid "``ActiveQueues`` — active queues"
 msgstr "``ActiveQueues`` — активные очереди"
 
-#: ../../docs/architecture.rst:447 1f37887e293c4bf892817716fb3ea70b
+#: ../../docs/architecture.rst:438 b9319bf5ae3f45fe8f3764c1220746af
 msgid "``InFlightMessages`` — in-flight messages"
 msgstr "``InFlightMessages`` — сообщения в полете"
 
-#: ../../docs/architecture.rst:448 abba4072e8934818b836f565f2ad34c0
+#: ../../docs/architecture.rst:439 7df29354f27b465189ba3ac06cf6f504
 msgid "``MemoryUsageBytes`` — memory usage"
 msgstr "``MemoryUsageBytes`` — использование памяти"
 
-#: ../../docs/architecture.rst:450 6f5c1cfa77944accbfb1ee61c8c61215
+#: ../../docs/architecture.rst:441 6c039eaf76b0408e9c09917a5666a027
 msgid "**Latency:**"
 msgstr "**Задержка:**"
 
-#: ../../docs/architecture.rst:452 67e8318cbd624b96b43fea13e9ae2aa6
+#: ../../docs/architecture.rst:443 858be230793442b0a227ff13ef42c569
 msgid "``AverageDeliveryLatencyMs`` — average delivery latency"
 msgstr "``AverageDeliveryLatencyMs`` — средняя задержка доставки"
 
-#: ../../docs/architecture.rst:455 287d80e3db4245daa2dff7762e22dde4
+#: ../../docs/architecture.rst:446 0eb7f5ef23544d0296832dad854dbf31
 msgid "Next Steps"
 msgstr "Следующие шаги"
 
-#: ../../docs/architecture.rst:457 5d53de010df54a09a0367aeeaddbb821
+#: ../../docs/architecture.rst:448 3476af0459474cf8b9d379f584a3ef34
 msgid ":doc:`features` — detailed feature overview"
 msgstr ":doc:`features` — подробный обзор функций"
 
-#: ../../docs/architecture.rst:458 1268583f32ba493d905eff51393f5412
+#: ../../docs/architecture.rst:449 e20407e1a3c5495f8f3a9ae1c34241ac
 msgid ":doc:`protocol` — communication protocol details"
 msgstr ":doc:`protocol` — сведения о протоколе связи"
 
-#: ../../docs/architecture.rst:459 616cf15f3c294497a1e816dbabb8c8fa
+#: ../../docs/architecture.rst:450 6ee9079d5ec84df8aced7593a91eb12a
 msgid ":doc:`monitoring` — monitoring and metrics"
 msgstr ":doc:`monitoring` — мониторинг и метрики"
+
 

@@ -75,8 +75,10 @@ VibeMQ.Core
      - Client settings
    * - ``IQueueManager``
      - Queue management interface
+   * - ``IStorageProvider``
+     - Persistence interface (messages, queues, DLQ). See :doc:`storage`.
    * - ``IMessageStore``
-     - Message store interface
+     - Deprecated; use ``IStorageProvider``.
    * - ``IAuthenticationService``
      - Authentication interface
    * - ``IBrokerMetrics``
@@ -84,7 +86,7 @@ VibeMQ.Core
 
 **Enumerations:**
 
-- ``DeliveryMode`` — delivery mode (RoundRobin, FanOut, Priority)
+- ``DeliveryMode`` — delivery mode (RoundRobin, FanOutWithAck, FanOutWithoutAck, PriorityBased)
 - ``MessagePriority`` — message priority (Low, Normal, High, Critical)
 - ``OverflowStrategy`` — overflow strategy
 - ``FailureReason`` — failure reason
@@ -97,11 +99,13 @@ VibeMQ.Protocol
 
 **Framing:**
 
-Uses length-prefix approach for message separation in TCP stream:
+Uses length-prefix framing with optional per-frame compression. See :doc:`protocol` for details.
 
 .. code-block:: text
 
-   [4 bytes: length in Big Endian][N bytes: UTF-8 JSON body]
+   [4 bytes: body length, Big Endian uint32][1 byte: compression flags][N bytes: body]
+
+The body is binary (not JSON on the wire). Compression flags: 0 = none, 1 = GZip, 2 = Brotli.
 
 **Components:**
 
@@ -141,9 +145,12 @@ VibeMQ.Server
        public IBrokerMetrics Metrics { get; }
        public int ActiveConnections { get; }
        public int InFlightMessages { get; }
+       public int QueueCount { get; }
 
        public Task RunAsync(CancellationToken cancellationToken = default);
        public Task StopAsync(CancellationToken cancellationToken = default);
+       public Task<IReadOnlyList<string>> ListQueuesAsync(CancellationToken cancellationToken = default);
+       public Task<QueueInfo?> GetQueueInfoAsync(string name, CancellationToken cancellationToken = default);
        public ValueTask DisposeAsync();
    }
 
@@ -228,10 +235,10 @@ VibeMQ.Client
        public TimeSpan GetDelay(int attempt);
    }
 
-VibeMQ.Health
--------------
+Health checks (VibeMQ.Core, namespace ``VibeMQ.Health``)
+--------------------------------------------------------
 
-**Purpose:** HTTP server for health checks.
+**Purpose:** HTTP server for health checks. Part of the ``VibeMQ.Core`` package.
 
 **HealthCheckServer** — HTTP server:
 
@@ -245,23 +252,7 @@ VibeMQ.Health
 **Endpoints:**
 
 - ``GET /health/`` — health status (200 OK or 503)
-- ``GET /metrics/`` — broker metrics (JSON)
-
-**HealthStatus** — health status:
-
-.. code-block:: json
-
-   {
-     "isHealthy": true,
-     "status": "healthy",
-     "activeConnections": 15,
-     "queueCount": 5,
-     "inFlightMessages": 42,
-     "totalMessagesPublished": 125000,
-     "totalMessagesDelivered": 124850,
-     "memoryUsageMb": 256,
-     "timestamp": "2026-02-18T10:30:00Z"
-   }
+- ``GET /metrics/`` — broker metrics (JSON). Responses use snake_case keys (e.g. ``active_connections``, ``queue_count``, ``memory_usage_mb``).
 
 Operating Principles
 ====================

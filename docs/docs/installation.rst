@@ -123,9 +123,9 @@ For deployment with other services, create a ``docker-compose.yml``:
          - "2925:2925"  # TCP port for clients
          - "2926:2926"  # HTTP port for health checks
        environment:
-         - VIBEMQ_PORT=2925
-         - VIBEMQ_AUTH_TOKEN=my-secret-token
-         - VIBEMQ_MAX_CONNECTIONS=1000
+         - VIBEMQ__Port=2925
+         - VIBEMQ__AuthToken=my-secret-token
+         - VIBEMQ__MaxConnections=1000
        volumes:
          - vibemq-data:/data
        restart: unless-stopped
@@ -136,8 +136,8 @@ For deployment with other services, create a ``docker-compose.yml``:
        depends_on:
          - vibemq
        environment:
-         - VIBEMQ_HOST=vibemq
-         - VIBEMQ_PORT=2925
+         - VIBEMQCLIENT__Host=vibemq
+         - VIBEMQCLIENT__Port=2925
 
    volumes:
      vibemq-data:

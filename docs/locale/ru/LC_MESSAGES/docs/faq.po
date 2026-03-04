@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: VibeMQ 1.0.0\n"
 "Report-Msgid-Bugs-To: https://github.com/DarkBoy/VibeMQ/issues\n"
-"POT-Creation-Date: 2026-02-23 21:55+0300\n"
+"POT-Creation-Date: 2026-03-04 10:40+0300\n"
 "PO-Revision-Date: 2026-02-24 12:00+0300\n"
 "Last-Translator: Darkboy\n"
 "Language: ru\n"
@@ -19,27 +19,27 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.18.0\n"
 
-#: ../../docs/faq.rst:3 0630655dc149450daf50ac1a37d29edf
+#: ../../docs/faq.rst:3 796f56a7edb140c98a16bb50bbc694ad
 msgid "Frequently Asked Questions"
 msgstr "Часто задаваемые вопросы"
 
-#: ../../docs/faq.rst:5 f9918f91311c4098acf524c00e533de3
+#: ../../docs/faq.rst:5 2789748d96b34db9b263103bd124a7d6
 msgid "This guide answers common questions about VibeMQ."
 msgstr "Это руководство отвечает на распространённые вопросы о VibeMQ."
 
-#: ../../docs/faq.rst:9 7db2ce501ee3461b930b0599a927dfbe
+#: ../../docs/faq.rst:9 ea70b9ffd20242758e383d01d5f8224a
 msgid "Contents"
 msgstr "Содержание"
 
-#: ../../docs/faq.rst:12 fe70ec84ecbc422e9df6414011915445
+#: ../../docs/faq.rst:12 cc0109ed21e94d8f926a389f96734365
 msgid "General Questions"
 msgstr "Общие вопросы"
 
-#: ../../docs/faq.rst:15 1f04c0432d5742d18ff5e95aec82c545
+#: ../../docs/faq.rst:15 5600355b415247f78f47350b48d34ca5
 msgid "What is VibeMQ?"
 msgstr "Что такое VibeMQ?"
 
-#: ../../docs/faq.rst:17 3cf715b9aaf94e0fb39c51f8c1a3c3e6
+#: ../../docs/faq.rst:17 37e7b87c28b142a38bf9bd67ce7b3d3d
 msgid ""
 "**VibeMQ** is a simple but reliable message broker for .NET applications."
 " It supports:"
@@ -47,433 +47,447 @@ msgstr ""
 "**VibeMQ** — это простой, но надёжный месседж-брокер для .NET приложений."
 " Он поддерживает:"
 
-#: ../../docs/faq.rst:19 bb2fd07300fa44bab5b3baf8189b74ca
+#: ../../docs/faq.rst:19 bc50f950da194ce4a7ae40be7f29aee2
 msgid "Publish/subscribe (pub/sub)"
 msgstr "Публикация/подписка (pub/sub)"
 
-#: ../../docs/faq.rst:20 c4ba0d46c8cb425d944fc67ab2313683
+#: ../../docs/faq.rst:20 ec42e07af86a4ca1b473eabfe4ff2897
 msgid "Queues with delivery guarantees"
 msgstr "Очереди с гарантией доставки"
 
-#: ../../docs/faq.rst:21 046064c506324da189e6f386e43dc826
+#: ../../docs/faq.rst:21 1de9a5c5ef6b4a4eacee635010997f28
 msgid "Automatic reconnections"
 msgstr "Автоматическое переподключение"
 
-#: ../../docs/faq.rst:22 6aafb1eae16041e592d2a06fdf5ac863
+#: ../../docs/faq.rst:22 6c19f657d0d049bc95d348246628f1f1
 msgid "Token-based authentication"
 msgstr "Аутентификация по токену"
 
-#: ../../docs/faq.rst:23 9a61dc1a2bde474085e239cadfc7a8eb
+#: ../../docs/faq.rst:23 58405076fd3c4bcc8718c7ce1bf62aaf
 msgid "TLS/SSL encryption"
 msgstr "Шифрование TLS/SSL"
 
-#: ../../docs/faq.rst:24 f306357c9f3b45cd89d9e67efb18ace8
+#: ../../docs/faq.rst:24 e978954563834cfdb394b601884b9dc8
 msgid "Health checks for orchestrators"
 msgstr "Проверки состояния для оркестраторов"
 
-#: ../../docs/faq.rst:27 5ca1e9687f6845678f961487954a3258
+#: ../../docs/faq.rst:27 a43ce922b3bb415eaa3c3ddf7ad9c707
 msgid "How is VibeMQ different from RabbitMQ/Kafka?"
 msgstr "Чем VibeMQ отличается от RabbitMQ/Kafka?"
 
-#: ../../docs/faq.rst:29 b595befa82864dfb99d9d9db5e6f3af7
+#: ../../docs/faq.rst:29 37cb71afd6a44de1b9fdfc94946a67bf
 msgid "**VibeMQ vs RabbitMQ:**"
 msgstr "**VibeMQ vs RabbitMQ:**"
 
-#: ../../docs/faq.rst:31 d12a639f6c8844239297c14dfd085a13
+#: ../../docs/faq.rst:31 bd7f1e41dc764460aae2194233a2cefb
 msgid "VibeMQ is simpler to configure and use"
 msgstr "VibeMQ проще настраивать и использовать"
 
-#: ../../docs/faq.rst:32 4fe4a2ad481f47aa937e57087297f144
+#: ../../docs/faq.rst:32 d0fb22ea99fb4e1cbedb2d3dbc06b09c
 msgid "Does not require external dependencies (databases, etc.)"
 msgstr "Не требует внешних зависимостей (БД и т.д.)"
 
-#: ../../docs/faq.rst:33 f97456162a9d4fea82ed84df0ea330b1
+#: ../../docs/faq.rst:33 6e22ae6523b94bc496d5598c5132ee53
 msgid "Written in C# for .NET ecosystem"
 msgstr "Написан на C# для экосистемы .NET"
 
-#: ../../docs/faq.rst:34 21f8a4f5b5024769b9cb9d36f2b008b5
+#: ../../docs/faq.rst:34 1e8354babc4342d6ab1b1ed7c3a5155c
 msgid "Less functionality, but sufficient for most scenarios"
 msgstr "Меньше возможностей, но достаточно для большинства сценариев"
 
-#: ../../docs/faq.rst:36 fcf5296994a143498a9628651b52eee0
+#: ../../docs/faq.rst:36 40eb65a8b32542c09710825e02535a25
 msgid "**VibeMQ vs Kafka:**"
 msgstr "**VibeMQ vs Kafka:**"
 
-#: ../../docs/faq.rst:38 d66d775b3177486691381fc8e6fb691b
+#: ../../docs/faq.rst:38 5200b75b540c48d09733a5db994b7df4
 msgid "VibeMQ is not a distributed event log"
 msgstr "VibeMQ не является распределённым журналом событий"
 
-#: ../../docs/faq.rst:39 7cd51286a2294abcb4f8d4001c516d6e
-msgid "Does not support persistent storage (in current version)"
-msgstr "Не поддерживает постоянное хранилище (в текущей версии)"
+#: ../../docs/faq.rst:39 c45e4b4c56dd4a05bd6d09661cffb729
+msgid ""
+"Optional persistence via SQLite or Redis (see :doc:`storage`); default is"
+" in-memory"
+msgstr ""
+"Опциональная персистентность через SQLite или Redis (см. :doc:`storage`); "
+"по умолчанию — в памяти"
 
-#: ../../docs/faq.rst:40 281000f87ffa4fe4bab76a9bda1c1ee8
+#: ../../docs/faq.rst:40 cdfb3f4d8c594e638984966d5d32d720
 msgid "Simpler to deploy and use"
 msgstr "Проще развёртывать и использовать"
 
-#: ../../docs/faq.rst:41 55b1d19f515943a092ea0cd86e3250fa
+#: ../../docs/faq.rst:41 8fb304b1f58646cfaad2a24280ff3ac9
 msgid "Better suited for task queues and real-time notifications"
 msgstr "Лучше подходит для очередей задач и уведомлений в реальном времени"
 
-#: ../../docs/faq.rst:44 a3e9bc59dd3d44fb96cb4ddd75843fd8
+#: ../../docs/faq.rst:44 a9a7320ee1004b31b21d3b07d0ca912d
 msgid "When to use VibeMQ?"
 msgstr "Когда использовать VibeMQ?"
 
-#: ../../docs/faq.rst:46 2e9d9cab68da4826ace298b58526db4a
+#: ../../docs/faq.rst:46 4282fbeffeba4a498e8a43cf675ecb2f
 msgid "**Good scenarios:**"
 msgstr "**Хорошие сценарии:**"
 
-#: ../../docs/faq.rst:48 883239ddb9ce46cb92cc3d86e510e736
+#: ../../docs/faq.rst:48 8eee2aa245b74d55825230f615d89933
 msgid "Task queues for background processing"
 msgstr "Очереди задач для фоновой обработки"
 
-#: ../../docs/faq.rst:49 856faaa4154c4e09bf5939040edbb1ed
+#: ../../docs/faq.rst:49 17c0e86a5a174dce850b7c9b213496ea
 msgid "Notifications between microservices"
 msgstr "Уведомления между микросервисами"
 
-#: ../../docs/faq.rst:50 58c5de9406c54283b527003f1fbbc03a
+#: ../../docs/faq.rst:50 0c2a2b1d85464fdeb11a00e5914ef609
 msgid "Real-time updates"
 msgstr "Обновления в реальном времени"
 
-#: ../../docs/faq.rst:51 db74536fb4744b6e9dfe5ede69eb92b9
+#: ../../docs/faq.rst:51 3918ba77b4274b56a791f4e8e72872d5
 msgid "Event-driven architecture"
 msgstr "Событийная архитектура"
 
-#: ../../docs/faq.rst:52 587bfc44e1b74fb5bcde87a643a89004
+#: ../../docs/faq.rst:52 f70da6136492478ebc3f73ebc25a1563
 msgid "Distributed systems on .NET"
 msgstr "Распределённые системы на .NET"
 
-#: ../../docs/faq.rst:54 54299eedc7da401cac11d75b9afdadd4
+#: ../../docs/faq.rst:54 0286e64ce2e84185b8a1edf8415b2c1b
 msgid "**Not suitable for:**"
 msgstr "**Не подходит для:**"
 
-#: ../../docs/faq.rst:56 9f47427920ef4f41b3db6ae2ff738e62
+#: ../../docs/faq.rst:56 3bc3e8acd29042958b024ca7a90320b4
 msgid "Storing large volumes of data"
 msgstr "Хранение больших объёмов данных"
 
-#: ../../docs/faq.rst:57 cbafcb3cce8848558c4fe74b3e17dd8f
+#: ../../docs/faq.rst:57 9764e732461f42b6adf7f09073bd6b92
 msgid "Real-time streaming (use Kafka)"
 msgstr "Потоковая передача в реальном времени (используйте Kafka)"
 
-#: ../../docs/faq.rst:58 0c7baf3471df4f609d5629026a1a9e3e
+#: ../../docs/faq.rst:58 1d482c21ba4945e29851deb82250403c
 msgid "Complex message routing (use RabbitMQ)"
 msgstr "Сложная маршрутизация сообщений (используйте RabbitMQ)"
 
-#: ../../docs/faq.rst:59 baaa9864e6ed4800992eb90e54eb17e4
+#: ../../docs/faq.rst:59 c8ee808b668a4f46b0cc4ebc3ad91fd1
 msgid "Transactional messages"
 msgstr "Транзакционные сообщения"
 
-#: ../../docs/faq.rst:62 27cd171de135475ebbc7e1568ea15dc9
+#: ../../docs/faq.rst:62 c45b105c95cd49e2b26e2a6a43ea8ef4
 msgid "What .NET versions are supported?"
 msgstr "Какие версии .NET поддерживаются?"
 
-#: ../../docs/faq.rst:64 67fda5eb829345869167f4a8048a7be3
+#: ../../docs/faq.rst:64 5159c9c421ae4136aa26613bd8fd237d
 msgid "**.NET 8.0** (main target platform)"
 msgstr "**.NET 8.0** (основная платформа)"
 
-#: ../../docs/faq.rst:65 4e8a03c2ed034520ae68f56c76d80a20
+#: ../../docs/faq.rst:65 a013a376689844bea64c41cbabff3303
 msgid "**.NET 10.0** (support planned)"
 msgstr "**.NET 10.0** (поддержка планируется)"
 
-#: ../../docs/faq.rst:68 4139493fa717400d984a85d737190e5d
+#: ../../docs/faq.rst:68 9edd82312e6f4e5c83ef20df6f9a5031
 msgid "Technical Questions"
 msgstr "Технические вопросы"
 
-#: ../../docs/faq.rst:71 95fdec5687d9453fbf6b93416aa3dd6e
+#: ../../docs/faq.rst:71 f2efcc48aa534a99b4884c02d455ed9e
 msgid "How does delivery guarantee work?"
 msgstr "Как работает гарантия доставки?"
 
-#: ../../docs/faq.rst:73 0b35eecc448f46e683488cb45934301a
+#: ../../docs/faq.rst:73 348a123cd5614762aa7819f00008ec48
 msgid "VibeMQ uses acknowledgment (ACK) mechanism:"
 msgstr "VibeMQ использует механизм подтверждений (ACK):"
 
-#: ../../docs/faq.rst:75 22afa0395586427b95651b3ce04e8fa5
+#: ../../docs/faq.rst:75 cb67c3c7dd504f8ba295daa1e1a2b761
 msgid "Broker sends message to subscriber"
 msgstr "1. Брокер отправляет сообщение подписчику"
 
-#: ../../docs/faq.rst:76 4268bcd2189e43cfa4e2448af170d4cb
+#: ../../docs/faq.rst:76 f2ee97bf2d8248f29d171e25dee083e0
 msgid "ACK wait timer starts"
 msgstr "2. Запускается таймер ожидания ACK"
 
-#: ../../docs/faq.rst:77 31de16d43c5e4353a2fb6dffbd4e747e
+#: ../../docs/faq.rst:77 49eabd8289184a539e2355c635b03587
 msgid "Subscriber processes message and sends ACK"
 msgstr "3. Подписчик обрабатывает сообщение и отправляет ACK"
 
-#: ../../docs/faq.rst:78 beb9b1223c6249e18836f2e2bb8c504a
+#: ../../docs/faq.rst:78 6672ed753c284e1a893f7fd480ee05d7
 msgid "If ACK not received — retry delivery"
 msgstr "4. Если ACK не получен — повторная отправка"
 
-#: ../../docs/faq.rst:79 476b5d0a40954c6fb94f56992b87a542
+#: ../../docs/faq.rst:79 5980961b721c4dc0a652e8c638391dac
 msgid "After exhausting attempts — Dead Letter Queue"
 msgstr "5. После исчерпания попыток — Dead Letter Queue"
 
-#: ../../docs/faq.rst:82 e35e0da8b9904d48ade2c5e7f60a7dbf
+#: ../../docs/faq.rst:82 63fa7de3da274c78b4261b44588db6d7
 msgid "What happens when server restarts?"
 msgstr "Что происходит при перезапуске сервера?"
 
-#: ../../docs/faq.rst:84 2bdef5696d63472cbb958fe90ef44d9e
-msgid "**Current version:**"
-msgstr "**Текущая версия:**"
+#: ../../docs/faq.rst:84 eb48af4eeb0e45b3b7b7fc51ba3030d9
+msgid "**With in-memory storage (default):**"
+msgstr "**При хранилище в памяти (по умолчанию):**"
 
-#: ../../docs/faq.rst:86 30eae1c0a7784d2d8d97d6789c5e5438
-msgid "Messages in queues are lost (in-memory storage)"
-msgstr "Сообщения в очередях теряются (хранилище в памяти)"
+#: ../../docs/faq.rst:86 4e50e826ffbc43be83b434bfef77247b
+msgid "Messages in queues are lost"
+msgstr "Сообщения в очередях теряются"
 
-#: ../../docs/faq.rst:87 64d2ef3800454e429626e74a993aa174
+#: ../../docs/faq.rst:87 d8f055fc0eb04281813c0c5fbc05f619
 msgid "Connections must be restored"
 msgstr "Подключения необходимо восстанавливать"
 
-#: ../../docs/faq.rst:89 ../../docs/faq.rst:108 ../../docs/faq.rst:399
-#: 14a0c961118b4a4291c30c9054cc4da4 14de7c9557a644caae47a0874ce214c1
-#: 1b0ad6cde1454fbd9769f36930f9e02e
-msgid "**Planned:**"
-msgstr "**Планируется:**"
+#: ../../docs/faq.rst:89 a86b594e125e41d29e421d31bce94d28
+msgid "**With SQLite or Redis storage:**"
+msgstr "**При хранилище SQLite или Redis:**"
 
-#: ../../docs/faq.rst:91 1da44e8945ec4030a22f8a74dc59bd38
-msgid "Persistence layer for message storage"
-msgstr "Слой персистентности для хранения сообщений"
+#: ../../docs/faq.rst:91 39acf551e71f4125946942cb2ad0b64f
+msgid "Queues and pending messages are recovered on startup (see :doc:`storage`)."
+msgstr "Очереди и ожидающие сообщения восстанавливаются при запуске (см. :doc:`storage`)."
 
-#: ../../docs/faq.rst:92 061564b1473b40bcb47fb7f3d638f3da
-msgid "State recovery after restart"
-msgstr "Восстановление состояния после перезапуска"
+#: ../../docs/faq.rst:92 a1158ae6c1d847248729faaee74b5aa0
+msgid ""
+"Configure via ``BrokerBuilder.UseSqliteStorage(...)`` or "
+"``UseRedisStorage(...)`` (or in Docker with "
+"``VibeMQ__StorageType=Sqlite`` and the Host project)."
+msgstr ""
+"Настройка через ``BrokerBuilder.UseSqliteStorage(...)`` или "
+"``UseRedisStorage(...)`` (или в Docker с ``VibeMQ__StorageType=Sqlite`` и "
+"проектом Host)."
 
-#: ../../docs/faq.rst:95 c290ee5ab2314aa481d8954ad6fefb8e
+#: ../../docs/faq.rst:95 f80243cdcf5d4bb29ccf0b937bf99960
 msgid "How to scale VibeMQ?"
 msgstr "Как масштабировать VibeMQ?"
 
-#: ../../docs/faq.rst:97 b75950bd7a3a4f5bba53efb004252dcf
+#: ../../docs/faq.rst:97 e8fc7f441b0241d7968532df46e19b53
 msgid "**Horizontal scaling:**"
 msgstr "**Горизонтальное масштабирование:**"
 
-#: ../../docs/faq.rst:99 5683fe298abc4aa395a95ab8829c0434
+#: ../../docs/faq.rst:99 c56fd9c0818c4e40ad48359d4ccfef90
 msgid "Run multiple server instances"
 msgstr "1. Запустите несколько экземпляров сервера"
 
-#: ../../docs/faq.rst:100 caf61b8189464caea3b3ec8568068e9c
+#: ../../docs/faq.rst:100 3ec0e88236234bf6a9b1945b0b8fd591
 msgid "Use load balancer"
 msgstr "2. Используйте балансировщик нагрузки"
 
-#: ../../docs/faq.rst:101 34407c92e8d24df0bab7283715379028
+#: ../../docs/faq.rst:101 0b184160d01044d49cb7acde0daf714c
 msgid "Clients connect to nearest server"
 msgstr "3. Клиенты подключаются к ближайшему серверу"
 
-#: ../../docs/faq.rst:103 43d59cd481b84f519a2a428fa26a7f42
+#: ../../docs/faq.rst:103 a612b8e46a364fa5b31782521821412e
 msgid "**Vertical scaling:**"
 msgstr "**Вертикальное масштабирование:**"
 
-#: ../../docs/faq.rst:105 62d1cd3c53c545a88cbd5b966bbadd20
+#: ../../docs/faq.rst:105 c02a3b256c4849f7b4c2ff3a1ca3a7f7
 msgid "Increase limits (MaxConnections, MaxQueueSize)"
 msgstr "Увеличьте лимиты (MaxConnections, MaxQueueSize)"
 
-#: ../../docs/faq.rst:106 e579f4badce14cc680133c7dc2b59348
+#: ../../docs/faq.rst:106 c73f917c6e214e2782f9bea67fd4daac
 msgid "Add resources (CPU, RAM)"
 msgstr "Добавьте ресурсы (CPU, RAM)"
 
-#: ../../docs/faq.rst:110 c0cf744f31544cba84e44c3295d37bde
+#: ../../docs/faq.rst:108 ../../docs/faq.rst:399
+#: ca75ffd2800e4f84abda5ce0a6fcd716 f6ed312961024a3b854fa553f5bc4e84
+msgid "**Planned:**"
+msgstr "**Планируется:**"
+
+#: ../../docs/faq.rst:110 8bbaaea3f3c5403a87d1dffb2c283efe
 msgid "Clustering for automatic scaling"
 msgstr "Кластеризация для автоматического масштабирования"
 
-#: ../../docs/faq.rst:113 49adc3e66e2a44008fa0996e2479f974
+#: ../../docs/faq.rst:113 daec10d15f9242a5ada4aa793fec4c33
 msgid "How to ensure security?"
 msgstr "Как обеспечить безопасность?"
 
-#: ../../docs/faq.rst:115 4d5917a26839449085741b250c802955
+#: ../../docs/faq.rst:115 77805f80e90b4060950d9a2492e9aa03
 msgid "**Authentication:**"
 msgstr "**Аутентификация:**"
 
-#: ../../docs/faq.rst:121 05b8558d435846c39c9922aab51478b0
+#: ../../docs/faq.rst:121 310a5708b380486abc1581b86e969fc7
 msgid "**TLS encryption:**"
 msgstr "**TLS шифрование:**"
 
 #: ../../docs/faq.rst:130 ../../docs/faq.rst:332
-#: 62d505f98bf74ece8720d37b97ecbba0 c7d5395a982247eaaf347fac6b46a1d3
+#: 5e2b7c4355874f038149571b1996c8a3 a34063a65bd942cb887ced591d41f390
 msgid "**Rate limiting:**"
 msgstr "**Ограничение частоты:**"
 
-#: ../../docs/faq.rst:140 976b32bf3edd4fbcbdc5bc160cc37dfd
+#: ../../docs/faq.rst:140 8aa816d606c54913a0de7fbd096c5db6
 msgid "What delivery modes are supported?"
 msgstr "Какие режимы доставки поддерживаются?"
 
-#: ../../docs/faq.rst:142 a401b3a5fdd24619aa2e98c1f4278ee3
+#: ../../docs/faq.rst:142 3eec6260f009453380257826cbeb743a
 msgid "**Round-robin** — to each subscriber in turn"
 msgstr "**Round-robin** — по очереди каждому подписчику"
 
-#: ../../docs/faq.rst:143 a723a9cf88b94f81b38e029cca841bea
+#: ../../docs/faq.rst:143 ce1707ea791e4b158aa25064c9dc1591
 msgid "**Fan-out with ACK** — to all with acknowledgment"
 msgstr "**Fan-out с ACK** — всем с подтверждением"
 
-#: ../../docs/faq.rst:144 c3101813d28c457189f90c68c77dd66a
+#: ../../docs/faq.rst:144 7cada7a85e02414aa5a08925326b8a27
 msgid "**Fan-out without ACK** — to all without acknowledgment"
 msgstr "**Fan-out без ACK** — всем без подтверждения"
 
-#: ../../docs/faq.rst:145 b5f276185dbe4071982a2bc7690ed5a0
+#: ../../docs/faq.rst:145 c60dce3981eb40b9a26aa41ffe106705
 msgid "**Priority-based** — by priority"
 msgstr "**По приоритету** — по приоритету"
 
-#: ../../docs/faq.rst:148 0a0ef5155e694d77aa9109367d351871
+#: ../../docs/faq.rst:148 1403881049c04793ba935262a048ec7f
 msgid "How does Dead Letter Queue work?"
 msgstr "Как работает Dead Letter Queue?"
 
-#: ../../docs/faq.rst:150 be4953c989aa4d72aeaec9f075df43b7
+#: ../../docs/faq.rst:150 13a81fdc715a4d4fa96e9fac4aa9ad89
 msgid ""
 "DLQ stores messages that could not be delivered. Enable it when creating "
 "a queue (server queue defaults do not include DLQ options):"
 msgstr ""
-"DLQ хранит сообщения, которые не удалось доставить. Включите её при создании "
-"очереди (настройки очередей по умолчанию на сервере не включают опции DLQ):"
+"DLQ хранит сообщения, которые не удалось доставить. Включите её при "
+"создании очереди (настройки очередей по умолчанию на сервере не включают "
+"опции DLQ):"
 
-#: ../../docs/faq.rst:159 ee332eb118be4d478fc47c9d00e4128a
+#: ../../docs/faq.rst:159 55517fe33be34545b9b7cd95d1e8a96f
 msgid "**Reasons for DLQ:**"
 msgstr "**Причины попадания в DLQ:**"
 
-#: ../../docs/faq.rst:161 0a887507c8424e049b8984d5f4c1a178
+#: ../../docs/faq.rst:161 3ba1a8a0e7b944b880650785619d0490
 msgid "Exceeded delivery attempt count"
 msgstr "Превышено число попыток доставки"
 
 #: ../../docs/faq.rst:162 ../../docs/faq.rst:413
-#: d493c85427b440ce9befc890e11e4380 dda250a7918d4e0381c6a22f0973875e
+#: 1762603581ef46d7a8dd8990168313ce 988ab139e9b448f294d51bdb0f151683
 msgid "Message TTL expired"
 msgstr "Истёк TTL сообщения"
 
-#: ../../docs/faq.rst:163 7ca44253a4c442c5a02a07f4154157fb
+#: ../../docs/faq.rst:163 c5239618de5c447583519bc27e929c6c
 msgid "Deserialization error"
 msgstr "Ошибка десериализации"
 
-#: ../../docs/faq.rst:164 e609e4aebab444f28d0f8070016e93cb
+#: ../../docs/faq.rst:164 b1a70f753f884ff799c4a74f41753030
 msgid "Exception in handler"
 msgstr "Исключение в обработчике"
 
-#: ../../docs/faq.rst:167 55d6e5f28ebd4e41aeb4319ed57c68c9
+#: ../../docs/faq.rst:167 60d66023b08f49f1a9579f87d8dcbbac
 msgid "Deployment"
 msgstr "Развёртывание"
 
-#: ../../docs/faq.rst:170 27be4a61f18e4bd3b0228439b7e3eb08
+#: ../../docs/faq.rst:170 32fbe8e937404f1f941e8adb236588e6
 msgid "How to run in Docker?"
 msgstr "Как запустить в Docker?"
 
-#: ../../docs/faq.rst:172 9c2d51b95c9f4dbaa55743cf5eeb76bd
+#: ../../docs/faq.rst:172 8a8480fd9585473696cb24ca66e2b158
 msgid "**Dockerfile:**"
 msgstr "**Dockerfile:**"
 
-#: ../../docs/faq.rst:182 8342d7af6f5548c5b357deb77c55e938
+#: ../../docs/faq.rst:182 d46a012d203f4036907e32f904b3ad30
 msgid "**Run:**"
 msgstr "**Запуск:**"
 
-#: ../../docs/faq.rst:190 1b8f9cdc075f48eb91ce7493bfb5a86a
+#: ../../docs/faq.rst:190 7bb5404cd96744e7aacc39c75c1e35b4
 msgid "How to use with Kubernetes?"
 msgstr "Как использовать с Kubernetes?"
 
-#: ../../docs/faq.rst:192 38c7a2cb3b224a6daf7c71b2dd77f590
+#: ../../docs/faq.rst:192 8c62acc390914229b8095d3ca017d8b5
 msgid "**Deployment:**"
 msgstr "**Deployment:**"
 
-#: ../../docs/faq.rst:221 463e1fa1aae945ccaee146bab8f9a8e3
+#: ../../docs/faq.rst:221 7d2874d1af1f4afc8fa79106cf664e04
 msgid "How to configure for production?"
 msgstr "Как настроить для production?"
 
 #: ../../docs/faq.rst:223 ../../docs/faq.rst:303
-#: 0adaa41dfa144c93b0632087033acfb2 ca629dcf04f84edbb9b6b2e11fc5e6b7
+#: a8e0faf08f9b4c88891bdd7da884f8f9 b460bbf1b0d447669254af41479b6e2a
 msgid "**Recommendations:**"
 msgstr "**Рекомендации:**"
 
-#: ../../docs/faq.rst:251 6f32037d0a44465e92ace6128b16daab
+#: ../../docs/faq.rst:251 e4de9b231d4841a4aa3391bf04b076f2
 msgid "Performance"
 msgstr "Производительность"
 
-#: ../../docs/faq.rst:254 6d5ac9620b3849b281c074935b8f79bf
+#: ../../docs/faq.rst:254 dd756646e698459b96ff7df5708d2a31
 msgid "What is VibeMQ performance?"
 msgstr "Какая производительность VibeMQ?"
 
-#: ../../docs/faq.rst:256 f4a6f1c19fba4cd1bdf82ca9101eb318
+#: ../../docs/faq.rst:256 632f159265ca45f29c90a8369ded5616
 msgid "**Benchmarks:**"
 msgstr "**Бенчмарки:**"
 
-#: ../../docs/faq.rst:258 11c1541deed7450990c7a748019c80dd
+#: ../../docs/faq.rst:258 c852d1423b784f428e7b61d6a3aae799
 msgid "10,000+ messages/sec on single node"
 msgstr "10 000+ сообщений/с на одном узле"
 
-#: ../../docs/faq.rst:259 a1c48bfb79f748b2a300425c7ee228b2
+#: ../../docs/faq.rst:259 a80170848bec4bd7ab7202b74f2eab50
 #, python-format
 msgid "Latency < 10ms for 95% of messages"
 msgstr "Латентность < 10 мс для 95% сообщений"
 
-#: ../../docs/faq.rst:260 ed4309c008704affa11cbd1973f2b0e6
+#: ../../docs/faq.rst:260 4940a1f95f434565a97b8098337026f6
 msgid "Support for 1000+ simultaneous connections"
 msgstr "Поддержка 1000+ одновременных подключений"
 
-#: ../../docs/faq.rst:262 cdbf442b7a2e4f3fb43275b092f2a31d
+#: ../../docs/faq.rst:262 1f717d46a57e47ba82c9d8263adc03ac
 msgid "**Factors affecting performance:**"
 msgstr "**Факторы, влияющие на производительность:**"
 
-#: ../../docs/faq.rst:264 81c6df7ccd3e4d3b8c4d1844c38741b9
+#: ../../docs/faq.rst:264 7e661eae6fa6496eaa80fabe0a926e2f
 msgid "Message size"
 msgstr "Размер сообщения"
 
-#: ../../docs/faq.rst:265 dc06b18da3924c7ead898d443ea952e1
+#: ../../docs/faq.rst:265 5c0463322c4c4ab2bd100bdd6e955666
 msgid "Number of subscribers"
 msgstr "Количество подписчиков"
 
-#: ../../docs/faq.rst:266 d906956fee1e4e84a39f842221245c97
+#: ../../docs/faq.rst:266 802e47c5f4774b9c83e5b3e197141f89
 msgid "Delivery mode"
 msgstr "Режим доставки"
 
-#: ../../docs/faq.rst:267 ec4b25fb6eb340c58f942388f225d582
+#: ../../docs/faq.rst:267 41f478c0a6d74011ba2751eed2834787
 msgid "Network latency"
 msgstr "Сетевая задержка"
 
-#: ../../docs/faq.rst:270 c3237d748a824470b47b5c54aaf71fb4
+#: ../../docs/faq.rst:270 8af160a54e924afe998e184f96ced4d7
 msgid "How to optimize performance?"
 msgstr "Как оптимизировать производительность?"
 
-#: ../../docs/faq.rst:272 2140f88321f2428585236361a8ef6189
+#: ../../docs/faq.rst:272 4f66f92b54bd462a9edb11ccf5fa803a
 msgid "**On server:**"
 msgstr "**На сервере:**"
 
-#: ../../docs/faq.rst:282 28745135906f40a7a75b4da27a3de852
+#: ../../docs/faq.rst:282 1a21d582754c444f8a4a5369823ae9db
 msgid "**On client:**"
 msgstr "**На клиенте:**"
 
-#: ../../docs/faq.rst:291 d62a96f5d2be4c0f856add4805f4d244
+#: ../../docs/faq.rst:291 25dc794a95dc474c946847e6af4f3b95
 msgid "**General recommendations:**"
 msgstr "**Общие рекомендации:**"
 
-#: ../../docs/faq.rst:293 e3f1349312cd48258d37b7dc8e92eacb
+#: ../../docs/faq.rst:293 d307f5f707844ad5b45e83cd48d8cde0
 msgid "Use batching for publishing"
 msgstr "Используйте пакетную публикацию"
 
-#: ../../docs/faq.rst:294 3c13bf5b7b4b4ca6acb659c72e0dd209
+#: ../../docs/faq.rst:294 632f090501294e0cb1c1a1571139c232
 msgid "Optimize message handlers"
 msgstr "Оптимизируйте обработчики сообщений"
 
-#: ../../docs/faq.rst:295 885f506aee5c4849a47926ad441160bd
+#: ../../docs/faq.rst:295 de1922e883bd401f85632ef256738d05
 msgid "Monitor performance metrics"
 msgstr "Отслеживайте метрики производительности"
 
-#: ../../docs/faq.rst:298 09921d32a01b4f72ba8e3f8de7a2fe2c
+#: ../../docs/faq.rst:298 77f30ce07fd0416eb1ce209c4f61f13a
 msgid "Security"
 msgstr "Безопасность"
 
-#: ../../docs/faq.rst:301 774215a0f8194809912b8b93d1df68f6
+#: ../../docs/faq.rst:301 15ca28e8c9084a4fad9023fe750ff4a8
 msgid "How secure is token authentication?"
 msgstr "Насколько безопасна аутентификация по токену?"
 
-#: ../../docs/faq.rst:305 0ce4bd212a40408cabca53ee5454ab90
+#: ../../docs/faq.rst:305 f0263eb00e8748f9a0774ea75458ec9f
 msgid "Use complex tokens (32+ characters)"
 msgstr "Используйте сложные токены (32+ символа)"
 
-#: ../../docs/faq.rst:306 c8fdf1acbeb14fe5898919861da08556
+#: ../../docs/faq.rst:306 77da844a66e640b49e2f615e53c00603
 msgid "Store tokens in secure location (Key Vault, Secrets Manager)"
 msgstr "Храните токены в защищённом месте (Key Vault, Secrets Manager)"
 
-#: ../../docs/faq.rst:307 04bf5713ff774aa0889b4238fdfeb0b4
+#: ../../docs/faq.rst:307 4505d49e370c46f58ffb00e8a28cfa2b
 msgid "Rotate tokens periodically"
 msgstr "Регулярно меняйте токены"
 
-#: ../../docs/faq.rst:308 a693a010bd4243dd8fa5b3f17fc261db
+#: ../../docs/faq.rst:308 e5afdb825744466bb94887d2a4a425ca
 msgid "Use different tokens for different environments"
 msgstr "Используйте разные токены для разных окружений"
 
-#: ../../docs/faq.rst:312 0affb8611dbf4880b7cdf1ace4ca6aed
+#: ../../docs/faq.rst:312 0a8cfd5e51e247cfb0fbc740019f6023
 msgid ""
 "Token authentication is suitable for internal security. For public APIs "
 "use OAuth2/OIDC."
@@ -481,167 +495,169 @@ msgstr ""
 "Токен-аутентификация подходит для внутренней безопасности. Для публичных "
 "API используйте OAuth2/OIDC."
 
-#: ../../docs/faq.rst:316 0cb48eda6ce74064ba63d6e6fe160d61
+#: ../../docs/faq.rst:316 a906926e176742fb874da17edd9091a3
 msgid "Do I need to use TLS?"
 msgstr "Нужно ли использовать TLS?"
 
-#: ../../docs/faq.rst:318 dec65e5163bc400ca67d1c9033e3b896
+#: ../../docs/faq.rst:318 99953f609e45413bab95087044528606
 msgid "**Yes, if:**"
 msgstr "**Да, если:**"
 
-#: ../../docs/faq.rst:320 95d83b62c2b74713a74bc6dffafbf0bd
+#: ../../docs/faq.rst:320 04bf102a5b1d452fb1671ed5cbc62b99
 msgid "Messages contain sensitive data"
 msgstr "Сообщения содержат конфиденциальные данные"
 
-#: ../../docs/faq.rst:321 37ee90cff5e143bd9a8da62cb3cf8d1b
+#: ../../docs/faq.rst:321 6bd5cf2ae9844540bca3504e907f8a1f
 msgid "Network is untrusted"
 msgstr "Сеть ненадёжная"
 
-#: ../../docs/faq.rst:322 fd629f129128422f89de077755cc5d8c
+#: ../../docs/faq.rst:322 ddc054a6d2484c81936c25d01c56f6b6
 msgid "Security compliance required"
 msgstr "Требуется соответствие стандартам безопасности"
 
-#: ../../docs/faq.rst:324 d9a063a5ac554601a9c90707015ca0ab
+#: ../../docs/faq.rst:324 7d44d4c473cb4dff9a194c72b0cffbbe
 msgid "**No, if:**"
 msgstr "**Нет, если:**"
 
-#: ../../docs/faq.rst:326 101d691acede4e3fbcaebec35944b582
+#: ../../docs/faq.rst:326 1705fcd2a40a4e879fe73d35eac2bb23
 msgid "All services in trusted network"
 msgstr "Все сервисы в доверенной сети"
 
-#: ../../docs/faq.rst:327 df9ca7200f9f46cb98346034942cb301
+#: ../../docs/faq.rst:327 306bec3385934b99b8d6b1f1cd21e6dc
 msgid "TLS terminates at load balancer level"
 msgstr "TLS завершается на уровне балансировщика нагрузки"
 
-#: ../../docs/faq.rst:330 3ae3994a88f64352bddbab66fce694b3
+#: ../../docs/faq.rst:330 0a40054f1dde4225a366a366aa2b3874
 msgid "How to protect against DDoS?"
 msgstr "Как защитить от DDoS?"
 
-#: ../../docs/faq.rst:342 116d0e41f8ac41a8988622030abc288d
+#: ../../docs/faq.rst:342 19b34c7ae57a49449e24744c7bb5a7ac
 msgid "**Additionally:**"
 msgstr "**Дополнительно:**"
 
-#: ../../docs/faq.rst:344 71135886ab264376b97bc35c9ffa54a9
+#: ../../docs/faq.rst:344 964a181f1cec43d5be81226b46a549c7
 msgid "Use firewall"
 msgstr "Используйте брандмауэр"
 
-#: ../../docs/faq.rst:345 5048298aabc14a55b70ece52cf3dd73a
+#: ../../docs/faq.rst:345 4d1d62b4eccd475ca4868371a1906ef0
 msgid "Limit number of connections"
 msgstr "Ограничьте число подключений"
 
-#: ../../docs/faq.rst:346 4754727a2f5c434fa2a0c355d21fece3
+#: ../../docs/faq.rst:346 dcc4b490ccf9411d8c62b783f45e88a0
 msgid "Monitor anomalies"
 msgstr "Отслеживайте аномалии"
 
-#: ../../docs/faq.rst:349 c8721a796bc7454381b6e186951bb6fa
+#: ../../docs/faq.rst:349 659fad0f65e84ca88a35010f7b8c345e
 msgid "Integration"
 msgstr "Интеграция"
 
-#: ../../docs/faq.rst:352 9416658231e04fa693b351e5ee3b0bf0
+#: ../../docs/faq.rst:352 029038d9f1ee41c1b18de9674031e0e9
 msgid "How to use with ASP.NET Core?"
 msgstr "Как использовать с ASP.NET Core?"
 
-#: ../../docs/faq.rst:376 991526a8f7dc422ea5fbc183bf014794
+#: ../../docs/faq.rst:376 eea50c1ba5344c10861702056aa1745a
 msgid "How to use with Worker Service?"
 msgstr "Как использовать с Worker Service?"
 
-#: ../../docs/faq.rst:395 c48e673abbab48fdb087cacb0b1f1676
+#: ../../docs/faq.rst:395 bacb976dd7da4e8597fdb926bb64a759
 msgid "Can I use with other languages?"
 msgstr "Можно ли использовать с другими языками?"
 
-#: ../../docs/faq.rst:397 188bf0bc685848d5a77a92a0f994a9bc
+#: ../../docs/faq.rst:397 f81d38e71ff94c83b23afe38bfb6a885
 msgid "**Current version:** Only .NET clients"
 msgstr "**Текущая версия:** Только .NET клиенты"
 
-#: ../../docs/faq.rst:401 362a8dda14ff463aa9342bbbf7f3474b
+#: ../../docs/faq.rst:401 3c5960bc92114cf49faa3e824a3a6660
 msgid "Clients for Java, Python, Node.js"
 msgstr "Клиенты для Java, Python, Node.js"
 
-#: ../../docs/faq.rst:402 6496017a0769437287ffae3c769ed2e6
+#: ../../docs/faq.rst:402 ac1bb0bc5e954906bc8bb1380c72b90c
 msgid "AMQP/MQTT protocol support"
 msgstr "Поддержка протоколов AMQP/MQTT"
 
-#: ../../docs/faq.rst:405 699bbec54bea42cc9dadb33b6891b5cd
+#: ../../docs/faq.rst:405 9aa9fdc340de41f7afc7149f859902cd
 msgid "Troubleshooting"
 msgstr "Устранение проблем"
 
-#: ../../docs/faq.rst:408 7d8988e8769e45b087fd52742512603d
+#: ../../docs/faq.rst:408 a320c55591d345fd9f090f84b94fe54f
 msgid "Why are messages lost?"
 msgstr "Почему теряются сообщения?"
 
 #: ../../docs/faq.rst:410 ../../docs/faq.rst:429 ../../docs/faq.rst:444
-#: 3674a47201264270b008141f803337c0 7bc1882a89814815ad1c9441df8598c9
-#: fb028951825e4176849758b8db0600a0
+#: 000ec5a17e6c4f28bb4563fb1355811f 3b69ddde13824524a38b94be44e5c0d6
+#: f340819b5b6742b5a3616ed2293451d8
 msgid "**Causes:**"
 msgstr "**Причины:**"
 
-#: ../../docs/faq.rst:412 99eb7eb4b8ce4d0a879b62ec0176b8e1
+#: ../../docs/faq.rst:412 914952eede36437ca43050e1d8945889
 msgid "Server restarted (in-memory storage)"
 msgstr "Сервер перезапущен (хранилище в памяти)"
 
-#: ../../docs/faq.rst:414 651ceeac117e485baf9134053f9a51d2
+#: ../../docs/faq.rst:414 8a5343daa0a94f559edc83d851f16739
 msgid "Queue size exceeded"
 msgstr "Превышен размер очереди"
 
 #: ../../docs/faq.rst:416 ../../docs/faq.rst:435 ../../docs/faq.rst:450
-#: 8353f347dbf74f929a01036f6e78d4af 9cb5b19f8036476a9f5bfea9f59e2965
-#: a9196322c46a441fa69bcb240f50bc0b
+#: c2134c2dc8b74c40b848aa324212f5fa c7e1545afb174b4a990bb6073987caca
+#: eac5ffb6226f44bf9f3bc20e41656e8d
 msgid "**Solution:**"
 msgstr "**Решение:**"
 
-#: ../../docs/faq.rst:427 849cfa073a6142f49d8ca970108adf4b
+#: ../../docs/faq.rst:427 9e3a864dd8214d7d9b93f7613229b9e8
 msgid "Why high latency?"
 msgstr "Почему высокая латентность?"
 
-#: ../../docs/faq.rst:431 b710b24cd2384d5cbef77fb9abeee951
+#: ../../docs/faq.rst:431 887cf627a90e438394f5fdfff97d2f1d
 msgid "Server overload"
 msgstr "Перегрузка сервера"
 
-#: ../../docs/faq.rst:432 4c3347f890244390beae50cde34c686a
+#: ../../docs/faq.rst:432 3e6776d159fb4f4580dbd5883e976934
 msgid "Slow handlers"
 msgstr "Медленные обработчики"
 
 #: ../../docs/faq.rst:433 ../../docs/faq.rst:446
-#: 226b051f0a54497f8481bbd830f5cd54 2b96e7332341401980692985f2d06404
+#: 5cce66630b674d2a8cd539ee3f0b3505 f02933df298c46738778e8c7b3f6d3ef
 msgid "Network issues"
 msgstr "Проблемы с сетью"
 
-#: ../../docs/faq.rst:437 34f65d612ea441ca9cfe1d02b637b08d
+#: ../../docs/faq.rst:437 547f2089b9c444789b9ce9d41f7f9f58
 msgid "Optimize handlers"
 msgstr "Оптимизируйте обработчики"
 
-#: ../../docs/faq.rst:438 dfcb9dc578754f10bd77bcb8ae86175c
+#: ../../docs/faq.rst:438 597475dc1a0b40deb33b84f82c6a17da
 msgid "Increase server resources"
 msgstr "Увеличьте ресурсы сервера"
 
-#: ../../docs/faq.rst:439 6dbb64a8c163471f8d8931184ffa7221
+#: ../../docs/faq.rst:439 745617ca6e5141d8be650f6e760cedfa
 msgid "Check network"
 msgstr "Проверьте сеть"
 
-#: ../../docs/faq.rst:442 1e60816453b84d8f97df4cdb439b13cd
+#: ../../docs/faq.rst:442 bd0519185ae94b468f12db62507c5536
 msgid "Why frequent disconnections?"
 msgstr "Почему частые отключения?"
 
-#: ../../docs/faq.rst:447 ef1b988b0d314365bd0913331db3a593
+#: ../../docs/faq.rst:447 1bd5aee6d0464673a08224a348adfeb6
 msgid "Keep-alive timeout"
 msgstr "Таймаут keep-alive"
 
-#: ../../docs/faq.rst:448 305fc6e2164c45418572bc27e69473f7
+#: ../../docs/faq.rst:448 3acf086a904e48d3bc611c1c9f4c562e
 msgid "Server restarting"
 msgstr "Перезапуск сервера"
 
-#: ../../docs/faq.rst:463 90364e8a37164e6bb428832d53ebf42a
+#: ../../docs/faq.rst:463 dfa9373a08c445de8c02efcea2d7d830
 msgid "Next Steps"
 msgstr "Дальнейшие шаги"
 
-#: ../../docs/faq.rst:465 cedc3458525441e08a39e566b70768a4
+#: ../../docs/faq.rst:465 8d99f53c866646a9bfb6a733c6e9c064
 msgid ":doc:`getting-started` — quick start"
 msgstr ":doc:`getting-started` — быстрый старт"
 
-#: ../../docs/faq.rst:466 833c7b2b81bc471993660439e585abf9
+#: ../../docs/faq.rst:466 e2dd28533e5a4bbaa4c6499cfd4124c7
 msgid ":doc:`troubleshooting` — troubleshooting"
 msgstr ":doc:`troubleshooting` — устранение проблем"
 
-#: ../../docs/faq.rst:467 7fbc082d4fac491bbe8eb75c2c016320
+#: ../../docs/faq.rst:467 b02fb28d8120456bae68fe6095139a26
 msgid ":doc:`examples` — usage examples"
 msgstr ":doc:`examples` — примеры использования"
+
+

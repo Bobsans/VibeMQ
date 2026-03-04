@@ -82,7 +82,8 @@ Fan-out with Acknowledgment
 .. code-block:: csharp
 
    options.DefaultDeliveryMode = DeliveryMode.FanOutWithAck;
-   options.MaxRetryAttempts = 3;
+
+``MaxRetryAttempts`` is not in ``QueueDefaults``; set it in ``QueueOptions`` when creating a queue (e.g. ``client.CreateQueueAsync("name", new QueueOptions { MaxRetryAttempts = 3 })``). See :doc:`client-usage` and :doc:`configuration`.
 
 **Use cases:**
 

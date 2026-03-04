@@ -24,10 +24,10 @@ Main server configuration class:
        public int MaxMessageSize { get; set; } = 1_048_576;
        public bool EnableAuthentication { get; set; }
        public string? AuthToken { get; set; }
+       public AuthorizationOptions? Authorization { get; set; }
        public QueueDefaults QueueDefaults { get; set; } = new();
        public TlsOptions Tls { get; set; } = new();
        public RateLimitOptions RateLimit { get; set; } = new();
-       public StorageType StorageType { get; set; } = StorageType.InMemory;
        public IReadOnlyList<CompressionAlgorithm> SupportedCompressions { get; set; }
            = [CompressionAlgorithm.Brotli, CompressionAlgorithm.GZip];
        public int CompressionThreshold { get; set; } = 1024;  // 1 KB
@@ -35,7 +35,7 @@ Main server configuration class:
 
 **Authorization** (default: ``null``) enables username/password authentication with per-queue ACL. When set, legacy ``AuthToken`` is ignored. See :doc:`authorization` for full details.
 
-**StorageType** (default: ``InMemory``) selects the persistence backend: ``InMemory`` (no durability) or ``Sqlite`` (durable, single-node). See :doc:`storage` for details.
+Persistence is configured on the builder, not in ``BrokerOptions``: use ``BrokerBuilder.UseSqliteStorage(...)`` or ``BrokerBuilder.UseRedisStorage(...)``. See :doc:`storage` for details.
 
 **SupportedCompressions** (default: ``Brotli, GZip``) and **CompressionThreshold** (default: ``1024`` bytes) control frame-level compression. Use ``ConfigureFrom(BrokerOptions)`` to set them; see :doc:`protocol` for negotiation and framing.
 
@@ -373,6 +373,8 @@ ClientOptions
 
    public sealed class ClientOptions {
        public string? AuthToken { get; set; }
+       public string? Username { get; set; }
+       public string? Password { get; set; }
        public ReconnectPolicy ReconnectPolicy { get; set; } = new();
        public TimeSpan KeepAliveInterval { get; set; } = TimeSpan.FromSeconds(30);
        public TimeSpan CommandTimeout { get; set; } = TimeSpan.FromSeconds(10);

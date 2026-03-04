@@ -36,7 +36,7 @@ How is VibeMQ different from RabbitMQ/Kafka?
 **VibeMQ vs Kafka:**
 
 - VibeMQ is not a distributed event log
-- Does not support persistent storage (in current version)
+- Optional persistence via SQLite or Redis (see :doc:`storage`); default is in-memory
 - Simpler to deploy and use
 - Better suited for task queues and real-time notifications
 
@@ -81,15 +81,15 @@ VibeMQ uses acknowledgment (ACK) mechanism:
 What happens when server restarts?
 ---------------------------------------
 
-**Current version:**
+**With in-memory storage (default):**
 
-- Messages in queues are lost (in-memory storage)
+- Messages in queues are lost
 - Connections must be restored
 
-**Planned:**
+**With SQLite or Redis storage:**
 
-- Persistence layer for message storage
-- State recovery after restart
+- Queues and pending messages are recovered on startup (see :doc:`storage`).
+- Configure via ``BrokerBuilder.UseSqliteStorage(...)`` or ``UseRedisStorage(...)`` (or in Docker with ``VibeMQ__StorageType=Sqlite`` and the Host project).
 
 How to scale VibeMQ?
 --------------------------

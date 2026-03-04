@@ -590,7 +590,6 @@ CQRS with VibeMQ
        public string CorrelationId { get; set; } = "";
        public T? Data { get; set; }
    }
-   }
 
 Monitoring and Logging
 ========================

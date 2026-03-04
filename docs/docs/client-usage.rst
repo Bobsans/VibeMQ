@@ -93,6 +93,8 @@ Basic Connection
 Connection with Authentication
 ------------------------------
 
+Legacy token:
+
 .. code-block:: csharp
 
    var client = await VibeMQClient.ConnectAsync(
@@ -100,6 +102,19 @@ Connection with Authentication
        2925,
        new ClientOptions {
            AuthToken = "my-secret-token"
+       }
+   );
+
+Username/password (see :doc:`authorization`):
+
+.. code-block:: csharp
+
+   var client = await VibeMQClient.ConnectAsync(
+       "localhost",
+       2925,
+       new ClientOptions {
+           Username = "alice",
+           Password = "alice-secret"
        }
    );
 

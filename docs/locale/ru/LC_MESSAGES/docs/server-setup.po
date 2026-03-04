@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: VibeMQ 1.0.0\n"
 "Report-Msgid-Bugs-To: https://github.com/DarkBoy/VibeMQ/issues\n"
-"POT-Creation-Date: 2026-02-27 19:30+0300\n"
+"POT-Creation-Date: 2026-03-04 10:40+0300\n"
 "PO-Revision-Date: 2026-02-24 12:00+0300\n"
 "Last-Translator: Darkboy\n"
 "Language: ru\n"
@@ -19,17 +19,17 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.18.0\n"
 
-#: ../../docs/server-setup.rst:3 a4908706edce429bb9a72a3dd6970ce7
+#: ../../docs/server-setup.rst:3 43fddc66888e44ef87a04a76fb6ba6ce
 msgid "Server Setup"
 msgstr "Настройка сервера"
 
-#: ../../docs/server-setup.rst:5 9ef920e387854a10ba085ba636fb4591
+#: ../../docs/server-setup.rst:5 7c1a6f7fa5994837a95b92e6e3738fed
 msgid "This guide describes various ways to configure and run the VibeMQ server."
 msgstr ""
 "Это руководство описывает различные способы настройки и запуска сервера "
 "VibeMQ."
 
-#: ../../docs/server-setup.rst:7 6121f14156fb45089672eee921490971
+#: ../../docs/server-setup.rst:7 27e02716609348f8a63bf7d4b56d735d
 msgid ""
 "For running the broker in Docker with environment-based configuration, "
 "see :doc:`docker`. For an optional Web dashboard (health, metrics, "
@@ -39,23 +39,23 @@ msgstr ""
 ":doc:`docker`. Опциональный веб-дашборд (состояние, метрики, очереди): "
 ":doc:`web-ui`."
 
-#: ../../docs/server-setup.rst:11 cbdfaee4b8104ccea89c97272ed6ad12
+#: ../../docs/server-setup.rst:11 77b66516fa7549ab8f0d5a9e5b5e04fd
 msgid "Contents"
 msgstr "Содержание"
 
-#: ../../docs/server-setup.rst:14 a4f031ad73c54067b6ac8ad381162c49
+#: ../../docs/server-setup.rst:14 968fb73bd73a465db494a5c94e71cc17
 msgid "Basic Configuration"
 msgstr "Базовая конфигурация"
 
-#: ../../docs/server-setup.rst:17 ea581e1e3967417aa3c0608e9a291d08
+#: ../../docs/server-setup.rst:17 54d20778561a415a9c093a0cda8f7e53
 msgid "Minimal Configuration"
 msgstr "Минимальная конфигурация"
 
-#: ../../docs/server-setup.rst:19 a467470b9e51420aad3ebe8b0d109e04
+#: ../../docs/server-setup.rst:19 6c4cf2700a4142d5af113417bf4a5c18
 msgid "Simplest way to start server:"
 msgstr "Самый простой способ запустить сервер:"
 
-#: ../../docs/server-setup.rst:31 d7594b5f9bd444278b9cbdae500c9d7a
+#: ../../docs/server-setup.rst:31 aa443edb337146138c013851ff77c32d
 msgid ""
 "This code will start server on port 2925 without authentication and with "
 "default settings."
@@ -63,113 +63,113 @@ msgstr ""
 "Этот код запустит сервер на порту 2925 без аутентификации и с настройками"
 " по умолчанию."
 
-#: ../../docs/server-setup.rst:34 33f6b11337df4059a4d0a2288f147385
+#: ../../docs/server-setup.rst:34 4b1b5f6918b4406d83e4d4af7614876e
 msgid "Advanced Configuration"
 msgstr "Расширенная конфигурация"
 
-#: ../../docs/server-setup.rst:76 6aa4074ce33444c989673ab601d298d6
+#: ../../docs/server-setup.rst:76 0b948221e09c48659ceed4c6877af89e
 msgid "Configuration Parameters"
 msgstr "Параметры конфигурации"
 
-#: ../../docs/server-setup.rst:79 36c29cb49c624a90a7312576402df724
+#: ../../docs/server-setup.rst:79 39197a06b19a4afb9dee03925bb64ebb
 msgid "Basic Parameters"
 msgstr "Основные параметры"
 
 #: ../../docs/server-setup.rst:85 ../../docs/server-setup.rst:114
 #: ../../docs/server-setup.rst:136 ../../docs/server-setup.rst:159
-#: ../../docs/server-setup.rst:179 12c0a5ff6c2748a5968a617304955c61
-#: 27fa705345994c93885650cbbb26e6f7 336f34e57cc844b1a5211002deea8000
-#: 6ac745aa4e1a495d898d9dc14b891044 c4911d6437e546af959bb54808800e8e
+#: ../../docs/server-setup.rst:179 02985314d9524588aab0d83f6f189341
+#: 2bb9894e7b90470d8e3c04b124b17dbe 40a8cce5330b45a8a645c141d9c9f77c
+#: 87c4cd6d0cbb419fb48e031c36608183 af77f2a43bc64deea2fb110d35ce35e3
 msgid "Parameter"
 msgstr "Параметр"
 
 #: ../../docs/server-setup.rst:86 ../../docs/server-setup.rst:115
 #: ../../docs/server-setup.rst:137 ../../docs/server-setup.rst:160
-#: ../../docs/server-setup.rst:180 04dff8fc16f8416f8690c1d9b5e073b4
-#: 82afbd921bff4c72ae34c56157d7eb29 92e8c98bce68442bb8a2c4131dd3fb40
-#: a84c3423d9714ed2a00d3bfe266e639f bb5f0b2d5e5a46669ced0cf68819794a
+#: ../../docs/server-setup.rst:180 2ad44ec1f58b47e6845f877427f26601
+#: 8cbbbcdc0ecb46068c334fb088195f8f c3230a9cadaa4a3cb76700da47232456
+#: d4762e43bd674643b7d1ed49f33b1d31 fd6356dcd5404020a6252c75d6e032f7
 msgid "Default"
 msgstr "По умолчанию"
 
 #: ../../docs/server-setup.rst:87 ../../docs/server-setup.rst:116
 #: ../../docs/server-setup.rst:138 ../../docs/server-setup.rst:161
-#: ../../docs/server-setup.rst:181 0988336a14854555af943f89561a72f2
-#: 0a54b7785bf545a89ab6281aa716fea5 1ff09231fb774f27b8890a6bf88f821c
-#: 87fc867ace7e4c9eab03647683c5d0d7 9c4018bcd74248eb9e150f7efa0203c7
+#: ../../docs/server-setup.rst:181 2efaee7fa3804f94aae8cb7ba66ec747
+#: 4e026b2865f8427a8f906a1d16b9bd54 5a1742969fc646a6976a175cd9568fd8
+#: 7c75fd46c578490c917ef92e4cdb2fbb fda389f1817d45f08cb5dee662f75444
 msgid "Description"
 msgstr "Описание"
 
 #: ../../docs/server-setup.rst:88 ../../docs/server-setup.rst:185
-#: 84a314bbfc6b4f4286d0eaa1e1231e64 91bd55e4a0f74a4aa0a87b86591a5e35
+#: 132ea356353d4b9ab1aaec50e8d6419b d711e8cc71bc4b7691a77671542e46f2
 msgid "``Port``"
 msgstr ""
 
-#: ../../docs/server-setup.rst:89 66c864e8d4de47ca82ba4af10c24a192
+#: ../../docs/server-setup.rst:89 abec8daa78754ecc9adf15ad5b42809c
 msgid "2925"
 msgstr "2925"
 
-#: ../../docs/server-setup.rst:90 fad7bba6618a45a982b2529e79f4bdfc
+#: ../../docs/server-setup.rst:90 fd4e973918b248e7b20837db83dd7123
 msgid "TCP port for client connections"
 msgstr "TCP-порт для подключений клиентов"
 
-#: ../../docs/server-setup.rst:91 afa2a89d6ec542c5bcf06aa3c8c38002
+#: ../../docs/server-setup.rst:91 cee8a03222bc4431baa5575039c47007
 msgid "``MaxConnections``"
 msgstr ""
 
 #: ../../docs/server-setup.rst:92 ../../docs/server-setup.rst:149
-#: 2dc59040a133494b8a9353f448d0d9eb feb6de0353b44ea4b27a7d8d765d6ad7
+#: 16df0538d79d4e82b6c7177d80479149 7442d82b560d4105b8bedcd94ab6a3f4
 msgid "1000"
 msgstr ""
 
-#: ../../docs/server-setup.rst:93 c60cff050497403eac31751548ceb32f
+#: ../../docs/server-setup.rst:93 122488b2e4224b3dbb5201c6394d2ec7
 msgid "Maximum number of connections"
 msgstr "Максимальное число подключений"
 
-#: ../../docs/server-setup.rst:94 7638b9bdf14f49d18456ad7395bf5399
+#: ../../docs/server-setup.rst:94 0e721cb424e24ec1b90037d2590d8117
 msgid "``MaxMessageSize``"
 msgstr ""
 
-#: ../../docs/server-setup.rst:95 c07ab8eebd554ff28da00a87f267179e
+#: ../../docs/server-setup.rst:95 c56d8350fa634249a249edbf619de1fb
 msgid "1 MB"
 msgstr ""
 
-#: ../../docs/server-setup.rst:96 5b5ee370ddc04faab5f0d64e4db91033
+#: ../../docs/server-setup.rst:96 5d9461f1e03447b3a091dd93b63aef84
 msgid "Maximum message size"
 msgstr "Максимальный размер сообщения"
 
-#: ../../docs/server-setup.rst:97 419b24fdb82c432d932e420d7e6b6ad8
+#: ../../docs/server-setup.rst:97 9e07ecd759aa462b8d6cc68b74845616
 msgid "``EnableAuthentication``"
 msgstr ""
 
 #: ../../docs/server-setup.rst:98 ../../docs/server-setup.rst:163
-#: 4feda202c8594df98ef7c97b1fd1b461 54698fea4afc45aeb9252ed55ad3bfe6
+#: 528c06710ced4aa4aa31207ca8733a73 d735088bd1274d50add0072b5f3cb2ee
 msgid "false"
 msgstr ""
 
-#: ../../docs/server-setup.rst:99 c94967f1c70043068ee1c68f3e81b2e7
+#: ../../docs/server-setup.rst:99 2cb8f5f63a3343f69224312e230fac88
 msgid "Enable legacy token authentication"
 msgstr "Включить устаревшую токен-аутентификацию"
 
-#: ../../docs/server-setup.rst:100 b24ece6e103d4e2f81679ce27b57c607
+#: ../../docs/server-setup.rst:100 31594a30d70c4122b1f7ebd0f1640e07
 msgid "``AuthToken``"
 msgstr ""
 
 #: ../../docs/server-setup.rst:101 ../../docs/server-setup.rst:104
 #: ../../docs/server-setup.rst:166 ../../docs/server-setup.rst:169
-#: 255b949c6ce341d38ffa9490e564916d 9bb763cbf1a74b888a22fbcbe9960f7b
-#: bc946e2796b74ec1b48bfd4ab11ea47c e43387bd80d84d118efd496e34fdf8bf
+#: 0f7fce215b2a4c27a9fdb847b1a86f5f 3dc7eff8c0174e8486493e08f1158bc2
+#: 828f5b8354014837b71de9fee5340bc9 df8462183be34fc489cbe675f4c3bc30
 msgid "null"
 msgstr ""
 
-#: ../../docs/server-setup.rst:102 3ae8fb3df9d94bfbb261f24aeaeca4c3
+#: ../../docs/server-setup.rst:102 d7dd773a2dab4519a410db4c7a152985
 msgid "Token for legacy authentication (deprecated)"
 msgstr "Токен для устаревшей аутентификации (устарело)"
 
-#: ../../docs/server-setup.rst:103 d98883e0e4e74b0a89f8deb4a9609997
+#: ../../docs/server-setup.rst:103 7aeec3a9afdf4da3b4d61cf3c5a04caf
 msgid "``Authorization``"
 msgstr "``Authorization``"
 
-#: ../../docs/server-setup.rst:105 57c87d7d6ec34b28a047222b93733377
+#: ../../docs/server-setup.rst:105 7c44d816e87a42f2b70d89d1022b7edb
 msgid ""
 "Enable username/password auth with per-queue ACL (see "
 ":doc:`authorization`)"
@@ -177,49 +177,49 @@ msgstr ""
 "Включить аутентификацию по логину/паролю с ACL на уровне очередей (см. "
 ":doc:`authorization`)"
 
-#: ../../docs/server-setup.rst:108 bd1c011cad654880b34772b17c7e8d93
+#: ../../docs/server-setup.rst:108 a0f52b48a5eb44b9aae98d606f5e9a38
 msgid "Default Queue Settings"
 msgstr "Настройки очередей по умолчанию"
 
-#: ../../docs/server-setup.rst:117 1896adbb0dc4473f9002dfd329ed7e2f
+#: ../../docs/server-setup.rst:117 5cbb76574f9f409ca044dc9dcf927f0c
 msgid "``DefaultDeliveryMode``"
 msgstr ""
 
-#: ../../docs/server-setup.rst:118 8f7a5545b5624f8bb64a59e83999e3a2
+#: ../../docs/server-setup.rst:118 7c7ada07b5aa4351ad6147b46a4548a7
 msgid "RoundRobin"
 msgstr "Round-robin"
 
-#: ../../docs/server-setup.rst:119 26c9be24f5c54672a585d0e92939be84
+#: ../../docs/server-setup.rst:119 8e223e16b6934ae7ad7364fb4bc15e0a
 msgid "Default delivery mode"
 msgstr "Режим доставки по умолчанию"
 
-#: ../../docs/server-setup.rst:120 8ea8ccca2ad04ace9d8ff74c3c78c435
+#: ../../docs/server-setup.rst:120 0641ef0a2647478ca6a78ff90b024010
 msgid "``MaxQueueSize``"
 msgstr ""
 
-#: ../../docs/server-setup.rst:121 a12cf805160e429285a220adfb7aea1b
+#: ../../docs/server-setup.rst:121 cb7c210913df42329af4a8bb49ab750c
 msgid "10,000"
 msgstr ""
 
-#: ../../docs/server-setup.rst:122 9cb8a07ba3ec4d1cafcf3e64ae2c079f
+#: ../../docs/server-setup.rst:122 0490bccfab7446d38e89ca439aea8d5c
 msgid "Maximum queue size"
 msgstr "Максимальный размер очереди"
 
-#: ../../docs/server-setup.rst:123 dc791ce2dfa145a89c3967efbee83036
+#: ../../docs/server-setup.rst:123 125830949ee34105b6a1f636b0ac5945
 msgid "``EnableAutoCreate``"
 msgstr ""
 
 #: ../../docs/server-setup.rst:124 ../../docs/server-setup.rst:140
-#: ../../docs/server-setup.rst:183 77efbf261c0d42ac976fddb672c6c2c3
-#: 8e75e69ecd794c5a8180ec9b5f967eff f7baafa3744b41438ff578ed10ab512e
+#: ../../docs/server-setup.rst:183 3f83f403ff6e45e397a0efa8dc968626
+#: 46f1d1d0774c495aa3fb21a123aa80b3 8ce468c8a4284745920ad8298f6adf8a
 msgid "true"
 msgstr ""
 
-#: ../../docs/server-setup.rst:125 5e227fcee54c41fe836dcf5069a5f832
+#: ../../docs/server-setup.rst:125 2da0315049fe4098876a361b2572028a
 msgid "Automatic queue creation"
 msgstr "Автоматическое создание очередей"
 
-#: ../../docs/server-setup.rst:127 e13f1c8bdc8040df981a9f18ac60e6fa
+#: ../../docs/server-setup.rst:127 76d1e846aa5547a8a09e50bd995b627d
 msgid ""
 "Per-queue options (MessageTtl, EnableDeadLetterQueue, MaxRetryAttempts, "
 "OverflowStrategy) are set via ``QueueOptions`` when creating a queue with"
@@ -230,298 +230,300 @@ msgstr ""
 "создании очереди с помощью ``client.CreateQueueAsync(name, options)``; "
 "см. :doc:`client-usage`."
 
-#: ../../docs/server-setup.rst:130 47e0e59cf8044d4491786c67c1a327bd
+#: ../../docs/server-setup.rst:130 06045c4517b94a24ab6045639923f15d
 msgid "Rate Limiting"
 msgstr "Ограничение частоты (Rate Limiting)"
 
 #: ../../docs/server-setup.rst:139 ../../docs/server-setup.rst:162
-#: ../../docs/server-setup.rst:182 65851d83d3b64ff9885d433d2e22703f
-#: b219f820c5f9400f98cb425fa104da3e f485d6ee7abc4d3db96977ce61ca3198
+#: ../../docs/server-setup.rst:182 1cfed92672a34ee7bc5983da023aa339
+#: 20ee8b8e7359451382ea457017b60bc1 3a8b21064e6b4c9ba91d6327dae06bf4
 msgid "``Enabled``"
 msgstr ""
 
-#: ../../docs/server-setup.rst:141 82713c3e89db4beab3874f90b79da6c3
+#: ../../docs/server-setup.rst:141 994ec5eb1e5d4cb79e5687b794258979
 msgid "Enable rate limiting"
 msgstr "Включить ограничение частоты"
 
-#: ../../docs/server-setup.rst:142 cc27b72c14e449f5acbe2f4a386f8339
+#: ../../docs/server-setup.rst:142 9e6696509d6e4bc18e23d62063332ee5
 msgid "``MaxConnectionsPerIpPerWindow``"
 msgstr ""
 
-#: ../../docs/server-setup.rst:143 44d5ccb175ff4620af9d8cb6bbaa48fb
+#: ../../docs/server-setup.rst:143 529376476e52403ea4fb5a774c106046
 msgid "20"
 msgstr ""
 
-#: ../../docs/server-setup.rst:144 3a80ccfb240c49f28f76fc26ac5705ad
+#: ../../docs/server-setup.rst:144 eae60fb0ca694f80bd70005f90271399
 msgid "Max connections from IP per window"
 msgstr "Макс. подключений с IP в окне"
 
-#: ../../docs/server-setup.rst:145 d4a6ed68a3de427c9952456913aa11c5
+#: ../../docs/server-setup.rst:145 3faace74975f4d4fb2a09110e713ed97
 msgid "``ConnectionWindow``"
 msgstr ""
 
-#: ../../docs/server-setup.rst:146 a84b1b45ad9d46c9967eb7c094b79284
+#: ../../docs/server-setup.rst:146 9b574393054b4e1cbf99f523b3098de0
 msgid "60 sec"
 msgstr ""
 
-#: ../../docs/server-setup.rst:147 9c4a06ac63664816a0f15b9ee912f6b4
+#: ../../docs/server-setup.rst:147 ffb2a1cb2ea44d49ac91be25427279b1
 msgid "Time window (TimeSpan)"
 msgstr "Временное окно (TimeSpan)"
 
-#: ../../docs/server-setup.rst:148 8bd2f197d6324e2e9db63500d7b792d9
+#: ../../docs/server-setup.rst:148 f4a7acad3e834e0d81fcaea193073953
 msgid "``MaxMessagesPerClientPerSecond``"
 msgstr ""
 
-#: ../../docs/server-setup.rst:150 341fc56bb4fd4dbd9d85d5f998a38838
+#: ../../docs/server-setup.rst:150 d7b618ba1f204ccf96709156ed7806c8
 msgid "Max messages from client per sec"
 msgstr "Макс. сообщений от клиента в сек"
 
-#: ../../docs/server-setup.rst:153 d520453c0cf64e908a11755510c8e992
+#: ../../docs/server-setup.rst:153 6b68ad789cac47518b2d8661a97f2379
 msgid "TLS/SSL Settings"
 msgstr "Настройки TLS/SSL"
 
-#: ../../docs/server-setup.rst:164 0006aecca4c649269effd436e2647d04
+#: ../../docs/server-setup.rst:164 b68cbed2dce0497ba03c015fc6b7199a
 msgid "Enable TLS"
 msgstr "Включить TLS"
 
-#: ../../docs/server-setup.rst:165 3525585c8b8e4313a74d28196a451cc0
+#: ../../docs/server-setup.rst:165 8a6c26cd12f24ee6b200298bf6ae457f
 msgid "``CertificatePath``"
 msgstr ""
 
-#: ../../docs/server-setup.rst:167 d426c16d80ba4968ac6aa9577d92ce3f
+#: ../../docs/server-setup.rst:167 836f5df083874361b30c2e0cd0893384
 msgid "Path to PFX certificate"
 msgstr "Путь к PFX-сертификату"
 
-#: ../../docs/server-setup.rst:168 d7d38face8254f719a8a276901d2ee51
+#: ../../docs/server-setup.rst:168 18c0bd5ce9574afdabe53c0eca2a44a0
 msgid "``CertificatePassword``"
 msgstr ""
 
-#: ../../docs/server-setup.rst:170 257fc3250fff4c9c8fb8e7924239f1c3
+#: ../../docs/server-setup.rst:170 ac97e64adab24ee29dbb2c804cd79e12
 msgid "Certificate password"
 msgstr "Пароль сертификата"
 
-#: ../../docs/server-setup.rst:173 65088fc4cbea446b9361c1fdce74bc61
+#: ../../docs/server-setup.rst:173 e59d285ee00a40969ca3706b4ad9a6bf
 msgid "Health Check Settings"
 msgstr "Настройки проверки работоспособности"
 
-#: ../../docs/server-setup.rst:184 dbf4048439024a12bda042d866231742
+#: ../../docs/server-setup.rst:184 cde05688cde0424888149586c6c6bf9d
 msgid "Enable health check server"
 msgstr "Включить сервер проверки работоспособности"
 
-#: ../../docs/server-setup.rst:186 40687c55107942cabd486bd09dc7efad
+#: ../../docs/server-setup.rst:186 93739d45036f4682a7539f3919b1fc29
 msgid "2926"
 msgstr "2926"
 
-#: ../../docs/server-setup.rst:187 bc8ed584b1c34b0c9aa657d506bf07f4
+#: ../../docs/server-setup.rst:187 00271ae4a54d4b47a32aed7689c8f6e7
 msgid "HTTP port for health checks"
 msgstr "HTTP-порт для проверки работоспособности"
 
-#: ../../docs/server-setup.rst:190 f7f60e5a06ad43eb8b8980b2ce0a25f0
+#: ../../docs/server-setup.rst:190 ca954ed097774b96b8decbff145489b4
 msgid "Delivery Modes"
 msgstr "Режимы доставки"
 
-#: ../../docs/server-setup.rst:193 df77debff4ae49f9ac1450cae25470df
+#: ../../docs/server-setup.rst:193 af5484759464490889a080e99917c2cf
 msgid "Round-robin"
 msgstr "Round-robin"
 
-#: ../../docs/server-setup.rst:195 ef0d02e39267470ea616714ca432f513
+#: ../../docs/server-setup.rst:195 f2eb390699aa4dd9b116feefa2ac4de4
 msgid "Each message is delivered to one subscriber cyclically:"
 msgstr "Каждое сообщение доставляется одному подписчику по очереди:"
 
 #: ../../docs/server-setup.rst:203 ../../docs/server-setup.rst:220
-#: ../../docs/server-setup.rst:237 86a2fc5b601a4ab7be1233cb45c777f7
-#: acee0f1acb7647c5ad3e0fc981a70e67 ae57c44631c64651afd82462bcd484a9
+#: ../../docs/server-setup.rst:237 330c27fec1ab408a808e303f48d2611f
+#: 6a055c482d264ea183a448bbb07b765c 94dcc0daa94d402797cf9c3a21cb0040
 msgid "**Usage:**"
 msgstr "**Использование:**"
 
-#: ../../docs/server-setup.rst:205 817280a555204ea99f8330f050c2c058
+#: ../../docs/server-setup.rst:205 5b59b5685dd44fdcbff200d23db52f29
 msgid "Task processing by multiple workers"
 msgstr "Обработка задач несколькими воркерами"
 
-#: ../../docs/server-setup.rst:206 5244308ff64e4181bf11cc5deeba2af8
+#: ../../docs/server-setup.rst:206 967efe607e4f4d08a1cb80c763b2cd25
 msgid "Load balancing"
 msgstr "Балансировка нагрузки"
 
-#: ../../docs/server-setup.rst:207 62fcb9be953945219f03762149aa4d53
+#: ../../docs/server-setup.rst:207 267de82a0f9d479da096fa99e5a702c1
 msgid "Task queues"
 msgstr "Очереди задач"
 
-#: ../../docs/server-setup.rst:210 61eb9c01926e43e890c094fa5dec6c9b
+#: ../../docs/server-setup.rst:210 ff1b4cf466404a98bc2d951f277861ab
 msgid "Fan-out with Acknowledgment"
 msgstr "Fan-out с подтверждением"
 
-#: ../../docs/server-setup.rst:212 2d5388e8041e46f482e3744fd27720c9
+#: ../../docs/server-setup.rst:212 5031516aabb4406ab22b751bd7b31602
 msgid "Message delivered to all subscribers with delivery guarantee:"
 msgstr "Сообщение доставляется всем подписчикам с гарантией доставки:"
 
-#: ../../docs/server-setup.rst:222 07ce78809bd04410ba6fee2af56b2448
+#: ../../docs/server-setup.rst:222 86bb2170acba4853bd93f5228d7e2854
 msgid "Notification broadcasting"
 msgstr "Широковещательные уведомления"
 
-#: ../../docs/server-setup.rst:223 6c3802955fa94de58bc9dc681b9b7b4c
+#: ../../docs/server-setup.rst:223 31e0fd11fc5f47ae95ecadfc52dc75bd
 msgid "Data replication"
 msgstr "Репликация данных"
 
-#: ../../docs/server-setup.rst:224 d3932f90a8814fa7aec97a483a89b7b9
+#: ../../docs/server-setup.rst:224 05ec9fcb530b43eeb5891d737c1de84f
 msgid "Audit and logging"
 msgstr "Аудит и логирование"
 
-#: ../../docs/server-setup.rst:227 a1842e2b045740cead90bc7a1458d3c4
+#: ../../docs/server-setup.rst:227 020c3e0bc21c48248ed411629dca2793
 msgid "Fan-out without Acknowledgment"
 msgstr "Fan-out без подтверждения"
 
-#: ../../docs/server-setup.rst:229 4e71b7347e2946f58211df45d1fd7e62
+#: ../../docs/server-setup.rst:229 e593283701494ca49722fb2f86ec0ee2
 msgid "Message delivered to all subscribers without acknowledgment:"
 msgstr "Сообщение доставляется всем подписчикам без подтверждения:"
 
-#: ../../docs/server-setup.rst:239 ce0023c6721f4630a83a92bc709fb611
+#: ../../docs/server-setup.rst:239 cb6685636bcb440fa9532128ef66df4f
 msgid "Broadcast messages"
 msgstr "Широковещательные сообщения"
 
-#: ../../docs/server-setup.rst:240 7ef10e7455a54310812fb5a12c863fd3
+#: ../../docs/server-setup.rst:240 645b4d3c530b43d7948562ee6a749c88
 msgid "Real-time updates"
 msgstr "Обновления в реальном времени"
 
-#: ../../docs/server-setup.rst:241 323e58d56ae44cdd87575226d3eee024
+#: ../../docs/server-setup.rst:241 da0a44c8998a4b2298ca9504823cdf31
 msgid "Data streaming"
 msgstr "Потоковая передача данных"
 
-#: ../../docs/server-setup.rst:244 9906a58b1a2244588a40ae73c151309d
+#: ../../docs/server-setup.rst:244 15fa3459cf924d84a933d598d8b787b6
 msgid "Priority-based"
 msgstr "По приоритету"
 
-#: ../../docs/server-setup.rst:246 dd3dbe2d9d6e4afd9e30fe6b0c529891
+#: ../../docs/server-setup.rst:246 45cbfdf0303a4fec89c700e1b3b592da
 msgid "Delivery by message priority:"
 msgstr "Доставка по приоритету сообщения:"
 
-#: ../../docs/server-setup.rst:254 2bbe83a48f134d989c44acb4c7131e79
+#: ../../docs/server-setup.rst:254 2ae7f4ee2bbc4d50a5e30f4e021ebc56
 msgid "**Priorities:**"
 msgstr "**Приоритеты:**"
 
-#: ../../docs/server-setup.rst:256 145581fa69f4405d9e3a12f9fec6dc08
+#: ../../docs/server-setup.rst:256 a2f14de8582e476194be780362ab445a
 msgid "``Critical`` — critical (delivered first)"
 msgstr "``Critical`` — критический (доставляется первым)"
 
-#: ../../docs/server-setup.rst:257 2252c19f48cb430e990b6d2f17a51eed
+#: ../../docs/server-setup.rst:257 7614ca496f8d41edbde763a2efe6a633
 msgid "``High`` — high"
 msgstr "``High`` — высокий"
 
-#: ../../docs/server-setup.rst:258 59e45d1badbb4e4fb93315bfb43cddea
+#: ../../docs/server-setup.rst:258 4e65f250a3d84b74b90d1395df85fe51
 msgid "``Normal`` — normal (default)"
 msgstr "``Normal`` — обычный (по умолчанию)"
 
-#: ../../docs/server-setup.rst:259 a420b5ae9e2048c8a2ceb304f3396135
+#: ../../docs/server-setup.rst:259 7970a0e9ab2e44e9bf3c0c122b7bc5fe
 msgid "``Low`` — low (delivered last)"
 msgstr "``Low`` — низкий (доставляется последним)"
 
-#: ../../docs/server-setup.rst:261 d71e27be70414ca08bb7fbe1fe0b0499
+#: ../../docs/server-setup.rst:261 8f4b4ef90f664b98a9bf1f022483c9b0
 msgid "**Publishing example:**"
 msgstr "**Пример публикации:**"
 
-#: ../../docs/server-setup.rst:272 ed4ef3dd1a714817a5b9b44739ebd8f9
+#: ../../docs/server-setup.rst:272 719e71f3f0ce49aaabd10b14c2943dd5
 msgid "Overflow Strategies"
 msgstr "Стратегии переполнения"
 
-#: ../../docs/server-setup.rst:275 d5b59007d0744fe1aa8164d5a94b65b8
+#: ../../docs/server-setup.rst:275 e454730cfec74e08818d679cc6dd4e21
 msgid "DropOldest"
 msgstr "DropOldest"
 
-#: ../../docs/server-setup.rst:277 4ce53c2542774a6a89571c68dc8ae476
+#: ../../docs/server-setup.rst:277 cc42305635c7412a9609c0a23ddf4894
 msgid "Remove oldest message on overflow:"
 msgstr "Удалять самое старое сообщение при переполнении:"
 
 #: ../../docs/server-setup.rst:283 ../../docs/server-setup.rst:299
 #: ../../docs/server-setup.rst:313 ../../docs/server-setup.rst:327
-#: 411e107799764c42b6aad070762af7c4 a019bb7a91e94921b0cf45c102281565
-#: b89e79e2388f4a7f95d830184e510aba f1ada84a954a4705ac68d70344dc5bc3
+#: 028a5a344d8646c49274a96ecbfddede 39ae0e9ce81b4f87849d25a0c215f637
+#: 411daf105cb24916b86362d6bbf19bc7 4b44e3d9c40247cd9fcabf52b856e860
 msgid "**When to use:**"
 msgstr "**Когда использовать:**"
 
-#: ../../docs/server-setup.rst:285 14ffee9eefb0492da974073f948e1479
+#: ../../docs/server-setup.rst:285 29d2c91f9744465598c9ac56f32964f2
 msgid "Fresh data is important"
 msgstr "Важны свежие данные"
 
-#: ../../docs/server-setup.rst:286 67a6f11f76d74fa99944124eddff8773
+#: ../../docs/server-setup.rst:286 d8231abab11249fc972a0e5ba7e8480b
 msgid "Old messages lose relevance"
 msgstr "Старые сообщения теряют актуальность"
 
-#: ../../docs/server-setup.rst:289 85a1d7a8c17648d69f6fcaa942be1f97
+#: ../../docs/server-setup.rst:289 afe3d03ffba64db8b2bf3a5e833cc17c
 msgid "DropNewest"
 msgstr "DropNewest"
 
-#: ../../docs/server-setup.rst:291 66694e8b7d164d83ad25eb27c04252d1
-msgid "Reject new message:"
-msgstr "Отклонять новое сообщение:"
+#: ../../docs/server-setup.rst:291 31dcaced639a43099438df5273d26577
+msgid ""
+"Reject new message. Set via ``QueueOptions`` when creating a queue (not "
+"in ``QueueDefaults``):"
+msgstr ""
 
-#: ../../docs/server-setup.rst:301 5b93e9c43a9047019d85a60aed702053
+#: ../../docs/server-setup.rst:301 20392cf3ba5344f5bfad313d84a2ebd5
 msgid "All existing messages are important"
 msgstr "Все существующие сообщения важны"
 
-#: ../../docs/server-setup.rst:302 91efee7ccfec4b49b439d8720dda7ebc
+#: ../../docs/server-setup.rst:302 2c9feb19d8a0418f9a9bee003e7f821e
 msgid "New messages can wait"
 msgstr "Новые сообщения могут подождать"
 
-#: ../../docs/server-setup.rst:305 c463f152ec0f4e1db5119de4427a3a6c
+#: ../../docs/server-setup.rst:305 6654abf2332540b289396b0fe8f7fddf
 msgid "BlockPublisher"
 msgstr "BlockPublisher"
 
-#: ../../docs/server-setup.rst:307 3074880c06f244b0aa0017128ed4aa97
+#: ../../docs/server-setup.rst:307 ca2b031580dc422a8830595056ed71aa
 msgid "Block publisher until space is available:"
 msgstr "Блокировать издателя до освобождения места:"
 
-#: ../../docs/server-setup.rst:315 f51126a5187c412caa681628140a2386
+#: ../../docs/server-setup.rst:315 a666ecd8157f448d9aedd77b52ca8d49
 msgid "Message loss is unacceptable"
 msgstr "Потеря сообщений недопустима"
 
-#: ../../docs/server-setup.rst:316 5d8fb33a21234163adb41fa449986fed
+#: ../../docs/server-setup.rst:316 e60e8f374ee243bba192fac1d5fcfc68
 msgid "Publisher can wait"
 msgstr "Издатель может подождать"
 
-#: ../../docs/server-setup.rst:319 bf83387b855749638b33f260c5c78f12
+#: ../../docs/server-setup.rst:319 69de5febf5324256a4b4de7a6206ce1c
 msgid "RedirectToDlq"
 msgstr "RedirectToDlq"
 
-#: ../../docs/server-setup.rst:321 7dbaa0da53674d7783f0da0f4abb974f
+#: ../../docs/server-setup.rst:321 35a92438b0a740d78e53cc7dafc41452
 msgid "Redirect to Dead Letter Queue:"
 msgstr "Перенаправление в Dead Letter Queue:"
 
-#: ../../docs/server-setup.rst:329 76674efe7d6b49a7a598fd4904a3e46e
+#: ../../docs/server-setup.rst:329 aee31933f4e147d2bf87ccc07da2e3eb
 msgid "All messages must be preserved"
 msgstr "Все сообщения должны сохраняться"
 
-#: ../../docs/server-setup.rst:330 dd4fecd1d2c4415d92fe6af8b347cdb1
+#: ../../docs/server-setup.rst:330 ce9b2f785da24ed18b62ac2a14020ee3
 msgid "Subsequent processing planned"
 msgstr "Планируется последующая обработка"
 
-#: ../../docs/server-setup.rst:333 8276febd5a524d3b8a572139020b2c63
+#: ../../docs/server-setup.rst:333 e4403ff7ad7a4a24b78d18dec37bb482
 msgid "Dead Letter Queue"
 msgstr "Dead Letter Queue"
 
-#: ../../docs/server-setup.rst:335 c6555e38c40f423ba3dbdbb5de9f7d50
+#: ../../docs/server-setup.rst:335 f507e320c2284dc1896eab89f5a4199f
 msgid "DLQ Configuration:"
 msgstr "Настройка DLQ:"
 
-#: ../../docs/server-setup.rst:341 c55c9aa443c14afea2e942e520bad01f
+#: ../../docs/server-setup.rst:341 f854576e69004869a4b9ab13b7f2f3b7
 msgid "**Reasons for DLQ:**"
 msgstr "**Причины попадания в DLQ:**"
 
-#: ../../docs/server-setup.rst:343 36c58de5ce7f43209c063a2ee1a3916c
+#: ../../docs/server-setup.rst:343 9cb634e11f134ba0a386d00e068490de
 msgid "Exceeded maximum delivery attempts"
 msgstr "Превышено максимальное количество попыток доставки"
 
-#: ../../docs/server-setup.rst:344 23c481927f3944049c054fafcc01f9a0
+#: ../../docs/server-setup.rst:344 de165a3f90b444d69e07e4988cce8c21
 msgid "Message TTL expired"
 msgstr "Истёк TTL сообщения"
 
-#: ../../docs/server-setup.rst:345 4fb8f0dd394b464cb9a7d4d36906d1de
+#: ../../docs/server-setup.rst:345 c3d1dd64937e473d8cb2acb583be1b19
 msgid "Deserialization error"
 msgstr "Ошибка десериализации"
 
-#: ../../docs/server-setup.rst:346 cc1c03e3554e466e89928aa1d12683fa
+#: ../../docs/server-setup.rst:346 b9668b5b9b9141e791b441c3b9d41431
 msgid "Exception in handler"
 msgstr "Исключение в обработчике"
 
-#: ../../docs/server-setup.rst:348 a0b832c6108d4741b77e2348b4816f46
+#: ../../docs/server-setup.rst:348 c5fb119c0a4d4a0e87553ce16a7382d0
 msgid ""
 "**Getting messages from DLQ:** DLQ messages are persisted by the broker's"
 " storage provider. To consume them you can subscribe to the Dead Letter "
@@ -537,11 +539,11 @@ msgstr ""
 "``GetDeadLetteredMessagesAsync`` провайдера. Подробности см. в "
 ":doc:`storage`."
 
-#: ../../docs/server-setup.rst:351 4818d1c5bba649b29a7f3f611a9dce8e
+#: ../../docs/server-setup.rst:351 0467533f07254775b6e0a15f86327a3d
 msgid "Authorization (Username/Password + ACL)"
 msgstr "Авторизация (логин/пароль + ACL)"
 
-#: ../../docs/server-setup.rst:353 1c771b3f001a4fd2af54d33e7df5e340
+#: ../../docs/server-setup.rst:353 bb4211243c764ffeb68858afc315b0cc
 msgid ""
 "The recommended authentication mode for production. Uses BCrypt-hashed "
 "passwords and per-queue ACL stored in a dedicated SQLite database:"
@@ -551,12 +553,12 @@ msgstr ""
 "SQLite-базе:"
 
 #: ../../docs/server-setup.rst:367 ../../docs/server-setup.rst:390
-#: ../../docs/server-setup.rst:427 084ae5a0ed77462898c8305823c58992
-#: 0c3343ac6d864030adb0ef1f0bbb6e61 5be5336d4f694348b4f3000e3112451e
+#: ../../docs/server-setup.rst:427 3c2f0ad3da1343859be75e0ffe45a276
+#: c554a7cff5514b62bcc63ce8db222a42 c7081bf613cf49198e90e76812605ac7
 msgid "**On client:**"
 msgstr "**На клиенте:**"
 
-#: ../../docs/server-setup.rst:380 85d06bdc1a5f489ca047758ed3d5442b
+#: ../../docs/server-setup.rst:380 befc299c70134499a11996bdf65b94b8
 msgid ""
 "See :doc:`authorization` for full details (users, ACL patterns, admin "
 "commands)."
@@ -564,19 +566,19 @@ msgstr ""
 "Подробнее о пользователях, ACL-шаблонах и административных командах: "
 ":doc:`authorization`."
 
-#: ../../docs/server-setup.rst:383 93a7ea84cc8e4923b3c89d4394f32e5b
+#: ../../docs/server-setup.rst:383 0ef4f73ca01f4cf3b4db8b563a558846
 msgid "Legacy Token Authentication"
 msgstr "Устаревшая токен-аутентификация"
 
-#: ../../docs/server-setup.rst:385 502bc0375b954a7896759ac4f99b4ae1
+#: ../../docs/server-setup.rst:385 29eda3e416a8462195a03f223fbf7696
 msgid "Use ``UseAuthorization()`` for new deployments."
 msgstr "Для новых развёртываний используйте ``UseAuthorization()``."
 
-#: ../../docs/server-setup.rst:388 f305c4d523764b3ea80f9d42f6a7d2a1
+#: ../../docs/server-setup.rst:388 7b6046e5a93a4001b5488a370ea4306b
 msgid "Enabling Authentication:"
 msgstr "Включение аутентификации:"
 
-#: ../../docs/server-setup.rst:404 d539db9d15174f329f6c4d71d5f05d98
+#: ../../docs/server-setup.rst:404 4ec1d4b7a53c42a09df88558fa5a4ea5
 msgid ""
 "Use complex tokens in production (minimum 32 characters). Store tokens "
 "securely (Azure Key Vault, AWS Secrets Manager, HashiCorp Vault)."
@@ -585,127 +587,130 @@ msgstr ""
 "токены в защищённом месте (Azure Key Vault, AWS Secrets Manager, "
 "HashiCorp Vault)."
 
-#: ../../docs/server-setup.rst:408 e40ab0e23274448c842f0c0fc6d6b84a
+#: ../../docs/server-setup.rst:408 049e5d2660d44c81ac57ed87e9621238
 msgid "TLS/SSL Encryption"
 msgstr "Шифрование TLS/SSL"
 
-#: ../../docs/server-setup.rst:410 9b6fb3bdb99e4d9c95dd1d01cdce32a5
+#: ../../docs/server-setup.rst:410 0f6083a90dd3493888c77e765b42b915
 msgid "TLS Configuration:"
 msgstr "Настройка TLS:"
 
-#: ../../docs/server-setup.rst:420 be6b2487df794a2bacda53777d63fa63
+#: ../../docs/server-setup.rst:420 8048ae925c794b979787a2e79f269ba1
 msgid "**Creating self-signed certificate (for tests):**"
 msgstr "**Создание самоподписанного сертификата (для тестов):**"
 
-#: ../../docs/server-setup.rst:443 1ec9e2eba68445e082f4a03e5b6a2dc8
+#: ../../docs/server-setup.rst:443 c4781fd0e3964f8c825ef5581488b856
 msgid "Do not use ``SkipCertificateValidation = true`` in production!"
 msgstr "Не используйте ``SkipCertificateValidation = true`` в production!"
 
-#: ../../docs/server-setup.rst:446 d5fcb5789a8e452da3f28728a090e8be
+#: ../../docs/server-setup.rst:446 874fb84eb2274048a315d2e09a2e919d
 msgid "Starting and Stopping"
 msgstr "Запуск и остановка"
 
-#: ../../docs/server-setup.rst:449 5a3b9eeb8a5b4f26ac143ca5b43182ab
+#: ../../docs/server-setup.rst:449 7e4dd7e53ff84f1d9dda952a92f1681e
 msgid "Starting Server"
 msgstr "Запуск сервера"
 
-#: ../../docs/server-setup.rst:451 f287194b3f0c4013bd8107ec1722e98b
+#: ../../docs/server-setup.rst:451 dfaae2b884a341069362e11365fa6cb1
 msgid "**Async start:**"
 msgstr "**Асинхронный запуск:**"
 
-#: ../../docs/server-setup.rst:457 829099445ada4fcbafed3957c381a250
+#: ../../docs/server-setup.rst:457 b0ac621f3e314ce6a184ee1346255395
 msgid "**Start with signal handling:**"
 msgstr "**Запуск с обработкой сигналов:**"
 
-#: ../../docs/server-setup.rst:470 758b4433ac54444aa6ac8b8af941526e
+#: ../../docs/server-setup.rst:470 22ce428198c84d64bbc7cda737fae217
 msgid "Stopping Server"
 msgstr "Остановка сервера"
 
-#: ../../docs/server-setup.rst:472 2cd5b90d48c34c7eba9090110a5657dd
+#: ../../docs/server-setup.rst:472 8b220d47b37544d18e41668f4f675c1b
 msgid "**Graceful stop:**"
 msgstr "**Корректная остановка:**"
 
-#: ../../docs/server-setup.rst:478 a31c875d5b1f4d10ae00b6ffef72e1e0
+#: ../../docs/server-setup.rst:478 e823af0025d349c79fa0f04cc3b2e3dd
 msgid "**Resource cleanup:**"
 msgstr "**Освобождение ресурсов:**"
 
-#: ../../docs/server-setup.rst:484 11f8bc2537b3465fa9b927a743105151
+#: ../../docs/server-setup.rst:484 349ccc9534cf49c0a92508a838a021ad
 msgid "**Using statement:**"
 msgstr "**Использование using:**"
 
-#: ../../docs/server-setup.rst:496 a1281b4eb1be4a0c8554263fc39b49b6
+#: ../../docs/server-setup.rst:496 2eb81562ec794e218cc48b2b09737318
 msgid "Logging"
 msgstr "Логирование"
 
-#: ../../docs/server-setup.rst:498 5d3896b8727f4b28b72dab106569d53a
+#: ../../docs/server-setup.rst:498 ee1f21c694c74466af4a2b9015966059
 msgid "Logging Configuration:"
 msgstr "Настройка логирования:"
 
-#: ../../docs/server-setup.rst:517 08fc42dba1b54ac1895588270eff4098
+#: ../../docs/server-setup.rst:517 5c226961dab2461c91cdc63c711ee8ef
 msgid "**Log levels:**"
 msgstr "**Уровни логирования:**"
 
-#: ../../docs/server-setup.rst:519 b3da63529450455d8fd1189e7569518e
+#: ../../docs/server-setup.rst:519 074a0dcfcc264b6ca8edc454cc966def
 msgid "``Trace`` — detailed debugging"
 msgstr "``Trace`` — детальная отладка"
 
-#: ../../docs/server-setup.rst:520 b73ffde6c1644ff1bf86968b06c2a7e6
+#: ../../docs/server-setup.rst:520 54894c3a977e45199fa5bc2d21225f2d
 msgid "``Debug`` — debug information"
 msgstr "``Debug`` — отладочная информация"
 
-#: ../../docs/server-setup.rst:521 bb9152c0f445473ca99ae664cf02f015
+#: ../../docs/server-setup.rst:521 3ca2e7f2a8f54fa8915808ad4abf9ec2
 msgid "``Information`` — informational messages"
 msgstr "``Information`` — информационные сообщения"
 
-#: ../../docs/server-setup.rst:522 673fef3c13c0475f850b324d38adf6b0
+#: ../../docs/server-setup.rst:522 c09d76d57c764be3bcbeeaec919131e0
 msgid "``Warning`` — warnings"
 msgstr "``Warning`` — предупреждения"
 
-#: ../../docs/server-setup.rst:523 428df28d73bc4dcbb4b56f8993af0e68
+#: ../../docs/server-setup.rst:523 e227402121ef46cdbb804d46dd38a43e
 msgid "``Error`` — errors"
 msgstr "``Error`` — ошибки"
 
-#: ../../docs/server-setup.rst:524 b761e5e245cb442f93668acaeef4103b
+#: ../../docs/server-setup.rst:524 c3f41d6678084ed9bede673c7cccafdf
 msgid "``Critical`` — critical errors"
 msgstr "``Critical`` — критические ошибки"
 
-#: ../../docs/server-setup.rst:527 dce7624b008a40cbb2ef10bf33a9a1bd
+#: ../../docs/server-setup.rst:527 4b7a298d71ae4d18805ba810ee021ad7
 msgid "Configuration Examples"
 msgstr "Примеры конфигурации"
 
-#: ../../docs/server-setup.rst:530 87f29c78cd6b4ccb8cd1ecf6542dca7a
+#: ../../docs/server-setup.rst:530 57620b6a0a6f4a6da077dee3fd865b28
 msgid "Minimal Server for Development"
 msgstr "Минимальный сервер для разработки"
 
-#: ../../docs/server-setup.rst:541 deff1bb1564e4b4eb5a4c803e12dcdd7
+#: ../../docs/server-setup.rst:541 93e2c486da10489288f16c01dd34035e
 msgid "Production Server"
 msgstr "Production-сервер"
 
-#: ../../docs/server-setup.rst:568 0ee412464f954db8a12c4ea7c391f795
+#: ../../docs/server-setup.rst:568 da1c74cd6fd444448091a7efa6e1b83e
 msgid "Microservices Server"
 msgstr "Сервер для микросервисов"
 
-#: ../../docs/server-setup.rst:587 77bf674878514c4fad35b5b900008478
+#: ../../docs/server-setup.rst:587 297d6dd777fb4c61b9d06feb13b541dc
 msgid "IoT Server"
 msgstr "Сервер для IoT"
 
-#: ../../docs/server-setup.rst:607 589963f64f644974a4ed7bc6c86a4c9e
+#: ../../docs/server-setup.rst:607 8b57dcf066184e5086941747a20bffd0
 msgid "Next Steps"
 msgstr "Дальнейшие шаги"
 
-#: ../../docs/server-setup.rst:609 e604007ae6e84e2c8d688377d6db5251
+#: ../../docs/server-setup.rst:609 268ec5ed53e7440daee1340762eaa26c
 msgid ":doc:`client-usage` — client usage"
 msgstr ":doc:`client-usage` — использование клиента"
 
-#: ../../docs/server-setup.rst:610 c32764f6393a493fa844028968a2b340
+#: ../../docs/server-setup.rst:610 fff8ce7d0cd64a50aefe3878a87a349d
 msgid ":doc:`configuration` — detailed configuration"
 msgstr ":doc:`configuration` — подробная конфигурация"
 
-#: ../../docs/server-setup.rst:611 f52c2cabcb67441ca576162dd5ff67d4
+#: ../../docs/server-setup.rst:611 3d65d17d7f5944bf9c92982b295d402f
 msgid ":doc:`monitoring` — monitoring and health checks"
 msgstr ":doc:`monitoring` — мониторинг и проверки работоспособности"
 
-#: ../../docs/server-setup.rst:612 3a26364e44dc4f999d8f13f49743e4c3
+#: ../../docs/server-setup.rst:612 5ef8fccadb8142c69fe0b2e491eb82ad
 msgid ":doc:`di-integration` — DI integration"
 msgstr ":doc:`di-integration` — интеграция с DI"
+
+#~ msgid "Reject new message:"
+#~ msgstr "Отклонять новое сообщение:"
 

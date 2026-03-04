@@ -88,9 +88,9 @@ Environment variables (examples)
    * - ``VibeMQ__Authorization__DatabasePath``
      - Path to SQLite auth DB (default: auth.db)
    * - ``VibeMQ__StorageType``
-     - ``InMemory`` or ``Sqlite``
+     - Host-specific: ``Sqlite`` to enable SQLite persistence (not in ``BrokerOptions``; the Docker Host reads this to register ``AddVibeMQSqliteStorage``). Omit or any other value = in-memory.
    * - ``VibeMQ__SqliteStorage__DatabasePath``
-     - Path to SQLite queue DB when ``StorageType`` is Sqlite
+     - Path to SQLite queue DB when ``StorageType`` is Sqlite (section ``VibeMQ:SqliteStorage``).
    * - ``Logging__LogLevel__Default``
      - Log level: Debug, Information, Warning, Error
 
