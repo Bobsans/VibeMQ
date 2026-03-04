@@ -32,9 +32,10 @@ public sealed class ReconnectPolicy {
             return InitialDelay;
         }
 
-        var delay = TimeSpan.FromTicks(
-            InitialDelay.Ticks * (long)Math.Pow(2, attempt - 1)
-        );
+        var exponent = Math.Min(attempt - 1, 30);
+        var multiplier = 1L << exponent;
+        var ticks = InitialDelay.Ticks * multiplier;
+        var delay = TimeSpan.FromTicks(ticks);
 
         return delay > MaxDelay ? MaxDelay : delay;
     }

@@ -8,38 +8,35 @@ namespace VibeMQ.Server.Queues;
 /// <summary>
 /// In-memory message queue with support for different delivery modes and overflow strategies.
 /// </summary>
-public sealed class MessageQueue {
+/// <remarks>
+/// Creates a queue with an explicit creation timestamp (used during recovery from storage).
+/// </remarks>
+public sealed class MessageQueue(string name, QueueOptions options, DateTime createdAt) {
     private readonly ConcurrentQueue<BrokerMessage> _messages = new();
     private readonly ConcurrentDictionary<string, BrokerMessage> _unacknowledged = new();
+#if NET10_0_OR_GREATER
+    private readonly Lock _sync = new();
+#else
     private readonly object _sync = new();
+#endif
     private int _roundRobinIndex;
 
-    public MessageQueue(string name, QueueOptions options)
-        : this(name, options, DateTime.UtcNow) { }
-
-    /// <summary>
-    /// Creates a queue with an explicit creation timestamp (used during recovery from storage).
-    /// </summary>
-    public MessageQueue(string name, QueueOptions options, DateTime createdAt) {
-        Name = name;
-        Options = options;
-        CreatedAt = createdAt;
-    }
+    public MessageQueue(string name, QueueOptions options) : this(name, options, DateTime.UtcNow) { }
 
     /// <summary>
     /// Queue name.
     /// </summary>
-    public string Name { get; }
+    public string Name { get; } = name;
 
     /// <summary>
     /// Configuration options for this queue.
     /// </summary>
-    public QueueOptions Options { get; }
+    public QueueOptions Options { get; } = options;
 
     /// <summary>
     /// UTC timestamp when the queue was created.
     /// </summary>
-    public DateTime CreatedAt { get; }
+    public DateTime CreatedAt { get; } = createdAt;
 
     /// <summary>
     /// Current number of messages waiting in the queue.
@@ -121,6 +118,20 @@ public sealed class MessageQueue {
     }
 
     /// <summary>
+    /// Atomically drains all pending messages, returning them and clearing the queue in one operation.
+    /// </summary>
+    public IReadOnlyList<BrokerMessage> DrainPending() {
+        lock (_sync) {
+            var drained = new List<BrokerMessage>(_messages.Count);
+            while (_messages.TryDequeue(out var msg)) {
+                drained.Add(msg);
+            }
+
+            return drained;
+        }
+    }
+
+    /// <summary>
     /// Tracks a message as delivered but awaiting acknowledgment.
     /// </summary>
     public void TrackUnacknowledged(BrokerMessage message) {
@@ -144,7 +155,7 @@ public sealed class MessageQueue {
         }
 
         var index = Interlocked.Increment(ref _roundRobinIndex);
-        return Math.Abs(index) % subscriberCount;
+        return (index & 0x7FFFFFFF) % subscriberCount;
     }
 
     /// <summary>
@@ -206,7 +217,7 @@ public sealed class MessageQueue {
         return Options.OverflowStrategy switch {
             OverflowStrategy.DropOldest => DropOldestAndEnqueue(),
             OverflowStrategy.DropNewest => false,
-            OverflowStrategy.BlockPublisher => false, // In async context, caller should handle backpressure
+            OverflowStrategy.BlockPublisher => false, // In an async context, the caller should handle backpressure
             OverflowStrategy.RedirectToDlq => false, // Caller (QueueManager) handles DLQ redirect
             _ => false,
         };

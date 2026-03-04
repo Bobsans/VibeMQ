@@ -11,15 +11,9 @@ namespace VibeMQ.Server.Delivery;
 /// Supports retrieval and manual retry of dead-lettered messages.
 /// Persists entries via <see cref="IStorageProvider"/>.
 /// </summary>
-public sealed partial class DeadLetterQueue {
+public sealed partial class DeadLetterQueue(IStorageProvider storageProvider, ILogger<DeadLetterQueue> logger) {
+    private readonly ILogger<DeadLetterQueue> _logger = logger;
     private readonly ConcurrentQueue<DeadLetteredMessage> _messages = new();
-    private readonly IStorageProvider _storageProvider;
-    private readonly ILogger<DeadLetterQueue> _logger;
-
-    public DeadLetterQueue(IStorageProvider storageProvider, ILogger<DeadLetterQueue> logger) {
-        _storageProvider = storageProvider;
-        _logger = logger;
-    }
 
     /// <summary>
     /// Number of messages in the DLQ.
@@ -36,7 +30,7 @@ public sealed partial class DeadLetterQueue {
             FailedAt = DateTime.UtcNow,
         };
 
-        await _storageProvider.SaveDeadLetteredMessageAsync(dlqMessage).ConfigureAwait(false);
+        await storageProvider.SaveDeadLetteredMessageAsync(dlqMessage).ConfigureAwait(false);
         _messages.Enqueue(dlqMessage);
         LogMessageDeadLettered(message.Id, message.QueueName, reason);
     }

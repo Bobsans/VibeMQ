@@ -125,7 +125,7 @@ public sealed partial class QueueManager : IQueueManager {
     public Task<IReadOnlyList<BrokerMessage>> GetPendingMessagesForDashboardAsync(string name, int limit, int offset, CancellationToken cancellationToken = default) {
         cancellationToken.ThrowIfCancellationRequested();
         if (!_queues.TryGetValue(name, out var queue)) {
-            return Task.FromResult<IReadOnlyList<BrokerMessage>>(Array.Empty<BrokerMessage>());
+            return Task.FromResult<IReadOnlyList<BrokerMessage>>([]);
         }
 
         var all = queue.PeekAll();
@@ -152,7 +152,7 @@ public sealed partial class QueueManager : IQueueManager {
 
         var unack = queue.GetUnacknowledged();
         found = unack.FirstOrDefault(m => m.Id == messageId);
-        return Task.FromResult<BrokerMessage?>(found);
+        return Task.FromResult(found);
     }
 
     /// <summary>
@@ -179,12 +179,14 @@ public sealed partial class QueueManager : IQueueManager {
             return false;
         }
 
-        var pending = queue.PeekAll();
-        foreach (var message in pending) {
+        // Atomically drain messages first, then remove from storage.
+        // This prevents a race where new messages published between PeekAll and ClearPending
+        // would be cleared from memory but left orphaned in storage.
+        var drained = queue.DrainPending();
+        foreach (var message in drained) {
             await _storageProvider.RemoveMessageAsync(message.Id, cancellationToken).ConfigureAwait(false);
         }
 
-        queue.ClearPending();
         return true;
     }
 
@@ -202,21 +204,18 @@ public sealed partial class QueueManager : IQueueManager {
             }
         }
 
-        // Set max retry attempts from queue config
-        message.DeliveryAttempts = queue.Options.MaxRetryAttempts;
-
         // Write-ahead: persist to storage BEFORE enqueueing in memory
         await _storageProvider.SaveMessageAsync(message, cancellationToken).ConfigureAwait(false);
 
         var accepted = queue.Enqueue(message);
 
         if (!accepted) {
-            // Message was rejected by queue — remove from storage
+            // Queue rejected message — remove from storage
             await _storageProvider.RemoveMessageAsync(message.Id, cancellationToken).ConfigureAwait(false);
             LogMessageRejected(message.Id, message.QueueName, queue.Options.OverflowStrategy);
 
-            // If overflow strategy is RedirectToDlq, send to DLQ
-            if (queue.Options.OverflowStrategy == OverflowStrategy.RedirectToDlq && queue.Options.EnableDeadLetterQueue) {
+            // If the overflow strategy is RedirectToDlq, send to DLQ
+            if (queue.Options is { OverflowStrategy: OverflowStrategy.RedirectToDlq, EnableDeadLetterQueue: true }) {
                 await _deadLetterQueue.HandleFailedMessageAsync(message, FailureReason.MaxRetriesExceeded)
                     .ConfigureAwait(false);
                 _metrics.RecordDeadLettered();
@@ -291,7 +290,7 @@ public sealed partial class QueueManager : IQueueManager {
 
         try {
             await target.SendMessageAsync(protocolMessage, cancellationToken).ConfigureAwait(false);
-            _ackTracker.Track(message, target.Id);
+            _ackTracker.Track(message, target.Id, queue.Options.MaxRetryAttempts);
             _metrics.RecordDelivered(DateTime.UtcNow - message.Timestamp);
             LogMessageDelivered(message.Id, queue.Name, target.Id);
         } catch (Exception ex) {
@@ -320,7 +319,7 @@ public sealed partial class QueueManager : IQueueManager {
                 await subscriber.SendMessageAsync(protocolMessage, cancellationToken).ConfigureAwait(false);
 
                 if (requireAck) {
-                    _ackTracker.Track(message, subscriber.Id);
+                    _ackTracker.Track(message, subscriber.Id, queue.Options.MaxRetryAttempts);
                 }
 
                 _metrics.RecordDelivered(DateTime.UtcNow - message.Timestamp);

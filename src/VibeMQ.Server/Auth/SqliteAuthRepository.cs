@@ -9,10 +9,14 @@ namespace VibeMQ.Server.Auth;
 /// SQLite-backed implementation of <see cref="IAuthRepository"/>.
 /// Uses a dedicated <c>auth.db</c> file separate from the message storage provider.
 /// </summary>
-public sealed class SqliteAuthRepository : IAuthRepository {
-    private readonly string _connectionString;
+public sealed class SqliteAuthRepository(string databasePath) : IAuthRepository {
+    private readonly string _connectionString = new SqliteConnectionStringBuilder {
+        DataSource = databasePath,
+        Mode = SqliteOpenMode.ReadWriteCreate,
+        Cache = SqliteCacheMode.Shared,
+    }.ToString();
 
-    private const string Schema = """
+    private const string SCHEMA = """
         PRAGMA journal_mode = WAL;
         PRAGMA foreign_keys = ON;
 
@@ -36,19 +40,11 @@ public sealed class SqliteAuthRepository : IAuthRepository {
         CREATE INDEX IF NOT EXISTS ix_permissions_username ON permissions(username);
         """;
 
-    public SqliteAuthRepository(string databasePath) {
-        _connectionString = new SqliteConnectionStringBuilder {
-            DataSource = databasePath,
-            Mode = SqliteOpenMode.ReadWriteCreate,
-            Cache = SqliteCacheMode.Shared,
-        }.ToString();
-    }
-
     /// <inheritdoc />
     public async Task CreateSchemaAsync(CancellationToken cancellationToken = default) {
         await using var connection = await OpenAsync(cancellationToken).ConfigureAwait(false);
         await using var command = connection.CreateCommand();
-        command.CommandText = Schema;
+        command.CommandText = SCHEMA;
         await command.ExecuteNonQueryAsync(cancellationToken).ConfigureAwait(false);
     }
 
@@ -57,9 +53,9 @@ public sealed class SqliteAuthRepository : IAuthRepository {
         await using var connection = await OpenAsync(cancellationToken).ConfigureAwait(false);
         await using var command = connection.CreateCommand();
         command.CommandText = """
-            SELECT username, password_hash, is_superuser, created_at, updated_at
-            FROM users WHERE username = $username;
-            """;
+        SELECT username, password_hash, is_superuser, created_at, updated_at
+        FROM users WHERE username = $username;
+        """;
         command.Parameters.AddWithValue("$username", username);
 
         await using var reader = await command.ExecuteReaderAsync(cancellationToken).ConfigureAwait(false);
@@ -75,9 +71,9 @@ public sealed class SqliteAuthRepository : IAuthRepository {
         await using var connection = await OpenAsync(cancellationToken).ConfigureAwait(false);
         await using var command = connection.CreateCommand();
         command.CommandText = """
-            INSERT INTO users (username, password_hash, is_superuser, created_at, updated_at)
-            VALUES ($username, $password_hash, $is_superuser, $created_at, $updated_at);
-            """;
+        INSERT INTO users (username, password_hash, is_superuser, created_at, updated_at)
+        VALUES ($username, $password_hash, $is_superuser, $created_at, $updated_at);
+        """;
         command.Parameters.AddWithValue("$username", user.Username);
         command.Parameters.AddWithValue("$password_hash", user.PasswordHash);
         command.Parameters.AddWithValue("$is_superuser", user.IsSuperuser ? 1 : 0);
@@ -91,9 +87,9 @@ public sealed class SqliteAuthRepository : IAuthRepository {
         await using var connection = await OpenAsync(cancellationToken).ConfigureAwait(false);
         await using var command = connection.CreateCommand();
         command.CommandText = """
-            UPDATE users SET password_hash = $hash, updated_at = $updated_at
-            WHERE username = $username;
-            """;
+        UPDATE users SET password_hash = $hash, updated_at = $updated_at
+        WHERE username = $username;
+        """;
         command.Parameters.AddWithValue("$hash", hash);
         command.Parameters.AddWithValue("$updated_at", DateTimeOffset.UtcNow.ToUnixTimeSeconds());
         command.Parameters.AddWithValue("$username", username);
@@ -116,7 +112,7 @@ public sealed class SqliteAuthRepository : IAuthRepository {
         command.CommandText = """
             SELECT username, password_hash, is_superuser, created_at, updated_at
             FROM users ORDER BY username;
-            """;
+        """;
 
         var result = new List<UserRecord>();
         await using var reader = await command.ExecuteReaderAsync(cancellationToken).ConfigureAwait(false);
@@ -133,7 +129,7 @@ public sealed class SqliteAuthRepository : IAuthRepository {
         await using var command = connection.CreateCommand();
         command.CommandText = """
             SELECT queue_pattern, operations FROM permissions WHERE username = $username;
-            """;
+        """;
         command.Parameters.AddWithValue("$username", username);
 
         var result = new List<PermissionEntry>();
@@ -157,7 +153,7 @@ public sealed class SqliteAuthRepository : IAuthRepository {
             INSERT INTO permissions (username, queue_pattern, operations, created_at)
             VALUES ($username, $queue_pattern, $operations, $created_at)
             ON CONFLICT(username, queue_pattern) DO UPDATE SET operations = excluded.operations;
-            """;
+        """;
         command.Parameters.AddWithValue("$username", username);
         command.Parameters.AddWithValue("$queue_pattern", queuePattern);
         command.Parameters.AddWithValue("$operations", opsJson);
@@ -171,7 +167,7 @@ public sealed class SqliteAuthRepository : IAuthRepository {
         await using var command = connection.CreateCommand();
         command.CommandText = """
             DELETE FROM permissions WHERE username = $username AND queue_pattern = $queue_pattern;
-            """;
+        """;
         command.Parameters.AddWithValue("$username", username);
         command.Parameters.AddWithValue("$queue_pattern", queuePattern);
         await command.ExecuteNonQueryAsync(cancellationToken).ConfigureAwait(false);

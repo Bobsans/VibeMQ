@@ -2,7 +2,6 @@ using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using VibeMQ.Client;
 using VibeMQ.Attributes;
 using VibeMQ.Interfaces;
 
@@ -12,18 +11,13 @@ namespace VibeMQ.Client.DependencyInjection;
 /// Hosted service that automatically subscribes to queues for registered message handlers.
 /// Scans for handlers with <see cref="QueueAttribute"/> and subscribes them when the application starts.
 /// </summary>
-internal sealed partial class MessageHandlerHostedService : IHostedService {
-    private readonly IServiceProvider _serviceProvider;
-    private readonly ILogger<MessageHandlerHostedService> _logger;
-    private readonly List<IAsyncDisposable> _subscriptions = new();
-
-    public MessageHandlerHostedService(
-        IServiceProvider serviceProvider,
-        ILogger<MessageHandlerHostedService> logger
-    ) {
-        _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-    }
+sealed partial class MessageHandlerHostedService(
+    IServiceProvider serviceProvider,
+    ILogger<MessageHandlerHostedService> logger
+) : IHostedService {
+    private readonly IServiceProvider _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
+    private readonly ILogger<MessageHandlerHostedService> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+    private readonly List<IAsyncDisposable> _subscriptions = [];
 
     public async Task StartAsync(CancellationToken cancellationToken) {
         var client = _serviceProvider.GetService<IVibeMQClient>();
@@ -41,7 +35,7 @@ internal sealed partial class MessageHandlerHostedService : IHostedService {
 
                 // Use reflection to call SubscribeAsync<TMessage, THandler>
                 var subscribeMethod = typeof(IVibeMQClient)
-                    .GetMethod(nameof(IVibeMQClient.SubscribeAsync), new[] { typeof(string), typeof(CancellationToken) })
+                    .GetMethod(nameof(IVibeMQClient.SubscribeAsync), [typeof(string), typeof(CancellationToken)])
                     ?.MakeGenericMethod(registration.MessageType, registration.HandlerType);
 
                 if (subscribeMethod is null) {
@@ -49,7 +43,7 @@ internal sealed partial class MessageHandlerHostedService : IHostedService {
                     continue;
                 }
 
-                var subscriptionTask = (Task<IAsyncDisposable>)subscribeMethod.Invoke(client, new object[] { registration.QueueName, cancellationToken })!;
+                var subscriptionTask = (Task<IAsyncDisposable>)subscribeMethod.Invoke(client, [registration.QueueName, cancellationToken])!;
                 var subscription = await subscriptionTask.ConfigureAwait(false);
                 _subscriptions.Add(subscription);
 
@@ -85,7 +79,7 @@ internal sealed partial class MessageHandlerHostedService : IHostedService {
         foreach (var assembly in assemblies) {
             try {
                 var handlerTypes = assembly.GetTypes()
-                    .Where(t => !t.IsAbstract && !t.IsInterface)
+                    .Where(t => t is { IsAbstract: false, IsInterface: false })
                     .Where(t => t.GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IMessageHandler<>)));
 
                 foreach (var handlerType in handlerTypes) {

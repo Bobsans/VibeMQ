@@ -1,9 +1,6 @@
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using VibeMQ.Client.Exceptions;
 using VibeMQ.Configuration;
-using VibeMQ.Enums;
-using VibeMQ.Protocol;
 using VibeMQ.Protocol.Compression;
 
 namespace VibeMQ.Client;
@@ -15,8 +12,8 @@ namespace VibeMQ.Client;
 /// <param name="Port">Broker port.</param>
 /// <param name="Options">Client options (auth, TLS, compression, reconnect, etc.).</param>
 public sealed record VibeMQConnectionString(string Host, int Port, ClientOptions Options) {
-    private const string SchemePrefix = "vibemq://";
-    private const int DefaultPort = 2925;
+    private const string SCHEME_PREFIX = "vibemq://";
+    private const int DEFAULT_PORT = 2925;
 
     /// <summary>
     /// Parses a connection string (URL-style or key=value) and returns the result.
@@ -30,11 +27,7 @@ public sealed record VibeMQConnectionString(string Host, int Port, ClientOptions
         }
 
         var s = connectionString.Trim();
-        if (s.StartsWith(SchemePrefix, StringComparison.OrdinalIgnoreCase)) {
-            return ParseUrl(s);
-        }
-
-        return ParseKeyValue(s);
+        return s.StartsWith(SCHEME_PREFIX, StringComparison.OrdinalIgnoreCase) ? ParseUrl(s) : ParseKeyValue(s);
     }
 
     /// <summary>
@@ -68,8 +61,8 @@ public sealed record VibeMQConnectionString(string Host, int Port, ClientOptions
         }
 
         var port = uri.Port;
-        if (port <= 0 || port > 65535) {
-            port = DefaultPort;
+        if (port is <= 0 or > 65535) {
+            port = DEFAULT_PORT;
         }
 
         var options = new ClientOptions();
@@ -126,7 +119,7 @@ public sealed record VibeMQConnectionString(string Host, int Port, ClientOptions
                     host = v;
                     break;
                 case "port":
-                    if (int.TryParse(v, out var p) && p > 0 && p <= 65535) {
+                    if (int.TryParse(v, out var p) && p is > 0 and <= 65535) {
                         port = p;
                     } else {
                         throw new VibeMQConnectionStringException($"Invalid Port value: '{value}'.");
@@ -148,11 +141,11 @@ public sealed record VibeMQConnectionString(string Host, int Port, ClientOptions
             host = "localhost";
         }
 
-        return new VibeMQConnectionString(host, port ?? DefaultPort, options);
+        return new VibeMQConnectionString(host, port ?? DEFAULT_PORT, options);
     }
 
     private static IEnumerable<(string key, string? value)> SplitKeyValue(string s) {
-        int i = 0;
+        var i = 0;
         while (i < s.Length) {
             var start = i;
             while (i < s.Length && s[i] != ';') {
@@ -181,7 +174,7 @@ public sealed record VibeMQConnectionString(string Host, int Port, ClientOptions
             var key = segment[..eq].Trim();
             var value = segment[(eq + 1)..];
             if (value.Length >= 2 && value.StartsWith('"') && value.EndsWith('"')) {
-                value = value[1..^1].Replace("\\\"", "\"").Replace("\\\\", "\\").Replace("\\;", ";").Replace("\\=", "=");
+                value = value[1..^1].Replace("\\\"", "\"").Replace(@"\\", "\\").Replace("\\;", ";").Replace("\\=", "=");
             }
             yield return (key, value);
         }

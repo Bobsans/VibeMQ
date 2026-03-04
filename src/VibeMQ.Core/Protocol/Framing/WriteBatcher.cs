@@ -9,7 +9,7 @@ namespace VibeMQ.Protocol.Framing;
 /// Reduces the number of syscalls and TCP packets for high-throughput scenarios.
 /// </summary>
 public sealed class WriteBatcher : IDisposable {
-    private static readonly VibeMQBinaryCodec Codec = new();
+    private static readonly VibeMQBinaryCodec _codec = new();
     private readonly Stream _stream;
     private readonly int _maxBatchSize;
     private byte[] _buffer;
@@ -37,7 +37,7 @@ public sealed class WriteBatcher : IDisposable {
     /// Adds a message to the batch. Auto-flushes when <see cref="_maxBatchSize"/> is reached.
     /// </summary>
     public async Task AddAsync(ProtocolMessage message, CancellationToken cancellationToken = default) {
-        var binaryBody = Codec.Encode(message);
+        var binaryBody = _codec.Encode(message);
         var frameSize = 4 + binaryBody.Length;
 
         EnsureCapacity(frameSize);

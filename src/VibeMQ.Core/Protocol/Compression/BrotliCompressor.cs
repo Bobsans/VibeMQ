@@ -2,7 +2,7 @@ using System.IO.Compression;
 
 namespace VibeMQ.Protocol.Compression;
 
-internal sealed class BrotliCompressor : ICompressor {
+sealed class BrotliCompressor : ICompressor {
     public CompressionAlgorithm Algorithm => CompressionAlgorithm.Brotli;
 
     public async ValueTask<byte[]> CompressAsync(ReadOnlyMemory<byte> data) {

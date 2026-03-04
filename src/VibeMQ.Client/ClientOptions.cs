@@ -106,8 +106,7 @@ public sealed class ClientOptions {
     /// </summary>
     public void ValidateDeclarations() {
         foreach (var declaration in QueueDeclarations) {
-            if (declaration.Options.OverflowStrategy == OverflowStrategy.RedirectToDlq &&
-                !declaration.Options.EnableDeadLetterQueue) {
+            if (declaration.Options is { OverflowStrategy: OverflowStrategy.RedirectToDlq, EnableDeadLetterQueue: false }) {
                 throw new InvalidOperationException(
                     $"Queue declaration '{declaration.QueueName}': OverflowStrategy is RedirectToDlq " +
                     "but EnableDeadLetterQueue is false. Enable DLQ or choose a different overflow strategy."

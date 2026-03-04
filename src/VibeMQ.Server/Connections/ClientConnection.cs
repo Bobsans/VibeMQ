@@ -1,3 +1,4 @@
+using System.Collections.Concurrent;
 using System.Net;
 using System.Net.Sockets;
 using Microsoft.Extensions.Logging;
@@ -79,9 +80,9 @@ public sealed partial class ClientConnection : IAsyncDisposable {
     public DateTime LastActivity { get; private set; } = DateTime.UtcNow;
 
     /// <summary>
-    /// Set of queue names this client is subscribed to.
+    /// Thread-safe set of queue names this client is subscribed to.
     /// </summary>
-    public HashSet<string> Subscriptions { get; } = [];
+    public ConcurrentDictionary<string, byte> Subscriptions { get; } = new();
 
     /// <summary>
     /// Whether the underlying TCP connection is still open.

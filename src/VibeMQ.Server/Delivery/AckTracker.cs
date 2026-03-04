@@ -1,5 +1,6 @@
 using System.Collections.Concurrent;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using VibeMQ.Models;
 
 namespace VibeMQ.Server.Delivery;
@@ -8,12 +9,17 @@ namespace VibeMQ.Server.Delivery;
 /// Tracks unacknowledged message deliveries, handles retry with exponential backoff,
 /// and escalates to DLQ when max retries are exhausted.
 /// </summary>
-public sealed partial class AckTracker : IAsyncDisposable {
+public sealed partial class AckTracker(
+    TimeSpan? ackTimeout = null,
+    TimeSpan? baseRetryDelay = null,
+    TimeSpan? maxRetryDelay = null,
+    ILogger<AckTracker>? logger = null
+) : IAsyncDisposable {
     private readonly ConcurrentDictionary<string, PendingDelivery> _pending = new();
-    private readonly TimeSpan _ackTimeout;
-    private readonly TimeSpan _baseRetryDelay;
-    private readonly TimeSpan _maxRetryDelay;
-    private readonly ILogger<AckTracker> _logger;
+    private readonly TimeSpan _ackTimeout = ackTimeout ?? TimeSpan.FromSeconds(30);
+    private readonly TimeSpan _baseRetryDelay = baseRetryDelay ?? TimeSpan.FromSeconds(2);
+    private readonly TimeSpan _maxRetryDelay = maxRetryDelay ?? TimeSpan.FromMinutes(2);
+    private readonly ILogger<AckTracker> _logger = logger ?? NullLogger<AckTracker>.Instance;
     private CancellationTokenSource? _cts;
     private Task? _monitorTask;
 
@@ -26,18 +32,6 @@ public sealed partial class AckTracker : IAsyncDisposable {
     /// Fired when a message needs to be redelivered to a subscriber.
     /// </summary>
     public event Func<PendingDelivery, Task>? OnRetryRequired;
-
-    public AckTracker(
-        TimeSpan? ackTimeout = null,
-        TimeSpan? baseRetryDelay = null,
-        TimeSpan? maxRetryDelay = null,
-        ILogger<AckTracker>? logger = null
-    ) {
-        _ackTimeout = ackTimeout ?? TimeSpan.FromSeconds(30);
-        _baseRetryDelay = baseRetryDelay ?? TimeSpan.FromSeconds(2);
-        _maxRetryDelay = maxRetryDelay ?? TimeSpan.FromMinutes(2);
-        _logger = logger ?? Microsoft.Extensions.Logging.Abstractions.NullLogger<AckTracker>.Instance;
-    }
 
     /// <summary>
     /// Number of currently pending (unacknowledged) deliveries.
@@ -55,9 +49,10 @@ public sealed partial class AckTracker : IAsyncDisposable {
     /// <summary>
     /// Registers a message delivery for acknowledgment tracking.
     /// </summary>
-    public void Track(BrokerMessage message, string clientId) {
+    public void Track(BrokerMessage message, string clientId, int maxRetryAttempts = 3) {
         var delivery = new PendingDelivery(message, clientId) {
             NextRetryAt = DateTime.UtcNow.Add(_ackTimeout),
+            MaxRetryAttempts = maxRetryAttempts,
         };
 
         _pending.TryAdd(message.Id, delivery);
@@ -105,11 +100,7 @@ public sealed partial class AckTracker : IAsyncDisposable {
                 continue;
             }
 
-            var maxRetries = delivery.Message.DeliveryAttempts > 0
-                ? delivery.Message.DeliveryAttempts
-                : 3; // Default from QueueOptions.MaxRetryAttempts
-
-            if (delivery.Attempts >= maxRetries) {
+            if (delivery.Attempts >= delivery.MaxRetryAttempts) {
                 // Max retries exhausted — move to DLQ
                 if (_pending.TryRemove(messageId, out _)) {
                     LogMaxRetriesExhausted(messageId, delivery.Attempts);
@@ -135,8 +126,10 @@ public sealed partial class AckTracker : IAsyncDisposable {
     }
 
     private TimeSpan CalculateBackoff(int attempt) {
+        // Clamp exponent to avoid overflow (2^30 ticks × base delay is more than enough)
+        var power = Math.Min(attempt - 1, 30);
         var delay = TimeSpan.FromTicks(
-            _baseRetryDelay.Ticks * (long)Math.Pow(2, attempt - 1)
+            _baseRetryDelay.Ticks * (1L << power)
         );
 
         return delay > _maxRetryDelay ? _maxRetryDelay : delay;

@@ -26,7 +26,7 @@ public sealed partial class SubscribeHandler(IQueueManager queueManager, IAuthor
             return;
         }
 
-        if (authz is not null && !await authz.IsAuthorizedAsync(connection, QueueOperation.Subscribe, message.Queue, cancellationToken).ConfigureAwait(false)) {
+        if (authz is not null && !await authz.IsAuthorizedAsync(connection, QueueOperation.Subscribe, message.Queue).ConfigureAwait(false)) {
             await connection.SendErrorAsync(message.Id, "NOT_AUTHORIZED", "Access denied.", cancellationToken)
                 .ConfigureAwait(false);
             return;
@@ -39,7 +39,7 @@ public sealed partial class SubscribeHandler(IQueueManager queueManager, IAuthor
             await queueManager.CreateQueueAsync(message.Queue, cancellationToken: cancellationToken).ConfigureAwait(false);
         }
 
-        connection.Subscriptions.Add(message.Queue);
+        connection.Subscriptions.TryAdd(message.Queue, 0);
         LogSubscribed(connection.Id, message.Queue);
 
         await connection.SendMessageAsync(new ProtocolMessage {

@@ -8,7 +8,6 @@ using VibeMQ.Server.Connections;
 using VibeMQ.Server.Delivery;
 using VibeMQ.Server.Handlers;
 using VibeMQ.Server.Handlers.Admin;
-using VibeMQ.Metrics;
 using VibeMQ.Server.Queues;
 using VibeMQ.Server.Security;
 using VibeMQ.Server.Storage;
@@ -47,7 +46,6 @@ public sealed class BrokerBuilder {
         _options.QueueDefaults = options.QueueDefaults;
         _options.Tls = options.Tls;
         _options.RateLimit = options.RateLimit;
-        _options.StorageType = options.StorageType;
         _options.SupportedCompressions = options.SupportedCompressions;
         _options.CompressionThreshold = options.CompressionThreshold;
         return this;
@@ -185,7 +183,7 @@ public sealed class BrokerBuilder {
         }
 
         // Metrics
-        var metrics = new Server.Metrics.BrokerMetrics();
+        var metrics = new Metrics.BrokerMetrics();
 
         // Connection manager
         var connectionManager = new ConnectionManager(
@@ -235,7 +233,8 @@ public sealed class BrokerBuilder {
 
         // Register admin handlers only when authorization is enabled
         if (authBootstrapper is not null) {
-            var repository = new SqliteAuthRepository(_options.Authorization!.DatabasePath);
+            // Reuse the same repository instance created above for auth/admin consistency
+            var repository = authBootstrapper.Repository;
             handlerList.AddRange([
                 new CreateUserHandler(repository, _loggerFactory.CreateLogger<CreateUserHandler>()),
                 new DeleteUserHandler(repository, _loggerFactory.CreateLogger<DeleteUserHandler>()),

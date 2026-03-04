@@ -1,6 +1,5 @@
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
-using VibeMQ.Client;
 using VibeMQ.Configuration;
 using VibeMQ.Models;
 
@@ -11,20 +10,15 @@ namespace VibeMQ.Client.DependencyInjection;
 /// <see cref="VibeMQClient"/> instance. Registered as <see cref="IVibeMQClient"/> Singleton when using
 /// <see cref="ServiceCollectionExtensions.AddVibeMQClient"/>.
 /// </summary>
-internal sealed partial class ManagedVibeMQClient : IVibeMQClient, IDisposable {
+sealed partial class ManagedVibeMQClient(IVibeMQClientFactory factory, ILogger<ManagedVibeMQClient>? logger = null) : IVibeMQClient, IDisposable {
     private const int DISPOSE_TIMEOUT_SECONDS = 5;
 
-    private readonly IVibeMQClientFactory _factory;
-    private readonly ILogger<ManagedVibeMQClient> _logger;
+    private readonly IVibeMQClientFactory _factory = factory ?? throw new ArgumentNullException(nameof(factory));
+    private readonly ILogger<ManagedVibeMQClient> _logger = logger ?? NullLogger<ManagedVibeMQClient>.Instance;
     private readonly SemaphoreSlim _initLock = new(1, 1);
 
     private VibeMQClient? _client;
     private bool _disposed;
-
-    public ManagedVibeMQClient(IVibeMQClientFactory factory, ILogger<ManagedVibeMQClient>? logger = null) {
-        _factory = factory ?? throw new ArgumentNullException(nameof(factory));
-        _logger = logger ?? NullLogger<ManagedVibeMQClient>.Instance;
-    }
 
     /// <inheritdoc />
     public bool IsConnected => _client?.IsConnected ?? false;

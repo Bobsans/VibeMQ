@@ -27,6 +27,8 @@ public sealed class RedisStorageConnectionFactory {
                 return _multiplexer;
             }
 
+            var old = _multiplexer;
+
             var config = ConfigurationOptions.Parse(_options.ConnectionString);
             config.ConnectTimeout = _options.ConnectTimeoutMs;
             config.SyncTimeout = _options.SyncTimeoutMs;
@@ -39,6 +41,10 @@ public sealed class RedisStorageConnectionFactory {
                 _logger.LogWarning(e.Exception, "Redis connection failed: {EndPoint}", e.EndPoint);
             _multiplexer.ConnectionRestored += (_, e) =>
                 _logger.LogInformation("Redis connection restored: {EndPoint}", e.EndPoint);
+
+            if (old is not null) {
+                try { old.Dispose(); } catch { /* best effort */ }
+            }
 
             return _multiplexer;
         }

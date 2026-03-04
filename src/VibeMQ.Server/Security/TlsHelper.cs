@@ -30,15 +30,20 @@ public static class TlsHelper {
 #endif
         var sslStream = new SslStream(innerStream, leaveInnerStreamOpen: false);
 
-        await sslStream.AuthenticateAsServerAsync(
-            new SslServerAuthenticationOptions {
-                ServerCertificate = certificate,
-                ClientCertificateRequired = options.RequireClientCertificate,
-                EnabledSslProtocols = options.SslProtocols,
-            },
-            cancellationToken
-        ).ConfigureAwait(false);
+        try {
+            await sslStream.AuthenticateAsServerAsync(
+                new SslServerAuthenticationOptions {
+                    ServerCertificate = certificate,
+                    ClientCertificateRequired = options.RequireClientCertificate,
+                    EnabledSslProtocols = options.SslProtocols,
+                },
+                cancellationToken
+            ).ConfigureAwait(false);
 
-        return sslStream;
+            return sslStream;
+        } catch {
+            await sslStream.DisposeAsync().ConfigureAwait(false);
+            throw;
+        }
     }
 }

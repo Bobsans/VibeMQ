@@ -77,7 +77,7 @@ public sealed partial class ConnectionManager : IAsyncDisposable {
     /// </summary>
     public IReadOnlyList<ClientConnection> GetSubscribers(string queueName) {
         return _connections.Values
-            .Where(c => c.Subscriptions.Contains(queueName))
+            .Where(c => c.Subscriptions.ContainsKey(queueName))
             .ToArray();
     }
 

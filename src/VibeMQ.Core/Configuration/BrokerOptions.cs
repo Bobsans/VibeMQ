@@ -1,4 +1,3 @@
-using VibeMQ.Enums;
 using VibeMQ.Protocol;
 using VibeMQ.Protocol.Compression;
 
@@ -54,11 +53,6 @@ public sealed class BrokerOptions {
     /// Rate limiting configuration.
     /// </summary>
     public RateLimitOptions RateLimit { get; set; } = new();
-
-    /// <summary>
-    /// Storage backend type for message persistence. Default: <see cref="StorageType.InMemory"/>.
-    /// </summary>
-    public StorageType StorageType { get; set; } = StorageType.InMemory;
 
     /// <summary>
     /// Compression algorithms the broker is willing to use, in descending preference order.

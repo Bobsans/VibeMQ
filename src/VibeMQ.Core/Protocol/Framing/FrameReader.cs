@@ -12,7 +12,7 @@ namespace VibeMQ.Protocol.Framing;
 /// Each frame is self-contained: the compression algorithm is stored in the frame flags byte.
 /// </summary>
 public static class FrameReader {
-    private static readonly VibeMQBinaryCodec Codec = new();
+    private static readonly VibeMQBinaryCodec _codec = new();
 
     /// <summary>
     /// Reads a single frame from the stream and deserializes it into a <see cref="ProtocolMessage"/>.
@@ -29,7 +29,7 @@ public static class FrameReader {
         int maxMessageSize,
         CancellationToken cancellationToken = default
     ) {
-        // Read 4-byte length prefix
+        // Read a 4-byte length prefix
         var lengthBuffer = new byte[ProtocolConstants.FRAME_LENGTH_PREFIX_SIZE];
         var bytesRead = await ReadExactAsync(stream, lengthBuffer, cancellationToken).ConfigureAwait(false);
 
@@ -75,7 +75,7 @@ public static class FrameReader {
             }
 
             if (compressionFlag == 0x00) {
-                return Codec.Decode(bodyBuffer.AsSpan(0, bodyLength));
+                return _codec.Decode(bodyBuffer.AsSpan(0, bodyLength));
             }
 
             var algorithm = (CompressionAlgorithm)compressionFlag;
@@ -87,7 +87,7 @@ public static class FrameReader {
             var decompressed = await compressor.DecompressAsync(bodyBuffer.AsMemory(0, bodyLength))
                 .ConfigureAwait(false);
 
-            return Codec.Decode(decompressed.AsSpan());
+            return _codec.Decode(decompressed.AsSpan());
         } finally {
             ArrayPool<byte>.Shared.Return(bodyBuffer);
         }

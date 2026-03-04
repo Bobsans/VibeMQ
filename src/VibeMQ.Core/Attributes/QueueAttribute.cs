@@ -14,7 +14,7 @@ namespace VibeMQ.Attributes;
 /// }
 /// </code>
 /// </example>
-[AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
+[AttributeUsage(AttributeTargets.Class, Inherited = false)]
 public sealed class QueueAttribute : Attribute {
     /// <summary>
     /// Gets the queue name.

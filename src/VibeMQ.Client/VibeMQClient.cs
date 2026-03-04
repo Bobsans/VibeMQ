@@ -30,16 +30,16 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
     private readonly SemaphoreSlim _connectLock = new(1, 1);
 
     private readonly FrameWriter _frameWriter = new();
+    private readonly SemaphoreSlim _writeLock = new(1, 1);
 
     private string _host = string.Empty;
     private int _port;
     private TcpClient? _tcpClient;
     private Stream? _stream;
     private CancellationTokenSource? _cts;
-    private Task? _readLoopTask;
-    private Task? _keepAliveTask;
-    private bool _disposed;
-    private bool _isConnected;
+    private volatile bool _disposed;
+    private volatile bool _isConnected;
+    private int _reconnecting;
 
     private VibeMQClient(ClientOptions options, ILogger<VibeMQClient>? logger, IServiceProvider? serviceProvider = null) {
         _options = options;
@@ -120,7 +120,13 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
         client._host = host;
         client._port = port;
 
-        await client.ConnectInternalAsync(cancellationToken).ConfigureAwait(false);
+        try {
+            await client.ConnectInternalAsync(cancellationToken).ConfigureAwait(false);
+        } catch {
+            await client.DisposeAsync().ConfigureAwait(false);
+            throw;
+        }
+
         return client;
     }
 
@@ -197,6 +203,7 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
             if (_subscriptionHandlers.TryRemove(queueName, out var failedRegistration)) {
                 await failedRegistration.DisposeAsync().ConfigureAwait(false);
             }
+
             throw new InvalidOperationException($"Subscribe failed: {response.ErrorMessage}");
         }
 
@@ -232,6 +239,7 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
             if (_subscriptionHandlers.TryRemove(queueName, out var failedRegistration)) {
                 await failedRegistration.DisposeAsync().ConfigureAwait(false);
             }
+
             throw new InvalidOperationException($"Subscribe failed: {response.ErrorMessage}");
         }
 
@@ -316,7 +324,7 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
     ) {
         ArgumentException.ThrowIfNullOrWhiteSpace(queueName);
 
-        if (expectedSubscriptionId is Guid subscriptionId &&
+        if (expectedSubscriptionId is { } subscriptionId &&
             _subscriptionHandlers.TryGetValue(queueName, out var existingRegistration) &&
             existingRegistration.SubscriptionId != subscriptionId) {
             return;
@@ -618,6 +626,7 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
         _disposed = true;
         await DisconnectAsync().ConfigureAwait(false);
         _connectLock.Dispose();
+        _writeLock.Dispose();
     }
 
     private async Task ConnectInternalAsync(CancellationToken cancellationToken, bool isReconnect = false) {
@@ -637,7 +646,13 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
                 _options.SkipCertificateValidation || errors == SslPolicyErrors.None
             );
 
-            await sslStream.AuthenticateAsClientAsync(_host).ConfigureAwait(false);
+            try {
+                await sslStream.AuthenticateAsClientAsync(_host).ConfigureAwait(false);
+            } catch {
+                await sslStream.DisposeAsync().ConfigureAwait(false);
+                throw;
+            }
+
             stream = sslStream;
         }
 
@@ -679,7 +694,7 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
             throw new InvalidOperationException($"Connection failed: {reason}");
         }
 
-        // Apply negotiated compression for subsequent outgoing frames
+        // Apply negotiated compression for further outgoing frames
         var negotiated = response.Headers?.GetValueOrDefault("negotiated-compression");
         var algorithm = CompressorFactory.Parse(negotiated) ?? CompressionAlgorithm.None;
 
@@ -691,8 +706,8 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
         _isConnected = true;
 
         // Start background tasks
-        _readLoopTask = ReadLoopAsync(_cts.Token);
-        _keepAliveTask = KeepAliveLoopAsync(_cts.Token);
+        _ = ReadLoopAsync(_cts.Token);
+        _ = KeepAliveLoopAsync(_cts.Token);
 
         // Provision declared queues (requires the read loop to be running for request/response)
         if (_options.QueueDeclarations.Count > 0) {
@@ -711,9 +726,14 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
 
     private async Task ReadLoopAsync(CancellationToken cancellationToken) {
         try {
-            while (!cancellationToken.IsCancellationRequested && _stream is not null) {
+            while (!cancellationToken.IsCancellationRequested) {
+                var stream = _stream;
+                if (stream is null) {
+                    break;
+                }
+
                 var message = await FrameReader.ReadFrameAsync(
-                    _stream, ProtocolConstants.DEFAULT_MAX_MESSAGE_SIZE, cancellationToken
+                    stream, ProtocolConstants.DEFAULT_MAX_MESSAGE_SIZE, cancellationToken
                 ).ConfigureAwait(false);
 
                 if (message is null) {
@@ -733,7 +753,7 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
         _isConnected = false;
 
         if (!_disposed && !cancellationToken.IsCancellationRequested) {
-            _ = ReconnectAsync();
+            TryStartReconnect();
         }
     }
 
@@ -747,6 +767,7 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
                         LogHandlerError(message.Queue, ex);
                     }
                 }
+
                 break;
 
             case CommandType.Pong:
@@ -758,11 +779,13 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
                     var reason = message.Headers?.GetValueOrDefault("reason") ?? "unknown";
                     LogServerDisconnect(reason);
                 }
+
                 _isConnected = false;
 
                 if (!_disposed) {
-                    _ = ReconnectAsync();
+                    TryStartReconnect();
                 }
+
                 break;
 
             case CommandType.PublishAck:
@@ -784,6 +807,7 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
                 if (_pendingResponses.TryRemove(message.Id, out var tcs)) {
                     tcs.TrySetResult(message);
                 }
+
                 break;
         }
     }
@@ -806,39 +830,49 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
         }
     }
 
+    private void TryStartReconnect() {
+        if (Interlocked.CompareExchange(ref _reconnecting, 1, 0) == 0) {
+            _ = ReconnectAsync();
+        }
+    }
+
     private async Task ReconnectAsync() {
-        var policy = _options.ReconnectPolicy;
+        try {
+            var policy = _options.ReconnectPolicy;
 
-        for (var attempt = 1; attempt <= policy.MaxAttempts; attempt++) {
-            if (_disposed) {
-                return;
-            }
-
-            var delay = policy.GetDelay(attempt);
-            LogReconnecting(attempt, policy.MaxAttempts, delay.TotalSeconds);
-
-            await Task.Delay(delay).ConfigureAwait(false);
-
-            try {
-                CleanupConnection();
-                await ConnectInternalAsync(CancellationToken.None, isReconnect: true).ConfigureAwait(false);
-
-                // Resubscribe to all active queues
-                foreach (var queueName in _subscriptionHandlers.Keys) {
-                    await SendMessageAsync(new ProtocolMessage {
-                        Type = CommandType.Subscribe,
-                        Queue = queueName,
-                    }, CancellationToken.None).ConfigureAwait(false);
+            for (var attempt = 1; attempt <= policy.MaxAttempts; attempt++) {
+                if (_disposed) {
+                    return;
                 }
 
-                LogReconnected(attempt);
-                return;
-            } catch (Exception ex) {
-                LogReconnectFailed(attempt, ex);
-            }
-        }
+                var delay = policy.GetDelay(attempt);
+                LogReconnecting(attempt, policy.MaxAttempts, delay.TotalSeconds);
 
-        LogReconnectGaveUp(policy.MaxAttempts);
+                await Task.Delay(delay).ConfigureAwait(false);
+
+                try {
+                    CleanupConnection();
+                    await ConnectInternalAsync(CancellationToken.None, isReconnect: true).ConfigureAwait(false);
+
+                    // Resubscribe to all active queues
+                    foreach (var queueName in _subscriptionHandlers.Keys) {
+                        await SendMessageAsync(new ProtocolMessage {
+                            Type = CommandType.Subscribe,
+                            Queue = queueName,
+                        }, CancellationToken.None).ConfigureAwait(false);
+                    }
+
+                    LogReconnected(attempt);
+                    return;
+                } catch (Exception ex) {
+                    LogReconnectFailed(attempt, ex);
+                }
+            }
+
+            LogReconnectGaveUp(policy.MaxAttempts);
+        } finally {
+            Interlocked.Exchange(ref _reconnecting, 0);
+        }
     }
 
     private async Task ProvisionQueuesAsync(bool isReconnect, CancellationToken cancellationToken) {
@@ -891,6 +925,7 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
                 } else {
                     LogConflictWarning(diffSummary);
                 }
+
                 break;
 
             case QueueConflictResolution.Fail:
@@ -902,6 +937,7 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
                 } else {
                     LogOverrideSoft(declaration.QueueName);
                 }
+
                 await DeleteQueueAsync(declaration.QueueName, cancellationToken).ConfigureAwait(false);
                 await CreateQueueAsync(declaration.QueueName, declaration.Options, cancellationToken).ConfigureAwait(false);
                 LogQueueProvisioned(declaration.QueueName);
@@ -950,19 +986,41 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
     }
 
     private async Task SendMessageAsync(ProtocolMessage message, CancellationToken cancellationToken) {
-        if (_stream is null) {
+        var stream = _stream;
+        if (stream is null) {
             throw new InvalidOperationException("Not connected to broker.");
         }
 
-        await _frameWriter.WriteFrameAsync(_stream, message, cancellationToken).ConfigureAwait(false);
+        await _writeLock.WaitAsync(cancellationToken).ConfigureAwait(false);
+        try {
+            await _frameWriter.WriteFrameAsync(stream, message, cancellationToken).ConfigureAwait(false);
+        } finally {
+            _writeLock.Release();
+        }
     }
 
     private void CleanupConnection() {
-        try { _stream?.Close(); } catch { /* ignore */ }
-        try { _tcpClient?.Close(); } catch { /* ignore */ }
+        try {
+            _stream?.Close();
+        } catch {
+            /* ignore */
+        }
+
+        try {
+            _tcpClient?.Close();
+        } catch {
+            /* ignore */
+        }
+
+        try {
+            _cts?.Dispose();
+        } catch {
+            /* ignore */
+        }
 
         _stream = null;
         _tcpClient = null;
+        _cts = null;
 
         // Cancel pending responses
         foreach (var (id, tcs) in _pendingResponses) {
@@ -1040,22 +1098,15 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
     [LoggerMessage(Level = LogLevel.Error, Message = "{diffSummary}")]
     private partial void LogConflictError(string diffSummary);
 
-    private sealed class SubscriptionRegistration : IAsyncDisposable {
-        private Func<ProtocolMessage, CancellationToken, Task> _handler;
-        private readonly Func<CancellationToken, ValueTask> _disposeResources;
+    private sealed class SubscriptionRegistration(
+        string queueName,
+        Func<CancellationToken, ValueTask> disposeResources
+    ) : IAsyncDisposable {
+        private Func<ProtocolMessage, CancellationToken, Task> _handler = static (_, _) => Task.CompletedTask;
         private readonly CancellationTokenSource _subscriptionCts = new();
         private int _disposed;
 
-        public SubscriptionRegistration(
-            string queueName,
-            Func<CancellationToken, ValueTask> disposeResources
-        ) {
-            QueueName = queueName;
-            _handler = static (_, _) => Task.CompletedTask;
-            _disposeResources = disposeResources;
-        }
-
-        public string QueueName { get; }
+        public string QueueName { get; } = queueName;
         public Guid SubscriptionId { get; } = Guid.NewGuid();
         public CancellationToken CancellationToken => _subscriptionCts.Token;
         public Func<ProtocolMessage, CancellationToken, Task> Handler => _handler;
@@ -1071,7 +1122,7 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
 
             await _subscriptionCts.CancelAsync().ConfigureAwait(false);
             _subscriptionCts.Dispose();
-            await _disposeResources(CancellationToken.None).ConfigureAwait(false);
+            await disposeResources(CancellationToken.None).ConfigureAwait(false);
         }
     }
 }
@@ -1079,18 +1130,8 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
 /// <summary>
 /// Represents an active subscription. Unsubscribes when disposed.
 /// </summary>
-file sealed class Subscription : IAsyncDisposable {
-    private readonly VibeMQClient _client;
-    private readonly string _queueName;
-    private readonly Guid _subscriptionId;
-
-    public Subscription(VibeMQClient client, string queueName, Guid subscriptionId) {
-        _client = client;
-        _queueName = queueName;
-        _subscriptionId = subscriptionId;
-    }
-
+file sealed class Subscription(VibeMQClient client, string queueName, Guid subscriptionId) : IAsyncDisposable {
     public async ValueTask DisposeAsync() {
-        await _client.UnsubscribeAsync(_queueName, _subscriptionId).ConfigureAwait(false);
+        await client.UnsubscribeAsync(queueName, subscriptionId).ConfigureAwait(false);
     }
 }

@@ -7,7 +7,7 @@ namespace VibeMQ.Protocol;
 /// Reduces GC pressure on hot paths (publish/deliver).
 /// </summary>
 public static class ProtocolMessagePool {
-    private static readonly ConcurrentBag<ProtocolMessage> _pool = new();
+    private static readonly ConcurrentBag<ProtocolMessage> _pool = [];
     private const int MAX_POOL_SIZE = 256;
 
     /// <summary>

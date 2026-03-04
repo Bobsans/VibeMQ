@@ -1,5 +1,4 @@
 using VibeMQ.Interfaces;
-using VibeMQ.Server.Auth.Models;
 
 namespace VibeMQ.Server.Auth;
 
@@ -9,7 +8,6 @@ namespace VibeMQ.Server.Auth;
 /// per-session permission cache stored in <see cref="Connections.ClientConnection"/>.
 /// </summary>
 public sealed class PasswordAuthenticationService(IAuthRepository repository) : IAuthenticationService, IPasswordAuthenticationService {
-    /// <inheritdoc />
     public Task<AuthResult?> AuthenticateAsync(string username, string password, CancellationToken cancellationToken = default) {
         return AuthenticateInternalAsync(username, password, cancellationToken);
     }

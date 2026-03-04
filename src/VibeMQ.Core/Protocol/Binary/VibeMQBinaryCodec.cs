@@ -7,44 +7,43 @@ namespace VibeMQ.Protocol.Binary;
 
 /// <summary>
 /// Binary codec implementation for VibeMQ protocol.
-/// Format: version (1B) | type (1B) | id (2B len + UTF-8) | queue (2B len + UTF-8) | 
+/// Format: version (1B) | type (1B) | id (2B len + UTF-8) | queue (2B len + UTF-8) |
 ///         payload (4B len + UTF-8 JSON) | headers (2B count + pairs) | errorCode (2B len + UTF-8) | errorMessage (2B len + UTF-8)
 /// All lengths are Big Endian.
 /// </summary>
 public sealed class VibeMQBinaryCodec : IBinaryCodec {
-    private static readonly JsonSerializerOptions JsonOptions = ProtocolSerializer.Options;
+    private static readonly JsonSerializerOptions _jsonOptions = ProtocolSerializer.Options;
 
     /// <summary>
     /// Encodes a ProtocolMessage into binary format.
     /// </summary>
     public byte[] Encode(ProtocolMessage message) {
         var buffer = new ArrayBufferWriter<byte>();
-        var writer = buffer;
 
         // version (1 byte) - first field for protocol version handling
-        writer.GetSpan(1)[0] = (byte)message.Version;
-        writer.Advance(1);
+        buffer.GetSpan(1)[0] = (byte)message.Version;
+        buffer.Advance(1);
 
         // type (1 byte) - CommandType enum value
-        writer.GetSpan(1)[0] = (byte)message.Type;
-        writer.Advance(1);
+        buffer.GetSpan(1)[0] = (byte)message.Type;
+        buffer.Advance(1);
 
         // id (2B len + UTF-8) - always present
-        WriteString16(writer, message.Id);
+        WriteString16(buffer, message.Id);
 
         // queue (2B len + UTF-8) - length 0 = null/absent
-        WriteString16(writer, message.Queue);
+        WriteString16(buffer, message.Queue);
 
         // payload (4B len + UTF-8 JSON) - length 0 = null/absent
-        WritePayload(writer, message.Payload);
+        WritePayload(buffer, message.Payload);
 
         // headers (2B count + pairs of 2B len + UTF-8)
-        WriteHeaders(writer, message.Headers);
+        WriteHeaders(buffer, message.Headers);
 
         // errorCode (2B len + UTF-8) - only for Error type, length 0 = absent
         if (message.Type == CommandType.Error) {
-            WriteString16(writer, message.ErrorCode);
-            WriteString16(writer, message.ErrorMessage);
+            WriteString16(buffer, message.ErrorCode);
+            WriteString16(buffer, message.ErrorMessage);
         }
 
         return buffer.WrittenSpan.ToArray();
@@ -83,7 +82,7 @@ public sealed class VibeMQBinaryCodec : IBinaryCodec {
         var (headers, headersLength) = ReadHeaders(data[offset..]);
         offset += headersLength;
 
-        // errorCode and errorMessage (only for Error type)
+        // errorCode and errorMessage (only for an Error type)
         string? errorCode = null;
         string? errorMessage = null;
         if (type == CommandType.Error) {
@@ -91,9 +90,8 @@ public sealed class VibeMQBinaryCodec : IBinaryCodec {
             errorCode = ec;
             offset += ecLength;
 
-            var (em, emLength) = ReadString16(data[offset..]);
+            var (em, _) = ReadString16(data[offset..]);
             errorMessage = em;
-            offset += emLength;
         }
 
         return new ProtocolMessage {
@@ -151,7 +149,7 @@ public sealed class VibeMQBinaryCodec : IBinaryCodec {
             return;
         }
 
-        var jsonBytes = JsonSerializer.SerializeToUtf8Bytes(payload.Value, JsonOptions);
+        var jsonBytes = JsonSerializer.SerializeToUtf8Bytes(payload.Value, _jsonOptions);
         var lengthSpan = writer.GetSpan(4);
         BinaryPrimitives.WriteUInt32BigEndian(lengthSpan, (uint)jsonBytes.Length);
         writer.Advance(4);
@@ -177,7 +175,7 @@ public sealed class VibeMQBinaryCodec : IBinaryCodec {
         }
 
         var jsonSpan = data[4..(4 + (int)length)];
-        var payload = JsonSerializer.Deserialize<JsonElement>(jsonSpan, JsonOptions);
+        var payload = JsonSerializer.Deserialize<JsonElement>(jsonSpan, _jsonOptions);
         return (payload, 4 + (int)length);
     }
 

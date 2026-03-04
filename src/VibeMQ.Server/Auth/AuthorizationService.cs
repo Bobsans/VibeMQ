@@ -12,15 +12,14 @@ public sealed class AuthorizationService : IAuthorizationService {
     public ValueTask<bool> IsAuthorizedAsync(
         ClientConnection connection,
         QueueOperation operation,
-        string? queueName,
-        CancellationToken cancellationToken = default
+        string? queueName
     ) {
         if (connection.IsSuperuser) {
             return ValueTask.FromResult(true);
         }
 
         if (string.IsNullOrEmpty(queueName)) {
-            // Operations without a queue name (e.g. ListQueues) are allowed when any
+            // Operations without a queue name (e.g., ListQueues) are allowed when any
             // permission exists — the handler itself filters the result.
             return ValueTask.FromResult(connection.CachedPermissions.Count > 0);
         }

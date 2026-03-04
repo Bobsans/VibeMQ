@@ -8,16 +8,21 @@ namespace VibeMQ.Server.Auth;
 /// Initializes the auth database schema and creates the superuser account on first startup.
 /// </summary>
 public sealed partial class AuthBootstrapper {
-    private readonly IAuthRepository _repository;
     private readonly AuthorizationOptions _options;
     private readonly ILogger<AuthBootstrapper> _logger;
+
+    /// <summary>
+    /// The auth repository instance used by this bootstrapper.
+    /// Exposed for reuse by admin command handlers (avoids duplicate instances).
+    /// </summary>
+    public IAuthRepository Repository { get; }
 
     public AuthBootstrapper(
         IAuthRepository repository,
         AuthorizationOptions options,
         ILogger<AuthBootstrapper> logger
     ) {
-        _repository = repository;
+        Repository = repository;
         _options = options;
         _logger = logger;
     }
@@ -27,9 +32,9 @@ public sealed partial class AuthBootstrapper {
     /// Must be called before the broker starts accepting connections.
     /// </summary>
     public async Task InitializeAsync(CancellationToken cancellationToken = default) {
-        await _repository.CreateSchemaAsync(cancellationToken).ConfigureAwait(false);
+        await Repository.CreateSchemaAsync(cancellationToken).ConfigureAwait(false);
 
-        var existing = await _repository.FindUserAsync(_options.SuperuserUsername, cancellationToken)
+        var existing = await Repository.FindUserAsync(_options.SuperuserUsername, cancellationToken)
             .ConfigureAwait(false);
 
         if (existing is not null) {
@@ -55,7 +60,7 @@ public sealed partial class AuthBootstrapper {
             UpdatedAt = now,
         };
 
-        await _repository.CreateUserAsync(record, cancellationToken).ConfigureAwait(false);
+        await Repository.CreateUserAsync(record, cancellationToken).ConfigureAwait(false);
         LogSuperuserCreated(_options.SuperuserUsername);
     }
 

@@ -4,7 +4,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using VibeMQ.Configuration;
-using VibeMQ.Enums;
 using VibeMQ.Server;
 using VibeMQ.Server.DependencyInjection;
 using VibeMQ.Server.Storage.Sqlite;
@@ -30,7 +29,7 @@ var host = Host.CreateDefaultBuilder(args)
         services.Configure<WebUIOptions>(configuration.GetSection("VibeMQ:WebUI"));
 
         var storageTypeStr = configuration["VibeMQ:StorageType"];
-        if (string.Equals(storageTypeStr, nameof(StorageType.Sqlite), StringComparison.OrdinalIgnoreCase)) {
+        if (string.Equals(storageTypeStr, "Sqlite", StringComparison.OrdinalIgnoreCase)) {
             services.AddVibeMQSqliteStorage(opts => {
                 configuration.GetSection("VibeMQ:SqliteStorage").Bind(opts);
             });

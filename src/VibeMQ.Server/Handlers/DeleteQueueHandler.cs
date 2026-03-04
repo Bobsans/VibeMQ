@@ -26,7 +26,7 @@ public sealed partial class DeleteQueueHandler(IQueueManager queueManager, IAuth
             return;
         }
 
-        if (authz is not null && !await authz.IsAuthorizedAsync(connection, QueueOperation.DeleteQueue, message.Queue, cancellationToken).ConfigureAwait(false)) {
+        if (authz is not null && !await authz.IsAuthorizedAsync(connection, QueueOperation.DeleteQueue, message.Queue).ConfigureAwait(false)) {
             await connection.SendErrorAsync(message.Id, "NOT_AUTHORIZED", "Access denied.", cancellationToken)
                 .ConfigureAwait(false);
             return;

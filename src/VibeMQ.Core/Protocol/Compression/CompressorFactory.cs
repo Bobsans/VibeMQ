@@ -4,15 +4,15 @@ namespace VibeMQ.Protocol.Compression;
 /// Resolves <see cref="ICompressor"/> instances by algorithm and parses/serializes algorithm names.
 /// </summary>
 public static class CompressorFactory {
-    private static readonly GZipCompressor GZipInstance = new();
-    private static readonly BrotliCompressor BrotliInstance = new();
+    private static readonly GZipCompressor _gZipInstance = new();
+    private static readonly BrotliCompressor _brotliInstance = new();
 
     /// <summary>
     /// Returns the compressor for the given algorithm, or <c>null</c> for <see cref="CompressionAlgorithm.None"/>.
     /// </summary>
     public static ICompressor? Get(CompressionAlgorithm algorithm) => algorithm switch {
-        CompressionAlgorithm.GZip => GZipInstance,
-        CompressionAlgorithm.Brotli => BrotliInstance,
+        CompressionAlgorithm.GZip => _gZipInstance,
+        CompressionAlgorithm.Brotli => _brotliInstance,
         _ => null,
     };
 

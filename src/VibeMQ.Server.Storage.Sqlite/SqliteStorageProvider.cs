@@ -16,7 +16,7 @@ public sealed partial class SqliteStorageProvider : IStorageProvider, IStorageMa
     private readonly SqliteStorageOptions _options;
     private readonly ILogger<SqliteStorageProvider> _logger;
     private readonly string _connectionString;
-    private bool _initialized;
+    private volatile bool _initialized;
 
     private static readonly JsonSerializerOptions _jsonOptions = new() {
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
@@ -30,7 +30,7 @@ public sealed partial class SqliteStorageProvider : IStorageProvider, IStorageMa
             DataSource = options.DatabasePath,
             Mode = SqliteOpenMode.ReadWriteCreate,
             Cache = SqliteCacheMode.Shared,
-            DefaultTimeout = options.BusyTimeoutMs / 1000,
+            DefaultTimeout = (options.BusyTimeoutMs + 999) / 1000,
         }.ToString();
     }
 
@@ -40,16 +40,13 @@ public sealed partial class SqliteStorageProvider : IStorageProvider, IStorageMa
     public async Task InitializeAsync(CancellationToken cancellationToken = default) {
         await using var connection = await OpenConnectionAsync(cancellationToken).ConfigureAwait(false);
 
-        // Enable foreign keys
-        await ExecuteNonQueryAsync(connection, "PRAGMA foreign_keys = ON;", cancellationToken).ConfigureAwait(false);
-
         // Enable WAL mode if configured
         if (_options.EnableWal) {
             await ExecuteNonQueryAsync(connection, "PRAGMA journal_mode = WAL;", cancellationToken).ConfigureAwait(false);
         }
 
         // Create schema
-        await ExecuteNonQueryAsync(connection, Schema, cancellationToken).ConfigureAwait(false);
+        await ExecuteNonQueryAsync(connection, SCHEMA, cancellationToken).ConfigureAwait(false);
 
         _initialized = true;
         LogInitialized(_options.DatabasePath, _options.EnableWal);
@@ -80,9 +77,9 @@ public sealed partial class SqliteStorageProvider : IStorageProvider, IStorageMa
         await using var command = connection.CreateCommand();
 
         command.CommandText = """
-            INSERT OR REPLACE INTO messages (id, queue_name, payload_json, timestamp, headers_json, version, priority, delivery_attempts)
-            VALUES ($id, $queue_name, $payload_json, $timestamp, $headers_json, $version, $priority, $delivery_attempts);
-            """;
+        INSERT OR REPLACE INTO messages (id, queue_name, payload_json, timestamp, headers_json, version, priority, delivery_attempts)
+        VALUES ($id, $queue_name, $payload_json, $timestamp, $headers_json, $version, $priority, $delivery_attempts);
+        """;
 
         AddMessageParameters(command, message);
         await command.ExecuteNonQueryAsync(cancellationToken).ConfigureAwait(false);
@@ -101,9 +98,9 @@ public sealed partial class SqliteStorageProvider : IStorageProvider, IStorageMa
             await using var command = connection.CreateCommand();
             command.Transaction = (SqliteTransaction)transaction;
             command.CommandText = """
-                INSERT OR REPLACE INTO messages (id, queue_name, payload_json, timestamp, headers_json, version, priority, delivery_attempts)
-                VALUES ($id, $queue_name, $payload_json, $timestamp, $headers_json, $version, $priority, $delivery_attempts);
-                """;
+            INSERT OR REPLACE INTO messages (id, queue_name, payload_json, timestamp, headers_json, version, priority, delivery_attempts)
+            VALUES ($id, $queue_name, $payload_json, $timestamp, $headers_json, $version, $priority, $delivery_attempts);
+            """;
 
             var pId = command.Parameters.Add("$id", SqliteType.Text);
             var pQueue = command.Parameters.Add("$queue_name", SqliteType.Text);
@@ -121,7 +118,7 @@ public sealed partial class SqliteStorageProvider : IStorageProvider, IStorageMa
                 pTimestamp.Value = message.Timestamp.ToString("O");
                 pHeaders.Value = message.Headers.Count > 0
                     ? JsonSerializer.Serialize(message.Headers, _jsonOptions)
-                    : (object)DBNull.Value;
+                    : DBNull.Value;
                 pVersion.Value = message.Version;
                 pPriority.Value = (int)message.Priority;
                 pDelivery.Value = message.DeliveryAttempts;
@@ -169,11 +166,11 @@ public sealed partial class SqliteStorageProvider : IStorageProvider, IStorageMa
         await using var command = connection.CreateCommand();
 
         command.CommandText = """
-            SELECT id, queue_name, payload_json, timestamp, headers_json, version, priority, delivery_attempts
-            FROM messages
-            WHERE queue_name = $queue_name
-            ORDER BY timestamp ASC;
-            """;
+        SELECT id, queue_name, payload_json, timestamp, headers_json, version, priority, delivery_attempts
+        FROM messages
+        WHERE queue_name = $queue_name
+        ORDER BY timestamp ASC;
+        """;
         command.Parameters.AddWithValue("$queue_name", queueName);
 
         await using var reader = await command.ExecuteReaderAsync(cancellationToken).ConfigureAwait(false);
@@ -194,9 +191,9 @@ public sealed partial class SqliteStorageProvider : IStorageProvider, IStorageMa
         await using var command = connection.CreateCommand();
 
         command.CommandText = """
-            INSERT INTO queues (name, options_json, created_at) VALUES ($name, $options_json, $created_at)
-            ON CONFLICT(name) DO UPDATE SET options_json = $options_json;
-            """;
+        INSERT INTO queues (name, options_json, created_at) VALUES ($name, $options_json, $created_at)
+        ON CONFLICT(name) DO UPDATE SET options_json = $options_json;
+        """;
         command.Parameters.AddWithValue("$name", name);
         command.Parameters.AddWithValue("$options_json", JsonSerializer.Serialize(options, _jsonOptions));
         command.Parameters.AddWithValue("$created_at", DateTime.UtcNow.ToString("O"));
@@ -207,10 +204,6 @@ public sealed partial class SqliteStorageProvider : IStorageProvider, IStorageMa
     /// <inheritdoc />
     public async Task RemoveQueueAsync(string name, CancellationToken cancellationToken = default) {
         await using var connection = await OpenConnectionAsync(cancellationToken).ConfigureAwait(false);
-
-        // Ensure foreign keys are enabled for CASCADE delete
-        await ExecuteNonQueryAsync(connection, "PRAGMA foreign_keys = ON;", cancellationToken).ConfigureAwait(false);
-
         await using var command = connection.CreateCommand();
         command.CommandText = "DELETE FROM queues WHERE name = $name;";
         command.Parameters.AddWithValue("$name", name);
@@ -250,9 +243,9 @@ public sealed partial class SqliteStorageProvider : IStorageProvider, IStorageMa
         await using var command = connection.CreateCommand();
 
         command.CommandText = """
-            INSERT INTO dead_letters (message_id, message_json, reason, failed_at)
-            VALUES ($message_id, $message_json, $reason, $failed_at);
-            """;
+        INSERT INTO dead_letters (message_id, message_json, reason, failed_at)
+        VALUES ($message_id, $message_json, $reason, $failed_at);
+        """;
         command.Parameters.AddWithValue("$message_id", message.OriginalMessage.Id);
         command.Parameters.AddWithValue("$message_json", JsonSerializer.Serialize(message.OriginalMessage, _jsonOptions));
         command.Parameters.AddWithValue("$reason", (int)message.Reason);
@@ -271,7 +264,7 @@ public sealed partial class SqliteStorageProvider : IStorageProvider, IStorageMa
             FROM dead_letters
             ORDER BY failed_at ASC
             LIMIT $count;
-            """;
+        """;
         command.Parameters.AddWithValue("$count", count);
 
         await using var reader = await command.ExecuteReaderAsync(cancellationToken).ConfigureAwait(false);
@@ -343,9 +336,19 @@ public sealed partial class SqliteStorageProvider : IStorageProvider, IStorageMa
     public async Task<StorageStats> GetStatsAsync(CancellationToken cancellationToken = default) {
         await using var connection = await OpenConnectionAsync(cancellationToken).ConfigureAwait(false);
 
-        var totalMessages = await ExecuteScalarAsync<long>(connection, "SELECT COUNT(*) FROM messages;", cancellationToken).ConfigureAwait(false);
-        var totalQueues = await ExecuteScalarAsync<long>(connection, "SELECT COUNT(*) FROM queues;", cancellationToken).ConfigureAwait(false);
-        var totalDeadLettered = await ExecuteScalarAsync<long>(connection, "SELECT COUNT(*) FROM dead_letters;", cancellationToken).ConfigureAwait(false);
+        // Single query for all table counts (3 RTT → 1)
+        await using var countCommand = connection.CreateCommand();
+        countCommand.CommandText = """
+            SELECT
+                (SELECT COUNT(*) FROM messages),
+                (SELECT COUNT(*) FROM queues),
+                (SELECT COUNT(*) FROM dead_letters);
+        """;
+        await using var reader = await countCommand.ExecuteReaderAsync(cancellationToken).ConfigureAwait(false);
+        await reader.ReadAsync(cancellationToken).ConfigureAwait(false);
+        var totalMessages = reader.GetInt64(0);
+        var totalQueues = reader.GetInt64(1);
+        var totalDeadLettered = reader.GetInt64(2);
 
         var pageCount = await ExecuteScalarAsync<long>(connection, "PRAGMA page_count;", cancellationToken).ConfigureAwait(false);
         var pageSize = await ExecuteScalarAsync<long>(connection, "PRAGMA page_size;", cancellationToken).ConfigureAwait(false);
@@ -399,7 +402,7 @@ public sealed partial class SqliteStorageProvider : IStorageProvider, IStorageMa
         command.Parameters.AddWithValue("$headers_json",
             message.Headers.Count > 0
                 ? JsonSerializer.Serialize(message.Headers, _jsonOptions)
-                : (object)DBNull.Value);
+                : DBNull.Value);
         command.Parameters.AddWithValue("$version", message.Version);
         command.Parameters.AddWithValue("$priority", (int)message.Priority);
         command.Parameters.AddWithValue("$delivery_attempts", message.DeliveryAttempts);
@@ -419,7 +422,7 @@ public sealed partial class SqliteStorageProvider : IStorageProvider, IStorageMa
             Id = reader.GetString(0),
             QueueName = reader.GetString(1),
             Payload = payloadJson is not null
-                ? JsonDocument.Parse(payloadJson).RootElement
+                ? JsonSerializer.Deserialize<JsonElement>(payloadJson, _jsonOptions)
                 : default,
             Timestamp = DateTime.Parse(reader.GetString(3), System.Globalization.CultureInfo.InvariantCulture),
             Headers = headersJson is not null
@@ -433,11 +436,11 @@ public sealed partial class SqliteStorageProvider : IStorageProvider, IStorageMa
 
     // --- Schema ---
 
-    private const string Schema = """
+    private const string SCHEMA = """
         CREATE TABLE IF NOT EXISTS queues (
             name            TEXT PRIMARY KEY,
             options_json    TEXT NOT NULL,
-            created_at      TEXT NOT NULL DEFAULT (datetime('now'))
+            created_at      TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
         );
 
         CREATE TABLE IF NOT EXISTS messages (

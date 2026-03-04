@@ -27,7 +27,7 @@ public sealed partial class QueueInfoHandler(IQueueManager queueManager, IAuthor
             return;
         }
 
-        if (authz is not null && !await authz.IsAuthorizedAsync(connection, QueueOperation.GetQueueInfo, message.Queue, cancellationToken).ConfigureAwait(false)) {
+        if (authz is not null && !await authz.IsAuthorizedAsync(connection, QueueOperation.GetQueueInfo, message.Queue).ConfigureAwait(false)) {
             await connection.SendErrorAsync(message.Id, "NOT_AUTHORIZED", "Access denied.", cancellationToken)
                 .ConfigureAwait(false);
             return;

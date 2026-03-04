@@ -16,7 +16,6 @@ public interface IAuthorizationService {
     ValueTask<bool> IsAuthorizedAsync(
         ClientConnection connection,
         QueueOperation operation,
-        string? queueName,
-        CancellationToken cancellationToken = default
+        string? queueName
     );
 }

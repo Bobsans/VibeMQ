@@ -1,7 +1,4 @@
-using System.Collections.Generic;
 using System.Text.Json;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using StackExchange.Redis;
 using VibeMQ.Configuration;
@@ -19,15 +16,36 @@ public sealed class RedisStorageProvider : IStorageProvider {
     private readonly RedisStorageOptions _options;
     private readonly RedisStorageConnectionFactory _connectionFactory;
     private readonly ILogger<RedisStorageProvider> _logger;
-    private bool _initialized;
+    private volatile bool _initialized;
 
-    private static readonly JsonSerializerOptions JsonOptions = new() {
+    private static readonly JsonSerializerOptions _jsonOptions = new() {
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
         WriteIndented = false,
     };
 
-    // One round-trip: get queue_name from hash, LREM from pending list, DEL message key.
-    private const string RemoveMessageLua = @"
+    // Atomic save: HSET message fields + RPUSH to a pending list in one round-trip.
+    private const string SAVE_MESSAGE_LUA = @"
+        redis.call('HSET', KEYS[1],
+            'id', ARGV[1], 'queue_name', ARGV[2], 'payload_json', ARGV[3],
+            'timestamp', ARGV[4], 'headers_json', ARGV[5], 'version', ARGV[6],
+            'priority', ARGV[7], 'delivery_attempts', ARGV[8])
+        redis.call('RPUSH', KEYS[2], ARGV[1])
+        return 1
+    ";
+
+    // Atomic queue removal: delete all pending messages, meta key, pending list, and remove from set.
+    private const string REMOVE_QUEUE_LUA = @"
+        local ids = redis.call('LRANGE', KEYS[2], 0, -1)
+        for i = 1, #ids do
+            redis.call('DEL', ARGV[1] .. ':m:' .. ids[i])
+        end
+        redis.call('DEL', KEYS[1], KEYS[2])
+        redis.call('SREM', KEYS[3], ARGV[2])
+        return #ids
+    ";
+
+    // One round-trip: get queue_name from hash, LREM from a pending list, DEL message key.
+    private const string REMOVE_MESSAGE_LUA = @"
         local q = redis.call('HGET', KEYS[1], 'queue_name')
         if q == false or q == '' then return 0 end
         local pendingKey = ARGV[2] .. ':q:' .. tostring(q) .. ':pending'
@@ -86,19 +104,10 @@ public sealed class RedisStorageProvider : IStorageProvider {
         var msgKey = MessageKey(message.Id);
         var pendingKey = QueuePending(message.QueueName);
 
-        var entries = new List<HashEntry> {
-            new("id", message.Id),
-            new("queue_name", message.QueueName),
-            new("payload_json", SerializePayload(message.Payload)),
-            new("timestamp", message.Timestamp.ToString("O")),
-            new("headers_json", message.Headers.Count > 0 ? JsonSerializer.Serialize(message.Headers, JsonOptions) : ""),
-            new("version", message.Version),
-            new("priority", (int)message.Priority),
-            new("delivery_attempts", message.DeliveryAttempts),
-        };
-
-        await db.HashSetAsync(msgKey, entries.ToArray()).ConfigureAwait(false);
-        await db.ListRightPushAsync(pendingKey, message.Id).ConfigureAwait(false);
+        await db.ScriptEvaluateAsync(
+            SAVE_MESSAGE_LUA,
+            [msgKey, pendingKey],
+            MessageToRedisValues(message)).ConfigureAwait(false);
     }
 
     /// <inheritdoc />
@@ -109,22 +118,14 @@ public sealed class RedisStorageProvider : IStorageProvider {
 
         var db = Db;
         var batch = db.CreateBatch();
-        var tasks = new List<Task>(messages.Count * 2);
+        var tasks = new List<Task>(messages.Count);
         foreach (var message in messages) {
             var msgKey = MessageKey(message.Id);
             var pendingKey = QueuePending(message.QueueName);
-            var entries = new List<HashEntry> {
-                new("id", message.Id),
-                new("queue_name", message.QueueName),
-                new("payload_json", SerializePayload(message.Payload)),
-                new("timestamp", message.Timestamp.ToString("O")),
-                new("headers_json", message.Headers.Count > 0 ? JsonSerializer.Serialize(message.Headers, JsonOptions) : ""),
-                new("version", message.Version),
-                new("priority", (int)message.Priority),
-                new("delivery_attempts", message.DeliveryAttempts),
-            };
-            tasks.Add(batch.HashSetAsync(msgKey, entries.ToArray()));
-            tasks.Add(batch.ListRightPushAsync(pendingKey, message.Id));
+            tasks.Add(batch.ScriptEvaluateAsync(
+                SAVE_MESSAGE_LUA,
+                [msgKey, pendingKey],
+                MessageToRedisValues(message)));
         }
         batch.Execute();
         await Task.WhenAll(tasks).ConfigureAwait(false);
@@ -146,9 +147,9 @@ public sealed class RedisStorageProvider : IStorageProvider {
         var db = Db;
         var msgKey = MessageKey(id);
         var result = await db.ScriptEvaluateAsync(
-            RemoveMessageLua,
-            new RedisKey[] { msgKey },
-            new RedisValue[] { id, _options.KeyPrefix }).ConfigureAwait(false);
+            REMOVE_MESSAGE_LUA,
+            [msgKey],
+            [id, _options.KeyPrefix]).ConfigureAwait(false);
         return result.Resp2Type == ResultType.Integer && (long)result! == 1;
     }
 
@@ -156,9 +157,9 @@ public sealed class RedisStorageProvider : IStorageProvider {
     public async Task<IReadOnlyList<BrokerMessage>> GetPendingMessagesAsync(string queueName, CancellationToken cancellationToken = default) {
         var db = Db;
         var pendingKey = QueuePending(queueName);
-        var ids = await db.ListRangeAsync(pendingKey, 0, -1).ConfigureAwait(false);
+        var ids = await db.ListRangeAsync(pendingKey, 0).ConfigureAwait(false);
         if (ids.Length == 0) {
-            return Array.Empty<BrokerMessage>();
+            return [];
         }
 
         // Batch all HGETALL in one round-trip (2 RTT total instead of 1 + N).
@@ -187,53 +188,56 @@ public sealed class RedisStorageProvider : IStorageProvider {
 
         await db.SetAddAsync(QueuesSetKey(), name).ConfigureAwait(false);
         if (exists) {
-            await db.HashSetAsync(metaKey, "options_json", JsonSerializer.Serialize(options, JsonOptions)).ConfigureAwait(false);
+            await db.HashSetAsync(metaKey, "options_json", JsonSerializer.Serialize(options, _jsonOptions)).ConfigureAwait(false);
         } else {
-            await db.HashSetAsync(metaKey, new HashEntry[] {
-                new("options_json", JsonSerializer.Serialize(options, JsonOptions)),
-                new("created_at", DateTime.UtcNow.ToString("O")),
-            }).ConfigureAwait(false);
+            await db.HashSetAsync(metaKey, [
+                new HashEntry("options_json", JsonSerializer.Serialize(options, _jsonOptions)),
+                new HashEntry("created_at", DateTime.UtcNow.ToString("O"))
+            ]).ConfigureAwait(false);
         }
     }
 
     /// <inheritdoc />
     public async Task RemoveQueueAsync(string name, CancellationToken cancellationToken = default) {
         var db = Db;
-        var pendingKey = QueuePending(name);
-        var ids = await db.ListRangeAsync(pendingKey, 0, -1).ConfigureAwait(false);
-
-        if (ids.Length > 0) {
-            var batch = db.CreateBatch();
-            var deleteTasks = new Task<bool>[ids.Length];
-            for (var i = 0; i < ids.Length; i++) {
-                deleteTasks[i] = batch.KeyDeleteAsync(MessageKey(ids[i]!));
-            }
-            batch.Execute();
-            await Task.WhenAll(deleteTasks).ConfigureAwait(false);
-        }
-
-        await db.KeyDeleteAsync(new RedisKey[] { QueueMeta(name), pendingKey }).ConfigureAwait(false);
-        await db.SetRemoveAsync(QueuesSetKey(), name).ConfigureAwait(false);
+        await db.ScriptEvaluateAsync(
+            REMOVE_QUEUE_LUA,
+            [QueueMeta(name), QueuePending(name), QueuesSetKey()],
+            [_options.KeyPrefix, name]).ConfigureAwait(false);
     }
 
     /// <inheritdoc />
     public async Task<IReadOnlyList<StoredQueue>> GetAllQueuesAsync(CancellationToken cancellationToken = default) {
         var db = Db;
         var names = await db.SetMembersAsync(QueuesSetKey()).ConfigureAwait(false);
-        var result = new List<StoredQueue>(names.Length);
+        if (names.Length == 0) {
+            return [];
+        }
 
-        foreach (var name in names) {
-            var metaKey = QueueMeta(name!);
-            var optionsJson = await db.HashGetAsync(metaKey, "options_json").ConfigureAwait(false);
-            var createdAtStr = await db.HashGetAsync(metaKey, "created_at").ConfigureAwait(false);
+        var batch = db.CreateBatch();
+        var getTasks = new Task<HashEntry[]>[names.Length];
+        for (var i = 0; i < names.Length; i++) {
+            getTasks[i] = batch.HashGetAllAsync(QueueMeta(names[i]!));
+        }
+        batch.Execute();
+
+        var allEntries = await Task.WhenAll(getTasks).ConfigureAwait(false);
+        var result = new List<StoredQueue>(names.Length);
+        for (var i = 0; i < names.Length; i++) {
+            if (allEntries[i].Length == 0) {
+                continue;
+            }
+            var dict = allEntries[i].ToDictionary(x => x.Name.ToString(), x => x.Value);
+            var optionsJson = dict.GetValueOrDefault("options_json");
+            var createdAtStr = dict.GetValueOrDefault("created_at");
             if (optionsJson.IsNullOrEmpty || createdAtStr.IsNullOrEmpty) {
                 continue;
             }
-            var options = JsonSerializer.Deserialize<QueueOptions>(optionsJson!.ToString(), JsonOptions) ?? new QueueOptions();
+            var options = JsonSerializer.Deserialize<QueueOptions>(optionsJson.ToString(), _jsonOptions) ?? new QueueOptions();
             result.Add(new StoredQueue {
-                Name = name!,
+                Name = names[i]!,
                 Options = options,
-                CreatedAt = DateTime.Parse(createdAtStr!, System.Globalization.CultureInfo.InvariantCulture),
+                CreatedAt = DateTime.Parse(createdAtStr.ToString(), System.Globalization.CultureInfo.InvariantCulture),
             });
         }
         return result;
@@ -246,38 +250,47 @@ public sealed class RedisStorageProvider : IStorageProvider {
         var db = Db;
         var id = message.OriginalMessage.Id;
         var dlqKey = DlqMessageKey(id);
-        await db.HashSetAsync(dlqKey, new HashEntry[] {
-            new("message_json", JsonSerializer.Serialize(message.OriginalMessage, JsonOptions)),
-            new("reason", (int)message.Reason),
-            new("failed_at", message.FailedAt.ToString("O")),
-        }).ConfigureAwait(false);
+        await db.HashSetAsync(dlqKey, [
+            new HashEntry("message_json", JsonSerializer.Serialize(message.OriginalMessage, _jsonOptions)),
+            new HashEntry("reason", (int)message.Reason),
+            new HashEntry("failed_at", message.FailedAt.ToString("O"))
+        ]).ConfigureAwait(false);
         await db.ListLeftPushAsync(DlqListKey(), id).ConfigureAwait(false);
     }
 
     /// <inheritdoc />
     public async Task<IReadOnlyList<DeadLetteredMessage>> GetDeadLetteredMessagesAsync(int count, CancellationToken cancellationToken = default) {
         if (count <= 0) {
-            return Array.Empty<DeadLetteredMessage>();
+            return [];
         }
         var db = Db;
         // DLQ list: LPUSH adds newest at head, so tail is oldest. LRANGE -count -1 = oldest first.
-        var ids = await db.ListRangeAsync(DlqListKey(), -count, -1).ConfigureAwait(false);
-        var result = new List<DeadLetteredMessage>(ids.Length);
+        var ids = await db.ListRangeAsync(DlqListKey(), -count).ConfigureAwait(false);
+        if (ids.Length == 0) {
+            return [];
+        }
 
-        foreach (var id in ids) {
-            var entries = await db.HashGetAllAsync(DlqMessageKey(id!)).ConfigureAwait(false);
-            if (entries.Length == 0) {
+        var batch = db.CreateBatch();
+        var getTasks = new Task<HashEntry[]>[ids.Length];
+        for (var i = 0; i < ids.Length; i++) {
+            getTasks[i] = batch.HashGetAllAsync(DlqMessageKey(ids[i]!));
+        }
+        batch.Execute();
+
+        var allEntries = await Task.WhenAll(getTasks).ConfigureAwait(false);
+        var result = new List<DeadLetteredMessage>(ids.Length);
+        for (var i = 0; i < ids.Length; i++) {
+            if (allEntries[i].Length == 0) {
                 continue;
             }
-            var dict = entries.ToDictionary(x => x.Name.ToString(), x => x.Value);
+            var dict = allEntries[i].ToDictionary(x => x.Name.ToString(), x => x.Value);
             var messageJson = dict.GetValueOrDefault("message_json").ToString();
             var reason = (FailureReason)GetInt(dict, "reason", (int)FailureReason.MaxRetriesExceeded);
             var failedAtStr = dict.GetValueOrDefault("failed_at").ToString();
             if (string.IsNullOrEmpty(messageJson) || string.IsNullOrEmpty(failedAtStr)) {
                 continue;
             }
-            using var doc = JsonDocument.Parse(messageJson!);
-            var originalMessage = JsonSerializer.Deserialize<BrokerMessage>(doc.RootElement, JsonOptions)!;
+            var originalMessage = JsonSerializer.Deserialize<BrokerMessage>(messageJson, _jsonOptions)!;
             result.Add(new DeadLetteredMessage {
                 OriginalMessage = originalMessage,
                 Reason = reason,
@@ -303,6 +316,19 @@ public sealed class RedisStorageProvider : IStorageProvider {
 
     // --- Helpers ---
 
+    private static RedisValue[] MessageToRedisValues(BrokerMessage message) {
+        return [
+            message.Id,
+            message.QueueName,
+            SerializePayload(message.Payload),
+            message.Timestamp.ToString("O"),
+            message.Headers.Count > 0 ? JsonSerializer.Serialize(message.Headers, _jsonOptions) : "",
+            message.Version,
+            (int)message.Priority,
+            message.DeliveryAttempts
+        ];
+    }
+
     private static string SerializePayload(JsonElement payload) {
         return payload.ValueKind != JsonValueKind.Undefined && payload.ValueKind != JsonValueKind.Null
             ? payload.GetRawText()
@@ -314,11 +340,11 @@ public sealed class RedisStorageProvider : IStorageProvider {
         var payloadJson = dict.GetValueOrDefault("payload_json").ToString();
         var headersJson = dict.GetValueOrDefault("headers_json").ToString();
         return new BrokerMessage {
-            Id = dict.GetValueOrDefault("id").ToString()!,
-            QueueName = dict.GetValueOrDefault("queue_name").ToString()!,
-            Payload = !string.IsNullOrEmpty(payloadJson) ? JsonDocument.Parse(payloadJson).RootElement : default,
-            Timestamp = DateTime.Parse(dict.GetValueOrDefault("timestamp").ToString()!, System.Globalization.CultureInfo.InvariantCulture),
-            Headers = !string.IsNullOrEmpty(headersJson) ? JsonSerializer.Deserialize<Dictionary<string, string>>(headersJson, JsonOptions) ?? new Dictionary<string, string>() : new Dictionary<string, string>(),
+            Id = dict.GetValueOrDefault("id").ToString(),
+            QueueName = dict.GetValueOrDefault("queue_name").ToString(),
+            Payload = !string.IsNullOrEmpty(payloadJson) ? JsonSerializer.Deserialize<JsonElement>(payloadJson, _jsonOptions) : default,
+            Timestamp = DateTime.Parse(dict.GetValueOrDefault("timestamp").ToString(), System.Globalization.CultureInfo.InvariantCulture),
+            Headers = !string.IsNullOrEmpty(headersJson) ? JsonSerializer.Deserialize<Dictionary<string, string>>(headersJson, _jsonOptions) ?? new Dictionary<string, string>() : new Dictionary<string, string>(),
             Version = GetInt(dict, "version", 1),
             Priority = (MessagePriority)GetInt(dict, "priority", (int)MessagePriority.Normal),
             DeliveryAttempts = GetInt(dict, "delivery_attempts", 0),

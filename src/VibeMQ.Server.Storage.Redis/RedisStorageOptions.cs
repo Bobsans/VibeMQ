@@ -20,16 +20,6 @@ public sealed class RedisStorageOptions {
     public string KeyPrefix { get; set; } = "vibemq";
 
     /// <summary>
-    /// Default TTL in seconds for message keys (0 = no TTL; retention managed by broker).
-    /// </summary>
-    public int DefaultQueueTtlSeconds { get; set; }
-
-    /// <summary>
-    /// Use fire-and-forget for non-critical operations (e.g. counters). Default: false.
-    /// </summary>
-    public bool UseFireAndForgetForNonCritical { get; set; }
-
-    /// <summary>
     /// Connection timeout in milliseconds. Default: 5000.
     /// </summary>
     public int ConnectTimeoutMs { get; set; } = 5000;

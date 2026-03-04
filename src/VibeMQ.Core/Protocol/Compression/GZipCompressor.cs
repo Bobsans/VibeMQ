@@ -2,7 +2,7 @@ using System.IO.Compression;
 
 namespace VibeMQ.Protocol.Compression;
 
-internal sealed class GZipCompressor : ICompressor {
+sealed class GZipCompressor : ICompressor {
     public CompressionAlgorithm Algorithm => CompressionAlgorithm.GZip;
 
     public async ValueTask<byte[]> CompressAsync(ReadOnlyMemory<byte> data) {

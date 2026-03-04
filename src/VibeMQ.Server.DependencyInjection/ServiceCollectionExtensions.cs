@@ -11,47 +11,48 @@ namespace VibeMQ.Server.DependencyInjection;
 /// Extension methods for registering VibeMQ broker with Microsoft dependency injection.
 /// </summary>
 public static class ServiceCollectionExtensions {
-    /// <summary>
-    /// Adds the VibeMQ broker to the service collection. Options can be configured via
-    /// <see cref="OptionsBuilder{TOptions}"/> (e.g. services.Configure&lt;BrokerOptions&gt;(...))
-    /// or by using the overload that accepts a configuration delegate.
-    /// The broker runs as an <see cref="Microsoft.Extensions.Hosting.IHostedService"/> when the host starts.
-    /// </summary>
     /// <param name="services">The service collection.</param>
-    /// <returns>The service collection for chaining.</returns>
-    public static IServiceCollection AddVibeMQBroker(this IServiceCollection services) {
-        services.AddOptions<BrokerOptions>();
-        services.TryAddSingleton(static sp => {
-            var options = sp.GetRequiredService<IOptions<BrokerOptions>>().Value;
-            var loggerFactory = sp.GetRequiredService<ILoggerFactory>();
+    extension(IServiceCollection services) {
+        /// <summary>
+        /// Adds the VibeMQ broker to the service collection. Options can be configured via
+        /// <see cref="OptionsBuilder{TOptions}"/> (e.g., services.Configure&lt;BrokerOptions&gt;(...))
+        /// or by using the overload that accepts a configuration delegate.
+        /// The broker runs as an <see cref="Microsoft.Extensions.Hosting.IHostedService"/> when the host starts.
+        /// </summary>
+        /// <returns>The service collection for chaining.</returns>
+        public IServiceCollection AddVibeMQBroker() {
+            services.AddOptions<BrokerOptions>();
+            services.TryAddSingleton(static sp => {
+                var options = sp.GetRequiredService<IOptions<BrokerOptions>>().Value;
+                var loggerFactory = sp.GetRequiredService<ILoggerFactory>();
 
-            var builder = BrokerBuilder.Create()
-                .ConfigureFrom(options)
-                .UseLoggerFactory(loggerFactory);
+                var builder = BrokerBuilder.Create()
+                    .ConfigureFrom(options)
+                    .UseLoggerFactory(loggerFactory);
 
-            // Use storage provider from DI if registered (e.g. via AddVibeMQSqliteStorage)
-            var storageProvider = sp.GetService<IStorageProvider>();
+                // Use storage provider from DI if registered (e.g. via AddVibeMQSqliteStorage)
+                var storageProvider = sp.GetService<IStorageProvider>();
 
-            if (storageProvider is not null) {
-                builder.UseStorageProvider(_ => storageProvider);
-            }
+                if (storageProvider is not null) {
+                    builder.UseStorageProvider(_ => storageProvider);
+                }
 
-            return builder.Build();
-        });
-        services.AddHostedService<VibeMQBrokerHostedService>();
-        return services;
-    }
+                return builder.Build();
+            });
+            services.AddHostedService<VibeMQBrokerHostedService>();
+            return services;
+        }
 
-    /// <summary>
-    /// Adds the VibeMQ broker to the service collection and configures its options.
-    /// The broker runs as an <see cref="Microsoft.Extensions.Hosting.IHostedService"/> when the host starts.
-    /// </summary>
-    /// <param name="services">The service collection.</param>
-    /// <param name="configureOptions">Delegate to configure <see cref="BrokerOptions"/>.</param>
-    /// <returns>The service collection for chaining.</returns>
-    public static IServiceCollection AddVibeMQBroker(this IServiceCollection services, Action<BrokerOptions> configureOptions) {
-        ArgumentNullException.ThrowIfNull(configureOptions);
-        services.Configure(configureOptions);
-        return services.AddVibeMQBroker();
+        /// <summary>
+        /// Adds the VibeMQ broker to the service collection and configures its options.
+        /// The broker runs as an <see cref="Microsoft.Extensions.Hosting.IHostedService"/> when the host starts.
+        /// </summary>
+        /// <param name="configureOptions">Delegate to configure <see cref="BrokerOptions"/>.</param>
+        /// <returns>The service collection for chaining.</returns>
+        public IServiceCollection AddVibeMQBroker(Action<BrokerOptions> configureOptions) {
+            ArgumentNullException.ThrowIfNull(configureOptions);
+            services.Configure(configureOptions);
+            return services.AddVibeMQBroker();
+        }
     }
 }

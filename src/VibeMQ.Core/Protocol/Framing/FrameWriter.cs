@@ -11,7 +11,7 @@ namespace VibeMQ.Protocol.Framing;
 /// Uses <see cref="ArrayPool{T}"/> and a single write call to minimize allocations and syscalls.
 /// </summary>
 public sealed class FrameWriter {
-    private static readonly VibeMQBinaryCodec Codec = new();
+    private static readonly VibeMQBinaryCodec _codec = new();
 
     private CompressionAlgorithm _algorithm = CompressionAlgorithm.None;
     private int _threshold = ProtocolConstants.COMPRESSION_THRESHOLD;
@@ -37,7 +37,7 @@ public sealed class FrameWriter {
         ProtocolMessage message,
         CancellationToken cancellationToken = default
     ) {
-        var binaryBody = Codec.Encode(message);
+        var binaryBody = _codec.Encode(message);
         byte[] body;
         byte flags;
 

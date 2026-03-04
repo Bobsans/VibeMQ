@@ -23,7 +23,7 @@ public sealed partial class UnsubscribeHandler(ILogger<UnsubscribeHandler> logge
             return;
         }
 
-        connection.Subscriptions.Remove(message.Queue);
+        connection.Subscriptions.TryRemove(message.Queue, out _);
         LogUnsubscribed(connection.Id, message.Queue);
 
         await connection.SendMessageAsync(new ProtocolMessage {

@@ -1,22 +1,15 @@
 using VibeMQ.Interfaces;
-using VibeMQ.Server.Auth.Models;
 
 namespace VibeMQ.Server.Auth;
 
 /// <summary>
 /// Simple token-based authentication: compares the client token with the configured server token.
 /// </summary>
-public sealed class TokenAuthenticationService : IAuthenticationService {
-    private readonly string _expectedToken;
-
-    public TokenAuthenticationService(string expectedToken) {
-        _expectedToken = expectedToken;
-    }
-
+public sealed class TokenAuthenticationService(string expectedToken) : IAuthenticationService {
     /// <inheritdoc />
     [Obsolete("Use AuthenticateAsync(username, password) for new deployments.")]
     public Task<bool> AuthenticateAsync(string token, CancellationToken cancellationToken = default) {
-        var isValid = string.Equals(_expectedToken, token, StringComparison.Ordinal);
+        var isValid = string.Equals(expectedToken, token, StringComparison.Ordinal);
         return Task.FromResult(isValid);
     }
 
