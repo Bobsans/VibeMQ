@@ -21,11 +21,19 @@ Version 1.7.0
 **New features:**
 
 - **Redis persistence provider** — optional package ``VibeMQ.Server.Storage.Redis``; ``RedisStorageProvider`` implements ``IStorageProvider`` using Redis (LIST + HASH). ``BrokerBuilder.UseRedisStorage(connectionString, configure)``, ``AddVibeMQRedisStorage(services, connectionString, configure)``, and ``AddVibeMQRedisStorage(services, IConfiguration)`` for config section ``VibeMQ:Storage:Redis`` or ``ConnectionStrings:Redis``. Options: ``ConnectionString``, ``Database``, ``KeyPrefix``, ``ConnectTimeoutMs``, ``SyncTimeoutMs``.
+- **Redis delivery durability improvements** — in-flight delivery state is now persisted and recovered on broker startup, so unacknowledged messages are re-queued after restart. Redis purge/delete paths also use batched operations to reduce round-trips.
 - **Web UI dashboard** — optional package ``VibeMQ.Server.WebUI``; Vue 3 SPA for monitoring (health, metrics, queues) on a separate HTTP port (default 12925)
 - **``RunWithWebUIAsync()``** — extension method to run broker and Web UI in one call
 - **``WebUIServer``** — HttpListener-based server; API endpoints ``/api/health``, ``/api/metrics``, ``/api/queues``, ``/api/queues/{name}``
 - **BrokerServer** — new read-only API for dashboard: ``QueueCount``, ``ListQueuesAsync()``, ``GetQueueInfoAsync(name)``
 - **Connection string** — connect using a single URL (e.g. ``vibemq://user:pass@host:2925?tls=true``) or key=value string (e.g. ``Host=localhost;Port=2925``). ``VibeMQConnectionString.Parse`` / ``TryParse``; ``VibeMQClient.ConnectAsync(connectionString)``; ``AddVibeMQClient(services, connectionString)`` and ``AddVibeMQClient(services, IConfiguration)`` reading ``ConnectionStrings:VibeMQ`` or ``VibeMQ:Client:ConnectionString``. Optional query/keys: TLS, keep-alive, compression, reconnect policy, ``queues`` (declare-on-connect). ``VibeMQConnectionStringException`` for invalid strings.
+
+**Maintenance:**
+
+- **Reconnect robustness in ``VibeMQ.Client``** — reconnect loop now respects client shutdown cancellation during backoff and reconnect attempts, preventing background reconnect after dispose/disconnect.
+- **Reliable resubscribe after reconnect** — subscription restore now waits for broker response and treats resubscribe errors as reconnect failures (with retry).
+- **Connection string parser fix** — URL user info now correctly handles percent-encoded ``:`` in usernames (e.g. ``user%3Aname``).
+- **Clear command timeout errors** — client now throws ``TimeoutException`` when broker response exceeds ``CommandTimeout`` instead of a generic cancellation.
 
 **Documentation:**
 
@@ -370,4 +378,4 @@ Links
 - `Issues <https://github.com/DarkBoy/VibeMQ/issues>`_
 - `Discussions <https://github.com/DarkBoy/VibeMQ/discussions>`_
 
-Last updated: February 27, 2026
+Last updated: March 13, 2026

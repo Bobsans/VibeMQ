@@ -72,6 +72,19 @@ public sealed partial class QueueManager : IQueueManager {
             LogQueueRecovered(stored.Name, messages.Count);
         }
 
+        if (_storageProvider is IInFlightMessageStorage inFlightStorage) {
+            var recoveredInFlight = await inFlightStorage.RecoverInFlightMessagesAsync(cancellationToken).ConfigureAwait(false);
+            foreach (var message in recoveredInFlight) {
+                if (_queues.TryGetValue(message.QueueName, out var queue)) {
+                    queue.Enqueue(message);
+                }
+            }
+
+            if (recoveredInFlight.Count > 0) {
+                LogInFlightRecovered(recoveredInFlight.Count);
+            }
+        }
+
         if (storedQueues.Count > 0) {
             LogRecoveryComplete(storedQueues.Count);
         }
@@ -183,8 +196,13 @@ public sealed partial class QueueManager : IQueueManager {
         // This prevents a race where new messages published between PeekAll and ClearPending
         // would be cleared from memory but left orphaned in storage.
         var drained = queue.DrainPending();
-        foreach (var message in drained) {
-            await _storageProvider.RemoveMessageAsync(message.Id, cancellationToken).ConfigureAwait(false);
+        var messageIds = drained.Select(m => m.Id).ToArray();
+        if (_storageProvider is IBulkMessageStorage bulkStorage) {
+            await bulkStorage.RemoveMessagesAsync(messageIds, cancellationToken).ConfigureAwait(false);
+        } else {
+            foreach (var messageId in messageIds) {
+                await _storageProvider.RemoveMessageAsync(messageId, cancellationToken).ConfigureAwait(false);
+            }
         }
 
         return true;
@@ -234,6 +252,7 @@ public sealed partial class QueueManager : IQueueManager {
         // First try the AckTracker (centralized tracking)
         if (_ackTracker.Acknowledge(messageId)) {
             await _storageProvider.RemoveMessageAsync(messageId, cancellationToken).ConfigureAwait(false);
+            await RemoveInFlightStateAsync(messageId, cancellationToken).ConfigureAwait(false);
             _metrics.RecordAcknowledged();
             return true;
         }
@@ -242,6 +261,7 @@ public sealed partial class QueueManager : IQueueManager {
         foreach (var queue in _queues.Values) {
             if (queue.Acknowledge(messageId)) {
                 await _storageProvider.RemoveMessageAsync(messageId, cancellationToken).ConfigureAwait(false);
+                await RemoveInFlightStateAsync(messageId, cancellationToken).ConfigureAwait(false);
                 _metrics.RecordAcknowledged();
                 return true;
             }
@@ -291,6 +311,7 @@ public sealed partial class QueueManager : IQueueManager {
         try {
             await target.SendMessageAsync(protocolMessage, cancellationToken).ConfigureAwait(false);
             _ackTracker.Track(message, target.Id, queue.Options.MaxRetryAttempts);
+            await MarkInFlightAsync(message, target.Id, queue.Options.MaxRetryAttempts, cancellationToken).ConfigureAwait(false);
             _metrics.RecordDelivered(DateTime.UtcNow - message.Timestamp);
             LogMessageDelivered(message.Id, queue.Name, target.Id);
         } catch (Exception ex) {
@@ -320,6 +341,7 @@ public sealed partial class QueueManager : IQueueManager {
 
                 if (requireAck) {
                     _ackTracker.Track(message, subscriber.Id, queue.Options.MaxRetryAttempts);
+                    await MarkInFlightAsync(message, subscriber.Id, queue.Options.MaxRetryAttempts, cancellationToken).ConfigureAwait(false);
                 }
 
                 _metrics.RecordDelivered(DateTime.UtcNow - message.Timestamp);
@@ -343,6 +365,7 @@ public sealed partial class QueueManager : IQueueManager {
 
         // Remove expired message from storage
         await _storageProvider.RemoveMessageAsync(message.Id, CancellationToken.None).ConfigureAwait(false);
+        await RemoveInFlightStateAsync(message.Id, CancellationToken.None).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -358,6 +381,8 @@ public sealed partial class QueueManager : IQueueManager {
                 queue.Enqueue(delivery.Message);
             }
 
+            await RequeueInFlightAsync(delivery.Message.Id, CancellationToken.None).ConfigureAwait(false);
+
             return;
         }
 
@@ -365,8 +390,68 @@ public sealed partial class QueueManager : IQueueManager {
 
         try {
             await connection.SendMessageAsync(protocolMessage, CancellationToken.None).ConfigureAwait(false);
+            await UpdateInFlightRetryAsync(delivery, CancellationToken.None).ConfigureAwait(false);
         } catch {
             // If redelivery fails, the message stays in AckTracker for next retry cycle
+        }
+    }
+
+    private async Task MarkInFlightAsync(BrokerMessage message, string clientId, int maxRetryAttempts, CancellationToken cancellationToken) {
+        if (_storageProvider is not IInFlightMessageStorage inFlightStorage) {
+            return;
+        }
+
+        try {
+            await inFlightStorage.MarkMessageInFlightAsync(
+                message,
+                clientId,
+                maxRetryAttempts,
+                DateTime.UtcNow.Add(_ackTracker.AckTimeout),
+                cancellationToken
+            ).ConfigureAwait(false);
+        } catch (Exception ex) {
+            LogInFlightPersistFailed(message.Id, ex);
+        }
+    }
+
+    private async Task UpdateInFlightRetryAsync(PendingDelivery delivery, CancellationToken cancellationToken) {
+        if (_storageProvider is not IInFlightMessageStorage inFlightStorage) {
+            return;
+        }
+
+        try {
+            await inFlightStorage.UpdateInFlightRetryAsync(
+                delivery.Message.Id,
+                delivery.Attempts,
+                delivery.NextRetryAt,
+                cancellationToken
+            ).ConfigureAwait(false);
+        } catch (Exception ex) {
+            LogInFlightRetryUpdateFailed(delivery.Message.Id, ex);
+        }
+    }
+
+    private async Task RequeueInFlightAsync(string messageId, CancellationToken cancellationToken) {
+        if (_storageProvider is not IInFlightMessageStorage inFlightStorage) {
+            return;
+        }
+
+        try {
+            await inFlightStorage.RequeueInFlightMessageAsync(messageId, cancellationToken).ConfigureAwait(false);
+        } catch (Exception ex) {
+            LogInFlightRequeueFailed(messageId, ex);
+        }
+    }
+
+    private async Task RemoveInFlightStateAsync(string messageId, CancellationToken cancellationToken) {
+        if (_storageProvider is not IInFlightMessageStorage inFlightStorage) {
+            return;
+        }
+
+        try {
+            await inFlightStorage.RemoveInFlightStateAsync(messageId, cancellationToken).ConfigureAwait(false);
+        } catch (Exception ex) {
+            LogInFlightRemoveFailed(messageId, ex);
         }
     }
 
@@ -403,4 +488,19 @@ public sealed partial class QueueManager : IQueueManager {
 
     [LoggerMessage(Level = LogLevel.Information, Message = "Recovery complete: {queueCount} queues restored.")]
     private partial void LogRecoveryComplete(int queueCount);
+
+    [LoggerMessage(Level = LogLevel.Information, Message = "Recovered {messageCount} in-flight messages from storage.")]
+    private partial void LogInFlightRecovered(int messageCount);
+
+    [LoggerMessage(Level = LogLevel.Warning, Message = "Failed to persist in-flight state for message {messageId}.")]
+    private partial void LogInFlightPersistFailed(string messageId, Exception exception);
+
+    [LoggerMessage(Level = LogLevel.Warning, Message = "Failed to update retry in-flight state for message {messageId}.")]
+    private partial void LogInFlightRetryUpdateFailed(string messageId, Exception exception);
+
+    [LoggerMessage(Level = LogLevel.Warning, Message = "Failed to requeue in-flight state for message {messageId}.")]
+    private partial void LogInFlightRequeueFailed(string messageId, Exception exception);
+
+    [LoggerMessage(Level = LogLevel.Warning, Message = "Failed to remove in-flight state for message {messageId}.")]
+    private partial void LogInFlightRemoveFailed(string messageId, Exception exception);
 }

@@ -78,13 +78,12 @@ public sealed record VibeMQConnectionString(string Host, int Port, ClientOptions
     }
 
     private static void ParseUserInfo(string userInfo, ClientOptions options) {
-        var decoded = Uri.UnescapeDataString(userInfo);
-        var colon = decoded.IndexOf(':');
+        var colon = userInfo.IndexOf(':');
         if (colon >= 0) {
-            options.Username = decoded[..colon];
-            options.Password = decoded[(colon + 1)..];
+            options.Username = Uri.UnescapeDataString(userInfo[..colon]);
+            options.Password = Uri.UnescapeDataString(userInfo[(colon + 1)..]);
         } else {
-            options.Username = decoded;
+            options.Username = Uri.UnescapeDataString(userInfo);
         }
     }
 

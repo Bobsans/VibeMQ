@@ -236,6 +236,8 @@ RedisStorageOptions
 
 Redis uses LIST for pending message order, HASH for message and queue metadata, and a SET for queue names. Keys follow ``{KeyPrefix}:q:{queue}:meta``, ``{KeyPrefix}:q:{queue}:pending``, ``{KeyPrefix}:m:{id}``, etc.
 
+For Redis, VibeMQ also persists **in-flight delivery state** (messages already sent to a subscriber but not yet acknowledged). This allows safe restart recovery for unacknowledged deliveries.
+
 How Persistence Works
 =====================
 
@@ -276,6 +278,28 @@ When a subscriber acknowledges a message:
        │
        ▼
    Metrics updated
+
+In-Flight Recovery (Redis)
+--------------------------
+
+When Redis storage is enabled, the broker stores in-flight metadata (next retry timestamp, attempts, target client) separately from pending queue order.
+
+At startup, VibeMQ restores this state and requeues those messages back to pending delivery:
+
+.. code-block:: text
+
+   Broker restart
+       │
+       ▼
+   QueueManager.InitializeAsync()
+       │
+       ▼
+   RecoverInFlightMessagesAsync()   ← Redis in-flight index
+       │
+       ▼
+   Re-enqueue recovered messages
+
+This keeps at-least-once delivery semantics even if the broker restarts between delivery and ACK.
 
 Startup Recovery
 ----------------
@@ -323,6 +347,11 @@ Failed messages are persisted to the ``dead_letters`` table before being added t
 
 Storage Management
 ==================
+
+Bulk purge optimization
+-----------------------
+
+For providers that support bulk operations (Redis), queue purge uses a batched storage delete instead of per-message round-trips. This significantly reduces Redis calls for large queues.
 
 The ``IStorageManagement`` interface provides optional maintenance operations. Not all providers support it — check at runtime:
 

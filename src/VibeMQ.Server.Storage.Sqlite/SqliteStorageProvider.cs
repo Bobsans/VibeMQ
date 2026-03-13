@@ -421,13 +421,9 @@ public sealed partial class SqliteStorageProvider : IStorageProvider, IStorageMa
         return new BrokerMessage {
             Id = reader.GetString(0),
             QueueName = reader.GetString(1),
-            Payload = payloadJson is not null
-                ? JsonSerializer.Deserialize<JsonElement>(payloadJson, _jsonOptions)
-                : default,
+            Payload = payloadJson is not null ? JsonSerializer.Deserialize<JsonElement>(payloadJson, _jsonOptions) : default,
             Timestamp = DateTime.Parse(reader.GetString(3), System.Globalization.CultureInfo.InvariantCulture),
-            Headers = headersJson is not null
-                ? JsonSerializer.Deserialize<Dictionary<string, string>>(headersJson, _jsonOptions) ?? new()
-                : new(),
+            Headers = headersJson is not null ? JsonSerializer.Deserialize<Dictionary<string, string>>(headersJson, _jsonOptions) ?? [] : [],
             Version = reader.GetInt32(5),
             Priority = (MessagePriority)reader.GetInt32(6),
             DeliveryAttempts = reader.GetInt32(7),

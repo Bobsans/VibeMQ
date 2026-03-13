@@ -39,6 +39,11 @@ public sealed partial class AckTracker(
     public int PendingCount => _pending.Count;
 
     /// <summary>
+    /// Timeout before a delivery is considered unacknowledged and eligible for retry.
+    /// </summary>
+    public TimeSpan AckTimeout => _ackTimeout;
+
+    /// <summary>
     /// Starts the background monitoring loop.
     /// </summary>
     public void Start() {

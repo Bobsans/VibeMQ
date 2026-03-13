@@ -29,6 +29,13 @@ public sealed class VibeMQConnectionStringTests {
     }
 
     [Fact]
+    public void Parse_URL_with_escaped_colon_in_username() {
+        var r = VibeMQConnectionString.Parse("vibemq://user%3Aname:secret@host:2925");
+        Assert.Equal("user:name", r.Options.Username);
+        Assert.Equal("secret", r.Options.Password);
+    }
+
+    [Fact]
     public void Parse_URL_with_query_tls_and_keepAlive() {
         var r = VibeMQConnectionString.Parse("vibemq://localhost?tls=true&keepAlive=60");
         Assert.True(r.Options.UseTls);

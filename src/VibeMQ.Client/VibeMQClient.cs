@@ -28,6 +28,7 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
     private readonly ConcurrentDictionary<string, SubscriptionRegistration> _subscriptionHandlers = new();
     private readonly ConcurrentDictionary<string, TaskCompletionSource<ProtocolMessage>> _pendingResponses = new();
     private readonly SemaphoreSlim _connectLock = new(1, 1);
+    private readonly CancellationTokenSource _lifetimeCts = new();
 
     private readonly FrameWriter _frameWriter = new();
     private readonly SemaphoreSlim _writeLock = new(1, 1);
@@ -599,6 +600,7 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
 
         LogDisconnecting();
         _isConnected = false;
+        await _lifetimeCts.CancelAsync().ConfigureAwait(false);
 
         if (_cts is not null) {
             await _cts.CancelAsync().ConfigureAwait(false);
@@ -625,6 +627,7 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
 
         _disposed = true;
         await DisconnectAsync().ConfigureAwait(false);
+        _lifetimeCts.Dispose();
         _connectLock.Dispose();
         _writeLock.Dispose();
     }
@@ -752,7 +755,7 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
 
         _isConnected = false;
 
-        if (!_disposed && !cancellationToken.IsCancellationRequested) {
+        if (!_disposed && !_lifetimeCts.IsCancellationRequested && !cancellationToken.IsCancellationRequested) {
             TryStartReconnect();
         }
     }
@@ -839,30 +842,41 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
     private async Task ReconnectAsync() {
         try {
             var policy = _options.ReconnectPolicy;
+            var lifetimeToken = _lifetimeCts.Token;
 
             for (var attempt = 1; attempt <= policy.MaxAttempts; attempt++) {
-                if (_disposed) {
+                if (_disposed || lifetimeToken.IsCancellationRequested) {
                     return;
                 }
 
                 var delay = policy.GetDelay(attempt);
                 LogReconnecting(attempt, policy.MaxAttempts, delay.TotalSeconds);
 
-                await Task.Delay(delay).ConfigureAwait(false);
+                await Task.Delay(delay, lifetimeToken).ConfigureAwait(false);
+
+                if (_disposed || lifetimeToken.IsCancellationRequested) {
+                    return;
+                }
 
                 try {
                     CleanupConnection();
-                    await ConnectInternalAsync(CancellationToken.None, isReconnect: true).ConfigureAwait(false);
+                    await ConnectInternalAsync(lifetimeToken, isReconnect: true).ConfigureAwait(false);
 
                     // Resubscribe to all active queues
                     foreach (var queueName in _subscriptionHandlers.Keys) {
-                        await SendMessageAsync(new ProtocolMessage {
+                        var response = await SendAndWaitAsync(new ProtocolMessage {
                             Type = CommandType.Subscribe,
                             Queue = queueName,
-                        }, CancellationToken.None).ConfigureAwait(false);
+                        }, lifetimeToken).ConfigureAwait(false);
+
+                        if (response.Type == CommandType.Error) {
+                            throw new InvalidOperationException($"Resubscribe failed for queue '{queueName}': {response.ErrorMessage}");
+                        }
                     }
 
                     LogReconnected(attempt);
+                    return;
+                } catch (OperationCanceledException) when (_disposed || lifetimeToken.IsCancellationRequested) {
                     return;
                 } catch (Exception ex) {
                     LogReconnectFailed(attempt, ex);
@@ -972,12 +986,13 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
             using var timeoutCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
             timeoutCts.CancelAfter(_options.CommandTimeout);
 
-            var registration = timeoutCts.Token.Register(() => tcs.TrySetCanceled());
-
             try {
-                return await tcs.Task.ConfigureAwait(false);
-            } finally {
-                await registration.DisposeAsync().ConfigureAwait(false);
+                return await tcs.Task.WaitAsync(timeoutCts.Token).ConfigureAwait(false);
+            } catch (OperationCanceledException ex) when (!cancellationToken.IsCancellationRequested) {
+                throw new TimeoutException(
+                    $"Timed out waiting for broker response to '{message.Type}' after {_options.CommandTimeout.TotalSeconds:0.###}s.",
+                    ex
+                );
             }
         } catch {
             _pendingResponses.TryRemove(message.Id, out _);

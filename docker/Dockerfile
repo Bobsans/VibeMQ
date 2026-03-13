@@ -15,7 +15,7 @@
 # waste time producing unused publish variants.
 # ============================================================
 
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build-runtime
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build-runtime
 WORKDIR /src
 
 # Copy project files first for better layer caching.
@@ -27,8 +27,7 @@ COPY src/VibeMQ.Server.DependencyInjection/VibeMQ.Server.DependencyInjection.csp
 COPY src/VibeMQ.Server.Storage.Sqlite/VibeMQ.Server.Storage.Sqlite.csproj src/VibeMQ.Server.Storage.Sqlite/
 COPY docker/VibeMQ.Server.Host/VibeMQ.Server.Host.csproj docker/VibeMQ.Server.Host/
 
-# Restore and publish for net8.0 only (SDK 8.0 image does not support net10.0)
-RUN dotnet restore docker/VibeMQ.Server.Host/VibeMQ.Server.Host.csproj -p:TargetFramework=net8.0
+RUN dotnet restore docker/VibeMQ.Server.Host/VibeMQ.Server.Host.csproj -p:TargetFramework=net10.0
 
 COPY src/ src/
 COPY docker/ docker/
@@ -36,13 +35,13 @@ COPY docker/ docker/
 # Publish the Host — framework-dependent (for stage "runtime")
 RUN dotnet publish docker/VibeMQ.Server.Host/VibeMQ.Server.Host.csproj \
     -c Release \
-    -p:TargetFramework=net8.0 \
+    -p:TargetFramework=net10.0 \
     -p:DebugType=none \
     -p:DebugSymbols=false \
     -o /app/publish \
     --no-restore
 
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build-ultra
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build-ultra
 WORKDIR /src
 
 COPY Directory.Build.props ./
@@ -53,7 +52,7 @@ COPY src/VibeMQ.Server.Storage.Sqlite/VibeMQ.Server.Storage.Sqlite.csproj src/Vi
 COPY docker/VibeMQ.Server.Host/VibeMQ.Server.Host.csproj docker/VibeMQ.Server.Host/
 
 # Restore for linux-musl-x64 (needed for self-contained publish)
-RUN dotnet restore docker/VibeMQ.Server.Host/VibeMQ.Server.Host.csproj -p:TargetFramework=net8.0 -r linux-musl-x64
+RUN dotnet restore docker/VibeMQ.Server.Host/VibeMQ.Server.Host.csproj -p:TargetFramework=net10.0 -r linux-musl-x64
 
 COPY src/ src/
 COPY docker/ docker/
@@ -61,7 +60,7 @@ COPY docker/ docker/
 # Publish self-contained trimmed single-file (default runtime target)
 RUN dotnet publish docker/VibeMQ.Server.Host/VibeMQ.Server.Host.csproj \
     -c Release \
-    -p:TargetFramework=net8.0 \
+    -p:TargetFramework=net10.0 \
     -r linux-musl-x64 \
     --self-contained true \
     -p:PublishTrimmed=true \
@@ -76,7 +75,7 @@ RUN dotnet publish docker/VibeMQ.Server.Host/VibeMQ.Server.Host.csproj \
     --no-restore
 
 # --- Runtime: framework-dependent (~112 MB). Build with: docker build --target runtime -t vibemq . ---
-FROM mcr.microsoft.com/dotnet/runtime:8.0-alpine AS runtime
+FROM mcr.microsoft.com/dotnet/runtime:10.0-alpine AS runtime
 WORKDIR /app
 COPY --from=build-runtime /app/publish .
 EXPOSE 2925
@@ -84,7 +83,7 @@ ENV VIBEMQ_CONFIG_PATH=
 ENTRYPOINT ["dotnet", "VibeMQ.Server.Host.dll"]
 
 # --- Runtime ultra: self-contained trimmed single-file + runtime-deps (default target). ---
-FROM mcr.microsoft.com/dotnet/runtime-deps:8.0-alpine AS runtime-ultra
+FROM mcr.microsoft.com/dotnet/runtime-deps:10.0-alpine AS runtime-ultra
 WORKDIR /app
 COPY --from=build-ultra /app/publish-ultra .
 RUN chmod +x ./VibeMQ.Server.Host

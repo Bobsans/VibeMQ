@@ -35,4 +35,13 @@
     <PackageVersion>$(Version)</PackageVersion>
   </PropertyGroup>
 
+  <!-- Align Microsoft.Extensions.* and Microsoft.Data.Sqlite versions with the target framework.
+       net10.0 uses 9.* (latest stable; 10.* packages are not yet released). -->
+  <PropertyGroup>
+    <MicrosoftExtensionsVersion Condition="'$(TargetFramework)' == 'net8.0'">8.*</MicrosoftExtensionsVersion>
+    <MicrosoftExtensionsVersion Condition="'$(TargetFramework)' == 'net10.0'">9.*</MicrosoftExtensionsVersion>
+    <MicrosoftDataSqliteVersion Condition="'$(TargetFramework)' == 'net8.0'">8.*</MicrosoftDataSqliteVersion>
+    <MicrosoftDataSqliteVersion Condition="'$(TargetFramework)' == 'net10.0'">9.*</MicrosoftDataSqliteVersion>
+  </PropertyGroup>
+
 </Project>

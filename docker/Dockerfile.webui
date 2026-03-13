@@ -18,7 +18,7 @@ COPY src/VibeMQ.Server.WebUI/App ./
 RUN npm run build
 
 # --- .NET build (uses pre-built frontend; no Node in this stage) ---
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build-runtime
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build-runtime
 WORKDIR /src
 
 COPY Directory.Build.props ./
@@ -29,8 +29,7 @@ COPY src/VibeMQ.Server.Storage.Sqlite/VibeMQ.Server.Storage.Sqlite.csproj src/Vi
 COPY src/VibeMQ.Server.WebUI/VibeMQ.Server.WebUI.csproj src/VibeMQ.Server.WebUI/
 COPY docker/VibeMQ.Server.Host.WebUI/VibeMQ.Server.Host.WebUI.csproj docker/VibeMQ.Server.Host.WebUI/
 
-# Restore and publish for net8.0 only (SDK 8.0 image does not support net10.0)
-RUN dotnet restore docker/VibeMQ.Server.Host.WebUI/VibeMQ.Server.Host.WebUI.csproj -p:TargetFramework=net8.0
+RUN dotnet restore docker/VibeMQ.Server.Host.WebUI/VibeMQ.Server.Host.WebUI.csproj -p:TargetFramework=net10.0
 
 COPY src/ src/
 COPY docker/ docker/
@@ -39,14 +38,14 @@ COPY --from=frontend /frontend/dist src/VibeMQ.Server.WebUI/App/dist
 # Publish the Host — framework-dependent (for stage "runtime")
 RUN dotnet publish docker/VibeMQ.Server.Host.WebUI/VibeMQ.Server.Host.WebUI.csproj \
     -c Release \
-    -p:TargetFramework=net8.0 \
+    -p:TargetFramework=net10.0 \
     -o /app/publish \
     -p:SkipFrontendBuild=true \
     -p:DebugType=none \
     -p:DebugSymbols=false \
     --no-restore
 
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build-ultra
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build-ultra
 WORKDIR /src
 
 COPY Directory.Build.props ./
@@ -58,7 +57,7 @@ COPY src/VibeMQ.Server.WebUI/VibeMQ.Server.WebUI.csproj src/VibeMQ.Server.WebUI/
 COPY docker/VibeMQ.Server.Host.WebUI/VibeMQ.Server.Host.WebUI.csproj docker/VibeMQ.Server.Host.WebUI/
 
 # Restore for linux-musl-x64 (needed for self-contained publish)
-RUN dotnet restore docker/VibeMQ.Server.Host.WebUI/VibeMQ.Server.Host.WebUI.csproj -p:TargetFramework=net8.0 -r linux-musl-x64
+RUN dotnet restore docker/VibeMQ.Server.Host.WebUI/VibeMQ.Server.Host.WebUI.csproj -p:TargetFramework=net10.0 -r linux-musl-x64
 
 COPY src/ src/
 COPY docker/ docker/
@@ -67,7 +66,7 @@ COPY --from=frontend /frontend/dist src/VibeMQ.Server.WebUI/App/dist
 # Publish self-contained trimmed single-file (default runtime target)
 RUN dotnet publish docker/VibeMQ.Server.Host.WebUI/VibeMQ.Server.Host.WebUI.csproj \
     -c Release \
-    -p:TargetFramework=net8.0 \
+    -p:TargetFramework=net10.0 \
     -r linux-musl-x64 \
     --self-contained true \
     -p:PublishTrimmed=true \
@@ -83,7 +82,7 @@ RUN dotnet publish docker/VibeMQ.Server.Host.WebUI/VibeMQ.Server.Host.WebUI.cspr
     --no-restore
 
 # --- Runtime image (framework-dependent) ---
-FROM mcr.microsoft.com/dotnet/runtime:8.0-alpine AS runtime
+FROM mcr.microsoft.com/dotnet/runtime:10.0-alpine AS runtime
 WORKDIR /app
 
 COPY --from=build-runtime /app/publish .
@@ -95,7 +94,7 @@ ENV VIBEMQ_CONFIG_PATH=
 ENTRYPOINT ["dotnet", "VibeMQ.Server.Host.WebUI.dll"]
 
 # --- Runtime ultra (default): self-contained trimmed single-file + runtime-deps ---
-FROM mcr.microsoft.com/dotnet/runtime-deps:8.0-alpine AS runtime-ultra
+FROM mcr.microsoft.com/dotnet/runtime-deps:10.0-alpine AS runtime-ultra
 WORKDIR /app
 COPY --from=build-ultra /app/publish-ultra .
 RUN chmod +x ./VibeMQ.Server.Host.WebUI

@@ -12,7 +12,7 @@ namespace VibeMQ.Server.Storage.Redis;
 /// Redis-backed implementation of <see cref="IStorageProvider"/>.
 /// Uses LIST for pending message order, HASH for message/queue/DLQ data.
 /// </summary>
-public sealed class RedisStorageProvider : IStorageProvider {
+public sealed class RedisStorageProvider : IStorageProvider, IInFlightMessageStorage, IBulkMessageStorage {
     private readonly RedisStorageOptions _options;
     private readonly RedisStorageConnectionFactory _connectionFactory;
     private readonly ILogger<RedisStorageProvider> _logger;
@@ -28,7 +28,9 @@ public sealed class RedisStorageProvider : IStorageProvider {
         redis.call('HSET', KEYS[1],
             'id', ARGV[1], 'queue_name', ARGV[2], 'payload_json', ARGV[3],
             'timestamp', ARGV[4], 'headers_json', ARGV[5], 'version', ARGV[6],
-            'priority', ARGV[7], 'delivery_attempts', ARGV[8])
+            'priority', ARGV[7], 'delivery_attempts', ARGV[8], 'state', 'pending')
+        redis.call('HDEL', KEYS[1], 'client_id', 'next_retry_at', 'max_retry_attempts')
+        redis.call('ZREM', KEYS[3], ARGV[1])
         redis.call('RPUSH', KEYS[2], ARGV[1])
         return 1
     ";
@@ -38,6 +40,15 @@ public sealed class RedisStorageProvider : IStorageProvider {
         local ids = redis.call('LRANGE', KEYS[2], 0, -1)
         for i = 1, #ids do
             redis.call('DEL', ARGV[1] .. ':m:' .. ids[i])
+        end
+        local inflightIds = redis.call('ZRANGE', KEYS[4], 0, -1)
+        for i = 1, #inflightIds do
+            local id = inflightIds[i]
+            local q = redis.call('HGET', ARGV[1] .. ':m:' .. id, 'queue_name')
+            if q == ARGV[2] then
+                redis.call('ZREM', KEYS[4], id)
+                redis.call('DEL', ARGV[1] .. ':m:' .. id)
+            end
         end
         redis.call('DEL', KEYS[1], KEYS[2])
         redis.call('SREM', KEYS[3], ARGV[2])
@@ -50,7 +61,86 @@ public sealed class RedisStorageProvider : IStorageProvider {
         if q == false or q == '' then return 0 end
         local pendingKey = ARGV[2] .. ':q:' .. tostring(q) .. ':pending'
         redis.call('LREM', pendingKey, 1, ARGV[1])
+        redis.call('ZREM', ARGV[2] .. ':inflight:due', ARGV[1])
         return redis.call('DEL', KEYS[1])
+    ";
+
+    private const string MARK_INFLIGHT_LUA = @"
+        if redis.call('EXISTS', KEYS[1]) == 0 then return 0 end
+        redis.call('LREM', KEYS[2], 1, ARGV[1])
+        redis.call('ZADD', KEYS[3], ARGV[2], ARGV[1])
+        redis.call('HSET', KEYS[1],
+            'state', 'inflight',
+            'client_id', ARGV[3],
+            'max_retry_attempts', ARGV[4],
+            'next_retry_at', ARGV[2],
+            'delivery_attempts', ARGV[5])
+        return 1
+    ";
+
+    private const string UPDATE_INFLIGHT_RETRY_LUA = @"
+        if redis.call('EXISTS', KEYS[1]) == 0 then return 0 end
+        redis.call('ZADD', KEYS[2], ARGV[2], ARGV[1])
+        redis.call('HSET', KEYS[1],
+            'state', 'inflight',
+            'next_retry_at', ARGV[2],
+            'delivery_attempts', ARGV[3])
+        return 1
+    ";
+
+    private const string REQUEUE_INFLIGHT_LUA = @"
+        local q = redis.call('HGET', KEYS[1], 'queue_name')
+        if q == false or q == '' then return 0 end
+        local pendingKey = ARGV[2] .. ':q:' .. tostring(q) .. ':pending'
+        redis.call('ZREM', KEYS[2], ARGV[1])
+        if redis.call('LPOS', pendingKey, ARGV[1]) == false then
+            redis.call('RPUSH', pendingKey, ARGV[1])
+        end
+        redis.call('HSET', KEYS[1], 'state', 'pending')
+        redis.call('HDEL', KEYS[1], 'client_id', 'next_retry_at', 'max_retry_attempts')
+        return 1
+    ";
+
+    private const string REMOVE_INFLIGHT_STATE_LUA = @"
+        if redis.call('EXISTS', KEYS[1]) == 0 then return 0 end
+        redis.call('ZREM', KEYS[2], ARGV[1])
+        redis.call('HSET', KEYS[1], 'state', 'pending')
+        redis.call('HDEL', KEYS[1], 'client_id', 'next_retry_at', 'max_retry_attempts')
+        return 1
+    ";
+
+    private const string RECOVER_INFLIGHT_LUA = @"
+        local ids = redis.call('ZRANGE', KEYS[1], 0, -1)
+        for i = 1, #ids do
+            local id = ids[i]
+            local q = redis.call('HGET', ARGV[1] .. ':m:' .. id, 'queue_name')
+            if q ~= false and q ~= '' then
+                local pendingKey = ARGV[1] .. ':q:' .. tostring(q) .. ':pending'
+                if redis.call('LPOS', pendingKey, id) == false then
+                    redis.call('RPUSH', pendingKey, id)
+                end
+                redis.call('HSET', ARGV[1] .. ':m:' .. id, 'state', 'pending')
+                redis.call('HDEL', ARGV[1] .. ':m:' .. id, 'client_id', 'next_retry_at', 'max_retry_attempts')
+            end
+        end
+        redis.call('DEL', KEYS[1])
+        return ids
+    ";
+
+    private const string REMOVE_MESSAGES_BULK_LUA = @"
+        local prefix = ARGV[1]
+        for i = 2, #ARGV do
+            local id = ARGV[i]
+            local messageKey = prefix .. ':m:' .. id
+            local q = redis.call('HGET', messageKey, 'queue_name')
+            if q ~= false and q ~= '' then
+                local pendingKey = prefix .. ':q:' .. tostring(q) .. ':pending'
+                redis.call('LREM', pendingKey, 1, id)
+            end
+            redis.call('ZREM', KEYS[1], id)
+            redis.call('DEL', messageKey)
+        end
+        return #ARGV - 1
     ";
 
     public RedisStorageProvider(
@@ -71,6 +161,7 @@ public sealed class RedisStorageProvider : IStorageProvider {
     private string DlqListKey() => Q("dlq");
     private string DlqMessageKey(string id) => Q($"dlq:m:{id}");
     private string QueuesSetKey() => Q("queues");
+    private string InFlightDueKey() => Q("inflight:due");
 
     /// <inheritdoc />
     public Task InitializeAsync(CancellationToken cancellationToken = default) {
@@ -106,7 +197,7 @@ public sealed class RedisStorageProvider : IStorageProvider {
 
         await db.ScriptEvaluateAsync(
             SAVE_MESSAGE_LUA,
-            [msgKey, pendingKey],
+            [msgKey, pendingKey, InFlightDueKey()],
             MessageToRedisValues(message)).ConfigureAwait(false);
     }
 
@@ -124,7 +215,7 @@ public sealed class RedisStorageProvider : IStorageProvider {
             var pendingKey = QueuePending(message.QueueName);
             tasks.Add(batch.ScriptEvaluateAsync(
                 SAVE_MESSAGE_LUA,
-                [msgKey, pendingKey],
+                [msgKey, pendingKey, InFlightDueKey()],
                 MessageToRedisValues(message)));
         }
         batch.Execute();
@@ -202,7 +293,7 @@ public sealed class RedisStorageProvider : IStorageProvider {
         var db = Db;
         await db.ScriptEvaluateAsync(
             REMOVE_QUEUE_LUA,
-            [QueueMeta(name), QueuePending(name), QueuesSetKey()],
+            [QueueMeta(name), QueuePending(name), QueuesSetKey(), InFlightDueKey()],
             [_options.KeyPrefix, name]).ConfigureAwait(false);
     }
 
@@ -307,6 +398,133 @@ public sealed class RedisStorageProvider : IStorageProvider {
         return await db.KeyDeleteAsync(DlqMessageKey(messageId)).ConfigureAwait(false);
     }
 
+    // --- In-flight delivery state ---
+
+    /// <inheritdoc />
+    public async Task MarkMessageInFlightAsync(
+        BrokerMessage message,
+        string clientId,
+        int maxRetryAttempts,
+        DateTime nextRetryAtUtc,
+        CancellationToken cancellationToken = default
+    ) {
+        var db = Db;
+        var messageKey = MessageKey(message.Id);
+        var pendingKey = QueuePending(message.QueueName);
+        var nextRetryScore = ToUnixTimeMilliseconds(nextRetryAtUtc);
+        var attempts = message.DeliveryAttempts > 0 ? message.DeliveryAttempts : 1;
+
+        await db.ScriptEvaluateAsync(
+            MARK_INFLIGHT_LUA,
+            [messageKey, pendingKey, InFlightDueKey()],
+            [message.Id, nextRetryScore, clientId, maxRetryAttempts, attempts]
+        ).ConfigureAwait(false);
+    }
+
+    /// <inheritdoc />
+    public async Task UpdateInFlightRetryAsync(
+        string messageId,
+        int deliveryAttempts,
+        DateTime nextRetryAtUtc,
+        CancellationToken cancellationToken = default
+    ) {
+        var db = Db;
+        var messageKey = MessageKey(messageId);
+        var nextRetryScore = ToUnixTimeMilliseconds(nextRetryAtUtc);
+        await db.ScriptEvaluateAsync(
+            UPDATE_INFLIGHT_RETRY_LUA,
+            [messageKey, InFlightDueKey()],
+            [messageId, nextRetryScore, deliveryAttempts]
+        ).ConfigureAwait(false);
+    }
+
+    /// <inheritdoc />
+    public async Task RequeueInFlightMessageAsync(string messageId, CancellationToken cancellationToken = default) {
+        var db = Db;
+        await db.ScriptEvaluateAsync(
+            REQUEUE_INFLIGHT_LUA,
+            [MessageKey(messageId), InFlightDueKey()],
+            [messageId, _options.KeyPrefix]
+        ).ConfigureAwait(false);
+    }
+
+    /// <inheritdoc />
+    public async Task RemoveInFlightStateAsync(string messageId, CancellationToken cancellationToken = default) {
+        var db = Db;
+        await db.ScriptEvaluateAsync(
+            REMOVE_INFLIGHT_STATE_LUA,
+            [MessageKey(messageId), InFlightDueKey()],
+            [messageId]
+        ).ConfigureAwait(false);
+    }
+
+    /// <inheritdoc />
+    public async Task<IReadOnlyList<BrokerMessage>> RecoverInFlightMessagesAsync(CancellationToken cancellationToken = default) {
+        var db = Db;
+        var result = await db.ScriptEvaluateAsync(
+            RECOVER_INFLIGHT_LUA,
+            [InFlightDueKey()],
+            [_options.KeyPrefix]
+        ).ConfigureAwait(false);
+
+        if (result.Resp2Type != ResultType.Array || result.IsNull) {
+            return [];
+        }
+
+        var redisResultArray = (RedisResult[])result!;
+        if (redisResultArray.Length == 0) {
+            return [];
+        }
+
+        var messageIds = redisResultArray
+            .Select(x => (string?)x)
+            .Where(x => !string.IsNullOrEmpty(x))
+            .Cast<string>()
+            .ToArray();
+
+        if (messageIds.Length == 0) {
+            return [];
+        }
+
+        var batch = db.CreateBatch();
+        var getTasks = new Task<HashEntry[]>[messageIds.Length];
+        for (var i = 0; i < messageIds.Length; i++) {
+            getTasks[i] = batch.HashGetAllAsync(MessageKey(messageIds[i]));
+        }
+        batch.Execute();
+
+        var allEntries = await Task.WhenAll(getTasks).ConfigureAwait(false);
+        var recovered = new List<BrokerMessage>(allEntries.Length);
+        foreach (var entries in allEntries) {
+            if (entries.Length > 0) {
+                recovered.Add(HashEntriesToBrokerMessage(entries));
+            }
+        }
+
+        return recovered;
+    }
+
+    // --- Bulk operations ---
+
+    /// <inheritdoc />
+    public async Task RemoveMessagesAsync(IReadOnlyList<string> messageIds, CancellationToken cancellationToken = default) {
+        if (messageIds.Count == 0) {
+            return;
+        }
+
+        var db = Db;
+        var args = new RedisValue[messageIds.Count + 1];
+        args[0] = _options.KeyPrefix;
+        for (var i = 0; i < messageIds.Count; i++) {
+            args[i + 1] = messageIds[i];
+        }
+        await db.ScriptEvaluateAsync(
+            REMOVE_MESSAGES_BULK_LUA,
+            [InFlightDueKey()],
+            args
+        ).ConfigureAwait(false);
+    }
+
     /// <inheritdoc />
     public async ValueTask DisposeAsync() {
         _initialized = false;
@@ -357,5 +575,12 @@ public sealed class RedisStorageProvider : IStorageProvider {
             return defaultValue;
         }
         return int.TryParse(v.ToString(), out var n) ? n : defaultValue;
+    }
+
+    private static long ToUnixTimeMilliseconds(DateTime utcTimestamp) {
+        var normalized = utcTimestamp.Kind == DateTimeKind.Utc
+            ? utcTimestamp
+            : utcTimestamp.ToUniversalTime();
+        return new DateTimeOffset(normalized).ToUnixTimeMilliseconds();
     }
 }
