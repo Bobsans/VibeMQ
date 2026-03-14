@@ -11,12 +11,26 @@ VibeMQ project change history.
 Version History
 ================
 
-Version 1.7.0
+Version 1.7.1
 -------------
 
 **Date:** March 2026
 
 **Status:** Current Stable Version
+
+**Maintenance:**
+
+- Stabilized Redis in-flight message persistence and restart recovery paths for unacknowledged deliveries.
+- Improved queue purge efficiency via bulk storage deletion support for compatible providers.
+- Hardened client reconnect flow and command timeout handling for more predictable shutdown/reconnect behavior.
+- Updated documentation and Russian translations for release consistency.
+
+Version 1.7.0
+-------------
+
+**Date:** March 2026
+
+**Status:** Stable
 
 **New features:**
 

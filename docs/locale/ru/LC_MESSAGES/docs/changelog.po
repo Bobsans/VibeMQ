@@ -35,6 +35,41 @@ msgstr "Содержание"
 msgid "Version History"
 msgstr "История версий"
 
+#: ../../docs/changelog.rst:15
+msgid "Version 1.7.1"
+msgstr "Версия 1.7.1"
+
+#: ../../docs/changelog.rst:25
+msgid ""
+"Stabilized Redis in-flight message persistence and restart recovery paths "
+"for unacknowledged deliveries."
+msgstr ""
+"Стабилизированы механизмы сохранения in-flight сообщений в Redis и "
+"восстановления после перезапуска для неподтверждённых доставок."
+
+#: ../../docs/changelog.rst:26
+msgid ""
+"Improved queue purge efficiency via bulk storage deletion support for "
+"compatible providers."
+msgstr ""
+"Повышена эффективность очистки очередей за счёт пакетного удаления в "
+"хранилище для совместимых провайдеров."
+
+#: ../../docs/changelog.rst:27
+msgid ""
+"Hardened client reconnect flow and command timeout handling for more "
+"predictable shutdown/reconnect behavior."
+msgstr ""
+"Усилена устойчивость переподключения клиента и обработки таймаутов "
+"команд для более предсказуемого поведения при остановке и повторном "
+"подключении."
+
+#: ../../docs/changelog.rst:28
+msgid ""
+"Updated documentation and Russian translations for release consistency."
+msgstr ""
+"Обновлены документация и русские переводы для консистентности релиза."
+
 #: ../../docs/changelog.rst:15 4d215932285a4378adaf0da17d67321d
 msgid "Version 1.7.0"
 msgstr "Версия 1.7.0"
