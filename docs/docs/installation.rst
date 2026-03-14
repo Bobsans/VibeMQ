@@ -103,8 +103,8 @@ Build and run:
 
 .. code-block:: bash
 
-   docker build -t vibemq-server .
-   docker run -p 2925:2925 -p 2926:2926 vibemq-server
+   docker pull bobsans/vibemq
+   docker run -p 2925:2925 -p 2926:2926 bobsans/vibemq
 
 Docker Compose
 --------------
@@ -117,7 +117,7 @@ For deployment with other services, create a ``docker-compose.yml``:
 
    services:
      vibemq:
-       image: vibemq-server:latest
+       image: bobsans/vibemq:latest
        container_name: vibemq-broker
        ports:
          - "2925:2925"  # TCP port for clients

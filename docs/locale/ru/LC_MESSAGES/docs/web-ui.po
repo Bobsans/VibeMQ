@@ -83,9 +83,8 @@ msgstr "Docker"
 
 #: ../../docs/web-ui.rst:49 77b15e0efcfb45eca667b6d1bb2c2e28
 msgid ""
-"Build and run the broker with the embedded dashboard (from repository "
-"root):"
-msgstr "Сборка и запуск брокера со встроенным дашбордом (из корня репозитория):"
+"Run the broker with the embedded dashboard from Docker Hub:"
+msgstr "Запуск брокера со встроенным дашбордом из Docker Hub:"
 
 #: ../../docs/web-ui.rst:57 2e5c22e4033f4e8fab58a800aa8e6287
 msgid "With Options"

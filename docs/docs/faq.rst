@@ -183,8 +183,8 @@ How to run in Docker?
 
 .. code-block:: bash
 
-   docker build -t vibemq-server .
-   docker run -p 2925:2925 -p 2926:2926 vibemq-server
+   docker pull bobsans/vibemq
+   docker run -p 2925:2925 -p 2926:2926 bobsans/vibemq
 
 How to use with Kubernetes?
 ------------------------------
@@ -206,7 +206,7 @@ How to use with Kubernetes?
        spec:
          containers:
          - name: vibemq
-           image: vibemq-server:latest
+           image: bobsans/vibemq:latest
            ports:
            - containerPort: 2925
            - containerPort: 2926

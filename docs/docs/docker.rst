@@ -11,14 +11,16 @@ The official Docker image runs **VibeMQ.Server.Host**: a standalone broker with 
 Quick Start
 ===========
 
-Build and run (from repository root):
+Pull and run from Docker Hub (recommended):
 
 .. code-block:: bash
 
-   docker build -f docker/Dockerfile -t vibemq .
-   docker run -p 2925:2925 vibemq
+   docker pull bobsans/vibemq
+   docker run -p 2925:2925 bobsans/vibemq
 
 Clients can connect to ``localhost:2925``. By default the broker runs without authentication.
+
+To build from source instead, use ``docker/Dockerfile`` from the repository (see image variants below).
 
 Image variants
 --------------
@@ -38,12 +40,12 @@ If you prefer a **framework-dependent** image (runs via ``dotnet`` in the contai
 Broker + Web UI image
 ---------------------
 
-To run the broker with the embedded dashboard (port **12925**), build the Web UI image:
+To run the broker with the embedded dashboard (port **12925**), use the official Web UI image:
 
 .. code-block:: bash
 
-   docker build -f docker/Dockerfile.webui -t vibemq-webui .
-   docker run -p 2925:2925 -p 12925:12925 vibemq-webui
+   docker pull bobsans/vibemq-webui
+   docker run -p 2925:2925 -p 12925:12925 bobsans/vibemq-webui
 
 Using Docker Compose
 --------------------
@@ -104,7 +106,7 @@ Set ``VIBEMQ_CONFIG_PATH`` to load an additional or custom JSON config file (e.g
    docker run -p 2925:2925 \
      -v /host/path/appsettings.json:/app/config/appsettings.json \
      -e VIBEMQ_CONFIG_PATH=/app/config/appsettings.json \
-     vibemq
+     bobsans/vibemq
 
 The built-in ``appsettings.json`` in the image provides defaults; env vars override any value from config.
 
@@ -119,7 +121,7 @@ Token-based auth on port 9000:
      -e VibeMQ__Port=9000 \
      -e VibeMQ__EnableAuthentication=true \
      -e VibeMQ__AuthToken=your-secret-token \
-     vibemq
+     bobsans/vibemq
 
 Username/password auth with persistent auth DB:
 
@@ -131,7 +133,7 @@ Username/password auth with persistent auth DB:
      -e VibeMQ__Authorization__SuperuserPassword=secret \
      -e VibeMQ__Authorization__DatabasePath=/data/auth.db \
      -v vibemq-data:/data \
-     vibemq
+     bobsans/vibemq
 
 Example: SQLite persistence
 ----------------------------
@@ -142,12 +144,12 @@ Example: SQLite persistence
      -e VibeMQ__StorageType=Sqlite \
      -e VibeMQ__SqliteStorage__DatabasePath=/data/vibemq.db \
      -v vibemq-data:/data \
-     vibemq
+     bobsans/vibemq
 
 Image details
 =============
 
-- **Base:** ``mcr.microsoft.com/dotnet/runtime:8.0``
+- **Published images:** ``bobsans/vibemq`` and ``bobsans/vibemq-webui``
 - **Entrypoint:** ``dotnet VibeMQ.Server.Host.dll``
 - **Working directory:** ``/app``
 - **Exposed port:** 2925 (override with ``VibeMQ__Port`` and republish)

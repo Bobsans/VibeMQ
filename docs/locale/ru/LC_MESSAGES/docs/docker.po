@@ -41,8 +41,8 @@ msgid "Quick Start"
 msgstr "Быстрый старт"
 
 #: ../../docs/docker.rst:14 8fed2d9950b14e9d869fe3b912ae83ec
-msgid "Build and run (from repository root):"
-msgstr "Сборка и запуск (из корня репозитория):"
+msgid "Pull and run from Docker Hub (recommended):"
+msgstr "Загрузка и запуск из Docker Hub (рекомендуется):"
 
 #: ../../docs/docker.rst:21 f72fd04038504a2980b3a574b04ab96d
 msgid ""
@@ -51,6 +51,14 @@ msgid ""
 msgstr ""
 "Клиенты подключаются к ``localhost:2925``. По умолчанию брокер работает "
 "без аутентификации."
+
+#: ../../docs/docker.rst:23
+msgid ""
+"To build from source instead, use ``docker/Dockerfile`` from the "
+"repository (see image variants below)."
+msgstr ""
+"Если нужно собирать из исходников, используйте ``docker/Dockerfile`` из "
+"репозитория (см. варианты образов ниже)."
 
 #: ../../docs/docker.rst:24 79db9bb745f24c92ae36d5910b96b60d
 msgid "Image variants"
@@ -84,11 +92,11 @@ msgstr "Образ брокера + Web UI"
 
 #: ../../docs/docker.rst:41 120ed1c509d84ef7869e38dd89ef1a72
 msgid ""
-"To run the broker with the embedded dashboard (port **12925**), build the"
-" Web UI image:"
+"To run the broker with the embedded dashboard (port **12925**), use the "
+"official Web UI image:"
 msgstr ""
-"Чтобы запустить брокер со встроенным дашбордом (порт **12925**), соберите"
-" образ Web UI:"
+"Чтобы запустить брокер со встроенным дашбордом (порт **12925**), "
+"используйте официальный образ Web UI:"
 
 #: ../../docs/docker.rst:49 2c6b8c3ab44c4185ae53d058b1735079
 msgid "Using Docker Compose"
@@ -283,8 +291,8 @@ msgid "Image details"
 msgstr "Детали образа"
 
 #: ../../docs/docker.rst:150 466970fa446f4626a9eabfc60cd86961
-msgid "**Base:** ``mcr.microsoft.com/dotnet/runtime:8.0``"
-msgstr "**Базовый образ:** ``mcr.microsoft.com/dotnet/runtime:8.0``"
+msgid "**Published images:** ``bobsans/vibemq`` and ``bobsans/vibemq-webui``"
+msgstr "**Публикуемые образы:** ``bobsans/vibemq`` и ``bobsans/vibemq-webui``"
 
 #: ../../docs/docker.rst:151 6c77ca7f67344fb5a49eb054b10b1480
 msgid "**Entrypoint:** ``dotnet VibeMQ.Server.Host.dll``"

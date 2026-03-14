@@ -46,12 +46,12 @@ Open **http://localhost:12925/** in a browser to see the dashboard.
 Docker
 ------
 
-Build and run the broker with the embedded dashboard (from repository root):
+Run the broker with the embedded dashboard from Docker Hub:
 
 .. code-block:: bash
 
-   docker build -f docker/Dockerfile.webui -t vibemq-webui .
-   docker run -p 2925:2925 -p 12925:12925 vibemq-webui
+   docker pull bobsans/vibemq-webui
+   docker run -p 2925:2925 -p 12925:12925 bobsans/vibemq-webui
 
 With Options
 ------------

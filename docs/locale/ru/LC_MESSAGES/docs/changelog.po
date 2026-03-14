@@ -66,6 +66,14 @@ msgstr ""
 
 #: ../../docs/changelog.rst:28
 msgid ""
+"Documented official Docker Hub images: ``bobsans/vibemq`` and "
+"``bobsans/vibemq-webui``."
+msgstr ""
+"Задокументированы официальные образы Docker Hub: ``bobsans/vibemq`` и "
+"``bobsans/vibemq-webui``."
+
+#: ../../docs/changelog.rst:29
+msgid ""
 "Updated documentation and Russian translations for release consistency."
 msgstr ""
 "Обновлены документация и русские переводы для консистентности релиза."

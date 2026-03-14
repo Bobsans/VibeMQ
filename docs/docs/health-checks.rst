@@ -159,7 +159,7 @@ Kubernetes
        spec:
          containers:
          - name: vibemq
-           image: vibemq-server:latest
+          image: bobsans/vibemq:latest
            ports:
            - containerPort: 2925
              name: tcp
@@ -210,7 +210,7 @@ Docker Compose
 
    services:
      vibemq:
-       image: vibemq-server:latest
+      image: bobsans/vibemq:latest
        ports:
          - "2925:2925"
          - "2926:2926"
@@ -237,7 +237,7 @@ Azure Container Instances
    spec:
      containers:
      - name: vibemq
-       image: vibemq-server:latest
+      image: bobsans/vibemq:latest
        ports:
        - port: 2925
          protocol: TCP
@@ -268,7 +268,7 @@ AWS ECS
      "containerDefinitions": [
        {
          "name": "vibemq",
-         "image": "vibemq-server:latest",
+        "image": "bobsans/vibemq:latest",
          "portMappings": [
            {
              "containerPort": 2925,

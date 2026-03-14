@@ -671,7 +671,7 @@ Docker Compose Example
 
    services:
      vibemq:
-       image: vibemq-server:latest
+       image: bobsans/vibemq:latest
        environment:
          - VIBEMQ__PORT=2925
          - VIBEMQ__ENABLEAUTHENTICATION=true
