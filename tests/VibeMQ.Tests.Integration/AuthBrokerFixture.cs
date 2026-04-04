@@ -11,7 +11,7 @@ namespace VibeMQ.Tests.Integration;
 /// Shared test fixture that starts a broker with username/password authorization
 /// on a random port for authorization integration tests.
 /// </summary>
-public sealed class AuthBrokerFixture : IAsyncLifetime {
+public sealed class AuthBrokerFixture : IAsyncLifetime, IDisposable {
     private const string SUPERUSER = "admin";
     private const string SUPERUSER_PASSWORD = "AdminP@ss-Tests-123";
 
@@ -65,7 +65,7 @@ public sealed class AuthBrokerFixture : IAsyncLifetime {
             PasswordHash = BCrypt.Net.BCrypt.HashPassword(password, workFactor: 4), // Low cost for tests
             IsSuperuser = false,
             CreatedAt = now,
-            UpdatedAt = now,
+            UpdatedAt = now
         };
         await Repository.CreateUserAsync(record);
     }
@@ -87,7 +87,7 @@ public sealed class AuthBrokerFixture : IAsyncLifetime {
             Username = username,
             Password = password,
             CommandTimeout = TimeSpan.FromSeconds(5),
-            ReconnectPolicy = new ReconnectPolicy { MaxAttempts = 0 },
+            ReconnectPolicy = new ReconnectPolicy { MaxAttempts = 0 }
         };
 
         return await VibeMQClient.ConnectAsync("127.0.0.1", Port, options);
@@ -119,6 +119,11 @@ public sealed class AuthBrokerFixture : IAsyncLifetime {
         if (_dbPath is not null && File.Exists(_dbPath)) {
             try { File.Delete(_dbPath); } catch { /* best effort */ }
         }
+    }
+
+    public void Dispose() {
+        _cts?.Dispose();
+        GC.SuppressFinalize(this);
     }
 
     private static int GetFreePort() {

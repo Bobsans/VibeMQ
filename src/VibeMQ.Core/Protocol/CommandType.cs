@@ -41,5 +41,5 @@ public enum CommandType {
     AdminGetUserPermissions = 56,
 
     // Errors
-    Error = 99,
+    Error = 99
 }

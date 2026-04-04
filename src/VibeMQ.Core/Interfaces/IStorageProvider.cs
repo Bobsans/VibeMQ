@@ -68,7 +68,7 @@ public interface IStorageProvider : IAsyncDisposable {
     /// <summary>
     /// Persists queue metadata (name and options). If the queue already exists, its options are updated.
     /// </summary>
-    Task SaveQueueAsync(string name, QueueOptions options, CancellationToken cancellationToken = default);
+    Task SaveQueueAsync(string name, QueueOptions queueOptions, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Removes a queue and ALL its associated messages (cascade delete).

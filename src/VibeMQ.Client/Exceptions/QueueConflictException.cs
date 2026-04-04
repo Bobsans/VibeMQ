@@ -51,6 +51,6 @@ public sealed class QueueConflictException : Exception {
 
     private static string FormatValue(object? value) => value switch {
         null => "null",
-        _ => value.ToString() ?? "null",
+        _ => value.ToString() ?? "null"
     };
 }

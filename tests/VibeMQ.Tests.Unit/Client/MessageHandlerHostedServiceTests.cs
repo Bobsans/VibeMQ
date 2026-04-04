@@ -1,6 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using VibeMQ.Attributes;
 using VibeMQ.Client;
 using VibeMQ.Client.DependencyInjection;

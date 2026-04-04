@@ -8,7 +8,7 @@ public class MessageValidatorTests {
     public void Validate_ValidMessage_ReturnsNull() {
         var message = new ProtocolMessage {
             Type = CommandType.Publish,
-            Queue = "my-queue.v1",
+            Queue = "my-queue.v1"
         };
 
         Assert.Null(MessageValidator.Validate(message));
@@ -18,7 +18,7 @@ public class MessageValidatorTests {
     public void Validate_EmptyId_ReturnsError() {
         var message = new ProtocolMessage {
             Id = "",
-            Type = CommandType.Ping,
+            Type = CommandType.Ping
         };
 
         var error = MessageValidator.Validate(message);
@@ -31,7 +31,7 @@ public class MessageValidatorTests {
     public void Validate_QueueNameTooLong_ReturnsError() {
         var message = new ProtocolMessage {
             Type = CommandType.Publish,
-            Queue = new string('a', 300),
+            Queue = new string('a', 300)
         };
 
         var error = MessageValidator.Validate(message);
@@ -44,7 +44,7 @@ public class MessageValidatorTests {
     public void Validate_QueueNameWithInvalidChars_ReturnsError() {
         var message = new ProtocolMessage {
             Type = CommandType.Publish,
-            Queue = "my queue!@#",
+            Queue = "my queue!@#"
         };
 
         var error = MessageValidator.Validate(message);
@@ -62,7 +62,7 @@ public class MessageValidatorTests {
     public void Validate_ValidQueueNames_ReturnsNull(string queueName) {
         var message = new ProtocolMessage {
             Type = CommandType.Publish,
-            Queue = queueName,
+            Queue = queueName
         };
 
         Assert.Null(MessageValidator.Validate(message));
@@ -78,7 +78,7 @@ public class MessageValidatorTests {
 
         var message = new ProtocolMessage {
             Type = CommandType.Publish,
-            Headers = headers,
+            Headers = headers
         };
 
         var error = MessageValidator.Validate(message);
@@ -91,7 +91,7 @@ public class MessageValidatorTests {
     public void Validate_EmptyHeaderKey_ReturnsError() {
         var message = new ProtocolMessage {
             Type = CommandType.Publish,
-            Headers = new Dictionary<string, string> { [""] = "value" },
+            Headers = new Dictionary<string, string> { [""] = "value" }
         };
 
         var error = MessageValidator.Validate(message);
@@ -104,7 +104,7 @@ public class MessageValidatorTests {
     public void Validate_HeaderValueTooLong_ReturnsError() {
         var message = new ProtocolMessage {
             Type = CommandType.Publish,
-            Headers = new Dictionary<string, string> { ["key"] = new string('x', 5000) },
+            Headers = new Dictionary<string, string> { ["key"] = new('x', 5000) }
         };
 
         var error = MessageValidator.Validate(message);

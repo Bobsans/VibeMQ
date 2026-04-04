@@ -29,7 +29,7 @@ public sealed partial class UnsubscribeHandler(ILogger<UnsubscribeHandler> logge
         await connection.SendMessageAsync(new ProtocolMessage {
             Id = message.Id,
             Type = CommandType.UnsubscribeAck,
-            Queue = message.Queue,
+            Queue = message.Queue
         }, cancellationToken).ConfigureAwait(false);
     }
 

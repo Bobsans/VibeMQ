@@ -57,7 +57,7 @@ public sealed partial class AuthBootstrapper {
             PasswordHash = hash,
             IsSuperuser = true,
             CreatedAt = now,
-            UpdatedAt = now,
+            UpdatedAt = now
         };
 
         await Repository.CreateUserAsync(record, cancellationToken).ConfigureAwait(false);

@@ -108,11 +108,11 @@ public class PubSubTests : IAsyncLifetime {
             subscribeCts.Token
         );
 
-        subscribeCts.Cancel();
-        await Task.Delay(100);
+        await subscribeCts.CancelAsync();
+        await Task.Delay(100, subscribeCts.Token);
 
-        await publisher.PublishAsync(queueName, new TestPayload { Name = messageName, Value = 551 });
-        var received = await receivedTask.WaitAsync(TimeSpan.FromSeconds(5));
+        await publisher.PublishAsync(queueName, new TestPayload { Name = messageName, Value = 551 }, subscribeCts.Token);
+        var received = await receivedTask.WaitAsync(TimeSpan.FromSeconds(5), subscribeCts.Token);
 
         Assert.Equal(messageName, received.Name);
         Assert.Equal(551, received.Value);

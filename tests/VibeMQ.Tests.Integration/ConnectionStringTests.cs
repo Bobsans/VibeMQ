@@ -8,7 +8,7 @@ namespace VibeMQ.Tests.Integration;
 /// <summary>
 /// Integration tests for connecting via connection string (URL and key=value).
 /// </summary>
-public sealed class ConnectionStringTests : IAsyncLifetime {
+public sealed class ConnectionStringTests : IAsyncLifetime, IDisposable {
     private BrokerServer? _server;
     private Task? _serverTask;
     private CancellationTokenSource? _cts;
@@ -50,6 +50,11 @@ public sealed class ConnectionStringTests : IAsyncLifetime {
         _cts?.Dispose();
     }
 
+    public void Dispose() {
+        _cts?.Dispose();
+        GC.SuppressFinalize(this);
+    }
+
     [Fact]
     public async Task ConnectAsync_URL_connects_to_broker() {
         var connectionString = $"vibemq://127.0.0.1:{Port}";
@@ -85,7 +90,7 @@ public sealed class ConnectionStringTests : IAsyncLifetime {
                 await serverTask;
             }
             try {
-                using var c = new System.Net.Sockets.TcpClient();
+                using var c = new TcpClient();
                 await c.ConnectAsync("127.0.0.1", port);
                 return;
             } catch {

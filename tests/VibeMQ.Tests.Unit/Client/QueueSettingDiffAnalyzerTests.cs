@@ -18,7 +18,7 @@ public class QueueSettingDiffAnalyzerTests {
         string? dlqName = null,
         OverflowStrategy overflow = OverflowStrategy.DropOldest,
         int maxRetry = 3
-    ) => new QueueInfo {
+    ) => new() {
         Name = "test",
         MessageCount = 0,
         SubscriberCount = 0,
@@ -29,7 +29,7 @@ public class QueueSettingDiffAnalyzerTests {
         EnableDeadLetterQueue = enableDlq,
         DeadLetterQueueName = dlqName,
         OverflowStrategy = overflow,
-        MaxRetryAttempts = maxRetry,
+        MaxRetryAttempts = maxRetry
     };
 
     private static QueueOptions Declared(
@@ -40,14 +40,14 @@ public class QueueSettingDiffAnalyzerTests {
         string? dlqName = null,
         OverflowStrategy overflow = OverflowStrategy.DropOldest,
         int maxRetry = 3
-    ) => new QueueOptions {
+    ) => new() {
         Mode = mode,
         MaxQueueSize = maxSize,
         MessageTtl = messageTtl,
         EnableDeadLetterQueue = enableDlq,
         DeadLetterQueueName = dlqName,
         OverflowStrategy = overflow,
-        MaxRetryAttempts = maxRetry,
+        MaxRetryAttempts = maxRetry
     };
 
     // ──────────────────────────────────────────────────────────────
@@ -303,8 +303,8 @@ public class QueueSettingDiffAnalyzerTests {
         );
 
         Assert.Equal(2, diffs.Count);
-        Assert.Contains(diffs, d => d.SettingName == "Mode" && d.Severity == ConflictSeverity.Hard);
-        Assert.Contains(diffs, d => d.SettingName == "MessageTtl" && d.Severity == ConflictSeverity.Soft);
+        Assert.Contains(diffs, d => d is { SettingName: "Mode", Severity: ConflictSeverity.Hard });
+        Assert.Contains(diffs, d => d is { SettingName: "MessageTtl", Severity: ConflictSeverity.Soft });
     }
 }
 

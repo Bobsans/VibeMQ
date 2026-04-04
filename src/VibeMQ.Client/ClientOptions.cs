@@ -93,7 +93,7 @@ public sealed class ClientOptions {
             QueueName = name,
             Options = opts,
             OnConflict = onConflict,
-            FailOnProvisioningError = failOnError,
+            FailOnProvisioningError = failOnError
         });
         return this;
     }

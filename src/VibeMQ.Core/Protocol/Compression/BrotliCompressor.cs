@@ -20,7 +20,7 @@ sealed class BrotliCompressor : ICompressor {
         await using var brotli = new BrotliStream(input, CompressionMode.Decompress);
         using var output = new MemoryStream();
 
-        await brotli.CopyToAsync(output).ConfigureAwait(false);
+        await DecompressGuard.CopyWithLimitAsync(brotli, output).ConfigureAwait(false);
 
         return output.ToArray();
     }

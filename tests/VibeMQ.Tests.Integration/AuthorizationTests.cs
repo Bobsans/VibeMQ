@@ -293,6 +293,18 @@ public class AuthorizationTests : IAsyncLifetime {
         );
     }
 
+    [Theory]
+    [InlineData("bad user")]
+    [InlineData("bad/user")]
+    [InlineData("bad@user")]
+    public async Task Admin_CreateUser_InvalidUsername_Throws(string username) {
+        await using var su = await _fixture.ConnectAsSuperuserAsync();
+
+        await Assert.ThrowsAsync<InvalidOperationException>(
+            () => su.CreateUserAsync(username, "pass")
+        );
+    }
+
     [Fact]
     public async Task Admin_DeleteUser_Superuser_Succeeds() {
         await _fixture.CreateUserAsync("to-delete", "pass");
@@ -375,6 +387,25 @@ public class AuthorizationTests : IAsyncLifetime {
         Assert.NotNull(b);
         Assert.Contains("Publish", a.Operations);
         Assert.Contains("Subscribe", b.Operations);
+    }
+
+    [Fact]
+    public async Task Admin_GetUserPermissions_RegularUser_CanReadOnlyOwnPermissions() {
+        await _fixture.CreateUserAsync("perm-self", "pass");
+        await _fixture.CreateUserAsync("perm-other", "pass");
+        await _fixture.GrantPermissionAsync("perm-self", "perm-self.*", [QueueOperation.Publish]);
+        await _fixture.GrantPermissionAsync("perm-other", "perm-other.*", [QueueOperation.Subscribe]);
+
+        await using var client = await _fixture.ConnectAsync("perm-self", "pass");
+
+        var own = await client.GetUserPermissionsAsync("perm-self");
+        Assert.Single(own);
+        Assert.Equal("perm-self.*", own[0].QueuePattern);
+        Assert.Contains("Publish", own[0].Operations);
+
+        await Assert.ThrowsAsync<InvalidOperationException>(
+            () => client.GetUserPermissionsAsync("perm-other")
+        );
     }
 
     [Fact]

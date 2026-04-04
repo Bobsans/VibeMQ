@@ -7,21 +7,29 @@ namespace VibeMQ.Server.Security;
 /// <summary>
 /// Sliding window rate limiter for connections (per IP) and messages (per client).
 /// </summary>
-public sealed partial class RateLimiter(RateLimitOptions options, ILogger<RateLimiter> logger) {
-    private readonly ILogger<RateLimiter> _logger = logger;
-    private readonly ConcurrentDictionary<string, SlidingWindow> _connectionWindows = new();
-    private readonly ConcurrentDictionary<string, SlidingWindow> _messageWindows = new();
+public sealed partial class RateLimiter : IDisposable {
+    private readonly RateLimitOptions _options;
+    private readonly ILogger<RateLimiter> _logger;
+    private readonly ConcurrentDictionary<string, Lazy<SlidingWindow>> _connectionWindows = new();
+    private readonly ConcurrentDictionary<string, Lazy<SlidingWindow>> _messageWindows = new();
+    private readonly Timer _cleanupTimer;
+
+    public RateLimiter(RateLimitOptions options, ILogger<RateLimiter> logger) {
+        _options = options;
+        _logger = logger;
+        _cleanupTimer = new Timer(_ => PruneStaleWindows(), null, TimeSpan.FromMinutes(5), TimeSpan.FromMinutes(5));
+    }
 
     /// <summary>
     /// Checks if a new connection from the given IP is allowed.
     /// </summary>
     public bool IsConnectionAllowed(string ipAddress) {
-        if (!options.Enabled) {
+        if (!_options.Enabled) {
             return true;
         }
 
-        var window = _connectionWindows.GetOrAdd(ipAddress, _ => new SlidingWindow(options.ConnectionWindow));
-        var allowed = window.TryRecord(options.MaxConnectionsPerIpPerWindow);
+        var window = _connectionWindows.GetOrAdd(ipAddress, _ => new Lazy<SlidingWindow>(() => new SlidingWindow(_options.ConnectionWindow))).Value;
+        var allowed = window.TryRecord(_options.MaxConnectionsPerIpPerWindow);
 
         if (!allowed) {
             LogConnectionRateLimited(ipAddress);
@@ -34,12 +42,12 @@ public sealed partial class RateLimiter(RateLimitOptions options, ILogger<RateLi
     /// Checks if a message from the given client is allowed.
     /// </summary>
     public bool IsMessageAllowed(string clientId) {
-        if (!options.Enabled) {
+        if (!_options.Enabled) {
             return true;
         }
 
-        var window = _messageWindows.GetOrAdd(clientId, _ => new SlidingWindow(TimeSpan.FromSeconds(1)));
-        var allowed = window.TryRecord(options.MaxMessagesPerClientPerSecond);
+        var window = _messageWindows.GetOrAdd(clientId, _ => new Lazy<SlidingWindow>(() => new SlidingWindow(TimeSpan.FromSeconds(1)))).Value;
+        var allowed = window.TryRecord(_options.MaxMessagesPerClientPerSecond);
 
         if (!allowed) {
             LogMessageRateLimited(clientId);
@@ -59,6 +67,26 @@ public sealed partial class RateLimiter(RateLimitOptions options, ILogger<RateLi
         }
     }
 
+    private void PruneStaleWindows() {
+        // Remove connection windows for IPs with no recent activity.
+        // SlidingWindow.IsExpired checks whether all timestamps fell outside the window.
+        foreach (var (key, lazy) in _connectionWindows) {
+            if (lazy is { IsValueCreated: true, Value.IsExpired: true }) {
+                _connectionWindows.TryRemove(key, out _);
+            }
+        }
+
+        foreach (var (key, lazy) in _messageWindows) {
+            if (lazy is { IsValueCreated: true, Value.IsExpired: true }) {
+                _messageWindows.TryRemove(key, out _);
+            }
+        }
+    }
+
+    public void Dispose() {
+        _cleanupTimer.Dispose();
+    }
+
     [LoggerMessage(Level = LogLevel.Warning, Message = "Connection rate limit exceeded for IP {ipAddress}.")]
     private partial void LogConnectionRateLimited(string ipAddress);
 
@@ -75,6 +103,21 @@ public sealed partial class RateLimiter(RateLimitOptions options, ILogger<RateLi
 #else
         private readonly object _lock = new();
 #endif
+
+        /// <summary>
+        /// Returns true when the window contains no recent timestamps (safe to evict).
+        /// </summary>
+        public bool IsExpired {
+            get {
+                var cutoff = DateTime.UtcNow - windowSize;
+                lock (_lock) {
+                    while (_timestamps.TryPeek(out var oldest) && oldest < cutoff) {
+                        _timestamps.TryDequeue(out _);
+                    }
+                    return _timestamps.IsEmpty;
+                }
+            }
+        }
 
         /// <summary>
         /// Tries to record a new event. Returns false if the limit has been reached.

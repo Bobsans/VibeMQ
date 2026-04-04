@@ -6,22 +6,15 @@ namespace VibeMQ.Server.Storage.Redis;
 /// <summary>
 /// Manages Redis ConnectionMultiplexer with lazy initialization and reconnection.
 /// </summary>
-public sealed class RedisStorageConnectionFactory {
-    private readonly RedisStorageOptions _options;
-    private readonly ILogger _logger;
+public sealed class RedisStorageConnectionFactory(RedisStorageOptions options, ILogger logger) : IDisposable {
     private ConnectionMultiplexer? _multiplexer;
+#if NET10_0_OR_GREATER
+    private readonly Lock _lock = new();
+#else
     private readonly object _lock = new();
-
-    public RedisStorageConnectionFactory(RedisStorageOptions options, ILogger logger) {
-        _options = options;
-        _logger = logger;
-    }
+#endif
 
     public IConnectionMultiplexer GetConnection() {
-        if (_multiplexer is { IsConnected: true }) {
-            return _multiplexer;
-        }
-
         lock (_lock) {
             if (_multiplexer is { IsConnected: true }) {
                 return _multiplexer;
@@ -29,26 +22,32 @@ public sealed class RedisStorageConnectionFactory {
 
             var old = _multiplexer;
 
-            var config = ConfigurationOptions.Parse(_options.ConnectionString);
-            config.ConnectTimeout = _options.ConnectTimeoutMs;
-            config.SyncTimeout = _options.SyncTimeoutMs;
-            config.AsyncTimeout = _options.SyncTimeoutMs;
+            var config = ConfigurationOptions.Parse(options.ConnectionString);
+            config.ConnectTimeout = options.ConnectTimeoutMs;
+            config.SyncTimeout = options.SyncTimeoutMs;
+            config.AsyncTimeout = options.SyncTimeoutMs;
             config.AbortOnConnectFail = false;
             config.ConnectRetry = 3;
 
             _multiplexer = ConnectionMultiplexer.Connect(config);
             _multiplexer.ConnectionFailed += (_, e) =>
-                _logger.LogWarning(e.Exception, "Redis connection failed: {EndPoint}", e.EndPoint);
+                logger.LogWarning(e.Exception, "Redis connection failed: {EndPoint}", e.EndPoint);
             _multiplexer.ConnectionRestored += (_, e) =>
-                _logger.LogInformation("Redis connection restored: {EndPoint}", e.EndPoint);
+                logger.LogInformation("Redis connection restored: {EndPoint}", e.EndPoint);
 
             if (old is not null) {
-                try { old.Dispose(); } catch { /* best effort */ }
+                try {
+                    old.Dispose();
+                } catch {
+                    /* best effort */
+                }
             }
 
             return _multiplexer;
         }
     }
+
+    public void Dispose() => DisposeConnection();
 
     public void DisposeConnection() {
         lock (_lock) {
@@ -59,7 +58,7 @@ public sealed class RedisStorageConnectionFactory {
             try {
                 _multiplexer.Dispose();
             } catch (Exception ex) {
-                _logger.LogWarning(ex, "Error disposing Redis connection.");
+                logger.LogWarning(ex, "Error disposing Redis connection.");
             }
 
             _multiplexer = null;

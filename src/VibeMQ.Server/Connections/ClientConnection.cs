@@ -144,7 +144,7 @@ public sealed partial class ClientConnection : IAsyncDisposable {
             Id = messageId,
             Type = CommandType.Error,
             ErrorCode = errorCode,
-            ErrorMessage = errorMessage,
+            ErrorMessage = errorMessage
         }, cancellationToken);
     }
 
@@ -155,7 +155,7 @@ public sealed partial class ClientConnection : IAsyncDisposable {
         return SendMessageAsync(new ProtocolMessage {
             Type = CommandType.Error,
             ErrorCode = errorCode,
-            ErrorMessage = errorMessage,
+            ErrorMessage = errorMessage
         }, cancellationToken);
     }
 
@@ -168,8 +168,8 @@ public sealed partial class ClientConnection : IAsyncDisposable {
 
         try {
             await _stream.DisposeAsync().ConfigureAwait(false);
-        } catch {
-            // Ignore stream close errors
+        } catch (Exception ex) {
+            LogStreamDisposeError(Id, ex);
         }
 
         _tcpClient.Close();
@@ -178,4 +178,7 @@ public sealed partial class ClientConnection : IAsyncDisposable {
 
     [LoggerMessage(Level = LogLevel.Debug, Message = "Client {clientId} disconnecting ({remoteEndPoint}).")]
     private partial void LogDisconnecting(string clientId, IPEndPoint? remoteEndPoint);
+
+    [LoggerMessage(Level = LogLevel.Debug, Message = "Error disposing stream for client {clientId}.")]
+    private partial void LogStreamDisposeError(string clientId, Exception exception);
 }

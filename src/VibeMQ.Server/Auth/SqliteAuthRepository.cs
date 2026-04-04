@@ -13,7 +13,7 @@ public sealed class SqliteAuthRepository(string databasePath) : IAuthRepository 
     private readonly string _connectionString = new SqliteConnectionStringBuilder {
         DataSource = databasePath,
         Mode = SqliteOpenMode.ReadWriteCreate,
-        Cache = SqliteCacheMode.Shared,
+        Cache = SqliteCacheMode.Shared
     }.ToString();
 
     private const string SCHEMA = """
@@ -127,9 +127,7 @@ public sealed class SqliteAuthRepository(string databasePath) : IAuthRepository 
     public async Task<IReadOnlyList<PermissionEntry>> GetPermissionsAsync(string username, CancellationToken cancellationToken = default) {
         await using var connection = await OpenAsync(cancellationToken).ConfigureAwait(false);
         await using var command = connection.CreateCommand();
-        command.CommandText = """
-            SELECT queue_pattern, operations FROM permissions WHERE username = $username;
-        """;
+        command.CommandText = "SELECT queue_pattern, operations FROM permissions WHERE username = $username;";
         command.Parameters.AddWithValue("$username", username);
 
         var result = new List<PermissionEntry>();
@@ -165,9 +163,7 @@ public sealed class SqliteAuthRepository(string databasePath) : IAuthRepository 
     public async Task RevokePermissionAsync(string username, string queuePattern, CancellationToken cancellationToken = default) {
         await using var connection = await OpenAsync(cancellationToken).ConfigureAwait(false);
         await using var command = connection.CreateCommand();
-        command.CommandText = """
-            DELETE FROM permissions WHERE username = $username AND queue_pattern = $queue_pattern;
-        """;
+        command.CommandText = "DELETE FROM permissions WHERE username = $username AND queue_pattern = $queue_pattern;";
         command.Parameters.AddWithValue("$username", username);
         command.Parameters.AddWithValue("$queue_pattern", queuePattern);
         await command.ExecuteNonQueryAsync(cancellationToken).ConfigureAwait(false);
@@ -185,7 +181,7 @@ public sealed class SqliteAuthRepository(string databasePath) : IAuthRepository 
             PasswordHash = reader.GetString(1),
             IsSuperuser = reader.GetInt64(2) != 0,
             CreatedAt = reader.GetInt64(3),
-            UpdatedAt = reader.GetInt64(4),
+            UpdatedAt = reader.GetInt64(4)
         };
     }
 }

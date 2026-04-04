@@ -20,5 +20,5 @@ public enum ConflictSeverity {
     /// Semantically breaking difference. Counts as a conflict.
     /// Logged at Error level; OnConflict is applied.
     /// </summary>
-    Hard,
+    Hard
 }

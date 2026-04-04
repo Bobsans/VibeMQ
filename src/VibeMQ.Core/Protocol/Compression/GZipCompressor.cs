@@ -20,7 +20,7 @@ sealed class GZipCompressor : ICompressor {
         await using var gzip = new GZipStream(input, CompressionMode.Decompress);
         using var output = new MemoryStream();
 
-        await gzip.CopyToAsync(output).ConfigureAwait(false);
+        await DecompressGuard.CopyWithLimitAsync(gzip, output).ConfigureAwait(false);
 
         return output.ToArray();
     }

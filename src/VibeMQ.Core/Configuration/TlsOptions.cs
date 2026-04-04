@@ -17,14 +17,27 @@ public sealed class TlsOptions {
     public string? CertificatePath { get; set; }
 
     /// <summary>
+    /// Restrict certificate path to the current working directory subtree.
+    /// Default: true.
+    /// </summary>
+    public bool RestrictCertificatePathToWorkingDirectory { get; set; } = true;
+
+    /// <summary>
+    /// Optional allow-list of absolute or relative directories for certificate files.
+    /// When set, certificate path must be under one of these directories.
+    /// </summary>
+    public IReadOnlyList<string> AllowedCertificateDirectories { get; set; } = [];
+
+    /// <summary>
     /// Password for the certificate file.
     /// </summary>
     public string? CertificatePassword { get; set; }
 
     /// <summary>
-    /// Allowed SSL/TLS protocols. Default: TLS 1.2 and 1.3.
+    /// Allowed SSL/TLS protocols. Default: TLS 1.3.
+    /// You can explicitly include <c>SslProtocols.Tls12</c> for legacy compatibility.
     /// </summary>
-    public SslProtocols SslProtocols { get; set; } = SslProtocols.Tls12 | SslProtocols.Tls13;
+    public SslProtocols SslProtocols { get; set; } = SslProtocols.Tls13;
 
     /// <summary>
     /// Whether to require client certificates. Default: false.

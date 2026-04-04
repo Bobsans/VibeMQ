@@ -27,7 +27,7 @@ public sealed partial class DeadLetterQueue(IStorageProvider storageProvider, IL
         var dlqMessage = new DeadLetteredMessage {
             OriginalMessage = message,
             Reason = reason,
-            FailedAt = DateTime.UtcNow,
+            FailedAt = DateTime.UtcNow
         };
 
         await storageProvider.SaveDeadLetteredMessageAsync(dlqMessage).ConfigureAwait(false);

@@ -1,5 +1,4 @@
 using System.Buffers.Binary;
-using System.Text;
 using VibeMQ.Protocol;
 using VibeMQ.Protocol.Compression;
 using VibeMQ.Protocol.Framing;
@@ -11,7 +10,7 @@ public class FramingTests {
     public async Task WriteAndRead_RoundTrips() {
         var original = new ProtocolMessage {
             Type = CommandType.Publish,
-            Queue = "test-queue",
+            Queue = "test-queue"
         };
 
         using var stream = new MemoryStream();
@@ -59,7 +58,7 @@ public class FramingTests {
         var lengthPrefix = new byte[4];
         BinaryPrimitives.WriteUInt32BigEndian(lengthPrefix, 1000);
         stream.Write(lengthPrefix);
-        stream.Write(Encoding.UTF8.GetBytes("hello")); // 1 byte flags + 4 bytes body (not enough)
+        stream.Write("hello"u8); // 1 byte flags + 4 bytes body (not enough)
         stream.Position = 0;
 
         await Assert.ThrowsAsync<IOException>(
@@ -101,7 +100,7 @@ public class FramingTests {
         var messages = new[] {
             new ProtocolMessage { Type = CommandType.Connect },
             new ProtocolMessage { Type = CommandType.Publish, Queue = "q1" },
-            new ProtocolMessage { Type = CommandType.Ping },
+            new ProtocolMessage { Type = CommandType.Ping }
         };
 
         using var stream = new MemoryStream();
@@ -113,10 +112,10 @@ public class FramingTests {
 
         stream.Position = 0;
 
-        for (var i = 0; i < messages.Length; i++) {
+        foreach (var msg in messages) {
             var result = await FrameReader.ReadFrameAsync(stream, ProtocolConstants.DEFAULT_MAX_MESSAGE_SIZE);
             Assert.NotNull(result);
-            Assert.Equal(messages[i].Type, result.Type);
+            Assert.Equal(msg.Type, result.Type);
         }
     }
 
@@ -140,7 +139,7 @@ public class FramingTests {
         var original = new ProtocolMessage {
             Type = CommandType.Publish,
             Queue = "compressed-queue",
-            Headers = new Dictionary<string, string> { ["key"] = "value" },
+            Headers = new Dictionary<string, string> { ["key"] = "value" }
         };
 
         var writer = new FrameWriter();

@@ -66,11 +66,11 @@ public sealed class InMemoryStorageProvider : IStorageProvider {
     // --- Queues ---
 
     /// <inheritdoc />
-    public Task SaveQueueAsync(string name, QueueOptions options, CancellationToken cancellationToken = default) {
+    public Task SaveQueueAsync(string name, QueueOptions queueOptions, CancellationToken cancellationToken = default) {
         _queues.AddOrUpdate(
             name,
-            _ => new StoredQueue { Name = name, Options = options, CreatedAt = DateTime.UtcNow },
-            (_, existing) => new StoredQueue { Name = name, Options = options, CreatedAt = existing.CreatedAt }
+            _ => new StoredQueue { Name = name, Options = queueOptions, CreatedAt = DateTime.UtcNow },
+            (_, existing) => new StoredQueue { Name = name, Options = queueOptions, CreatedAt = existing.CreatedAt }
         );
 
         return Task.CompletedTask;

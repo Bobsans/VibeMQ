@@ -7,5 +7,5 @@ public enum FailureReason {
     MaxRetriesExceeded = 0,
     MessageExpired = 1,
     DeserializationError = 2,
-    HandlerException = 3,
+    HandlerException = 3
 }

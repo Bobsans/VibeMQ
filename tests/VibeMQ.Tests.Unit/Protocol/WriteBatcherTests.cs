@@ -8,7 +8,11 @@ public class WriteBatcherTests : IDisposable {
     private readonly MemoryStream _stream = new();
     private WriteBatcher? _batcher;
 
-    public void Dispose() => _batcher?.Dispose();
+    public void Dispose() {
+        _batcher?.Dispose();
+        _stream.Dispose();
+        GC.SuppressFinalize(this);
+    }
 
     [Fact]
     public void PendingCount_Initially_IsZero() {

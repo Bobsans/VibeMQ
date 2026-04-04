@@ -24,5 +24,5 @@ public enum QueueConflictResolution {
     /// Delete the queue and recreate it with the declared settings when there is at least one Soft or Hard difference.
     /// <para><b>Warning:</b> all messages in the queue will be permanently lost.</para>
     /// </summary>
-    Override,
+    Override
 }

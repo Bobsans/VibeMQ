@@ -13,7 +13,7 @@ public static class CompressorFactory {
     public static ICompressor? Get(CompressionAlgorithm algorithm) => algorithm switch {
         CompressionAlgorithm.GZip => _gZipInstance,
         CompressionAlgorithm.Brotli => _brotliInstance,
-        _ => null,
+        _ => null
     };
 
     /// <summary>
@@ -23,7 +23,7 @@ public static class CompressorFactory {
     public static CompressionAlgorithm? Parse(string? name) => name?.ToLowerInvariant() switch {
         "gzip" => CompressionAlgorithm.GZip,
         "brotli" => CompressionAlgorithm.Brotli,
-        _ => null,
+        _ => null
     };
 
     /// <summary>
@@ -32,6 +32,6 @@ public static class CompressorFactory {
     public static string Serialize(CompressionAlgorithm algorithm) => algorithm switch {
         CompressionAlgorithm.GZip => "gzip",
         CompressionAlgorithm.Brotli => "brotli",
-        _ => "none",
+        _ => "none"
     };
 }

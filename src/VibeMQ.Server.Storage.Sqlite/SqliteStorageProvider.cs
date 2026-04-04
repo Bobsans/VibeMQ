@@ -20,7 +20,7 @@ public sealed partial class SqliteStorageProvider : IStorageProvider, IStorageMa
 
     private static readonly JsonSerializerOptions _jsonOptions = new() {
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-        WriteIndented = false,
+        WriteIndented = false
     };
 
     public SqliteStorageProvider(SqliteStorageOptions options, ILogger<SqliteStorageProvider> logger) {
@@ -30,7 +30,7 @@ public sealed partial class SqliteStorageProvider : IStorageProvider, IStorageMa
             DataSource = options.DatabasePath,
             Mode = SqliteOpenMode.ReadWriteCreate,
             Cache = SqliteCacheMode.Shared,
-            DefaultTimeout = (options.BusyTimeoutMs + 999) / 1000,
+            DefaultTimeout = (options.BusyTimeoutMs + 999) / 1000
         }.ToString();
     }
 
@@ -186,7 +186,7 @@ public sealed partial class SqliteStorageProvider : IStorageProvider, IStorageMa
     // --- Queues ---
 
     /// <inheritdoc />
-    public async Task SaveQueueAsync(string name, QueueOptions options, CancellationToken cancellationToken = default) {
+    public async Task SaveQueueAsync(string name, QueueOptions queueOptions, CancellationToken cancellationToken = default) {
         await using var connection = await OpenConnectionAsync(cancellationToken).ConfigureAwait(false);
         await using var command = connection.CreateCommand();
 
@@ -195,7 +195,7 @@ public sealed partial class SqliteStorageProvider : IStorageProvider, IStorageMa
         ON CONFLICT(name) DO UPDATE SET options_json = $options_json;
         """;
         command.Parameters.AddWithValue("$name", name);
-        command.Parameters.AddWithValue("$options_json", JsonSerializer.Serialize(options, _jsonOptions));
+        command.Parameters.AddWithValue("$options_json", JsonSerializer.Serialize(queueOptions, _jsonOptions));
         command.Parameters.AddWithValue("$created_at", DateTime.UtcNow.ToString("O"));
 
         await command.ExecuteNonQueryAsync(cancellationToken).ConfigureAwait(false);
@@ -222,13 +222,15 @@ public sealed partial class SqliteStorageProvider : IStorageProvider, IStorageMa
         var queues = new List<StoredQueue>();
 
         while (await reader.ReadAsync(cancellationToken).ConfigureAwait(false)) {
-            var optionsJson = reader.GetString(1);
-            var options = JsonSerializer.Deserialize<QueueOptions>(optionsJson, _jsonOptions) ?? new QueueOptions();
+            var optionsJson = reader.IsDBNull(1) ? null : reader.GetString(1);
+            var options = optionsJson is not null
+                ? JsonSerializer.Deserialize<QueueOptions>(optionsJson, _jsonOptions) ?? new QueueOptions()
+                : new QueueOptions();
 
             queues.Add(new StoredQueue {
                 Name = reader.GetString(0),
                 Options = options,
-                CreatedAt = DateTime.Parse(reader.GetString(2), System.Globalization.CultureInfo.InvariantCulture),
+                CreatedAt = DateTime.Parse(reader.GetString(2), System.Globalization.CultureInfo.InvariantCulture)
             });
         }
 
@@ -277,7 +279,7 @@ public sealed partial class SqliteStorageProvider : IStorageProvider, IStorageMa
             messages.Add(new DeadLetteredMessage {
                 OriginalMessage = originalMessage,
                 Reason = (FailureReason)reader.GetInt32(2),
-                FailedAt = DateTime.Parse(reader.GetString(3), System.Globalization.CultureInfo.InvariantCulture),
+                FailedAt = DateTime.Parse(reader.GetString(3), System.Globalization.CultureInfo.InvariantCulture)
             });
         }
 
@@ -303,7 +305,7 @@ public sealed partial class SqliteStorageProvider : IStorageProvider, IStorageMa
         await using var source = await OpenConnectionAsync(cancellationToken).ConfigureAwait(false);
         await using var destination = new SqliteConnection(new SqliteConnectionStringBuilder {
             DataSource = path,
-            Mode = SqliteOpenMode.ReadWriteCreate,
+            Mode = SqliteOpenMode.ReadWriteCreate
         }.ToString());
 
         await destination.OpenAsync(cancellationToken).ConfigureAwait(false);
@@ -315,7 +317,7 @@ public sealed partial class SqliteStorageProvider : IStorageProvider, IStorageMa
     public async Task RestoreAsync(string path, CancellationToken cancellationToken = default) {
         await using var source = new SqliteConnection(new SqliteConnectionStringBuilder {
             DataSource = path,
-            Mode = SqliteOpenMode.ReadOnly,
+            Mode = SqliteOpenMode.ReadOnly
         }.ToString());
 
         await source.OpenAsync(cancellationToken).ConfigureAwait(false);
@@ -357,7 +359,7 @@ public sealed partial class SqliteStorageProvider : IStorageProvider, IStorageMa
             TotalMessages = totalMessages,
             TotalQueues = totalQueues,
             TotalDeadLettered = totalDeadLettered,
-            StorageSizeBytes = pageCount * pageSize,
+            StorageSizeBytes = pageCount * pageSize
         };
     }
 
@@ -421,13 +423,31 @@ public sealed partial class SqliteStorageProvider : IStorageProvider, IStorageMa
         return new BrokerMessage {
             Id = reader.GetString(0),
             QueueName = reader.GetString(1),
-            Payload = payloadJson is not null ? JsonSerializer.Deserialize<JsonElement>(payloadJson, _jsonOptions) : default,
+            Payload = DeserializePayloadSafe(payloadJson),
             Timestamp = DateTime.Parse(reader.GetString(3), System.Globalization.CultureInfo.InvariantCulture),
-            Headers = headersJson is not null ? JsonSerializer.Deserialize<Dictionary<string, string>>(headersJson, _jsonOptions) ?? [] : [],
+            Headers = DeserializeHeadersSafe(headersJson),
             Version = reader.GetInt32(5),
             Priority = (MessagePriority)reader.GetInt32(6),
-            DeliveryAttempts = reader.GetInt32(7),
+            DeliveryAttempts = reader.GetInt32(7)
         };
+    }
+
+    private static JsonElement DeserializePayloadSafe(string? json) {
+        if (json is null) return default;
+        try {
+            return JsonSerializer.Deserialize<JsonElement>(json, _jsonOptions);
+        } catch (JsonException) {
+            return default;
+        }
+    }
+
+    private static Dictionary<string, string> DeserializeHeadersSafe(string? json) {
+        if (json is null) return [];
+        try {
+            return JsonSerializer.Deserialize<Dictionary<string, string>>(json, _jsonOptions) ?? [];
+        } catch (JsonException) {
+            return [];
+        }
     }
 
     // --- Schema ---

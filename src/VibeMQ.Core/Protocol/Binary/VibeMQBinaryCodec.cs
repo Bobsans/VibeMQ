@@ -19,7 +19,14 @@ public sealed class VibeMQBinaryCodec : IBinaryCodec {
     /// </summary>
     public byte[] Encode(ProtocolMessage message) {
         var buffer = new ArrayBufferWriter<byte>();
+        EncodeTo(message, buffer);
+        return buffer.WrittenSpan.ToArray();
+    }
 
+    /// <summary>
+    /// Encodes a ProtocolMessage into the provided buffer writer (zero-copy path).
+    /// </summary>
+    public static void EncodeTo(ProtocolMessage message, ArrayBufferWriter<byte> buffer) {
         // version (1 byte) - first field for protocol version handling
         buffer.GetSpan(1)[0] = (byte)message.Version;
         buffer.Advance(1);
@@ -45,8 +52,6 @@ public sealed class VibeMQBinaryCodec : IBinaryCodec {
             WriteString16(buffer, message.ErrorCode);
             WriteString16(buffer, message.ErrorMessage);
         }
-
-        return buffer.WrittenSpan.ToArray();
     }
 
     /// <summary>
@@ -97,12 +102,12 @@ public sealed class VibeMQBinaryCodec : IBinaryCodec {
         return new ProtocolMessage {
             Version = version,
             Type = type,
-            Id = id!,
+            Id = id,
             Queue = queue,
             Payload = payload,
             Headers = headers,
             ErrorCode = errorCode,
-            ErrorMessage = errorMessage,
+            ErrorMessage = errorMessage
         };
     }
 
@@ -128,7 +133,7 @@ public sealed class VibeMQBinaryCodec : IBinaryCodec {
             throw new InvalidOperationException("Insufficient data to read string length.");
         }
 
-        var length = BinaryPrimitives.ReadUInt16BigEndian(data[0..2]);
+        var length = BinaryPrimitives.ReadUInt16BigEndian(data[..2]);
 
         if (length == 0) {
             return (null, 2);
@@ -164,19 +169,25 @@ public sealed class VibeMQBinaryCodec : IBinaryCodec {
             throw new InvalidOperationException("Insufficient data to read payload length.");
         }
 
-        var length = BinaryPrimitives.ReadUInt32BigEndian(data[0..4]);
+        var length = BinaryPrimitives.ReadUInt32BigEndian(data[..4]);
 
         if (length == 0) {
             return (null, 4);
         }
 
-        if (data.Length < 4 + (int)length) {
+        if (length > int.MaxValue) {
+            throw new InvalidOperationException($"Payload length ({length}) exceeds maximum allowed size.");
+        }
+
+        var intLength = (int)length;
+
+        if (data.Length < 4 + intLength) {
             throw new InvalidOperationException($"Insufficient data to read payload of length {length}.");
         }
 
-        var jsonSpan = data[4..(4 + (int)length)];
+        var jsonSpan = data[4..(4 + intLength)];
         var payload = JsonSerializer.Deserialize<JsonElement>(jsonSpan, _jsonOptions);
-        return (payload, 4 + (int)length);
+        return (payload, 4 + intLength);
     }
 
     private static void WriteHeaders(ArrayBufferWriter<byte> writer, Dictionary<string, string>? headers) {
@@ -184,6 +195,10 @@ public sealed class VibeMQBinaryCodec : IBinaryCodec {
             BinaryPrimitives.WriteUInt16BigEndian(writer.GetSpan(2), 0);
             writer.Advance(2);
             return;
+        }
+
+        if (headers.Count > ushort.MaxValue) {
+            throw new InvalidOperationException($"Header count ({headers.Count}) exceeds maximum ({ushort.MaxValue}).");
         }
 
         var countSpan = writer.GetSpan(2);
@@ -201,7 +216,7 @@ public sealed class VibeMQBinaryCodec : IBinaryCodec {
             throw new InvalidOperationException("Insufficient data to read headers count.");
         }
 
-        var count = BinaryPrimitives.ReadUInt16BigEndian(data[0..2]);
+        var count = BinaryPrimitives.ReadUInt16BigEndian(data[..2]);
         var offset = 2;
 
         if (count == 0) {

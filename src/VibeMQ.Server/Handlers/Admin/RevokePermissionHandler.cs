@@ -42,7 +42,7 @@ public sealed partial class RevokePermissionHandler(IAuthRepository repository, 
         await connection.SendMessageAsync(new ProtocolMessage {
             Id = message.Id,
             Type = CommandType.AdminRevokePermission,
-            Payload = JsonSerializer.SerializeToElement(new { username, queuePattern }, ProtocolSerializer.Options),
+            Payload = JsonSerializer.SerializeToElement(new { username, queuePattern }, ProtocolSerializer.Options)
         }, cancellationToken).ConfigureAwait(false);
     }
 

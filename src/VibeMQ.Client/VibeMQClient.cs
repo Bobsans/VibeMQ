@@ -32,6 +32,11 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
 
     private readonly FrameWriter _frameWriter = new();
     private readonly SemaphoreSlim _writeLock = new(1, 1);
+#if NET10_0_OR_GREATER
+    private readonly Lock _stateLock = new();
+#else
+    private readonly object _stateLock = new();
+#endif
 
     private string _host = string.Empty;
     private int _port;
@@ -41,6 +46,8 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
     private volatile bool _disposed;
     private volatile bool _isConnected;
     private int _reconnecting;
+    private Task? _readLoopTask;
+    private Task? _keepAliveTask;
 
     private VibeMQClient(ClientOptions options, ILogger<VibeMQClient>? logger, IServiceProvider? serviceProvider = null) {
         _options = options;
@@ -51,7 +58,13 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
     /// <summary>
     /// Whether the client is currently connected to the broker.
     /// </summary>
-    public bool IsConnected => _isConnected && _tcpClient?.Connected == true;
+    public bool IsConnected {
+        get {
+            lock (_stateLock) {
+                return _isConnected && _tcpClient?.Connected == true;
+            }
+        }
+    }
 
     /// <summary>
     /// Connects to a VibeMQ broker using a connection string (URL or key=value format).
@@ -117,9 +130,10 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
         // Pre-flight: validate declarations before attempting connection
         opts.ValidateDeclarations();
 
-        var client = new VibeMQClient(opts, logger, serviceProvider);
-        client._host = host;
-        client._port = port;
+        var client = new VibeMQClient(opts, logger, serviceProvider) {
+            _host = host,
+            _port = port
+        };
 
         try {
             await client.ConnectInternalAsync(cancellationToken).ConfigureAwait(false);
@@ -144,17 +158,19 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
     public async Task PublishAsync<T>(string queueName, T payload, Dictionary<string, string>? headers, CancellationToken cancellationToken = default) {
         var jsonPayload = JsonSerializer.SerializeToElement(payload, ProtocolSerializer.Options);
 
-        var message = new ProtocolMessage {
-            Type = CommandType.Publish,
-            Queue = queueName,
-            Payload = jsonPayload,
-            Headers = headers,
-        };
+        var message = ProtocolMessagePool.Rent(CommandType.Publish);
+        message.Queue = queueName;
+        message.Payload = jsonPayload;
+        message.Headers = headers;
 
-        var response = await SendAndWaitAsync(message, cancellationToken).ConfigureAwait(false);
+        try {
+            var response = await SendAndWaitAsync(message, cancellationToken).ConfigureAwait(false);
 
-        if (response.Type == CommandType.Error) {
-            throw new InvalidOperationException($"Publish failed: {response.ErrorMessage}");
+            if (response.Type == CommandType.Error) {
+                throw new InvalidOperationException($"Publish failed: {response.ErrorMessage}");
+            }
+        } finally {
+            ProtocolMessagePool.Return(message);
         }
     }
 
@@ -180,11 +196,14 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
                 }
             }
 
-            // Send ACK
-            await SendMessageAsync(new ProtocolMessage {
-                Id = protocolMessage.Id,
-                Type = CommandType.Ack,
-            }, deliveryCancellationToken).ConfigureAwait(false);
+            // Send ACK (reuse the incoming message Id, no new GUID needed)
+            var ack = ProtocolMessagePool.Rent(CommandType.Ack);
+            ack.Id = protocolMessage.Id;
+            try {
+                await SendMessageAsync(ack, deliveryCancellationToken).ConfigureAwait(false);
+            } finally {
+                ProtocolMessagePool.Return(ack);
+            }
         });
 
         if (!_subscriptionHandlers.TryAdd(queueName, registration)) {
@@ -193,12 +212,7 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
         }
 
         // Send Subscribe command
-        var message = new ProtocolMessage {
-            Type = CommandType.Subscribe,
-            Queue = queueName,
-        };
-
-        var response = await SendAndWaitAsync(message, cancellationToken).ConfigureAwait(false);
+        var response = await SendSubscribeCommandAsync(queueName, cancellationToken).ConfigureAwait(false);
 
         if (response.Type == CommandType.Error) {
             if (_subscriptionHandlers.TryRemove(queueName, out var failedRegistration)) {
@@ -229,12 +243,7 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
         }
 
         // Send Subscribe command
-        var message = new ProtocolMessage {
-            Type = CommandType.Subscribe,
-            Queue = queueName,
-        };
-
-        var response = await SendAndWaitAsync(message, cancellationToken).ConfigureAwait(false);
+        var response = await SendSubscribeCommandAsync(queueName, cancellationToken).ConfigureAwait(false);
 
         if (response.Type == CommandType.Error) {
             if (_subscriptionHandlers.TryRemove(queueName, out var failedRegistration)) {
@@ -246,6 +255,16 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
 
         LogSubscribed(queueName);
         return new Subscription(this, queueName, registration.SubscriptionId);
+    }
+
+    private async Task<ProtocolMessage> SendSubscribeCommandAsync(string queueName, CancellationToken cancellationToken) {
+        var message = ProtocolMessagePool.Rent(CommandType.Subscribe);
+        message.Queue = queueName;
+        try {
+            return await SendAndWaitAsync(message, cancellationToken).ConfigureAwait(false);
+        } finally {
+            ProtocolMessagePool.Return(message);
+        }
     }
 
     private SubscriptionRegistration CreateClassBasedRegistration<TMessage, THandler>(string queueName)
@@ -270,10 +289,13 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
                     }
                 }
 
-                await SendMessageAsync(new ProtocolMessage {
-                    Id = protocolMessage.Id,
-                    Type = CommandType.Ack,
-                }, deliveryCancellationToken).ConfigureAwait(false);
+                var ack = ProtocolMessagePool.Rent(CommandType.Ack);
+                ack.Id = protocolMessage.Id;
+                try {
+                    await SendMessageAsync(ack, deliveryCancellationToken).ConfigureAwait(false);
+                } finally {
+                    ProtocolMessagePool.Return(ack);
+                }
             });
             return registration;
         }
@@ -299,10 +321,13 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
                 }
             }
 
-            await SendMessageAsync(new ProtocolMessage {
-                Id = protocolMessage.Id,
-                Type = CommandType.Ack,
-            }, deliveryCancellationToken).ConfigureAwait(false);
+            var ack = ProtocolMessagePool.Rent(CommandType.Ack);
+            ack.Id = protocolMessage.Id;
+            try {
+                await SendMessageAsync(ack, deliveryCancellationToken).ConfigureAwait(false);
+            } finally {
+                ProtocolMessagePool.Return(ack);
+            }
         });
         return scopedRegistration;
     }
@@ -339,12 +364,14 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
             return;
         }
 
-        var message = new ProtocolMessage {
-            Type = CommandType.Unsubscribe,
-            Queue = queueName,
-        };
+        var message = ProtocolMessagePool.Rent(CommandType.Unsubscribe);
+        message.Queue = queueName;
+        try {
+            await SendAndWaitAsync(message, cancellationToken).ConfigureAwait(false);
+        } finally {
+            ProtocolMessagePool.Return(message);
+        }
 
-        await SendAndWaitAsync(message, cancellationToken).ConfigureAwait(false);
         LogUnsubscribed(queueName);
     }
 
@@ -352,7 +379,7 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
         return resource switch {
             IAsyncDisposable asyncDisposable => asyncDisposable.DisposeAsync(),
             IDisposable disposable => DisposeSync(disposable),
-            _ => ValueTask.CompletedTask,
+            _ => ValueTask.CompletedTask
         };
     }
 
@@ -369,20 +396,22 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
             throw new ArgumentException("Queue name cannot be null or empty.", nameof(queueName));
         }
 
-        var message = new ProtocolMessage {
-            Type = CommandType.CreateQueue,
-            Queue = queueName,
-        };
+        var message = ProtocolMessagePool.Rent(CommandType.CreateQueue);
+        message.Queue = queueName;
 
         // Serialize options to payload if provided
         if (options is not null) {
             message.Payload = JsonSerializer.SerializeToElement(options, ProtocolSerializer.Options);
         }
 
-        var response = await SendAndWaitAsync(message, cancellationToken).ConfigureAwait(false);
+        try {
+            var response = await SendAndWaitAsync(message, cancellationToken).ConfigureAwait(false);
 
-        if (response.Type == CommandType.Error) {
-            throw new InvalidOperationException($"CreateQueue failed: {response.ErrorMessage}");
+            if (response.Type == CommandType.Error) {
+                throw new InvalidOperationException($"CreateQueue failed: {response.ErrorMessage}");
+            }
+        } finally {
+            ProtocolMessagePool.Return(message);
         }
 
         LogQueueCreated(queueName);
@@ -394,15 +423,17 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
     public async Task DeleteQueueAsync(string queueName, CancellationToken cancellationToken = default) {
         ArgumentException.ThrowIfNullOrWhiteSpace(queueName);
 
-        var message = new ProtocolMessage {
-            Type = CommandType.DeleteQueue,
-            Queue = queueName,
-        };
+        var message = ProtocolMessagePool.Rent(CommandType.DeleteQueue);
+        message.Queue = queueName;
 
-        var response = await SendAndWaitAsync(message, cancellationToken).ConfigureAwait(false);
+        try {
+            var response = await SendAndWaitAsync(message, cancellationToken).ConfigureAwait(false);
 
-        if (response.Type == CommandType.Error) {
-            throw new InvalidOperationException($"DeleteQueue failed: {response.ErrorMessage}");
+            if (response.Type == CommandType.Error) {
+                throw new InvalidOperationException($"DeleteQueue failed: {response.ErrorMessage}");
+            }
+        } finally {
+            ProtocolMessagePool.Return(message);
         }
 
         LogQueueDeleted(queueName);
@@ -414,33 +445,35 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
     public async Task<QueueInfo?> GetQueueInfoAsync(string queueName, CancellationToken cancellationToken = default) {
         ArgumentException.ThrowIfNullOrWhiteSpace(queueName);
 
-        var message = new ProtocolMessage {
-            Type = CommandType.QueueInfo,
-            Queue = queueName,
-        };
+        var message = ProtocolMessagePool.Rent(CommandType.QueueInfo);
+        message.Queue = queueName;
 
-        var response = await SendAndWaitAsync(message, cancellationToken).ConfigureAwait(false);
+        ProtocolMessage response;
+        try {
+            response = await SendAndWaitAsync(message, cancellationToken).ConfigureAwait(false);
+        } finally {
+            ProtocolMessagePool.Return(message);
+        }
 
         if (response.Type == CommandType.Error) {
             throw new InvalidOperationException($"GetQueueInfo failed: {response.ErrorMessage}");
         }
 
-        if (!response.Payload.HasValue) {
-            return null;
-        }
-
-        return response.Payload.Value.Deserialize<QueueInfo>(ProtocolSerializer.Options);
+        return response.Payload?.Deserialize<QueueInfo>(ProtocolSerializer.Options);
     }
 
     /// <summary>
     /// Lists all queue names on the broker.
     /// </summary>
     public async Task<IReadOnlyList<string>> ListQueuesAsync(CancellationToken cancellationToken = default) {
-        var message = new ProtocolMessage {
-            Type = CommandType.ListQueues,
-        };
+        var message = ProtocolMessagePool.Rent(CommandType.ListQueues);
 
-        var response = await SendAndWaitAsync(message, cancellationToken).ConfigureAwait(false);
+        ProtocolMessage response;
+        try {
+            response = await SendAndWaitAsync(message, cancellationToken).ConfigureAwait(false);
+        } finally {
+            ProtocolMessagePool.Return(message);
+        }
 
         if (response.Type == CommandType.Error) {
             throw new InvalidOperationException($"ListQueues failed: {response.ErrorMessage}");
@@ -462,14 +495,16 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
         ArgumentException.ThrowIfNullOrWhiteSpace(username);
         ArgumentException.ThrowIfNullOrEmpty(password);
 
-        var message = new ProtocolMessage {
-            Type = CommandType.AdminCreateUser,
-            Payload = JsonSerializer.SerializeToElement(new { username, password }, ProtocolSerializer.Options),
-        };
+        var message = ProtocolMessagePool.Rent(CommandType.AdminCreateUser);
+        message.Payload = JsonSerializer.SerializeToElement(new { username, password }, ProtocolSerializer.Options);
 
-        var response = await SendAndWaitAsync(message, cancellationToken).ConfigureAwait(false);
-        if (response.Type == CommandType.Error) {
-            throw new InvalidOperationException($"CreateUser failed: {response.ErrorMessage}");
+        try {
+            var response = await SendAndWaitAsync(message, cancellationToken).ConfigureAwait(false);
+            if (response.Type == CommandType.Error) {
+                throw new InvalidOperationException($"CreateUser failed: {response.ErrorMessage}");
+            }
+        } finally {
+            ProtocolMessagePool.Return(message);
         }
     }
 
@@ -479,14 +514,16 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
     public async Task DeleteUserAsync(string username, CancellationToken cancellationToken = default) {
         ArgumentException.ThrowIfNullOrWhiteSpace(username);
 
-        var message = new ProtocolMessage {
-            Type = CommandType.AdminDeleteUser,
-            Payload = JsonSerializer.SerializeToElement(new { username }, ProtocolSerializer.Options),
-        };
+        var message = ProtocolMessagePool.Rent(CommandType.AdminDeleteUser);
+        message.Payload = JsonSerializer.SerializeToElement(new { username }, ProtocolSerializer.Options);
 
-        var response = await SendAndWaitAsync(message, cancellationToken).ConfigureAwait(false);
-        if (response.Type == CommandType.Error) {
-            throw new InvalidOperationException($"DeleteUser failed: {response.ErrorMessage}");
+        try {
+            var response = await SendAndWaitAsync(message, cancellationToken).ConfigureAwait(false);
+            if (response.Type == CommandType.Error) {
+                throw new InvalidOperationException($"DeleteUser failed: {response.ErrorMessage}");
+            }
+        } finally {
+            ProtocolMessagePool.Return(message);
         }
     }
 
@@ -497,14 +534,16 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
         ArgumentException.ThrowIfNullOrWhiteSpace(username);
         ArgumentException.ThrowIfNullOrEmpty(newPassword);
 
-        var message = new ProtocolMessage {
-            Type = CommandType.AdminChangePassword,
-            Payload = JsonSerializer.SerializeToElement(new { username, newPassword }, ProtocolSerializer.Options),
-        };
+        var message = ProtocolMessagePool.Rent(CommandType.AdminChangePassword);
+        message.Payload = JsonSerializer.SerializeToElement(new { username, newPassword }, ProtocolSerializer.Options);
 
-        var response = await SendAndWaitAsync(message, cancellationToken).ConfigureAwait(false);
-        if (response.Type == CommandType.Error) {
-            throw new InvalidOperationException($"ChangePassword failed: {response.ErrorMessage}");
+        try {
+            var response = await SendAndWaitAsync(message, cancellationToken).ConfigureAwait(false);
+            if (response.Type == CommandType.Error) {
+                throw new InvalidOperationException($"ChangePassword failed: {response.ErrorMessage}");
+            }
+        } finally {
+            ProtocolMessagePool.Return(message);
         }
     }
 
@@ -520,14 +559,16 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
         }
 
         var opsStrings = operations.Select(o => o.ToString()).ToArray();
-        var message = new ProtocolMessage {
-            Type = CommandType.AdminGrantPermission,
-            Payload = JsonSerializer.SerializeToElement(new { username, queuePattern, operations = opsStrings }, ProtocolSerializer.Options),
-        };
+        var message = ProtocolMessagePool.Rent(CommandType.AdminGrantPermission);
+        message.Payload = JsonSerializer.SerializeToElement(new { username, queuePattern, operations = opsStrings }, ProtocolSerializer.Options);
 
-        var response = await SendAndWaitAsync(message, cancellationToken).ConfigureAwait(false);
-        if (response.Type == CommandType.Error) {
-            throw new InvalidOperationException($"GrantPermission failed: {response.ErrorMessage}");
+        try {
+            var response = await SendAndWaitAsync(message, cancellationToken).ConfigureAwait(false);
+            if (response.Type == CommandType.Error) {
+                throw new InvalidOperationException($"GrantPermission failed: {response.ErrorMessage}");
+            }
+        } finally {
+            ProtocolMessagePool.Return(message);
         }
     }
 
@@ -538,14 +579,16 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
         ArgumentException.ThrowIfNullOrWhiteSpace(username);
         ArgumentException.ThrowIfNullOrWhiteSpace(queuePattern);
 
-        var message = new ProtocolMessage {
-            Type = CommandType.AdminRevokePermission,
-            Payload = JsonSerializer.SerializeToElement(new { username, queuePattern }, ProtocolSerializer.Options),
-        };
+        var message = ProtocolMessagePool.Rent(CommandType.AdminRevokePermission);
+        message.Payload = JsonSerializer.SerializeToElement(new { username, queuePattern }, ProtocolSerializer.Options);
 
-        var response = await SendAndWaitAsync(message, cancellationToken).ConfigureAwait(false);
-        if (response.Type == CommandType.Error) {
-            throw new InvalidOperationException($"RevokePermission failed: {response.ErrorMessage}");
+        try {
+            var response = await SendAndWaitAsync(message, cancellationToken).ConfigureAwait(false);
+            if (response.Type == CommandType.Error) {
+                throw new InvalidOperationException($"RevokePermission failed: {response.ErrorMessage}");
+            }
+        } finally {
+            ProtocolMessagePool.Return(message);
         }
     }
 
@@ -553,9 +596,15 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
     /// Lists all users. Superuser-only.
     /// </summary>
     public async Task<IReadOnlyList<AdminUserInfo>> ListUsersAsync(CancellationToken cancellationToken = default) {
-        var message = new ProtocolMessage { Type = CommandType.AdminListUsers };
+        var message = ProtocolMessagePool.Rent(CommandType.AdminListUsers);
 
-        var response = await SendAndWaitAsync(message, cancellationToken).ConfigureAwait(false);
+        ProtocolMessage response;
+        try {
+            response = await SendAndWaitAsync(message, cancellationToken).ConfigureAwait(false);
+        } finally {
+            ProtocolMessagePool.Return(message);
+        }
+
         if (response.Type == CommandType.Error) {
             throw new InvalidOperationException($"ListUsers failed: {response.ErrorMessage}");
         }
@@ -573,12 +622,16 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
     public async Task<IReadOnlyList<AdminPermissionInfo>> GetUserPermissionsAsync(string username, CancellationToken cancellationToken = default) {
         ArgumentException.ThrowIfNullOrWhiteSpace(username);
 
-        var message = new ProtocolMessage {
-            Type = CommandType.AdminGetUserPermissions,
-            Payload = JsonSerializer.SerializeToElement(new { username }, ProtocolSerializer.Options),
-        };
+        var message = ProtocolMessagePool.Rent(CommandType.AdminGetUserPermissions);
+        message.Payload = JsonSerializer.SerializeToElement(new { username }, ProtocolSerializer.Options);
 
-        var response = await SendAndWaitAsync(message, cancellationToken).ConfigureAwait(false);
+        ProtocolMessage response;
+        try {
+            response = await SendAndWaitAsync(message, cancellationToken).ConfigureAwait(false);
+        } finally {
+            ProtocolMessagePool.Return(message);
+        }
+
         if (response.Type == CommandType.Error) {
             throw new InvalidOperationException($"GetUserPermissions failed: {response.ErrorMessage}");
         }
@@ -599,21 +652,29 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
         }
 
         LogDisconnecting();
-        _isConnected = false;
+        CancellationTokenSource? ctsSnapshot;
+        bool canSendDisconnect;
+        lock (_stateLock) {
+            _isConnected = false;
+            ctsSnapshot = _cts;
+            canSendDisconnect = _tcpClient?.Connected == true;
+        }
+
         await _lifetimeCts.CancelAsync().ConfigureAwait(false);
 
-        if (_cts is not null) {
-            await _cts.CancelAsync().ConfigureAwait(false);
+        if (ctsSnapshot is not null) {
+            await ctsSnapshot.CancelAsync().ConfigureAwait(false);
         }
 
         // Send disconnect to server (best effort)
-        if (_tcpClient?.Connected == true) {
+        if (canSendDisconnect) {
+            var disconnect = ProtocolMessagePool.Rent(CommandType.Disconnect);
             try {
-                await SendMessageAsync(new ProtocolMessage {
-                    Type = CommandType.Disconnect,
-                }, cancellationToken).ConfigureAwait(false);
+                await SendMessageAsync(disconnect, cancellationToken).ConfigureAwait(false);
             } catch {
                 // Best effort
+            } finally {
+                ProtocolMessagePool.Return(disconnect);
             }
         }
 
@@ -627,6 +688,25 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
 
         _disposed = true;
         await DisconnectAsync().ConfigureAwait(false);
+
+        // Await background tasks to prevent unobserved exceptions (bounded wait to avoid hanging dispose)
+        const int disposeTimeoutMs = 5_000;
+        try {
+            if (_readLoopTask is not null) {
+                await _readLoopTask.WaitAsync(TimeSpan.FromMilliseconds(disposeTimeoutMs)).ConfigureAwait(false);
+            }
+        } catch {
+            /* already handled inside the loop, or timed out */
+        }
+
+        try {
+            if (_keepAliveTask is not null) {
+                await _keepAliveTask.WaitAsync(TimeSpan.FromMilliseconds(disposeTimeoutMs)).ConfigureAwait(false);
+            }
+        } catch {
+            /* already handled inside the loop, or timed out */
+        }
+
         _lifetimeCts.Dispose();
         _connectLock.Dispose();
         _writeLock.Dispose();
@@ -638,10 +718,11 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
         // Reset compression so the handshake itself is always uncompressed
         _frameWriter.SetCompression(CompressionAlgorithm.None);
 
-        _tcpClient = new TcpClient();
-        await _tcpClient.ConnectAsync(_host, _port, cancellationToken).ConfigureAwait(false);
+        var tcpClient = new TcpClient();
+        await tcpClient.ConnectAsync(_host, _port, cancellationToken).ConfigureAwait(false);
+        tcpClient.NoDelay = true;
 
-        Stream stream = _tcpClient.GetStream();
+        Stream stream = tcpClient.GetStream();
 
         // TLS handshake if enabled
         if (_options.UseTls) {
@@ -659,8 +740,12 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
             stream = sslStream;
         }
 
-        _stream = stream;
-        _cts = new CancellationTokenSource();
+        var sessionCts = new CancellationTokenSource();
+        lock (_stateLock) {
+            _tcpClient = tcpClient;
+            _stream = stream;
+            _cts = sessionCts;
+        }
 
         // Build Connect headers (auth + compression preference)
         var connectHeaders = new Dictionary<string, string>();
@@ -684,12 +769,12 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
 
         var connectMsg = new ProtocolMessage {
             Type = CommandType.Connect,
-            Headers = connectHeaders.Count > 0 ? connectHeaders : null,
+            Headers = connectHeaders.Count > 0 ? connectHeaders : null
         };
 
-        await _frameWriter.WriteFrameAsync(_stream, connectMsg, cancellationToken).ConfigureAwait(false);
+        await _frameWriter.WriteFrameAsync(stream, connectMsg, cancellationToken).ConfigureAwait(false);
 
-        var response = await FrameReader.ReadFrameAsync(_stream, ProtocolConstants.DEFAULT_MAX_MESSAGE_SIZE, cancellationToken)
+        var response = await FrameReader.ReadFrameAsync(stream, ProtocolConstants.DEFAULT_MAX_MESSAGE_SIZE, cancellationToken)
             .ConfigureAwait(false);
 
         if (response is null || response.Type == CommandType.Error) {
@@ -706,11 +791,13 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
             LogCompressionNegotiated(algorithm);
         }
 
-        _isConnected = true;
+        lock (_stateLock) {
+            _isConnected = true;
+        }
 
         // Start background tasks
-        _ = ReadLoopAsync(_cts.Token);
-        _ = KeepAliveLoopAsync(_cts.Token);
+        _readLoopTask = ReadLoopAsync(sessionCts.Token);
+        _keepAliveTask = KeepAliveLoopAsync(sessionCts.Token);
 
         // Provision declared queues (requires the read loop to be running for request/response)
         if (_options.QueueDeclarations.Count > 0) {
@@ -718,7 +805,7 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
                 await ProvisionQueuesAsync(isReconnect, cancellationToken).ConfigureAwait(false);
             } catch {
                 // Provisioning failed: clean up the established connection and rethrow
-                await _cts.CancelAsync().ConfigureAwait(false);
+                await sessionCts.CancelAsync().ConfigureAwait(false);
                 CleanupConnection();
                 throw;
             }
@@ -730,7 +817,10 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
     private async Task ReadLoopAsync(CancellationToken cancellationToken) {
         try {
             while (!cancellationToken.IsCancellationRequested) {
-                var stream = _stream;
+                Stream? stream;
+                lock (_stateLock) {
+                    stream = _stream;
+                }
                 if (stream is null) {
                     break;
                 }
@@ -753,7 +843,9 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
             LogReadError(ex);
         }
 
-        _isConnected = false;
+        lock (_stateLock) {
+            _isConnected = false;
+        }
 
         if (!_disposed && !_lifetimeCts.IsCancellationRequested && !cancellationToken.IsCancellationRequested) {
             TryStartReconnect();
@@ -783,7 +875,9 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
                     LogServerDisconnect(reason);
                 }
 
-                _isConnected = false;
+                lock (_stateLock) {
+                    _isConnected = false;
+                }
 
                 if (!_disposed) {
                     TryStartReconnect();
@@ -821,9 +915,12 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
                 await Task.Delay(_options.KeepAliveInterval, cancellationToken).ConfigureAwait(false);
 
                 if (IsConnected) {
-                    await SendMessageAsync(new ProtocolMessage {
-                        Type = CommandType.Ping,
-                    }, cancellationToken).ConfigureAwait(false);
+                    var ping = ProtocolMessagePool.Rent(CommandType.Ping);
+                    try {
+                        await SendMessageAsync(ping, cancellationToken).ConfigureAwait(false);
+                    } finally {
+                        ProtocolMessagePool.Return(ping);
+                    }
                 }
             }
         } catch (OperationCanceledException) {
@@ -864,10 +961,7 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
 
                     // Resubscribe to all active queues
                     foreach (var queueName in _subscriptionHandlers.Keys) {
-                        var response = await SendAndWaitAsync(new ProtocolMessage {
-                            Type = CommandType.Subscribe,
-                            Queue = queueName,
-                        }, lifetimeToken).ConfigureAwait(false);
+                        var response = await SendSubscribeCommandAsync(queueName, lifetimeToken).ConfigureAwait(false);
 
                         if (response.Type == CommandType.Error) {
                             throw new InvalidOperationException($"Resubscribe failed for queue '{queueName}': {response.ErrorMessage}");
@@ -983,12 +1077,9 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
         try {
             await SendMessageAsync(message, cancellationToken).ConfigureAwait(false);
 
-            using var timeoutCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
-            timeoutCts.CancelAfter(_options.CommandTimeout);
-
             try {
-                return await tcs.Task.WaitAsync(timeoutCts.Token).ConfigureAwait(false);
-            } catch (OperationCanceledException ex) when (!cancellationToken.IsCancellationRequested) {
+                return await tcs.Task.WaitAsync(_options.CommandTimeout, cancellationToken).ConfigureAwait(false);
+            } catch (TimeoutException ex) {
                 throw new TimeoutException(
                     $"Timed out waiting for broker response to '{message.Type}' after {_options.CommandTimeout.TotalSeconds:0.###}s.",
                     ex
@@ -1001,7 +1092,10 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
     }
 
     private async Task SendMessageAsync(ProtocolMessage message, CancellationToken cancellationToken) {
-        var stream = _stream;
+        Stream? stream;
+        lock (_stateLock) {
+            stream = _stream;
+        }
         if (stream is null) {
             throw new InvalidOperationException("Not connected to broker.");
         }
@@ -1015,32 +1109,44 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
     }
 
     private void CleanupConnection() {
+        Stream? streamSnapshot;
+        TcpClient? tcpClientSnapshot;
+        CancellationTokenSource? ctsSnapshot;
+        lock (_stateLock) {
+            streamSnapshot = _stream;
+            tcpClientSnapshot = _tcpClient;
+            ctsSnapshot = _cts;
+            _stream = null;
+            _tcpClient = null;
+            _cts = null;
+            _isConnected = false;
+        }
+
         try {
-            _stream?.Close();
+            streamSnapshot?.Close();
         } catch {
             /* ignore */
         }
 
         try {
-            _tcpClient?.Close();
+            tcpClientSnapshot?.Close();
         } catch {
             /* ignore */
         }
 
         try {
-            _cts?.Dispose();
+            ctsSnapshot?.Dispose();
         } catch {
             /* ignore */
         }
-
-        _stream = null;
-        _tcpClient = null;
-        _cts = null;
 
         // Cancel pending responses
-        foreach (var (id, tcs) in _pendingResponses) {
-            tcs.TrySetCanceled();
-            _pendingResponses.TryRemove(id, out _);
+        while (!_pendingResponses.IsEmpty) {
+            foreach (var id in _pendingResponses.Keys) {
+                if (_pendingResponses.TryRemove(id, out var tcs)) {
+                    tcs.TrySetCanceled();
+                }
+            }
         }
     }
 
@@ -1113,21 +1219,17 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
     [LoggerMessage(Level = LogLevel.Error, Message = "{diffSummary}")]
     private partial void LogConflictError(string diffSummary);
 
-    private sealed class SubscriptionRegistration(
-        string queueName,
-        Func<CancellationToken, ValueTask> disposeResources
-    ) : IAsyncDisposable {
-        private Func<ProtocolMessage, CancellationToken, Task> _handler = static (_, _) => Task.CompletedTask;
+    private sealed class SubscriptionRegistration(string queueName, Func<CancellationToken, ValueTask> disposeResources) : IAsyncDisposable {
         private readonly CancellationTokenSource _subscriptionCts = new();
         private int _disposed;
 
         public string QueueName { get; } = queueName;
         public Guid SubscriptionId { get; } = Guid.NewGuid();
         public CancellationToken CancellationToken => _subscriptionCts.Token;
-        public Func<ProtocolMessage, CancellationToken, Task> Handler => _handler;
+        public Func<ProtocolMessage, CancellationToken, Task> Handler { get; private set; } = static (_, _) => Task.CompletedTask;
 
         public void SetHandler(Func<ProtocolMessage, CancellationToken, Task> handler) {
-            _handler = handler ?? throw new ArgumentNullException(nameof(handler));
+            Handler = handler ?? throw new ArgumentNullException(nameof(handler));
         }
 
         public async ValueTask DisposeAsync() {

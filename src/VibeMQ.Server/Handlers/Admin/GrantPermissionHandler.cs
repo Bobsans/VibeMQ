@@ -61,7 +61,7 @@ public sealed partial class GrantPermissionHandler(IAuthRepository repository, I
         await connection.SendMessageAsync(new ProtocolMessage {
             Id = message.Id,
             Type = CommandType.AdminGrantPermission,
-            Payload = JsonSerializer.SerializeToElement(new { username, queuePattern, operations = ops.Select(o => o.ToString()) }, ProtocolSerializer.Options),
+            Payload = JsonSerializer.SerializeToElement(new { username, queuePattern, operations = ops.Select(o => o.ToString()) }, ProtocolSerializer.Options)
         }, cancellationToken).ConfigureAwait(false);
     }
 

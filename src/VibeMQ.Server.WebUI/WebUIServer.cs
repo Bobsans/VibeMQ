@@ -5,8 +5,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.Extensions.Logging;
 using VibeMQ.Health;
-using VibeMQ.Metrics;
-using VibeMQ.Models;
 
 namespace VibeMQ.Server.WebUI;
 
@@ -14,10 +12,13 @@ namespace VibeMQ.Server.WebUI;
 /// Lightweight HTTP server for the Web UI dashboard. Uses HttpListener; serves embedded SPA and /api/* endpoints.
 /// </summary>
 public sealed partial class WebUIServer : IAsyncDisposable {
+    /// <summary>Maximum query string length accepted by API endpoints (defense-in-depth).</summary>
+    private const int MAX_QUERY_STRING_LENGTH = 2048;
+
     private static readonly JsonSerializerOptions _jsonOptions = new() {
         PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower,
         DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
-        WriteIndented = false,
+        WriteIndented = false
     };
 
     private readonly BrokerServer _broker;
@@ -84,7 +85,7 @@ public sealed partial class WebUIServer : IAsyncDisposable {
                 continue;
             }
 
-            string contentType = GetContentType(logicalPath);
+            var contentType = GetContentType(logicalPath);
             using var stream = asm.GetManifestResourceStream(name);
             if (stream is null) {
                 continue;
@@ -109,7 +110,7 @@ public sealed partial class WebUIServer : IAsyncDisposable {
             ".svg" => "image/svg+xml",
             ".woff2" => "font/woff2",
             ".woff" => "font/woff",
-            _ => "application/octet-stream",
+            _ => "application/octet-stream"
         };
     }
 
@@ -117,7 +118,7 @@ public sealed partial class WebUIServer : IAsyncDisposable {
         while (!cancellationToken.IsCancellationRequested) {
             try {
                 var context = await _listener!.GetContextAsync().ConfigureAwait(false);
-                _ = HandleRequestAsync(context);
+                _ = HandleRequestAsync(context, cancellationToken);
             } catch (HttpListenerException) when (cancellationToken.IsCancellationRequested) {
                 break;
             } catch (ObjectDisposedException) {
@@ -128,7 +129,7 @@ public sealed partial class WebUIServer : IAsyncDisposable {
         }
     }
 
-    private async Task HandleRequestAsync(HttpListenerContext context) {
+    private async Task HandleRequestAsync(HttpListenerContext context, CancellationToken cancellationToken) {
         try {
             var path = context.Request.Url?.AbsolutePath ?? "/";
             path = path.TrimEnd('/');
@@ -136,14 +137,14 @@ public sealed partial class WebUIServer : IAsyncDisposable {
                 path = "/";
             }
 
-            // Strip path prefix if configured (e.g. /dashboard -> /)
+            // Strip path prefix if configured (e.g., /dashboard -> /)
             var localPath = path;
             if (_pathPrefix.Length > 1 && path.StartsWith(_pathPrefix, StringComparison.OrdinalIgnoreCase)) {
-                localPath = path.Length == _pathPrefix.Length ? "/" : path.Substring(_pathPrefix.Length);
+                localPath = path.Length == _pathPrefix.Length ? "/" : path[_pathPrefix.Length..];
             }
 
             if (localPath.StartsWith("/api/", StringComparison.Ordinal)) {
-                await HandleApiAsync(context, localPath).ConfigureAwait(false);
+                await HandleApiAsync(context, localPath, cancellationToken).ConfigureAwait(false);
                 return;
             }
 
@@ -159,7 +160,7 @@ public sealed partial class WebUIServer : IAsyncDisposable {
         }
     }
 
-    private async Task HandleApiAsync(HttpListenerContext context, string localPath) {
+    private async Task HandleApiAsync(HttpListenerContext context, string localPath, CancellationToken cancellationToken) {
         context.Response.ContentType = "application/json";
 
         switch (localPath) {
@@ -173,47 +174,66 @@ public sealed partial class WebUIServer : IAsyncDisposable {
                 await HandleMetricsAsync(context).ConfigureAwait(false);
                 break;
             case "/api/queues":
-                await HandleQueuesListAsync(context).ConfigureAwait(false);
+                await HandleQueuesListAsync(context, cancellationToken).ConfigureAwait(false);
                 break;
             default:
                 if (localPath.StartsWith("/api/queues/", StringComparison.Ordinal)) {
-                    var suffix = localPath.Substring("/api/queues/".Length).TrimEnd('/');
+                    var suffix = localPath["/api/queues/".Length..].TrimEnd('/');
                     var parts = suffix.Split('/');
                     var queueName = parts.Length > 0 ? Uri.UnescapeDataString(parts[0]) : string.Empty;
                     var method = context.Request.HttpMethod;
 
                     if (parts.Length == 1) {
-                        if (method == "GET") {
-                            await HandleQueueInfoAsync(context, queueName).ConfigureAwait(false);
-                        } else if (method == "DELETE") {
-                            await HandleQueueDeleteAsync(context, queueName).ConfigureAwait(false);
-                        } else {
-                            context.Response.StatusCode = 405;
-                            context.Response.Close();
+                        switch (method) {
+                            case "GET":
+                                await HandleQueueInfoAsync(context, queueName, cancellationToken).ConfigureAwait(false);
+                                break;
+                            case "DELETE":
+                                await HandleQueueDeleteAsync(context, queueName, cancellationToken).ConfigureAwait(false);
+                                break;
+                            default:
+                                context.Response.StatusCode = 405;
+                                context.Response.Close();
+                                break;
                         }
-                    } else if (parts.Length >= 2 && parts[1] == "messages") {
-                        if (parts.Length == 2) {
-                            if (method == "GET") {
-                                await HandleQueueMessagesListAsync(context, queueName).ConfigureAwait(false);
-                            } else if (method == "DELETE") {
-                                await HandleQueuePurgeAsync(context, queueName).ConfigureAwait(false);
-                            } else {
-                                context.Response.StatusCode = 405;
-                                context.Response.Close();
+                    } else if (parts is [_, "messages", ..]) {
+                        switch (parts.Length) {
+                            case 2:
+                                switch (method) {
+                                    case "GET":
+                                        await HandleQueueMessagesListAsync(context, queueName, cancellationToken).ConfigureAwait(false);
+                                        break;
+                                    case "DELETE":
+                                        await HandleQueuePurgeAsync(context, queueName, cancellationToken).ConfigureAwait(false);
+                                        break;
+                                    default:
+                                        context.Response.StatusCode = 405;
+                                        context.Response.Close();
+                                        break;
+                                }
+
+                                break;
+                            case 3: {
+                                var messageId = Uri.UnescapeDataString(parts[2]);
+                                switch (method) {
+                                    case "GET":
+                                        await HandleQueueMessageGetAsync(context, queueName, messageId, cancellationToken).ConfigureAwait(false);
+                                        break;
+                                    case "DELETE":
+                                        await HandleQueueMessageDeleteAsync(context, queueName, messageId, cancellationToken).ConfigureAwait(false);
+                                        break;
+                                    default:
+                                        context.Response.StatusCode = 405;
+                                        context.Response.Close();
+                                        break;
+                                }
+
+                                break;
                             }
-                        } else if (parts.Length == 3) {
-                            var messageId = Uri.UnescapeDataString(parts[2]);
-                            if (method == "GET") {
-                                await HandleQueueMessageGetAsync(context, queueName, messageId).ConfigureAwait(false);
-                            } else if (method == "DELETE") {
-                                await HandleQueueMessageDeleteAsync(context, queueName, messageId).ConfigureAwait(false);
-                            } else {
-                                context.Response.StatusCode = 405;
+                            default:
+                                context.Response.StatusCode = 404;
                                 context.Response.Close();
-                            }
-                        } else {
-                            context.Response.StatusCode = 404;
-                            context.Response.Close();
+                                break;
                         }
                     } else {
                         context.Response.StatusCode = 404;
@@ -223,6 +243,7 @@ public sealed partial class WebUIServer : IAsyncDisposable {
                     context.Response.StatusCode = 404;
                     context.Response.Close();
                 }
+
                 break;
         }
     }
@@ -246,6 +267,7 @@ public sealed partial class WebUIServer : IAsyncDisposable {
             var plus = ver.IndexOf('+');
             return plus >= 0 ? ver[..plus] : ver;
         }
+
         var name = asm.GetName();
         var v = name.Version;
         if (v is null) return "0.0.0";
@@ -264,7 +286,7 @@ public sealed partial class WebUIServer : IAsyncDisposable {
             TotalMessagesPublished = snapshot.TotalMessagesPublished,
             TotalMessagesDelivered = snapshot.TotalMessagesDelivered,
             MemoryUsageMb = (int)(snapshot.MemoryUsageBytes / 1024 / 1024),
-            Timestamp = DateTime.UtcNow,
+            Timestamp = DateTime.UtcNow
         };
 
         context.Response.StatusCode = 200;
@@ -279,21 +301,21 @@ public sealed partial class WebUIServer : IAsyncDisposable {
         context.Response.Close();
     }
 
-    private async Task HandleQueuesListAsync(HttpListenerContext context) {
-        var names = await _broker.ListQueuesAsync(CancellationToken.None).ConfigureAwait(false);
+    private async Task HandleQueuesListAsync(HttpListenerContext context, CancellationToken cancellationToken) {
+        var names = await _broker.ListQueuesAsync(cancellationToken).ConfigureAwait(false);
         context.Response.StatusCode = 200;
-        await JsonSerializer.SerializeAsync(context.Response.OutputStream, names, _jsonOptions).ConfigureAwait(false);
+        await JsonSerializer.SerializeAsync(context.Response.OutputStream, names, _jsonOptions, cancellationToken).ConfigureAwait(false);
         context.Response.Close();
     }
 
-    private async Task HandleQueueInfoAsync(HttpListenerContext context, string name) {
+    private async Task HandleQueueInfoAsync(HttpListenerContext context, string name, CancellationToken cancellationToken) {
         if (string.IsNullOrEmpty(name)) {
             context.Response.StatusCode = 400;
             context.Response.Close();
             return;
         }
 
-        var info = await _broker.GetQueueInfoAsync(name, CancellationToken.None).ConfigureAwait(false);
+        var info = await _broker.GetQueueInfoAsync(name, cancellationToken).ConfigureAwait(false);
         if (info is null) {
             context.Response.StatusCode = 404;
             context.Response.Close();
@@ -301,11 +323,11 @@ public sealed partial class WebUIServer : IAsyncDisposable {
         }
 
         context.Response.StatusCode = 200;
-        await JsonSerializer.SerializeAsync(context.Response.OutputStream, info, _jsonOptions).ConfigureAwait(false);
+        await JsonSerializer.SerializeAsync(context.Response.OutputStream, info, _jsonOptions, cancellationToken).ConfigureAwait(false);
         context.Response.Close();
     }
 
-    private async Task HandleQueueMessagesListAsync(HttpListenerContext context, string queueName) {
+    private async Task HandleQueueMessagesListAsync(HttpListenerContext context, string queueName, CancellationToken cancellationToken) {
         if (string.IsNullOrEmpty(queueName)) {
             context.Response.StatusCode = 400;
             context.Response.Close();
@@ -315,31 +337,38 @@ public sealed partial class WebUIServer : IAsyncDisposable {
         var limit = 50;
         var offset = 0;
         var query = context.Request.Url?.Query;
-        if (!string.IsNullOrEmpty(query) && query.StartsWith('?')) {
+        if (!string.IsNullOrEmpty(query) && query.Length <= MAX_QUERY_STRING_LENGTH && query.StartsWith('?')) {
             foreach (var pair in query[1..].Split('&')) {
-                var kv = pair.Split('=', 2, StringSplitOptions.None);
+                var kv = pair.Split('=', 2);
                 if (kv.Length != 2) continue;
                 var key = Uri.UnescapeDataString(kv[0].Trim());
                 var value = Uri.UnescapeDataString(kv[1].Trim());
-                if (key == "limit" && int.TryParse(value, out var l)) limit = Math.Clamp(l, 1, 100);
-                if (key == "offset" && int.TryParse(value, out var o)) offset = Math.Max(0, o);
+
+                switch (key) {
+                    case "limit" when int.TryParse(value, out var l):
+                        limit = Math.Clamp(l, 1, 100);
+                        break;
+                    case "offset" when int.TryParse(value, out var o):
+                        offset = Math.Max(0, o);
+                        break;
+                }
             }
         }
 
-        var messages = await _broker.GetPendingMessagesForDashboardAsync(queueName, limit, offset, CancellationToken.None).ConfigureAwait(false);
+        var messages = await _broker.GetPendingMessagesForDashboardAsync(queueName, limit, offset, cancellationToken).ConfigureAwait(false);
         context.Response.StatusCode = 200;
-        await JsonSerializer.SerializeAsync(context.Response.OutputStream, messages, _jsonOptions).ConfigureAwait(false);
+        await JsonSerializer.SerializeAsync(context.Response.OutputStream, messages, _jsonOptions, cancellationToken).ConfigureAwait(false);
         context.Response.Close();
     }
 
-    private async Task HandleQueueMessageGetAsync(HttpListenerContext context, string queueName, string messageId) {
+    private async Task HandleQueueMessageGetAsync(HttpListenerContext context, string queueName, string messageId, CancellationToken cancellationToken) {
         if (string.IsNullOrEmpty(queueName) || string.IsNullOrEmpty(messageId)) {
             context.Response.StatusCode = 400;
             context.Response.Close();
             return;
         }
 
-        var message = await _broker.GetMessageForDashboardAsync(queueName, messageId, CancellationToken.None).ConfigureAwait(false);
+        var message = await _broker.GetMessageForDashboardAsync(queueName, messageId, cancellationToken).ConfigureAwait(false);
         if (message is null) {
             context.Response.StatusCode = 404;
             context.Response.Close();
@@ -347,42 +376,42 @@ public sealed partial class WebUIServer : IAsyncDisposable {
         }
 
         context.Response.StatusCode = 200;
-        await JsonSerializer.SerializeAsync(context.Response.OutputStream, message, _jsonOptions).ConfigureAwait(false);
+        await JsonSerializer.SerializeAsync(context.Response.OutputStream, message, _jsonOptions, cancellationToken).ConfigureAwait(false);
         context.Response.Close();
     }
 
-    private async Task HandleQueueMessageDeleteAsync(HttpListenerContext context, string queueName, string messageId) {
+    private async Task HandleQueueMessageDeleteAsync(HttpListenerContext context, string queueName, string messageId, CancellationToken cancellationToken) {
         if (string.IsNullOrEmpty(queueName) || string.IsNullOrEmpty(messageId)) {
             context.Response.StatusCode = 400;
             context.Response.Close();
             return;
         }
 
-        var removed = await _broker.RemoveMessageFromQueueAsync(queueName, messageId, CancellationToken.None).ConfigureAwait(false);
+        var removed = await _broker.RemoveMessageFromQueueAsync(queueName, messageId, cancellationToken).ConfigureAwait(false);
         context.Response.StatusCode = removed ? 204 : 404;
         context.Response.Close();
     }
 
-    private async Task HandleQueuePurgeAsync(HttpListenerContext context, string queueName) {
+    private async Task HandleQueuePurgeAsync(HttpListenerContext context, string queueName, CancellationToken cancellationToken) {
         if (string.IsNullOrEmpty(queueName)) {
             context.Response.StatusCode = 400;
             context.Response.Close();
             return;
         }
 
-        var ok = await _broker.PurgeQueueAsync(queueName, CancellationToken.None).ConfigureAwait(false);
+        var ok = await _broker.PurgeQueueAsync(queueName, cancellationToken).ConfigureAwait(false);
         context.Response.StatusCode = ok ? 204 : 404;
         context.Response.Close();
     }
 
-    private async Task HandleQueueDeleteAsync(HttpListenerContext context, string queueName) {
+    private async Task HandleQueueDeleteAsync(HttpListenerContext context, string queueName, CancellationToken cancellationToken) {
         if (string.IsNullOrEmpty(queueName)) {
             context.Response.StatusCode = 400;
             context.Response.Close();
             return;
         }
 
-        await _broker.DeleteQueueAsync(queueName, CancellationToken.None).ConfigureAwait(false);
+        await _broker.DeleteQueueAsync(queueName, cancellationToken).ConfigureAwait(false);
         context.Response.StatusCode = 204;
         context.Response.Close();
     }

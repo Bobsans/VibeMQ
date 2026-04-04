@@ -180,7 +180,7 @@ public sealed class MessageQueue(string name, QueueOptions options, DateTime cre
             EnableDeadLetterQueue = Options.EnableDeadLetterQueue,
             DeadLetterQueueName = Options.DeadLetterQueueName,
             OverflowStrategy = Options.OverflowStrategy,
-            MaxRetryAttempts = Options.MaxRetryAttempts,
+            MaxRetryAttempts = Options.MaxRetryAttempts
         };
     }
 
@@ -207,19 +207,19 @@ public sealed class MessageQueue(string name, QueueOptions options, DateTime cre
     }
 
     private bool ApplyOverflowStrategy(BrokerMessage message) {
+        return Options.OverflowStrategy switch {
+            OverflowStrategy.DropOldest => DropOldestAndEnqueue(),
+            OverflowStrategy.DropNewest => false,
+            OverflowStrategy.BlockPublisher => false, // In an async context, the caller should handle backpressure
+            OverflowStrategy.RedirectToDlq => false, // Caller (QueueManager) handles DLQ redirect
+            _ => false
+        };
+
         // Called from Enqueue, already inside _sync
         bool DropOldestAndEnqueue() {
             _messages.TryDequeue(out _);
             _messages.Enqueue(message);
             return true;
         }
-
-        return Options.OverflowStrategy switch {
-            OverflowStrategy.DropOldest => DropOldestAndEnqueue(),
-            OverflowStrategy.DropNewest => false,
-            OverflowStrategy.BlockPublisher => false, // In an async context, the caller should handle backpressure
-            OverflowStrategy.RedirectToDlq => false, // Caller (QueueManager) handles DLQ redirect
-            _ => false,
-        };
     }
 }

@@ -9,12 +9,14 @@ namespace VibeMQ.Protocol;
 public static class ProtocolMessagePool {
     private static readonly ConcurrentBag<ProtocolMessage> _pool = [];
     private const int MAX_POOL_SIZE = 256;
+    private static int _poolCount;
 
     /// <summary>
     /// Rents a <see cref="ProtocolMessage"/> from the pool, or creates a new one if the pool is empty.
     /// </summary>
     public static ProtocolMessage Rent(CommandType type) {
         if (_pool.TryTake(out var message)) {
+            Interlocked.Decrement(ref _poolCount);
             message.Id = Guid.NewGuid().ToString("N");
             message.Type = type;
             message.Version = 1;
@@ -29,8 +31,10 @@ public static class ProtocolMessagePool {
     /// Clears all fields before returning.
     /// </summary>
     public static void Return(ProtocolMessage message) {
-        if (_pool.Count >= MAX_POOL_SIZE) {
-            return; // Don't grow the pool indefinitely
+        // Reserve capacity slot first to make the max size check atomic under concurrency.
+        if (Interlocked.Increment(ref _poolCount) > MAX_POOL_SIZE) {
+            Interlocked.Decrement(ref _poolCount);
+            return;
         }
 
         // Clear all fields

@@ -56,11 +56,10 @@ public static class LoadTest {
         // Subscribers
         var subscriberTasks = new List<Task>();
         for (var i = 0; i < subscriberCount; i++) {
-            var idx = i;
             subscriberTasks.Add(Task.Run(async () => {
                 await using var client = await VibeMQClient.ConnectAsync("127.0.0.1", port, new ClientOptions {
                     KeepAliveInterval = TimeSpan.FromSeconds(60),
-                    CommandTimeout = TimeSpan.FromSeconds(30),
+                    CommandTimeout = TimeSpan.FromSeconds(30)
                 }, null, token).ConfigureAwait(false);
 
                 await client.SubscribeAsync<string>(LOAD_QUEUE, _ => {
@@ -80,7 +79,7 @@ public static class LoadTest {
         var publisherTasks = Enumerable.Range(0, publisherCount).Select(_ => Task.Run(async () => {
             await using var client = await VibeMQClient.ConnectAsync("127.0.0.1", port, new ClientOptions {
                 KeepAliveInterval = TimeSpan.FromSeconds(60),
-                CommandTimeout = TimeSpan.FromSeconds(30),
+                CommandTimeout = TimeSpan.FromSeconds(30)
             }, null, token).ConfigureAwait(false);
 
             while (sw.Elapsed < duration && !token.IsCancellationRequested) {
@@ -101,7 +100,7 @@ public static class LoadTest {
             await Task.Delay(100, CancellationToken.None).ConfigureAwait(false);
         }
 
-        cts.Cancel();
+        await cts.CancelAsync();
         try {
             await broker.StopAsync(CancellationToken.None).ConfigureAwait(false);
         } catch { /* ignore */ }

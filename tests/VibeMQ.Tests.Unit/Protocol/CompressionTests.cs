@@ -4,8 +4,8 @@ using VibeMQ.Protocol.Compression;
 namespace VibeMQ.Tests.Unit.Protocol;
 
 public class CompressionTests {
-    private static readonly byte[] SmallPayload = Encoding.UTF8.GetBytes("Hello, VibeMQ!");
-    private static readonly byte[] LargePayload = Encoding.UTF8.GetBytes(new string('x', 4096));
+    private static readonly byte[] _smallPayload = "Hello, VibeMQ!"u8.ToArray();
+    private static readonly byte[] _largePayload = Encoding.UTF8.GetBytes(new string('x', 4096));
 
     // -------------------------------------------------------------------------
     // GZip
@@ -15,27 +15,32 @@ public class CompressionTests {
     public async Task GZip_CompressDecompress_RestoresOriginal() {
         var compressor = CompressorFactory.Get(CompressionAlgorithm.GZip)!;
 
-        var compressed = await compressor.CompressAsync(SmallPayload);
+        var compressed = await compressor.CompressAsync(_smallPayload);
         var decompressed = await compressor.DecompressAsync(compressed);
 
-        Assert.Equal(SmallPayload, decompressed);
+        Assert.Equal(_smallPayload, decompressed);
     }
 
     [Fact]
-    public async Task GZip_Algorithm_IsGZip() {
-        var compressor = CompressorFactory.Get(CompressionAlgorithm.GZip)!;
-        Assert.Equal(CompressionAlgorithm.GZip, compressor.Algorithm);
+    public Task GZip_Algorithm_IsGZip() {
+        try {
+            var compressor = CompressorFactory.Get(CompressionAlgorithm.GZip)!;
+            Assert.Equal(CompressionAlgorithm.GZip, compressor.Algorithm);
+            return Task.CompletedTask;
+        } catch (Exception exception) {
+            return Task.FromException(exception);
+        }
     }
 
     [Fact]
     public async Task GZip_LargePayload_CompressDecompress_RestoresOriginal() {
         var compressor = CompressorFactory.Get(CompressionAlgorithm.GZip)!;
 
-        var compressed = await compressor.CompressAsync(LargePayload);
+        var compressed = await compressor.CompressAsync(_largePayload);
         var decompressed = await compressor.DecompressAsync(compressed);
 
-        Assert.Equal(LargePayload, decompressed);
-        Assert.True(compressed.Length < LargePayload.Length, "GZip should reduce repetitive data.");
+        Assert.Equal(_largePayload, decompressed);
+        Assert.True(compressed.Length < _largePayload.Length, "GZip should reduce repetitive data.");
     }
 
     // -------------------------------------------------------------------------
@@ -46,27 +51,32 @@ public class CompressionTests {
     public async Task Brotli_CompressDecompress_RestoresOriginal() {
         var compressor = CompressorFactory.Get(CompressionAlgorithm.Brotli)!;
 
-        var compressed = await compressor.CompressAsync(SmallPayload);
+        var compressed = await compressor.CompressAsync(_smallPayload);
         var decompressed = await compressor.DecompressAsync(compressed);
 
-        Assert.Equal(SmallPayload, decompressed);
+        Assert.Equal(_smallPayload, decompressed);
     }
 
     [Fact]
-    public async Task Brotli_Algorithm_IsBrotli() {
-        var compressor = CompressorFactory.Get(CompressionAlgorithm.Brotli)!;
-        Assert.Equal(CompressionAlgorithm.Brotli, compressor.Algorithm);
+    public Task Brotli_Algorithm_IsBrotli() {
+        try {
+            var compressor = CompressorFactory.Get(CompressionAlgorithm.Brotli)!;
+            Assert.Equal(CompressionAlgorithm.Brotli, compressor.Algorithm);
+            return Task.CompletedTask;
+        } catch (Exception exception) {
+            return Task.FromException(exception);
+        }
     }
 
     [Fact]
     public async Task Brotli_LargePayload_CompressDecompress_RestoresOriginal() {
         var compressor = CompressorFactory.Get(CompressionAlgorithm.Brotli)!;
 
-        var compressed = await compressor.CompressAsync(LargePayload);
+        var compressed = await compressor.CompressAsync(_largePayload);
         var decompressed = await compressor.DecompressAsync(compressed);
 
-        Assert.Equal(LargePayload, decompressed);
-        Assert.True(compressed.Length < LargePayload.Length, "Brotli should reduce repetitive data.");
+        Assert.Equal(_largePayload, decompressed);
+        Assert.True(compressed.Length < _largePayload.Length, "Brotli should reduce repetitive data.");
     }
 
     // -------------------------------------------------------------------------

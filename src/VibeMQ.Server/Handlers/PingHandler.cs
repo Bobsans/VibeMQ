@@ -16,7 +16,7 @@ public sealed class PingHandler : ICommandHandler {
     ) {
         await connection.SendMessageAsync(new ProtocolMessage {
             Id = message.Id,
-            Type = CommandType.Pong,
+            Type = CommandType.Pong
         }, cancellationToken).ConfigureAwait(false);
     }
 }

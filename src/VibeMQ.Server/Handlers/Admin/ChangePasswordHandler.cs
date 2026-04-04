@@ -33,7 +33,8 @@ public sealed partial class ChangePasswordHandler(IAuthRepository repository, IL
         }
 
         // Regular users can only change their own password
-        if (!connection.IsSuperuser && !string.Equals(username, connection.Username, StringComparison.OrdinalIgnoreCase)) {
+        if (!connection.IsSuperuser &&
+            (connection.Username is null || !string.Equals(username, connection.Username, StringComparison.OrdinalIgnoreCase))) {
             await connection.SendErrorAsync(message.Id, "NOT_AUTHORIZED", "You may only change your own password.", cancellationToken).ConfigureAwait(false);
             return;
         }
@@ -52,7 +53,7 @@ public sealed partial class ChangePasswordHandler(IAuthRepository repository, IL
         await connection.SendMessageAsync(new ProtocolMessage {
             Id = message.Id,
             Type = CommandType.AdminChangePassword,
-            Payload = JsonSerializer.SerializeToElement(new { username }, ProtocolSerializer.Options),
+            Payload = JsonSerializer.SerializeToElement(new { username }, ProtocolSerializer.Options)
         }, cancellationToken).ConfigureAwait(false);
     }
 

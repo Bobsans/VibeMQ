@@ -97,7 +97,7 @@ public sealed partial class QueueManager : IQueueManager {
     public async Task CreateQueueAsync(string name, QueueOptions? options = null, CancellationToken cancellationToken = default) {
         var queueOptions = options ?? new QueueOptions {
             Mode = _defaults.DefaultDeliveryMode,
-            MaxQueueSize = _defaults.MaxQueueSize,
+            MaxQueueSize = _defaults.MaxQueueSize
         };
 
         var queue = new MessageQueue(name, queueOptions);
@@ -208,6 +208,18 @@ public sealed partial class QueueManager : IQueueManager {
         return true;
     }
 
+    /// <summary>
+    /// Re-enqueues messages that were in-flight when a client disconnected.
+    /// Messages are already persisted — only the in-memory queue needs updating.
+    /// </summary>
+    public void RequeueMessages(IReadOnlyList<BrokerMessage> messages) {
+        foreach (var message in messages) {
+            if (_queues.TryGetValue(message.QueueName, out var queue)) {
+                queue.Enqueue(message);
+            }
+        }
+    }
+
     /// <inheritdoc />
     public async Task PublishAsync(BrokerMessage message, CancellationToken cancellationToken = default) {
         if (!_queues.TryGetValue(message.QueueName, out var queue)) {
@@ -222,7 +234,7 @@ public sealed partial class QueueManager : IQueueManager {
             }
         }
 
-        // Write-ahead: persist to storage BEFORE enqueueing in memory
+        // Write-ahead: persist to storage BEFORE enqueueing in memory (queue existence verified above)
         await _storageProvider.SaveMessageAsync(message, cancellationToken).ConfigureAwait(false);
 
         var accepted = queue.Enqueue(message);
@@ -461,7 +473,7 @@ public sealed partial class QueueManager : IQueueManager {
             Type = CommandType.Deliver,
             Queue = message.QueueName,
             Payload = message.Payload.ValueKind != JsonValueKind.Undefined ? message.Payload : null,
-            Headers = message.Headers.Count > 0 ? message.Headers : null,
+            Headers = message.Headers.Count > 0 ? message.Headers : null
         };
     }
 

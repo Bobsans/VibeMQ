@@ -9,10 +9,10 @@ namespace VibeMQ.Tests.Unit.Client;
 /// <summary>
 /// Fake IVibeMQClient that records SubscribeAsync&lt;TMessage, THandler&gt; calls for unit testing MessageHandlerHostedService.
 /// </summary>
-internal sealed class FakeRecordingVibeMQClient : IVibeMQClient {
+sealed class FakeRecordingVibeMQClient : IVibeMQClient {
     public bool IsConnected => false;
 
-    private readonly ConcurrentBag<(string QueueName, Type MessageType, Type HandlerType)> _subscriptions = new();
+    private readonly ConcurrentBag<(string QueueName, Type MessageType, Type HandlerType)> _subscriptions = [];
 
     public IReadOnlyList<(string QueueName, Type MessageType, Type HandlerType)> RecordedSubscriptions =>
         _subscriptions.ToList();
@@ -34,7 +34,7 @@ internal sealed class FakeRecordingVibeMQClient : IVibeMQClient {
     public Task CreateQueueAsync(string queueName, QueueOptions? options = null, CancellationToken cancellationToken = default) => Task.CompletedTask;
     public Task DeleteQueueAsync(string queueName, CancellationToken cancellationToken = default) => Task.CompletedTask;
     public Task<QueueInfo?> GetQueueInfoAsync(string queueName, CancellationToken cancellationToken = default) => Task.FromResult<QueueInfo?>(null);
-    public Task<IReadOnlyList<string>> ListQueuesAsync(CancellationToken cancellationToken = default) => Task.FromResult<IReadOnlyList<string>>(Array.Empty<string>());
+    public Task<IReadOnlyList<string>> ListQueuesAsync(CancellationToken cancellationToken = default) => Task.FromResult<IReadOnlyList<string>>([]);
 
     private sealed class NoOpSubscription : IAsyncDisposable {
         public ValueTask DisposeAsync() => ValueTask.CompletedTask;

@@ -17,7 +17,7 @@ var host = Host.CreateDefaultBuilder(args)
             options.Authorization = new AuthorizationOptions {
                 SuperuserUsername = "vibemq",
                 SuperuserPassword = "my-secret-password",
-                DatabasePath = "auth.db",
+                DatabasePath = "auth.db"
             };
             options.MaxConnections = 500;
             options.MaxMessageSize = 1_048_576; // 1 MB

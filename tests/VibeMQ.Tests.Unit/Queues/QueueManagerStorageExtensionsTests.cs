@@ -19,17 +19,17 @@ public sealed class QueueManagerStorageExtensionsTests {
                 new StoredQueue {
                     Name = "orders",
                     Options = new QueueOptions(),
-                    CreatedAt = DateTime.UtcNow,
-                },
+                    CreatedAt = DateTime.UtcNow
+                }
             ],
             RecoveredInFlight = [
                 new BrokerMessage {
                     Id = "inflight-1",
                     QueueName = "orders",
                     Payload = JsonSerializer.SerializeToElement(new { value = 42 }),
-                    Timestamp = DateTime.UtcNow,
-                },
-            ],
+                    Timestamp = DateTime.UtcNow
+                }
+            ]
         };
 
         var queueManager = CreateQueueManager(storage);
@@ -50,19 +50,19 @@ public sealed class QueueManagerStorageExtensionsTests {
             Id = "m1",
             QueueName = "bulk-queue",
             Payload = JsonSerializer.SerializeToElement("one"),
-            Timestamp = DateTime.UtcNow,
+            Timestamp = DateTime.UtcNow
         });
         await queueManager.PublishAsync(new BrokerMessage {
             Id = "m2",
             QueueName = "bulk-queue",
             Payload = JsonSerializer.SerializeToElement("two"),
-            Timestamp = DateTime.UtcNow,
+            Timestamp = DateTime.UtcNow
         });
 
         var ok = await queueManager.PurgeQueueAsync("bulk-queue");
 
         Assert.True(ok);
-        Assert.Equal(["m1", "m2"], storage.BulkRemovedIds.OrderBy(x => x).ToArray());
+        Assert.Equal(["m1", "m2"], [.. storage.BulkRemovedIds.OrderBy(x => x)]);
     }
 
     private static QueueManager CreateQueueManager(FakeStorageProvider storage) {
@@ -118,8 +118,8 @@ public sealed class QueueManagerStorageExtensionsTests {
             return Task.FromResult<IReadOnlyList<BrokerMessage>>(pending);
         }
 
-        public Task SaveQueueAsync(string name, QueueOptions options, CancellationToken cancellationToken = default) {
-            _queueOptions[name] = options;
+        public Task SaveQueueAsync(string name, QueueOptions queueOptions, CancellationToken cancellationToken = default) {
+            _queueOptions[name] = queueOptions;
             return Task.CompletedTask;
         }
 
@@ -136,7 +136,7 @@ public sealed class QueueManagerStorageExtensionsTests {
             var list = _queueOptions.Select(x => new StoredQueue {
                 Name = x.Key,
                 Options = x.Value,
-                CreatedAt = DateTime.UtcNow,
+                CreatedAt = DateTime.UtcNow
             }).ToArray();
             return Task.FromResult<IReadOnlyList<StoredQueue>>(list);
         }

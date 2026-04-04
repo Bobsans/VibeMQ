@@ -1,8 +1,8 @@
-using System.Text.Json.Serialization;
 using Microsoft.Extensions.Logging;
 using VibeMQ.Client;
 using VibeMQ.Configuration;
 using VibeMQ.Enums;
+using VibeMQ.Example.Client;
 
 // ============================================================
 //  VibeMQ Example Client
@@ -31,9 +31,9 @@ await using var client = await VibeMQClient.ConnectAsync("localhost", 2925, new 
     Password = "my-secret-password",
     ReconnectPolicy = new ReconnectPolicy {
         MaxAttempts = 5,
-        UseExponentialBackoff = true,
+        UseExponentialBackoff = true
     },
-    KeepAliveInterval = TimeSpan.FromSeconds(30),
+    KeepAliveInterval = TimeSpan.FromSeconds(30)
 }, logger);
 
 Console.WriteLine("Connected!");
@@ -44,25 +44,25 @@ Console.WriteLine("Creating queues with different delivery modes...");
 
 await client.CreateQueueAsync("notifications", new QueueOptions {
     Mode = DeliveryMode.RoundRobin,
-    MaxQueueSize = 1000,
+    MaxQueueSize = 1000
 });
 Console.WriteLine("  notifications (RoundRobin)");
 
 await client.CreateQueueAsync("alerts", new QueueOptions {
     Mode = DeliveryMode.FanOutWithAck,
-    MaxQueueSize = 5000,
+    MaxQueueSize = 5000
 });
 Console.WriteLine("  alerts (FanOutWithAck)");
 
 await client.CreateQueueAsync("broadcast", new QueueOptions {
     Mode = DeliveryMode.FanOutWithoutAck,
-    MaxQueueSize = 1000,
+    MaxQueueSize = 1000
 });
 Console.WriteLine("  broadcast (FanOutWithoutAck)");
 
 await client.CreateQueueAsync("jobs", new QueueOptions {
     Mode = DeliveryMode.PriorityBased,
-    MaxQueueSize = 2000,
+    MaxQueueSize = 2000
 });
 Console.WriteLine("  jobs (PriorityBased)");
 
@@ -109,7 +109,7 @@ Console.WriteLine("Publishing small messages to 'notifications' (RoundRobin)..."
 var smallNotifications = new[] {
     new Notification { Title = "Welcome", Body = "Connected to VibeMQ.", Priority = "low" },
     new Notification { Title = "Order #1234", Body = "Order shipped.", Priority = "normal" },
-    new Notification { Title = "System alert", Body = "CPU > 90%.", Priority = "high" },
+    new Notification { Title = "System alert", Body = "CPU > 90%.", Priority = "high" }
 };
 foreach (var n in smallNotifications) {
     await client.PublishAsync("notifications", n);
@@ -126,15 +126,15 @@ var alerts = new[] {
         Level = "Warning",
         Message = "Rate limit approaching for client 192.168.1.1",
         Timestamp = DateTime.UtcNow.ToString("O"),
-        Tags = new Dictionary<string, string> { ["env"] = "prod", ["region"] = "eu-west" },
+        Tags = new Dictionary<string, string> { ["env"] = "prod", ["region"] = "eu-west" }
     },
     new AlertEvent {
         Source = "database",
         Level = "Error",
         Message = "Connection pool exhausted; waiting for available connection.",
         Timestamp = DateTime.UtcNow.ToString("O"),
-        Tags = new Dictionary<string, string> { ["db"] = "primary" },
-    },
+        Tags = new Dictionary<string, string> { ["db"] = "primary" }
+    }
 };
 foreach (var a in alerts) {
     await client.PublishAsync("alerts", a);
@@ -147,7 +147,7 @@ Console.WriteLine();
 Console.WriteLine("Publishing to 'broadcast' (FanOutWithoutAck)...");
 await client.PublishAsync("broadcast", new BroadcastMessage {
     Channel = "system",
-    Text = "Server maintenance window: 02:00–04:00 UTC. Brief disconnects possible.",
+    Text = "Server maintenance window: 02:00–04:00 UTC. Brief disconnects possible."
 });
 Console.WriteLine("  Published: system broadcast");
 await Task.Delay(200);
@@ -166,7 +166,7 @@ var mediumPayload = new { data = new int[50], name = "batch-process", createdAt 
 await client.PublishAsync("jobs", new JobPayload {
     JobId = "job-2",
     JobType = "batch",
-    Payload = System.Text.Json.JsonSerializer.Serialize(mediumPayload),
+    Payload = System.Text.Json.JsonSerializer.Serialize(mediumPayload)
 }, new Dictionary<string, string> { ["priority"] = "Normal" });
 Console.WriteLine("  Published: job-2 (Normal, medium)");
 
@@ -175,7 +175,7 @@ var largeData = new string('x', 10_000);
 await client.PublishAsync("jobs", new JobPayload {
     JobId = "job-3",
     JobType = "bulk",
-    Payload = largeData,
+    Payload = largeData
 }, new Dictionary<string, string> { ["priority"] = "High" });
 Console.WriteLine("  Published: job-3 (High, large ~10KB)");
 
@@ -198,52 +198,3 @@ Console.WriteLine();
 Console.WriteLine("Disconnecting...");
 await client.DisconnectAsync();
 Console.WriteLine("Done.");
-
-// --- Message models ---
-
-public class Notification {
-    [JsonPropertyName("title")]
-    public string Title { get; set; } = "";
-
-    [JsonPropertyName("body")]
-    public string Body { get; set; } = "";
-
-    [JsonPropertyName("priority")]
-    public string Priority { get; set; } = "normal";
-}
-
-public class AlertEvent {
-    [JsonPropertyName("source")]
-    public string Source { get; set; } = "";
-
-    [JsonPropertyName("level")]
-    public string Level { get; set; } = "";
-
-    [JsonPropertyName("message")]
-    public string Message { get; set; } = "";
-
-    [JsonPropertyName("timestamp")]
-    public string Timestamp { get; set; } = "";
-
-    [JsonPropertyName("tags")]
-    public Dictionary<string, string>? Tags { get; set; }
-}
-
-public class BroadcastMessage {
-    [JsonPropertyName("channel")]
-    public string Channel { get; set; } = "";
-
-    [JsonPropertyName("text")]
-    public string? Text { get; set; }
-}
-
-public class JobPayload {
-    [JsonPropertyName("jobId")]
-    public string JobId { get; set; } = "";
-
-    [JsonPropertyName("jobType")]
-    public string JobType { get; set; } = "";
-
-    [JsonPropertyName("payload")]
-    public string? Payload { get; set; }
-}

@@ -22,5 +22,5 @@ public enum DeliveryMode {
     /// <summary>
     /// Delivers messages based on their priority level.
     /// </summary>
-    PriorityBased = 3,
+    PriorityBased = 3
 }

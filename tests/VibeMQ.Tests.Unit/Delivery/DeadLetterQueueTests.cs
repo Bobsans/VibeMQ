@@ -12,7 +12,7 @@ public class DeadLetterQueueTests {
         return new BrokerMessage {
             Id = id,
             QueueName = "test-queue",
-            Payload = JsonSerializer.SerializeToElement("test"),
+            Payload = JsonSerializer.SerializeToElement("test")
         };
     }
 

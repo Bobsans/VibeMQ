@@ -46,12 +46,6 @@ public static class MessageValidator {
     }
 
     private static bool IsValidQueueName(string name) {
-        foreach (var c in name) {
-            if (!char.IsLetterOrDigit(c) && c != '-' && c != '_' && c != '.') {
-                return false;
-            }
-        }
-
-        return name.Length > 0;
+        return !name.Any(c => !char.IsLetterOrDigit(c) && c != '-' && c != '_' && c != '.') && name.Length > 0;
     }
 }

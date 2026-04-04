@@ -53,8 +53,7 @@ public sealed class BrokerMetrics : IBrokerMetrics {
     public double AverageDeliveryLatencyMs {
         get {
             var count = Volatile.Read(ref _deliveryCount);
-
-            if (count == 0) {
+            if (count <= 0) {
                 return 0;
             }
 
@@ -121,7 +120,7 @@ public sealed class BrokerMetrics : IBrokerMetrics {
             MemoryUsageBytes = MemoryUsageBytes,
             AverageDeliveryLatencyMs = AverageDeliveryLatencyMs,
             Timestamp = DateTime.UtcNow,
-            Uptime = DateTime.UtcNow - _startedAt,
+            Uptime = DateTime.UtcNow - _startedAt
         };
     }
 }

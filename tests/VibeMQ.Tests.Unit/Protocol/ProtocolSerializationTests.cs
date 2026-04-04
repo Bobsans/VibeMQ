@@ -9,7 +9,7 @@ public class ProtocolSerializationTests {
         var original = new ProtocolMessage {
             Type = CommandType.Publish,
             Queue = "test-queue",
-            Headers = new Dictionary<string, string> { ["key"] = "value" },
+            Headers = new Dictionary<string, string> { ["key"] = "value" }
         };
 
         var json = JsonSerializer.Serialize(original, ProtocolSerializer.Options);
@@ -45,7 +45,7 @@ public class ProtocolSerializationTests {
         var message = new ProtocolMessage {
             Type = CommandType.Publish,
             Queue = "q",
-            Payload = payloadJson,
+            Payload = payloadJson
         };
 
         var json = JsonSerializer.Serialize(message, ProtocolSerializer.Options);
@@ -61,7 +61,7 @@ public class ProtocolSerializationTests {
         var message = new ProtocolMessage {
             Type = CommandType.Error,
             ErrorCode = "AUTH_FAILED",
-            ErrorMessage = "Invalid token",
+            ErrorMessage = "Invalid token"
         };
 
         var json = JsonSerializer.Serialize(message, ProtocolSerializer.Options);

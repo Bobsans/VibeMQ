@@ -6,6 +6,7 @@ using VibeMQ.Interfaces;
 using VibeMQ.Protocol;
 using VibeMQ.Server.Auth;
 using VibeMQ.Server.Connections;
+using VibeMQ.Server.Security;
 
 namespace VibeMQ.Server.Handlers;
 
@@ -28,6 +29,13 @@ public sealed partial class CreateQueueHandler(IQueueManager queueManager, IAuth
             return;
         }
 
+        var validationError = MessageValidator.Validate(message);
+        if (validationError is not null) {
+            await connection.SendErrorAsync(message.Id, "INVALID_QUEUE", validationError, cancellationToken)
+                .ConfigureAwait(false);
+            return;
+        }
+
         if (authz is not null && !await authz.IsAuthorizedAsync(connection, QueueOperation.CreateQueue, message.Queue).ConfigureAwait(false)) {
             await connection.SendErrorAsync(message.Id, "NOT_AUTHORIZED", "Access denied.", cancellationToken)
                 .ConfigureAwait(false);
@@ -46,7 +54,7 @@ public sealed partial class CreateQueueHandler(IQueueManager queueManager, IAuth
         await connection.SendMessageAsync(new ProtocolMessage {
             Id = message.Id,
             Type = CommandType.CreateQueue,
-            Queue = message.Queue,
+            Queue = message.Queue
         }, cancellationToken).ConfigureAwait(false);
     }
 

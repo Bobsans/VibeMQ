@@ -14,7 +14,7 @@ public class SecurityTests : IAsyncLifetime {
         var options = new ClientOptions {
             AuthToken = "wrong-token",
             CommandTimeout = TimeSpan.FromSeconds(3),
-            ReconnectPolicy = new ReconnectPolicy { MaxAttempts = 0 },
+            ReconnectPolicy = new ReconnectPolicy { MaxAttempts = 0 }
         };
 
         await Assert.ThrowsAsync<InvalidOperationException>(

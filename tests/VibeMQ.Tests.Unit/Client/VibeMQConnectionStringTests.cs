@@ -139,7 +139,7 @@ public sealed class VibeMQConnectionStringTests {
     public void TryParse_valid_returns_true() {
         Assert.True(VibeMQConnectionString.TryParse("vibemq://localhost:2925", out var r));
         Assert.NotNull(r);
-        Assert.Equal("localhost", r!.Host);
+        Assert.Equal("localhost", r.Host);
         Assert.Equal(2925, r.Port);
     }
 

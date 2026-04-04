@@ -51,7 +51,7 @@ public sealed record VibeMQConnectionString(string Host, int Port, ClientOptions
     }
 
     private static VibeMQConnectionString ParseUrl(string s) {
-        if (!Uri.TryCreate(s, UriKind.Absolute, out var uri) || uri.Scheme.Equals("vibemq", StringComparison.OrdinalIgnoreCase) == false) {
+        if (!Uri.TryCreate(s, UriKind.Absolute, out var uri) || !uri.Scheme.Equals("vibemq", StringComparison.OrdinalIgnoreCase)) {
             throw new VibeMQConnectionStringException("Invalid VibeMQ URL format. Expected: vibemq://[user:password@]host[:port][?query]", nameof(s));
         }
 
@@ -93,10 +93,12 @@ public sealed record VibeMQConnectionString(string Host, int Port, ClientOptions
             if (segment.Length == 0) {
                 continue;
             }
+
             var eq = segment.IndexOf('=');
             if (eq < 0) {
                 throw new VibeMQConnectionStringException($"Invalid query parameter: '{segment}'.");
             }
+
             var key = segment[..eq].Trim();
             var value = segment[(eq + 1)..].Trim();
             value = Uri.UnescapeDataString(value);
@@ -123,6 +125,7 @@ public sealed record VibeMQConnectionString(string Host, int Port, ClientOptions
                     } else {
                         throw new VibeMQConnectionStringException($"Invalid Port value: '{value}'.");
                     }
+
                     break;
                 case "username":
                     options.Username = v;
@@ -153,6 +156,7 @@ public sealed record VibeMQConnectionString(string Host, int Port, ClientOptions
                     while (i < s.Length && (s[i] != '"' || (i > 0 && s[i - 1] == '\\'))) {
                         i++;
                     }
+
                     if (i < s.Length) {
                         i++;
                     }
@@ -160,21 +164,25 @@ public sealed record VibeMQConnectionString(string Host, int Port, ClientOptions
                     i++;
                 }
             }
+
             var segment = s[start..i].Trim();
             i++;
             if (segment.Length == 0) {
                 continue;
             }
+
             var eq = segment.IndexOf('=');
             if (eq < 0) {
                 yield return (segment, null);
                 continue;
             }
+
             var key = segment[..eq].Trim();
             var value = segment[(eq + 1)..];
             if (value.Length >= 2 && value.StartsWith('"') && value.EndsWith('"')) {
                 value = value[1..^1].Replace("\\\"", "\"").Replace(@"\\", "\\").Replace("\\;", ";").Replace("\\=", "=");
             }
+
             yield return (key, value);
         }
     }
@@ -195,11 +203,13 @@ public sealed record VibeMQConnectionString(string Host, int Port, ClientOptions
                 if (int.TryParse(value, out var keepAliveSec) && keepAliveSec > 0) {
                     options.KeepAliveInterval = TimeSpan.FromSeconds(keepAliveSec);
                 }
+
                 break;
             case "commandtimeout":
                 if (int.TryParse(value, out var timeoutSec) && timeoutSec > 0) {
                     options.CommandTimeout = TimeSpan.FromSeconds(timeoutSec);
                 }
+
                 break;
             case "compression":
                 options.PreferredCompressions = ParseCompression(value);
@@ -208,21 +218,25 @@ public sealed record VibeMQConnectionString(string Host, int Port, ClientOptions
                 if (int.TryParse(value, out var threshold) && threshold >= 0) {
                     options.CompressionThreshold = threshold;
                 }
+
                 break;
             case "reconnectmaxattempts":
                 if (int.TryParse(value, out var maxAttempts)) {
                     options.ReconnectPolicy.MaxAttempts = maxAttempts <= 0 ? int.MaxValue : maxAttempts;
                 }
+
                 break;
             case "reconnectinitialdelay":
                 if (int.TryParse(value, out var initialSec) && initialSec >= 0) {
                     options.ReconnectPolicy.InitialDelay = TimeSpan.FromSeconds(initialSec);
                 }
+
                 break;
             case "reconnectmaxdelay":
                 if (int.TryParse(value, out var maxSec) && maxSec >= 0) {
                     options.ReconnectPolicy.MaxDelay = TimeSpan.FromSeconds(maxSec);
                 }
+
                 break;
             case "reconnectexponentialbackoff":
                 options.ReconnectPolicy.UseExponentialBackoff = ParseBool(value);
@@ -234,10 +248,11 @@ public sealed record VibeMQConnectionString(string Host, int Port, ClientOptions
                             QueueName = name,
                             Options = new QueueOptions(),
                             OnConflict = QueueConflictResolution.Ignore,
-                            FailOnProvisioningError = true,
+                            FailOnProvisioningError = true
                         });
                     }
                 }
+
                 break;
         }
     }
@@ -248,11 +263,12 @@ public sealed record VibeMQConnectionString(string Host, int Port, ClientOptions
             || v.Trim().Equals("yes", StringComparison.OrdinalIgnoreCase);
     }
 
-    private static IReadOnlyList<CompressionAlgorithm> ParseCompression(string value) {
+    private static List<CompressionAlgorithm> ParseCompression(string value) {
         var v = value.Trim();
         if (string.IsNullOrEmpty(v) || v.Equals("none", StringComparison.OrdinalIgnoreCase)) {
-            return Array.Empty<CompressionAlgorithm>();
+            return [];
         }
+
         var list = new List<CompressionAlgorithm>();
         foreach (var part in v.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)) {
             var algo = CompressorFactory.Parse(part);
@@ -260,6 +276,7 @@ public sealed record VibeMQConnectionString(string Host, int Port, ClientOptions
                 list.Add(algo.Value);
             }
         }
+
         return list;
     }
 }

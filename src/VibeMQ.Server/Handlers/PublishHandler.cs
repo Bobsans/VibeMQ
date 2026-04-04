@@ -4,6 +4,7 @@ using VibeMQ.Enums;
 using VibeMQ.Interfaces;
 using VibeMQ.Models;
 using VibeMQ.Protocol;
+using VibeMQ.Metrics;
 using VibeMQ.Server.Auth;
 using VibeMQ.Server.Connections;
 
@@ -12,7 +13,7 @@ namespace VibeMQ.Server.Handlers;
 /// <summary>
 /// Handles Publish commands: validates, stores the message, and routes it to subscribers.
 /// </summary>
-public sealed partial class PublishHandler(IQueueManager queueManager, IAuthorizationService? authz, ILogger<PublishHandler> logger) : ICommandHandler {
+public sealed partial class PublishHandler(IQueueManager queueManager, IAuthorizationService? authz, IBrokerMetrics metrics, ILogger<PublishHandler> logger) : ICommandHandler {
     private readonly ILogger<PublishHandler> _logger = logger;
 
     public CommandType CommandType => CommandType.Publish;
@@ -29,6 +30,7 @@ public sealed partial class PublishHandler(IQueueManager queueManager, IAuthoriz
         }
 
         if (authz is not null && !await authz.IsAuthorizedAsync(connection, QueueOperation.Publish, message.Queue).ConfigureAwait(false)) {
+            metrics.RecordError();
             await connection.SendErrorAsync(message.Id, "NOT_AUTHORIZED", "Access denied.", cancellationToken)
                 .ConfigureAwait(false);
             return;
@@ -44,7 +46,7 @@ public sealed partial class PublishHandler(IQueueManager queueManager, IAuthoriz
             QueueName = message.Queue,
             Payload = message.Payload ?? default(JsonElement),
             Headers = message.Headers ?? [],
-            Priority = priority,
+            Priority = priority
         };
 
         await queueManager.PublishAsync(brokerMessage, cancellationToken).ConfigureAwait(false);
@@ -54,7 +56,7 @@ public sealed partial class PublishHandler(IQueueManager queueManager, IAuthoriz
         await connection.SendMessageAsync(new ProtocolMessage {
             Id = message.Id,
             Type = CommandType.PublishAck,
-            Queue = message.Queue,
+            Queue = message.Queue
         }, cancellationToken).ConfigureAwait(false);
     }
 

@@ -11,5 +11,5 @@ public enum CompressionAlgorithm : byte {
     GZip = 1,
 
     /// <summary>Brotli compression via <see cref="System.IO.Compression.BrotliStream"/>.</summary>
-    Brotli = 2,
+    Brotli = 2
 }

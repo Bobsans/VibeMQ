@@ -17,8 +17,8 @@ sealed partial class ManagedVibeMQClient(IVibeMQClientFactory factory, ILogger<M
     private readonly ILogger<ManagedVibeMQClient> _logger = logger ?? NullLogger<ManagedVibeMQClient>.Instance;
     private readonly SemaphoreSlim _initLock = new(1, 1);
 
-    private VibeMQClient? _client;
-    private bool _disposed;
+    private volatile VibeMQClient? _client;
+    private volatile bool _disposed;
 
     /// <inheritdoc />
     public bool IsConnected => _client?.IsConnected ?? false;
@@ -78,13 +78,24 @@ sealed partial class ManagedVibeMQClient(IVibeMQClientFactory factory, ILogger<M
     private async Task<VibeMQClient> EnsureClientAsync(CancellationToken cancellationToken) {
         ObjectDisposedException.ThrowIf(_disposed, this);
 
+        // Fast path: client already initialized — no lock needed
+        var existing = _client;
+        if (existing is not null) {
+            return existing;
+        }
+
         await _initLock.WaitAsync(cancellationToken).ConfigureAwait(false);
         try {
             ObjectDisposedException.ThrowIf(_disposed, this);
             if (_client is not null) {
                 return _client;
             }
-            _client = await _factory.CreateAsync(cancellationToken).ConfigureAwait(false);
+            try {
+                _client = await _factory.CreateAsync(cancellationToken).ConfigureAwait(false);
+            } catch {
+                _client = null;
+                throw;
+            }
             return _client;
         } finally {
             _initLock.Release();

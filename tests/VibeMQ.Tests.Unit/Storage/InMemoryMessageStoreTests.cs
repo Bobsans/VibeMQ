@@ -12,7 +12,7 @@ public class InMemoryMessageStoreTests {
             Id = id,
             QueueName = queueName,
             Payload = JsonSerializer.SerializeToElement(new { value = 1 }),
-            Timestamp = timestamp ?? DateTime.UtcNow,
+            Timestamp = timestamp ?? DateTime.UtcNow
         };
     }
 

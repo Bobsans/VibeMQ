@@ -1,5 +1,6 @@
 ## Local/IDE
 .claude/
+.codex/
 
 ## .NET
 bin/

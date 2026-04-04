@@ -40,7 +40,7 @@ public sealed partial class QueueInfoHandler(IQueueManager queueManager, IAuthor
         var response = new ProtocolMessage {
             Id = message.Id,
             Type = CommandType.QueueInfo,
-            Queue = message.Queue,
+            Queue = message.Queue
         };
 
         if (info is not null) {

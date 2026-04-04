@@ -11,7 +11,7 @@ namespace VibeMQ.Benchmarks;
 /// </summary>
 [MemoryDiagnoser]
 [ThreadingDiagnoser]
-public class FramingBenchmarks {
+public class FramingBenchmarks : IDisposable {
     private readonly FrameWriter _writer = new();
     private ProtocolMessage _smallMessage = null!;
     private ProtocolMessage _largeMessage = null!;
@@ -21,7 +21,7 @@ public class FramingBenchmarks {
     public void Setup() {
         _smallMessage = new ProtocolMessage {
             Type = CommandType.Publish,
-            Queue = "test-queue",
+            Queue = "test-queue"
         };
 
         _largeMessage = new ProtocolMessage {
@@ -29,9 +29,9 @@ public class FramingBenchmarks {
             Queue = "test-queue",
             Payload = JsonSerializer.SerializeToElement(new {
                 Name = "benchmark-test",
-                Values = Enumerable.Range(0, 100).Select(i => new { Index = i, Data = new string('x', 100) }).ToArray(),
+                Values = Enumerable.Range(0, 100).Select(i => new { Index = i, Data = new string('x', 100) }).ToArray()
             }),
-            Headers = Enumerable.Range(0, 10).ToDictionary(i => $"header-{i}", i => $"value-{i}"),
+            Headers = Enumerable.Range(0, 10).ToDictionary(i => $"header-{i}", i => $"value-{i}")
         };
     }
 
@@ -43,6 +43,11 @@ public class FramingBenchmarks {
     [IterationCleanup]
     public void IterationCleanup() {
         _stream.Dispose();
+    }
+
+    public void Dispose() {
+        _stream.Dispose();
+        GC.SuppressFinalize(this);
     }
 
     [Benchmark(Baseline = true)]

@@ -1,4 +1,5 @@
 using System.Text.Json;
+using System.Globalization;
 using BenchmarkDotNet.Attributes;
 using VibeMQ.Configuration;
 using VibeMQ.Enums;
@@ -22,16 +23,16 @@ public class QueueBenchmarks {
     public void Setup() {
         _queue = new MessageQueue("bench-queue", new QueueOptions {
             Mode = DeliveryMode.RoundRobin,
-            MaxQueueSize = MessageCount + 1000,
+            MaxQueueSize = MessageCount + 1000
         });
 
         _messages = new BrokerMessage[MessageCount];
 
         for (var i = 0; i < MessageCount; i++) {
             _messages[i] = new BrokerMessage {
-                Id = i.ToString(),
+                Id = i.ToString(CultureInfo.InvariantCulture),
                 QueueName = "bench-queue",
-                Payload = JsonSerializer.SerializeToElement(new { Index = i }),
+                Payload = JsonSerializer.SerializeToElement(new { Index = i })
             };
         }
     }

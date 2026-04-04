@@ -1,11 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using VibeMQ.Client;
 using VibeMQ.Client.DependencyInjection;
-using VibeMQ.Configuration;
-using VibeMQ.Interfaces;
-using VibeMQ.Models;
 
 namespace VibeMQ.Tests.Unit.Client;
 

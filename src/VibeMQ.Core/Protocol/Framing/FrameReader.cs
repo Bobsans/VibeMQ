@@ -47,6 +47,11 @@ public static class FrameReader {
             throw new InvalidOperationException("Invalid frame: body length must be positive.");
         }
 
+        // Minimum body: version (1B) + type (1B) = 2 bytes
+        if (bodyLength < 2) {
+            throw new InvalidOperationException("Invalid frame: body too small for a valid protocol message.");
+        }
+
         if (bodyLength > maxMessageSize) {
             throw new InvalidOperationException(
                 $"Frame body size ({bodyLength} bytes) exceeds maximum allowed size ({maxMessageSize} bytes)."
@@ -79,6 +84,11 @@ public static class FrameReader {
             }
 
             var algorithm = (CompressionAlgorithm)compressionFlag;
+            if (!Enum.IsDefined(algorithm)) {
+                throw new InvalidOperationException(
+                    $"Unknown compression algorithm in frame flags: 0x{compressionFlag:X2}.");
+            }
+
             var compressor = CompressorFactory.Get(algorithm)
                 ?? throw new InvalidOperationException(
                     $"Unknown compression algorithm in frame flags: 0x{compressionFlag:X2}."

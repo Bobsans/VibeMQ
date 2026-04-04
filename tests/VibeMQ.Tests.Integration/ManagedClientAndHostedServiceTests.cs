@@ -1,7 +1,6 @@
 using System.Collections.Concurrent;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using VibeMQ.Client;
 using VibeMQ.Client.DependencyInjection;
 using VibeMQ.Interfaces;
@@ -29,7 +28,7 @@ public sealed class ManagedClientAndHostedServiceTests : IAsyncLifetime {
                 AuthToken = TestBrokerFixture.AuthToken,
 #pragma warning restore CS0618
                 CommandTimeout = TimeSpan.FromSeconds(5),
-                ReconnectPolicy = new ReconnectPolicy { MaxAttempts = 0 },
+                ReconnectPolicy = new ReconnectPolicy { MaxAttempts = 0 }
             };
         });
 
@@ -62,7 +61,7 @@ public sealed class ManagedClientAndHostedServiceTests : IAsyncLifetime {
                 AuthToken = TestBrokerFixture.AuthToken,
 #pragma warning restore CS0618
                 CommandTimeout = TimeSpan.FromSeconds(5),
-                ReconnectPolicy = new ReconnectPolicy { MaxAttempts = 0 },
+                ReconnectPolicy = new ReconnectPolicy { MaxAttempts = 0 }
             };
         });
         services.AddMessageHandler<IntegrationDiMessage, IntegrationDiHandler>();
@@ -101,26 +100,14 @@ public sealed class IntegrationDiMessage {
     public string? Text { get; set; }
 }
 
-internal sealed class IntegrationMessageSink {
-    private readonly ConcurrentBag<IntegrationDiMessage> _received;
-
-    public IntegrationMessageSink(ConcurrentBag<IntegrationDiMessage> received) {
-        _received = received;
-    }
-
-    public void Add(IntegrationDiMessage message) => _received.Add(message);
+sealed class IntegrationMessageSink(ConcurrentBag<IntegrationDiMessage> received) {
+    public void Add(IntegrationDiMessage message) => received.Add(message);
 }
 
-[VibeMQ.Attributes.Queue("integration-di-queue")]
-internal sealed class IntegrationDiHandler : IMessageHandler<IntegrationDiMessage> {
-    private readonly IntegrationMessageSink _sink;
-
-    public IntegrationDiHandler(IntegrationMessageSink sink) {
-        _sink = sink;
-    }
-
+[Attributes.Queue("integration-di-queue")]
+sealed class IntegrationDiHandler(IntegrationMessageSink sink) : IMessageHandler<IntegrationDiMessage> {
     public Task HandleAsync(IntegrationDiMessage message, CancellationToken cancellationToken) {
-        _sink.Add(message);
+        sink.Add(message);
         return Task.CompletedTask;
     }
 }

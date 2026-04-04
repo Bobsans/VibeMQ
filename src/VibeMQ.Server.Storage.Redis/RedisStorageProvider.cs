@@ -12,15 +12,16 @@ namespace VibeMQ.Server.Storage.Redis;
 /// Redis-backed implementation of <see cref="IStorageProvider"/>.
 /// Uses LIST for pending message order, HASH for message/queue/DLQ data.
 /// </summary>
-public sealed class RedisStorageProvider : IStorageProvider, IInFlightMessageStorage, IBulkMessageStorage {
-    private readonly RedisStorageOptions _options;
-    private readonly RedisStorageConnectionFactory _connectionFactory;
-    private readonly ILogger<RedisStorageProvider> _logger;
+public sealed class RedisStorageProvider(
+    RedisStorageOptions options,
+    RedisStorageConnectionFactory connectionFactory,
+    ILogger<RedisStorageProvider> logger
+) : IStorageProvider, IInFlightMessageStorage, IBulkMessageStorage {
     private volatile bool _initialized;
 
     private static readonly JsonSerializerOptions _jsonOptions = new() {
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-        WriteIndented = false,
+        WriteIndented = false
     };
 
     // Atomic save: HSET message fields + RPUSH to a pending list in one round-trip.
@@ -143,18 +144,9 @@ public sealed class RedisStorageProvider : IStorageProvider, IInFlightMessageSto
         return #ARGV - 1
     ";
 
-    public RedisStorageProvider(
-        RedisStorageOptions options,
-        RedisStorageConnectionFactory connectionFactory,
-        ILogger<RedisStorageProvider> logger) {
-        _options = options;
-        _connectionFactory = connectionFactory;
-        _logger = logger;
-    }
+    private IDatabase Db => connectionFactory.GetConnection().GetDatabase(options.Database);
 
-    private IDatabase Db => _connectionFactory.GetConnection().GetDatabase(_options.Database);
-
-    private string Q(string key) => $"{_options.KeyPrefix}:{key}";
+    private string Q(string key) => $"{options.KeyPrefix}:{key}";
     private string QueueMeta(string name) => Q($"q:{name}:meta");
     private string QueuePending(string name) => Q($"q:{name}:pending");
     private string MessageKey(string id) => Q($"m:{id}");
@@ -166,8 +158,8 @@ public sealed class RedisStorageProvider : IStorageProvider, IInFlightMessageSto
     /// <inheritdoc />
     public Task InitializeAsync(CancellationToken cancellationToken = default) {
         _initialized = true;
-        _logger.LogInformation("Redis storage initialized (prefix: {Prefix}, database: {Database})",
-            _options.KeyPrefix, _options.Database);
+        logger.LogInformation("Redis storage initialized (prefix: {Prefix}, database: {Database})",
+            options.KeyPrefix, options.Database);
         return Task.CompletedTask;
     }
 
@@ -182,7 +174,7 @@ public sealed class RedisStorageProvider : IStorageProvider, IInFlightMessageSto
             await db.PingAsync().ConfigureAwait(false);
             return true;
         } catch (Exception ex) {
-            _logger.LogWarning(ex, "Redis availability check failed.");
+            logger.LogWarning(ex, "Redis availability check failed.");
             return false;
         }
     }
@@ -218,6 +210,7 @@ public sealed class RedisStorageProvider : IStorageProvider, IInFlightMessageSto
                 [msgKey, pendingKey, InFlightDueKey()],
                 MessageToRedisValues(message)));
         }
+
         batch.Execute();
         await Task.WhenAll(tasks).ConfigureAwait(false);
     }
@@ -227,10 +220,7 @@ public sealed class RedisStorageProvider : IStorageProvider, IInFlightMessageSto
         var db = Db;
         var msgKey = MessageKey(id);
         var entries = await db.HashGetAllAsync(msgKey).ConfigureAwait(false);
-        if (entries.Length == 0) {
-            return null;
-        }
-        return HashEntriesToBrokerMessage(entries);
+        return entries.Length == 0 ? null : HashEntriesToBrokerMessage(entries);
     }
 
     /// <inheritdoc />
@@ -240,7 +230,7 @@ public sealed class RedisStorageProvider : IStorageProvider, IInFlightMessageSto
         var result = await db.ScriptEvaluateAsync(
             REMOVE_MESSAGE_LUA,
             [msgKey],
-            [id, _options.KeyPrefix]).ConfigureAwait(false);
+            [id, options.KeyPrefix]).ConfigureAwait(false);
         return result.Resp2Type == ResultType.Integer && (long)result! == 1;
     }
 
@@ -248,7 +238,7 @@ public sealed class RedisStorageProvider : IStorageProvider, IInFlightMessageSto
     public async Task<IReadOnlyList<BrokerMessage>> GetPendingMessagesAsync(string queueName, CancellationToken cancellationToken = default) {
         var db = Db;
         var pendingKey = QueuePending(queueName);
-        var ids = await db.ListRangeAsync(pendingKey, 0).ConfigureAwait(false);
+        var ids = await db.ListRangeAsync(pendingKey).ConfigureAwait(false);
         if (ids.Length == 0) {
             return [];
         }
@@ -259,6 +249,7 @@ public sealed class RedisStorageProvider : IStorageProvider, IInFlightMessageSto
         for (var i = 0; i < ids.Length; i++) {
             getTasks[i] = batch.HashGetAllAsync(MessageKey(ids[i]!));
         }
+
         batch.Execute();
         var result = new List<BrokerMessage>(ids.Length);
         foreach (var entries in await Task.WhenAll(getTasks).ConfigureAwait(false)) {
@@ -266,23 +257,24 @@ public sealed class RedisStorageProvider : IStorageProvider, IInFlightMessageSto
                 result.Add(HashEntriesToBrokerMessage(entries));
             }
         }
+
         return result;
     }
 
     // --- Queues ---
 
     /// <inheritdoc />
-    public async Task SaveQueueAsync(string name, QueueOptions options, CancellationToken cancellationToken = default) {
+    public async Task SaveQueueAsync(string name, QueueOptions queueOptions, CancellationToken cancellationToken = default) {
         var db = Db;
         var metaKey = QueueMeta(name);
         var exists = await db.KeyExistsAsync(metaKey).ConfigureAwait(false);
 
         await db.SetAddAsync(QueuesSetKey(), name).ConfigureAwait(false);
         if (exists) {
-            await db.HashSetAsync(metaKey, "options_json", JsonSerializer.Serialize(options, _jsonOptions)).ConfigureAwait(false);
+            await db.HashSetAsync(metaKey, "options_json", JsonSerializer.Serialize(queueOptions, _jsonOptions)).ConfigureAwait(false);
         } else {
             await db.HashSetAsync(metaKey, [
-                new HashEntry("options_json", JsonSerializer.Serialize(options, _jsonOptions)),
+                new HashEntry("options_json", JsonSerializer.Serialize(queueOptions, _jsonOptions)),
                 new HashEntry("created_at", DateTime.UtcNow.ToString("O"))
             ]).ConfigureAwait(false);
         }
@@ -294,7 +286,7 @@ public sealed class RedisStorageProvider : IStorageProvider, IInFlightMessageSto
         await db.ScriptEvaluateAsync(
             REMOVE_QUEUE_LUA,
             [QueueMeta(name), QueuePending(name), QueuesSetKey(), InFlightDueKey()],
-            [_options.KeyPrefix, name]).ConfigureAwait(false);
+            [options.KeyPrefix, name]).ConfigureAwait(false);
     }
 
     /// <inheritdoc />
@@ -310,6 +302,7 @@ public sealed class RedisStorageProvider : IStorageProvider, IInFlightMessageSto
         for (var i = 0; i < names.Length; i++) {
             getTasks[i] = batch.HashGetAllAsync(QueueMeta(names[i]!));
         }
+
         batch.Execute();
 
         var allEntries = await Task.WhenAll(getTasks).ConfigureAwait(false);
@@ -318,19 +311,22 @@ public sealed class RedisStorageProvider : IStorageProvider, IInFlightMessageSto
             if (allEntries[i].Length == 0) {
                 continue;
             }
+
             var dict = allEntries[i].ToDictionary(x => x.Name.ToString(), x => x.Value);
             var optionsJson = dict.GetValueOrDefault("options_json");
             var createdAtStr = dict.GetValueOrDefault("created_at");
             if (optionsJson.IsNullOrEmpty || createdAtStr.IsNullOrEmpty) {
                 continue;
             }
-            var options = JsonSerializer.Deserialize<QueueOptions>(optionsJson.ToString(), _jsonOptions) ?? new QueueOptions();
+
+            var queueOptions = JsonSerializer.Deserialize<QueueOptions>(optionsJson.ToString(), _jsonOptions) ?? new QueueOptions();
             result.Add(new StoredQueue {
                 Name = names[i]!,
-                Options = options,
-                CreatedAt = DateTime.Parse(createdAtStr.ToString(), System.Globalization.CultureInfo.InvariantCulture),
+                Options = queueOptions,
+                CreatedAt = DateTime.Parse(createdAtStr.ToString(), System.Globalization.CultureInfo.InvariantCulture)
             });
         }
+
         return result;
     }
 
@@ -354,6 +350,7 @@ public sealed class RedisStorageProvider : IStorageProvider, IInFlightMessageSto
         if (count <= 0) {
             return [];
         }
+
         var db = Db;
         // DLQ list: LPUSH adds newest at head, so tail is oldest. LRANGE -count -1 = oldest first.
         var ids = await db.ListRangeAsync(DlqListKey(), -count).ConfigureAwait(false);
@@ -366,6 +363,7 @@ public sealed class RedisStorageProvider : IStorageProvider, IInFlightMessageSto
         for (var i = 0; i < ids.Length; i++) {
             getTasks[i] = batch.HashGetAllAsync(DlqMessageKey(ids[i]!));
         }
+
         batch.Execute();
 
         var allEntries = await Task.WhenAll(getTasks).ConfigureAwait(false);
@@ -374,6 +372,7 @@ public sealed class RedisStorageProvider : IStorageProvider, IInFlightMessageSto
             if (allEntries[i].Length == 0) {
                 continue;
             }
+
             var dict = allEntries[i].ToDictionary(x => x.Name.ToString(), x => x.Value);
             var messageJson = dict.GetValueOrDefault("message_json").ToString();
             var reason = (FailureReason)GetInt(dict, "reason", (int)FailureReason.MaxRetriesExceeded);
@@ -381,13 +380,15 @@ public sealed class RedisStorageProvider : IStorageProvider, IInFlightMessageSto
             if (string.IsNullOrEmpty(messageJson) || string.IsNullOrEmpty(failedAtStr)) {
                 continue;
             }
+
             var originalMessage = JsonSerializer.Deserialize<BrokerMessage>(messageJson, _jsonOptions)!;
             result.Add(new DeadLetteredMessage {
                 OriginalMessage = originalMessage,
                 Reason = reason,
-                FailedAt = DateTime.Parse(failedAtStr, System.Globalization.CultureInfo.InvariantCulture),
+                FailedAt = DateTime.Parse(failedAtStr, System.Globalization.CultureInfo.InvariantCulture)
             });
         }
+
         return result;
     }
 
@@ -444,7 +445,7 @@ public sealed class RedisStorageProvider : IStorageProvider, IInFlightMessageSto
         await db.ScriptEvaluateAsync(
             REQUEUE_INFLIGHT_LUA,
             [MessageKey(messageId), InFlightDueKey()],
-            [messageId, _options.KeyPrefix]
+            [messageId, options.KeyPrefix]
         ).ConfigureAwait(false);
     }
 
@@ -464,7 +465,7 @@ public sealed class RedisStorageProvider : IStorageProvider, IInFlightMessageSto
         var result = await db.ScriptEvaluateAsync(
             RECOVER_INFLIGHT_LUA,
             [InFlightDueKey()],
-            [_options.KeyPrefix]
+            [options.KeyPrefix]
         ).ConfigureAwait(false);
 
         if (result.Resp2Type != ResultType.Array || result.IsNull) {
@@ -491,6 +492,7 @@ public sealed class RedisStorageProvider : IStorageProvider, IInFlightMessageSto
         for (var i = 0; i < messageIds.Length; i++) {
             getTasks[i] = batch.HashGetAllAsync(MessageKey(messageIds[i]));
         }
+
         batch.Execute();
 
         var allEntries = await Task.WhenAll(getTasks).ConfigureAwait(false);
@@ -514,10 +516,11 @@ public sealed class RedisStorageProvider : IStorageProvider, IInFlightMessageSto
 
         var db = Db;
         var args = new RedisValue[messageIds.Count + 1];
-        args[0] = _options.KeyPrefix;
+        args[0] = options.KeyPrefix;
         for (var i = 0; i < messageIds.Count; i++) {
             args[i + 1] = messageIds[i];
         }
+
         await db.ScriptEvaluateAsync(
             REMOVE_MESSAGES_BULK_LUA,
             [InFlightDueKey()],
@@ -528,7 +531,7 @@ public sealed class RedisStorageProvider : IStorageProvider, IInFlightMessageSto
     /// <inheritdoc />
     public async ValueTask DisposeAsync() {
         _initialized = false;
-        _connectionFactory.DisposeConnection();
+        connectionFactory.DisposeConnection();
         await ValueTask.CompletedTask.ConfigureAwait(false);
     }
 
@@ -562,10 +565,10 @@ public sealed class RedisStorageProvider : IStorageProvider, IInFlightMessageSto
             QueueName = dict.GetValueOrDefault("queue_name").ToString(),
             Payload = !string.IsNullOrEmpty(payloadJson) ? JsonSerializer.Deserialize<JsonElement>(payloadJson, _jsonOptions) : default,
             Timestamp = DateTime.Parse(dict.GetValueOrDefault("timestamp").ToString(), System.Globalization.CultureInfo.InvariantCulture),
-            Headers = !string.IsNullOrEmpty(headersJson) ? JsonSerializer.Deserialize<Dictionary<string, string>>(headersJson, _jsonOptions) ?? new Dictionary<string, string>() : new Dictionary<string, string>(),
+            Headers = !string.IsNullOrEmpty(headersJson) ? JsonSerializer.Deserialize<Dictionary<string, string>>(headersJson, _jsonOptions) ?? [] : [],
             Version = GetInt(dict, "version", 1),
             Priority = (MessagePriority)GetInt(dict, "priority", (int)MessagePriority.Normal),
-            DeliveryAttempts = GetInt(dict, "delivery_attempts", 0),
+            DeliveryAttempts = GetInt(dict, "delivery_attempts", 0)
         };
     }
 
@@ -574,6 +577,7 @@ public sealed class RedisStorageProvider : IStorageProvider, IInFlightMessageSto
         if (v.IsNullOrEmpty) {
             return defaultValue;
         }
+
         return int.TryParse(v.ToString(), out var n) ? n : defaultValue;
     }
 

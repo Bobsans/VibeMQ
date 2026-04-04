@@ -11,58 +11,49 @@ namespace VibeMQ.Health;
 /// Lightweight HTTP health check server based on <see cref="HttpListener"/>.
 /// Exposes /health/ and /metrics/ endpoints. No dependency on ASP.NET Core.
 /// </summary>
-public sealed partial class HealthCheckServer : IAsyncDisposable {
+/// <remarks>
+/// Creates a new health check server.
+/// </remarks>
+/// <param name="options">Health check configuration.</param>
+/// <param name="logger">Logger instance.</param>
+/// <param name="statusProvider">Delegate that returns current broker health status.</param>
+/// <param name="metricsProvider">Optional delegate that returns a metrics snapshot.</param>
+public sealed partial class HealthCheckServer(
+    HealthCheckOptions options,
+    ILogger<HealthCheckServer> logger,
+    Func<HealthStatus> statusProvider,
+    Func<MetricsSnapshot>? metricsProvider = null
+) : IAsyncDisposable {
     private static readonly JsonSerializerOptions _jsonOptions = new() {
         PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower,
         DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
-        WriteIndented = true,
+        WriteIndented = true
     };
+    // LoggerMessage source generation for net8 requires an ILogger field/property on the type.
+    private readonly ILogger<HealthCheckServer> _logger = logger;
 
-    private readonly HealthCheckOptions _options;
-    private readonly ILogger<HealthCheckServer> _logger;
-    private readonly Func<HealthStatus> _statusProvider;
-    private readonly Func<MetricsSnapshot>? _metricsProvider;
     private HttpListener? _listener;
     private CancellationTokenSource? _cts;
     private Task? _listenTask;
 
     /// <summary>
-    /// Creates a new health check server.
-    /// </summary>
-    /// <param name="options">Health check configuration.</param>
-    /// <param name="logger">Logger instance.</param>
-    /// <param name="statusProvider">Delegate that returns current broker health status.</param>
-    /// <param name="metricsProvider">Optional delegate that returns a metrics snapshot.</param>
-    public HealthCheckServer(
-        HealthCheckOptions options,
-        ILogger<HealthCheckServer> logger,
-        Func<HealthStatus> statusProvider,
-        Func<MetricsSnapshot>? metricsProvider = null
-    ) {
-        _options = options;
-        _logger = logger;
-        _statusProvider = statusProvider;
-        _metricsProvider = metricsProvider;
-    }
-
-    /// <summary>
     /// Starts listening for HTTP requests.
     /// </summary>
     public void Start() {
-        if (!_options.Enabled) {
+        if (!options.Enabled) {
             LogDisabled();
             return;
         }
 
         _listener = new HttpListener();
-        _listener.Prefixes.Add($"http://+:{_options.Port}/health/");
-        _listener.Prefixes.Add($"http://+:{_options.Port}/metrics/");
+        _listener.Prefixes.Add($"http://+:{options.Port}/health/");
+        _listener.Prefixes.Add($"http://+:{options.Port}/metrics/");
         _listener.Start();
 
         _cts = new CancellationTokenSource();
         _listenTask = AcceptLoopAsync(_cts.Token);
 
-        LogStarted(_options.Port);
+        LogStarted(options.Port);
     }
 
     private async Task AcceptLoopAsync(CancellationToken cancellationToken) {
@@ -82,7 +73,7 @@ public sealed partial class HealthCheckServer : IAsyncDisposable {
 
     private async Task HandleRequestAsync(HttpListenerContext context) {
         try {
-            var path = context.Request.Url?.AbsolutePath?.TrimEnd('/') ?? string.Empty;
+            var path = context.Request.Url?.AbsolutePath.TrimEnd('/') ?? string.Empty;
 
             switch (path) {
                 case "/health":
@@ -111,27 +102,31 @@ public sealed partial class HealthCheckServer : IAsyncDisposable {
     }
 
     private async Task HandleHealthAsync(HttpListenerContext context) {
-        var status = _statusProvider();
-        var (statusCode, contentType, writeBody) = ProcessRequest("/health", status, _metricsProvider?.Invoke());
+        var status = statusProvider();
+        var (statusCode, contentType, writeBody) = ProcessRequest("/health", status, metricsProvider?.Invoke());
         context.Response.StatusCode = statusCode;
         if (contentType is not null) {
             context.Response.ContentType = contentType;
         }
+
         if (writeBody is not null) {
             await writeBody(context.Response.OutputStream).ConfigureAwait(false);
         }
+
         context.Response.Close();
     }
 
     private async Task HandleMetricsAsync(HttpListenerContext context) {
-        var (statusCode, contentType, writeBody) = ProcessRequest("/metrics", _statusProvider(), _metricsProvider?.Invoke());
+        var (statusCode, contentType, writeBody) = ProcessRequest("/metrics", statusProvider(), metricsProvider?.Invoke());
         context.Response.StatusCode = statusCode;
         if (contentType is not null) {
             context.Response.ContentType = contentType;
         }
+
         if (writeBody is not null) {
             await writeBody(context.Response.OutputStream).ConfigureAwait(false);
         }
+
         context.Response.Close();
     }
 
@@ -155,6 +150,7 @@ public sealed partial class HealthCheckServer : IAsyncDisposable {
                 if (metricsSnapshot is null) {
                     return (404, null, null);
                 }
+
                 return (
                     200,
                     "application/json",

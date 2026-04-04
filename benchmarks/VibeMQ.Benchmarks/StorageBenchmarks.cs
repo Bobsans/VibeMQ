@@ -42,7 +42,7 @@ public class StorageBenchmarks {
         _storage.InitializeAsync().GetAwaiter().GetResult();
         _storage.SaveQueueAsync(_queueName, new QueueOptions {
             Mode = DeliveryMode.RoundRobin,
-            MaxQueueSize = MessageCount + 1000,
+            MaxQueueSize = MessageCount + 1000
         }).GetAwaiter().GetResult();
 
         _messages = new BrokerMessage[MessageCount];
@@ -51,7 +51,7 @@ public class StorageBenchmarks {
                 Id = Guid.NewGuid().ToString("N"),
                 QueueName = _queueName,
                 Payload = JsonSerializer.SerializeToElement(new { Index = i }),
-                Timestamp = DateTime.UtcNow,
+                Timestamp = DateTime.UtcNow
             };
         }
     }
@@ -74,7 +74,7 @@ public class StorageBenchmarks {
             "InMemory" => new InMemoryStorageProvider(),
             "Sqlite" => CreateSqliteProvider(),
             "Redis" => CreateRedisProvider(),
-            _ => throw new NotSupportedException($"Storage kind: {StorageKind}"),
+            _ => throw new NotSupportedException($"Storage kind: {StorageKind}")
         };
     }
 
@@ -83,13 +83,13 @@ public class StorageBenchmarks {
         var options = new SqliteStorageOptions {
             DatabasePath = _sqlitePath,
             EnableWal = true,
-            BusyTimeoutMs = 5000,
+            BusyTimeoutMs = 5000
         };
         var logger = NullLogger<SqliteStorageProvider>.Instance;
         return new SqliteStorageProvider(options, logger);
     }
 
-    private IStorageProvider CreateRedisProvider() {
+    private static IStorageProvider CreateRedisProvider() {
         var options = new RedisStorageOptions {
             ConnectionString = "localhost:6379",
             KeyPrefix = "vibemq:bench",
@@ -107,7 +107,7 @@ public class StorageBenchmarks {
         await _storage.RemoveQueueAsync(_queueName).ConfigureAwait(false);
         await _storage.SaveQueueAsync(_queueName, new QueueOptions {
             Mode = DeliveryMode.RoundRobin,
-            MaxQueueSize = MessageCount + 1000,
+            MaxQueueSize = MessageCount + 1000
         }).ConfigureAwait(false);
 
         for (var i = 0; i < MessageCount; i++) {
@@ -121,7 +121,7 @@ public class StorageBenchmarks {
         await _storage.RemoveQueueAsync(_queueName).ConfigureAwait(false);
         await _storage.SaveQueueAsync(_queueName, new QueueOptions {
             Mode = DeliveryMode.RoundRobin,
-            MaxQueueSize = MessageCount + 1000,
+            MaxQueueSize = MessageCount + 1000
         }).ConfigureAwait(false);
 
         await _storage.SaveMessagesAsync(_messages).ConfigureAwait(false);
@@ -133,7 +133,7 @@ public class StorageBenchmarks {
         await _storage.RemoveQueueAsync(_queueName).ConfigureAwait(false);
         await _storage.SaveQueueAsync(_queueName, new QueueOptions {
             Mode = DeliveryMode.RoundRobin,
-            MaxQueueSize = MessageCount + 1000,
+            MaxQueueSize = MessageCount + 1000
         }).ConfigureAwait(false);
         await _storage.SaveMessagesAsync(_messages).ConfigureAwait(false);
 
@@ -146,7 +146,7 @@ public class StorageBenchmarks {
         await _storage.RemoveQueueAsync(_queueName).ConfigureAwait(false);
         await _storage.SaveQueueAsync(_queueName, new QueueOptions {
             Mode = DeliveryMode.RoundRobin,
-            MaxQueueSize = MessageCount + 1000,
+            MaxQueueSize = MessageCount + 1000
         }).ConfigureAwait(false);
 
         await _storage.SaveMessagesAsync(_messages).ConfigureAwait(false);
@@ -159,7 +159,7 @@ public class StorageBenchmarks {
         await _storage.RemoveQueueAsync(_queueName).ConfigureAwait(false);
         await _storage.SaveQueueAsync(_queueName, new QueueOptions {
             Mode = DeliveryMode.RoundRobin,
-            MaxQueueSize = MessageCount + 1000,
+            MaxQueueSize = MessageCount + 1000
         }).ConfigureAwait(false);
         await _storage.SaveMessagesAsync(_messages).ConfigureAwait(false);
 

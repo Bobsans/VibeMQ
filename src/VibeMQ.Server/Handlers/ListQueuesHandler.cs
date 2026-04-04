@@ -48,7 +48,7 @@ public sealed partial class ListQueuesHandler(IQueueManager queueManager, IAutho
         await connection.SendMessageAsync(new ProtocolMessage {
             Id = message.Id,
             Type = CommandType.ListQueues,
-            Payload = JsonSerializer.SerializeToElement(visible, ProtocolSerializer.Options),
+            Payload = JsonSerializer.SerializeToElement(visible, ProtocolSerializer.Options)
         }, cancellationToken).ConfigureAwait(false);
     }
 

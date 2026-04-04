@@ -57,7 +57,7 @@ public sealed partial class AckTracker(
     public void Track(BrokerMessage message, string clientId, int maxRetryAttempts = 3) {
         var delivery = new PendingDelivery(message, clientId) {
             NextRetryAt = DateTime.UtcNow.Add(_ackTimeout),
-            MaxRetryAttempts = maxRetryAttempts,
+            MaxRetryAttempts = maxRetryAttempts
         };
 
         _pending.TryAdd(message.Id, delivery);
@@ -82,6 +82,19 @@ public sealed partial class AckTracker(
     /// </summary>
     public bool IsTracked(string messageId) {
         return _pending.ContainsKey(messageId);
+    }
+
+    /// <summary>
+    /// Removes all pending deliveries for a disconnected client and returns the messages for requeueing.
+    /// </summary>
+    public IReadOnlyList<BrokerMessage> RemoveAllForClient(string clientId) {
+        var messages = new List<BrokerMessage>();
+        foreach (var (messageId, delivery) in _pending) {
+            if (delivery.ClientId == clientId && _pending.TryRemove(messageId, out _)) {
+                messages.Add(delivery.Message);
+            }
+        }
+        return messages;
     }
 
     private async Task MonitorLoopAsync(CancellationToken cancellationToken) {

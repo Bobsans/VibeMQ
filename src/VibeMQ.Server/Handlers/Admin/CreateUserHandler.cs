@@ -36,6 +36,11 @@ public sealed partial class CreateUserHandler(IAuthRepository repository, ILogge
             return;
         }
 
+        if (!IsValidUsername(username)) {
+            await connection.SendErrorAsync(message.Id, "INVALID_PAYLOAD", "Username must be 1-64 characters: alphanumeric, hyphens, underscores, dots.", cancellationToken).ConfigureAwait(false);
+            return;
+        }
+
         var existing = await repository.FindUserAsync(username, cancellationToken).ConfigureAwait(false);
         if (existing is not null) {
             await connection.SendErrorAsync(message.Id, "USER_EXISTS", $"User '{username}' already exists.", cancellationToken).ConfigureAwait(false);
@@ -48,7 +53,7 @@ public sealed partial class CreateUserHandler(IAuthRepository repository, ILogge
             PasswordHash = BCrypt.Net.BCrypt.HashPassword(password, workFactor: 12),
             IsSuperuser = false,
             CreatedAt = now,
-            UpdatedAt = now,
+            UpdatedAt = now
         };
 
         await repository.CreateUserAsync(record, cancellationToken).ConfigureAwait(false);
@@ -58,8 +63,12 @@ public sealed partial class CreateUserHandler(IAuthRepository repository, ILogge
         await connection.SendMessageAsync(new ProtocolMessage {
             Id = message.Id,
             Type = CommandType.AdminCreateUser,
-            Payload = JsonSerializer.SerializeToElement(new { username }, ProtocolSerializer.Options),
+            Payload = JsonSerializer.SerializeToElement(new { username }, ProtocolSerializer.Options)
         }, cancellationToken).ConfigureAwait(false);
+    }
+
+    private static bool IsValidUsername(string name) {
+        return name.Length is not (0 or > 64) && name.All(c => char.IsLetterOrDigit(c) || c == '-' || c == '_' || c == '.');
     }
 
     [LoggerMessage(Level = LogLevel.Information, Message = "User '{username}' created by '{actor}'.")]

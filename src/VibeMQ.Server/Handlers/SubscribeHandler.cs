@@ -45,7 +45,7 @@ public sealed partial class SubscribeHandler(IQueueManager queueManager, IAuthor
         await connection.SendMessageAsync(new ProtocolMessage {
             Id = message.Id,
             Type = CommandType.SubscribeAck,
-            Queue = message.Queue,
+            Queue = message.Queue
         }, cancellationToken).ConfigureAwait(false);
     }
 

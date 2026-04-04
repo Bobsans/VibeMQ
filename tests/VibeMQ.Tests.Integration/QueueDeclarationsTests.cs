@@ -24,7 +24,7 @@ public class QueueDeclarationsTests : IAsyncLifetime {
     public async Task PreflightValidation_RedirectToDlqWithoutDlq_ThrowsBeforeConnecting() {
         var options = new ClientOptions {
             AuthToken = "test-secret-token",
-            ReconnectPolicy = new ReconnectPolicy { MaxAttempts = 0 },
+            ReconnectPolicy = new ReconnectPolicy { MaxAttempts = 0 }
         };
         options.DeclareQueue("irrelevant", q => {
             q.OverflowStrategy = OverflowStrategy.RedirectToDlq;
@@ -190,7 +190,7 @@ public class QueueDeclarationsTests : IAsyncLifetime {
 
         Assert.Equal(queueName, ex.QueueName);
         Assert.Equal(ConflictSeverity.Hard, ex.HighestSeverity);
-        Assert.Contains(ex.Conflicts, d => d.SettingName == "Mode" && d.Severity == ConflictSeverity.Hard);
+        Assert.Contains(ex.Conflicts, d => d is { SettingName: "Mode", Severity: ConflictSeverity.Hard });
         Assert.DoesNotContain(ex.Conflicts, d => d.Severity == ConflictSeverity.Info);
     }
 
@@ -329,7 +329,7 @@ file static class TestBrokerFixtureExtensions {
         var options = new ClientOptions {
             AuthToken = "test-secret-token",
             CommandTimeout = TimeSpan.FromSeconds(5),
-            ReconnectPolicy = new ReconnectPolicy { MaxAttempts = 0 },
+            ReconnectPolicy = new ReconnectPolicy { MaxAttempts = 0 }
         };
         configure?.Invoke(options);
         return VibeMQClient.ConnectAsync("127.0.0.1", fixture.Port, options);

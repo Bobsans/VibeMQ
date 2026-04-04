@@ -16,7 +16,7 @@ public class MessageQueueTests {
         return new MessageQueue(name, new QueueOptions {
             Mode = mode,
             MaxQueueSize = maxSize,
-            OverflowStrategy = overflow,
+            OverflowStrategy = overflow
         });
     }
 
@@ -25,7 +25,7 @@ public class MessageQueueTests {
             Id = id ?? Guid.NewGuid().ToString("N"),
             QueueName = "test-queue",
             Priority = priority,
-            Payload = JsonSerializer.SerializeToElement(new { Data = "test" }),
+            Payload = JsonSerializer.SerializeToElement(new { Data = "test" })
         };
     }
 
@@ -97,7 +97,7 @@ public class MessageQueueTests {
 
         queue.Enqueue(CreateMessage("low", MessagePriority.Low));
         queue.Enqueue(CreateMessage("critical", MessagePriority.Critical));
-        queue.Enqueue(CreateMessage("normal", MessagePriority.Normal));
+        queue.Enqueue(CreateMessage("normal"));
 
         var first = queue.Dequeue();
         Assert.NotNull(first);

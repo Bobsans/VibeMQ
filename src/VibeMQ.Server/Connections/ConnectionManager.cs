@@ -13,6 +13,7 @@ public sealed partial class ConnectionManager : IAsyncDisposable {
     private readonly int _maxConnections;
     private readonly IBrokerMetrics _metrics;
     private readonly ILogger<ConnectionManager> _logger;
+    private int _connectionCount;
 
     public ConnectionManager(int maxConnections, IBrokerMetrics metrics, ILogger<ConnectionManager> logger) {
         _maxConnections = maxConnections;
@@ -29,13 +30,17 @@ public sealed partial class ConnectionManager : IAsyncDisposable {
     /// Tries to register a new connection. Returns false if the connection limit is reached.
     /// </summary>
     public bool TryAdd(ClientConnection connection) {
-        if (_connections.Count >= _maxConnections) {
+        // Atomically reserve a slot before adding to avoid TOCTOU race
+        var count = Interlocked.Increment(ref _connectionCount);
+        if (count > _maxConnections) {
+            Interlocked.Decrement(ref _connectionCount);
             LogConnectionLimitReached(_maxConnections);
             _metrics.RecordConnectionRejected();
             return false;
         }
 
         if (!_connections.TryAdd(connection.Id, connection)) {
+            Interlocked.Decrement(ref _connectionCount);
             return false;
         }
 
@@ -52,6 +57,7 @@ public sealed partial class ConnectionManager : IAsyncDisposable {
     /// </summary>
     public async Task RemoveAsync(string connectionId) {
         if (_connections.TryRemove(connectionId, out var connection)) {
+            Interlocked.Decrement(ref _connectionCount);
             LogClientDisconnected(connectionId, ActiveCount);
             await connection.DisposeAsync().ConfigureAwait(false);
         }
@@ -87,6 +93,7 @@ public sealed partial class ConnectionManager : IAsyncDisposable {
     public async ValueTask DisposeAsync() {
         var connections = _connections.Values.ToArray();
         _connections.Clear();
+        Interlocked.Exchange(ref _connectionCount, 0);
 
         foreach (var connection in connections) {
             await connection.DisposeAsync().ConfigureAwait(false);

@@ -50,7 +50,7 @@ public sealed partial class DeleteUserHandler(IAuthRepository repository, ILogge
         await connection.SendMessageAsync(new ProtocolMessage {
             Id = message.Id,
             Type = CommandType.AdminDeleteUser,
-            Payload = JsonSerializer.SerializeToElement(new { username }, ProtocolSerializer.Options),
+            Payload = JsonSerializer.SerializeToElement(new { username }, ProtocolSerializer.Options)
         }, cancellationToken).ConfigureAwait(false);
     }
 

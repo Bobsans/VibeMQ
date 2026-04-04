@@ -8,7 +8,7 @@ namespace VibeMQ.Tests.Integration;
 /// <summary>
 /// Shared test fixture that starts a broker on a random port for integration tests.
 /// </summary>
-public sealed class TestBrokerFixture : IAsyncLifetime {
+public sealed class TestBrokerFixture : IAsyncLifetime, IDisposable {
     private const string AUTH_TOKEN = "test-secret-token";
 
     /// <summary>Token used by the broker for authentication. Use in client settings when connecting.</summary>
@@ -45,7 +45,7 @@ public sealed class TestBrokerFixture : IAsyncLifetime {
         var options = new ClientOptions {
             AuthToken = authenticate ? AUTH_TOKEN : null,
             CommandTimeout = TimeSpan.FromSeconds(5),
-            ReconnectPolicy = new ReconnectPolicy { MaxAttempts = 0 },
+            ReconnectPolicy = new ReconnectPolicy { MaxAttempts = 0 }
         };
 
         var client = await VibeMQClient.ConnectAsync("127.0.0.1", Port, options);
@@ -75,6 +75,11 @@ public sealed class TestBrokerFixture : IAsyncLifetime {
         }
 
         _cts?.Dispose();
+    }
+
+    public void Dispose() {
+        _cts?.Dispose();
+        GC.SuppressFinalize(this);
     }
 
     /// <summary>

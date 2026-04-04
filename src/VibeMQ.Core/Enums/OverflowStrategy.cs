@@ -22,5 +22,5 @@ public enum OverflowStrategy {
     /// <summary>
     /// Redirects the message to the Dead Letter Queue.
     /// </summary>
-    RedirectToDlq = 3,
+    RedirectToDlq = 3
 }

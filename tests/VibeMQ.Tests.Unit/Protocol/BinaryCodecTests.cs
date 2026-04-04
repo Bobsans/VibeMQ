@@ -14,7 +14,7 @@ public class BinaryCodecTests {
         var original = new ProtocolMessage {
             Type = CommandType.Publish,
             Queue = "test-queue",
-            Headers = new Dictionary<string, string> { ["key"] = "value" },
+            Headers = new Dictionary<string, string> { ["key"] = "value" }
         };
 
         var encoded = _codec.Encode(original);
@@ -39,8 +39,8 @@ public class BinaryCodecTests {
             Payload = payloadJson,
             Headers = new Dictionary<string, string> {
                 ["header1"] = "value1",
-                ["header2"] = "value2",
-            },
+                ["header2"] = "value2"
+            }
         };
 
         var encoded = _codec.Encode(original);
@@ -63,7 +63,7 @@ public class BinaryCodecTests {
     public void EncodeDecode_NullPayload_RoundTripsCorrectly() {
         var original = new ProtocolMessage {
             Type = CommandType.Ping,
-            Payload = null,
+            Payload = null
         };
 
         var encoded = _codec.Encode(original);
@@ -78,7 +78,7 @@ public class BinaryCodecTests {
         var payloadJson = JsonSerializer.SerializeToElement(new { });
         var original = new ProtocolMessage {
             Type = CommandType.Publish,
-            Payload = payloadJson,
+            Payload = payloadJson
         };
 
         var encoded = _codec.Encode(original);
@@ -95,12 +95,12 @@ public class BinaryCodecTests {
             IntValue = 42,
             DoubleValue = 3.14,
             BoolValue = true,
-            NullValue = (object?)null,
+            NullValue = (object?)null
         });
 
         var original = new ProtocolMessage {
             Type = CommandType.Publish,
-            Payload = payloadJson,
+            Payload = payloadJson
         };
 
         var encoded = _codec.Encode(original);
@@ -117,12 +117,12 @@ public class BinaryCodecTests {
     public void EncodeDecode_PayloadWithArray_RoundTripsCorrectly() {
         var payloadJson = JsonSerializer.SerializeToElement(new {
             Items = _testItems,
-            Names = _testNames,
+            Names = _testNames
         });
 
         var original = new ProtocolMessage {
             Type = CommandType.Publish,
-            Payload = payloadJson,
+            Payload = payloadJson
         };
 
         var encoded = _codec.Encode(original);
@@ -140,7 +140,7 @@ public class BinaryCodecTests {
     public void EncodeDecode_NullQueue_RoundTripsCorrectly() {
         var original = new ProtocolMessage {
             Type = CommandType.Ping,
-            Queue = null,
+            Queue = null
         };
 
         var encoded = _codec.Encode(original);
@@ -154,7 +154,7 @@ public class BinaryCodecTests {
     public void EncodeDecode_EmptyQueue_RoundTripsCorrectly() {
         var original = new ProtocolMessage {
             Type = CommandType.Publish,
-            Queue = "",
+            Queue = ""
         };
 
         var encoded = _codec.Encode(original);
@@ -167,7 +167,7 @@ public class BinaryCodecTests {
     public void EncodeDecode_NullHeaders_RoundTripsCorrectly() {
         var original = new ProtocolMessage {
             Type = CommandType.Ping,
-            Headers = null,
+            Headers = null
         };
 
         var encoded = _codec.Encode(original);
@@ -181,7 +181,7 @@ public class BinaryCodecTests {
     public void EncodeDecode_EmptyHeaders_RoundTripsCorrectly() {
         var original = new ProtocolMessage {
             Type = CommandType.Ping,
-            Headers = new Dictionary<string, string>(),
+            Headers = new Dictionary<string, string>()
         };
 
         var encoded = _codec.Encode(original);
@@ -196,7 +196,7 @@ public class BinaryCodecTests {
         var original = new ProtocolMessage {
             Type = CommandType.Error,
             ErrorCode = "AUTH_FAILED",
-            ErrorMessage = "Invalid token",
+            ErrorMessage = "Invalid token"
         };
 
         var encoded = _codec.Encode(original);
@@ -212,7 +212,7 @@ public class BinaryCodecTests {
         var original = new ProtocolMessage {
             Type = CommandType.Error,
             ErrorCode = null,
-            ErrorMessage = null,
+            ErrorMessage = null
         };
 
         var encoded = _codec.Encode(original);
@@ -230,7 +230,7 @@ public class BinaryCodecTests {
         foreach (var commandType in commandTypes) {
             var original = new ProtocolMessage {
                 Type = commandType,
-                Queue = commandType.ToString(),
+                Queue = commandType.ToString()
             };
 
             var encoded = _codec.Encode(original);
@@ -245,7 +245,7 @@ public class BinaryCodecTests {
     public void EncodeDecode_VersionField_RoundTripsCorrectly() {
         var original = new ProtocolMessage {
             Version = 2,
-            Type = CommandType.Ping,
+            Type = CommandType.Ping
         };
 
         var encoded = _codec.Encode(original);
@@ -259,7 +259,7 @@ public class BinaryCodecTests {
         var longString = new string('a', 10000);
         var original = new ProtocolMessage {
             Type = CommandType.Publish,
-            Queue = longString,
+            Queue = longString
         };
 
         var encoded = _codec.Encode(original);
@@ -270,10 +270,10 @@ public class BinaryCodecTests {
 
     [Fact]
     public void EncodeDecode_UnicodeString_RoundTripsCorrectly() {
-        var unicodeString = "Привет 🌍 你好 こんにちは";
+        const string unicodeString = "Привет 🌍 你好 こんにちは";
         var original = new ProtocolMessage {
             Type = CommandType.Publish,
-            Queue = unicodeString,
+            Queue = unicodeString
         };
 
         var encoded = _codec.Encode(original);
@@ -284,9 +284,26 @@ public class BinaryCodecTests {
 
     [Fact]
     public void Decode_InsufficientData_ThrowsException() {
-        byte[] data = new byte[] { 1, 2 }; // Too short
+        byte[] data = [1, 2]; // Too short
 
         Assert.Throws<InvalidOperationException>(() => _codec.Decode(data));
+    }
+
+    [Fact]
+    public void Decode_PayloadLengthGreaterThanIntMax_ThrowsException() {
+        // Layout: version(1) + type(1) + idLen(2) + id(1) + queueLen(2) + payloadLen(4)
+        // payloadLen is set to 0x80000000 (> int.MaxValue) to verify overflow guard.
+        byte[] data = [
+            1, // version
+            (byte)CommandType.Publish,
+            0, 1, // id length = 1
+            (byte)'a',
+            0, 0, // queue length = 0 (null)
+            0x80, 0x00, 0x00, 0x00 // payload length = 2_147_483_648
+        ];
+
+        var exception = Assert.Throws<InvalidOperationException>(() => _codec.Decode(data));
+        Assert.Contains("exceeds maximum allowed size", exception.Message);
     }
 
     [Fact]
@@ -298,7 +315,7 @@ public class BinaryCodecTests {
 
         var original = new ProtocolMessage {
             Type = CommandType.Publish,
-            Headers = headers,
+            Headers = headers
         };
 
         var encoded = _codec.Encode(original);

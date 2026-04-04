@@ -19,10 +19,10 @@ public static class ProtocolSerializer {
         WriteIndented = false,
         TypeInfoResolverChain = {
             ProtocolJsonContext.Default,
-            new DefaultJsonTypeInfoResolver(), // Fallback for user-defined payload types
+            new DefaultJsonTypeInfoResolver() // Fallback for user-defined payload types
         },
         Converters = {
-            new JsonStringEnumConverter<CommandType>(JsonNamingPolicy.CamelCase),
-        },
+            new JsonStringEnumConverter<CommandType>(JsonNamingPolicy.CamelCase)
+        }
     };
 }

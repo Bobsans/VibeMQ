@@ -221,14 +221,14 @@ public sealed class BrokerBuilder {
         var handlerList = new List<ICommandHandler> {
             new ConnectHandler(_options, authService, passwordAuthService, _loggerFactory.CreateLogger<ConnectHandler>()),
             new PingHandler(),
-            new PublishHandler(queueManager, authorizationService, _loggerFactory.CreateLogger<PublishHandler>()),
+            new PublishHandler(queueManager, authorizationService, metrics, _loggerFactory.CreateLogger<PublishHandler>()),
             new SubscribeHandler(queueManager, authorizationService, _loggerFactory.CreateLogger<SubscribeHandler>()),
             new UnsubscribeHandler(_loggerFactory.CreateLogger<UnsubscribeHandler>()),
             new AckHandler(queueManager, _loggerFactory.CreateLogger<AckHandler>()),
             new CreateQueueHandler(queueManager, authorizationService, _loggerFactory.CreateLogger<CreateQueueHandler>()),
             new DeleteQueueHandler(queueManager, authorizationService, _loggerFactory.CreateLogger<DeleteQueueHandler>()),
             new QueueInfoHandler(queueManager, authorizationService, _loggerFactory.CreateLogger<QueueInfoHandler>()),
-            new ListQueuesHandler(queueManager, authorizationService, _loggerFactory.CreateLogger<ListQueuesHandler>()),
+            new ListQueuesHandler(queueManager, authorizationService, _loggerFactory.CreateLogger<ListQueuesHandler>())
         };
 
         // Register admin handlers only when authorization is enabled
@@ -242,7 +242,7 @@ public sealed class BrokerBuilder {
                 new GrantPermissionHandler(repository, _loggerFactory.CreateLogger<GrantPermissionHandler>()),
                 new RevokePermissionHandler(repository, _loggerFactory.CreateLogger<RevokePermissionHandler>()),
                 new ListUsersHandler(repository, _loggerFactory.CreateLogger<ListUsersHandler>()),
-                new GetUserPermissionsHandler(repository, _loggerFactory.CreateLogger<GetUserPermissionsHandler>()),
+                new GetUserPermissionsHandler(repository, _loggerFactory.CreateLogger<GetUserPermissionsHandler>())
             ]);
         }
 

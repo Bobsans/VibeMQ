@@ -49,7 +49,7 @@ public class GlobMatcherTests {
             ("a.*", "b.c", false),
             ("*", "anything", true),
             ("exact", "exact", true),
-            ("exact", "other", false),
+            ("exact", "other", false)
         };
 
         // Run in parallel to exercise the concurrent cache
@@ -71,5 +71,12 @@ public class GlobMatcherTests {
         var result = GlobMatcher.IsMatch(queueName, pattern);
 
         Assert.Equal(expected, result);
+    }
+
+    [Fact]
+    public void IsMatch_PatternExceedsLimit_ThrowsArgumentException() {
+        var tooLongPattern = new string('a', 257);
+
+        Assert.Throws<ArgumentException>(() => GlobMatcher.IsMatch("queue", tooLongPattern));
     }
 }

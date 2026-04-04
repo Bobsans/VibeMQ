@@ -26,7 +26,7 @@ public sealed partial class ListUsersHandler(IAuthRepository repository, ILogger
         var result = users.Select(u => new {
             username = u.Username,
             isSuperuser = u.IsSuperuser,
-            createdAt = u.CreatedAt,
+            createdAt = u.CreatedAt
         });
 
         LogListUsers(connection.Username ?? "<superuser>", users.Count);
@@ -34,7 +34,7 @@ public sealed partial class ListUsersHandler(IAuthRepository repository, ILogger
         await connection.SendMessageAsync(new ProtocolMessage {
             Id = message.Id,
             Type = CommandType.AdminListUsers,
-            Payload = JsonSerializer.SerializeToElement(result, ProtocolSerializer.Options),
+            Payload = JsonSerializer.SerializeToElement(result, ProtocolSerializer.Options)
         }, cancellationToken).ConfigureAwait(false);
     }
 

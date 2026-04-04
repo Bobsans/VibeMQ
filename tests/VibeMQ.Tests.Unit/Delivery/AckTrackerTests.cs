@@ -10,7 +10,7 @@ public class AckTrackerTests {
             Id = id,
             QueueName = "test-queue",
             Payload = JsonSerializer.SerializeToElement("test"),
-            DeliveryAttempts = 3,
+            DeliveryAttempts = 3
         };
     }
 
@@ -25,7 +25,7 @@ public class AckTrackerTests {
     [Fact]
     public void Acknowledge_RemovesFromPending() {
         var tracker = new AckTracker(ackTimeout: TimeSpan.FromSeconds(30));
-        tracker.Track(CreateMessage("msg-1"), "client-1");
+        tracker.Track(CreateMessage(), "client-1");
 
         var result = tracker.Acknowledge("msg-1");
 
@@ -43,7 +43,7 @@ public class AckTrackerTests {
     [Fact]
     public void IsTracked_TrackedMessage_ReturnsTrue() {
         var tracker = new AckTracker(ackTimeout: TimeSpan.FromSeconds(30));
-        tracker.Track(CreateMessage("msg-1"), "client-1");
+        tracker.Track(CreateMessage(), "client-1");
 
         Assert.True(tracker.IsTracked("msg-1"));
     }

@@ -6,12 +6,17 @@ if (args.Length > 0 && (args[0] == "load" || args[0] == "load-test")) {
     var subscribers = 2;
     var duration = 10;
     var payloadSize = 128;
+
     for (var i = 1; i < args.Length; i++) {
-        if (args[i] == "--publishers" && i + 1 < args.Length) { _ = int.TryParse(args[++i], out publishers); }
-        else if (args[i] == "--subscribers" && i + 1 < args.Length) { _ = int.TryParse(args[++i], out subscribers); }
-        else if (args[i] == "--duration" && i + 1 < args.Length) { _ = int.TryParse(args[++i], out duration); }
-        else if (args[i] == "--payload-size" && i + 1 < args.Length) { _ = int.TryParse(args[++i], out payloadSize); }
+        _ = args[i] switch {
+            "--publishers" when i + 1 < args.Length => int.TryParse(args[++i], out publishers),
+            "--subscribers" when i + 1 < args.Length => int.TryParse(args[++i], out subscribers),
+            "--duration" when i + 1 < args.Length => int.TryParse(args[++i], out duration),
+            "--payload-size" when i + 1 < args.Length => int.TryParse(args[++i], out payloadSize),
+            _ => false
+        };
     }
+
     await LoadTest.RunAsync(publisherCount: publishers, subscriberCount: subscribers, durationSeconds: duration, messagePayloadSize: payloadSize);
     return;
 }

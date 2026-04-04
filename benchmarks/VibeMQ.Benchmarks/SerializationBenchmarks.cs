@@ -15,7 +15,7 @@ public class SerializationBenchmarks {
 
     private static readonly JsonSerializerOptions _reflectionOptions = new() {
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-        Converters = { new System.Text.Json.Serialization.JsonStringEnumConverter<CommandType>(JsonNamingPolicy.CamelCase) },
+        Converters = { new System.Text.Json.Serialization.JsonStringEnumConverter<CommandType>(JsonNamingPolicy.CamelCase) }
     };
 
     [GlobalSetup]
@@ -26,8 +26,8 @@ public class SerializationBenchmarks {
             Payload = JsonSerializer.SerializeToElement(new { Name = "test", Value = 42 }),
             Headers = new Dictionary<string, string> {
                 ["correlationId"] = "abc-123",
-                ["priority"] = "high",
-            },
+                ["priority"] = "high"
+            }
         };
 
         _serializedBytes = JsonSerializer.SerializeToUtf8Bytes(_message, ProtocolSerializer.Options);

@@ -1,9 +1,9 @@
-using System.Text.Json.Serialization;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using VibeMQ.Client;
 using VibeMQ.Client.DependencyInjection;
+using VibeMQ.Example.Client.DI;
 
 // ============================================================
 //  VibeMQ Example Client (with DI)
@@ -20,7 +20,7 @@ var host = Host.CreateDefaultBuilder(args)
             settings.ClientOptions.Password = "my-secret-password";
             settings.ClientOptions.ReconnectPolicy = new ReconnectPolicy {
                 MaxAttempts = 5,
-                UseExponentialBackoff = true,
+                UseExponentialBackoff = true
             };
             settings.ClientOptions.KeepAliveInterval = TimeSpan.FromSeconds(30);
         });
@@ -63,7 +63,7 @@ var notifications = new[] {
     new Notification { Title = "Order #1234", Body = "Your order has been shipped.", Priority = "normal" },
     new Notification { Title = "Payment received", Body = "We received your payment of $99.99.", Priority = "normal" },
     new Notification { Title = "System alert", Body = "CPU usage exceeded 90%.", Priority = "high" },
-    new Notification { Title = "Deployment", Body = "New version v2.1.0 deployed.", Priority = "normal" },
+    new Notification { Title = "Deployment", Body = "New version v2.1.0 deployed.", Priority = "normal" }
 };
 
 foreach (var notification in notifications) {
@@ -82,16 +82,3 @@ Console.WriteLine();
 Console.WriteLine("Disconnecting...");
 await client.DisconnectAsync();
 Console.WriteLine("Done.");
-
-// --- Message model ---
-
-public class Notification {
-    [JsonPropertyName("title")]
-    public string Title { get; set; } = "";
-
-    [JsonPropertyName("body")]
-    public string Body { get; set; } = "";
-
-    [JsonPropertyName("priority")]
-    public string Priority { get; set; } = "normal";
-}

@@ -10,9 +10,9 @@ namespace VibeMQ.Tests.Unit.Health;
 /// Tests for HealthCheckServer: GET /health and /metrics via ProcessRequest (no HttpListener, no admin rights).
 /// </summary>
 public sealed class HealthCheckServerTests {
-    private static readonly JsonSerializerOptions JsonOptions = new() {
+    private static readonly JsonSerializerOptions _jsonOptions = new() {
         PropertyNameCaseInsensitive = true,
-        PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower,
+        PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower
     };
 
     [Fact]
@@ -25,7 +25,7 @@ public sealed class HealthCheckServerTests {
             InFlightMessages = 0,
             TotalMessagesPublished = 100,
             TotalMessagesDelivered = 98,
-            Timestamp = DateTime.UtcNow,
+            Timestamp = DateTime.UtcNow
         };
 
         var (statusCode, contentType, writeBody) = HealthCheckServer.ProcessRequest("/health", status, null);
@@ -38,7 +38,7 @@ public sealed class HealthCheckServerTests {
         await writeBody(stream);
         stream.Position = 0;
         var json = await new StreamReader(stream).ReadToEndAsync();
-        var dto = JsonSerializer.Deserialize<HealthStatusDto>(json, JsonOptions);
+        var dto = JsonSerializer.Deserialize<HealthStatusDto>(json, _jsonOptions);
         Assert.NotNull(dto);
         Assert.True(dto.IsHealthy);
         Assert.Equal("ok", dto.Status);
@@ -56,7 +56,7 @@ public sealed class HealthCheckServerTests {
             InFlightMessages = 0,
             TotalMessagesPublished = 0,
             TotalMessagesDelivered = 0,
-            Timestamp = DateTime.UtcNow,
+            Timestamp = DateTime.UtcNow
         };
 
         var (statusCode, contentType, writeBody) = HealthCheckServer.ProcessRequest("/health", status, null);
@@ -69,7 +69,7 @@ public sealed class HealthCheckServerTests {
         await writeBody(stream);
         stream.Position = 0;
         var json = await new StreamReader(stream).ReadToEndAsync();
-        var dto = JsonSerializer.Deserialize<HealthStatusDto>(json, JsonOptions);
+        var dto = JsonSerializer.Deserialize<HealthStatusDto>(json, _jsonOptions);
         Assert.NotNull(dto);
         Assert.False(dto.IsHealthy);
         Assert.Equal("degraded", dto.Status);
@@ -85,7 +85,7 @@ public sealed class HealthCheckServerTests {
             InFlightMessages = 0,
             TotalMessagesPublished = 0,
             TotalMessagesDelivered = 0,
-            Timestamp = DateTime.UtcNow,
+            Timestamp = DateTime.UtcNow
         };
         var metrics = new MetricsSnapshot {
             TotalMessagesPublished = 10,
@@ -95,7 +95,7 @@ public sealed class HealthCheckServerTests {
             InFlightMessages = 1,
             MemoryUsageBytes = 1024 * 1024,
             Timestamp = DateTime.UtcNow,
-            Uptime = TimeSpan.FromMinutes(5),
+            Uptime = TimeSpan.FromMinutes(5)
         };
 
         var (statusCode, contentType, writeBody) = HealthCheckServer.ProcessRequest("/metrics", healthStatus, metrics);
@@ -108,7 +108,7 @@ public sealed class HealthCheckServerTests {
         await writeBody(stream);
         stream.Position = 0;
         var json = await new StreamReader(stream).ReadToEndAsync();
-        var dto = JsonSerializer.Deserialize<MetricsSnapshotDto>(json, JsonOptions);
+        var dto = JsonSerializer.Deserialize<MetricsSnapshotDto>(json, _jsonOptions);
         Assert.NotNull(dto);
         Assert.Equal(10, dto.TotalMessagesPublished);
         Assert.Equal(8, dto.TotalMessagesDelivered);
@@ -126,7 +126,7 @@ public sealed class HealthCheckServerTests {
             InFlightMessages = 0,
             TotalMessagesPublished = 0,
             TotalMessagesDelivered = 0,
-            Timestamp = DateTime.UtcNow,
+            Timestamp = DateTime.UtcNow
         };
 
         var (statusCode, contentType, writeBody) = HealthCheckServer.ProcessRequest("/metrics", healthStatus, null);
@@ -146,7 +146,7 @@ public sealed class HealthCheckServerTests {
             InFlightMessages = 0,
             TotalMessagesPublished = 0,
             TotalMessagesDelivered = 0,
-            Timestamp = DateTime.UtcNow,
+            Timestamp = DateTime.UtcNow
         };
 
         var (statusCode, contentType, writeBody) = HealthCheckServer.ProcessRequest("/unknown", healthStatus, null);
@@ -159,7 +159,8 @@ public sealed class HealthCheckServerTests {
     [Fact]
     public void Start_WhenDisabled_DoesNotThrow() {
         var options = new HealthCheckOptions { Enabled = false, Port = 2926 };
-        var statusProvider = () => new HealthStatus {
+
+        var server = new HealthCheckServer(options, NullLogger<HealthCheckServer>.Instance, () => new HealthStatus {
             IsHealthy = true,
             Status = "ok",
             ActiveConnections = 0,
@@ -167,10 +168,8 @@ public sealed class HealthCheckServerTests {
             InFlightMessages = 0,
             TotalMessagesPublished = 0,
             TotalMessagesDelivered = 0,
-            Timestamp = DateTime.UtcNow,
-        };
-
-        var server = new HealthCheckServer(options, NullLogger<HealthCheckServer>.Instance, statusProvider, metricsProvider: null);
+            Timestamp = DateTime.UtcNow
+        }, metricsProvider: null);
         server.Start();
     }
 

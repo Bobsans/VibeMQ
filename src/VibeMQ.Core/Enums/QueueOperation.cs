@@ -24,5 +24,5 @@ public enum QueueOperation {
     GetQueueInfo,
 
     /// <summary>List available queues. Controls which queues appear in the filtered listing.</summary>
-    ListQueues,
+    ListQueues
 }

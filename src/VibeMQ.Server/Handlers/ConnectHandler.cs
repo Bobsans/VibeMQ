@@ -93,7 +93,7 @@ public sealed partial class ConnectHandler(
 
             if (algorithm is not null) {
                 ackHeaders = new Dictionary<string, string> {
-                    ["negotiated-compression"] = CompressorFactory.Serialize(algorithm.Value),
+                    ["negotiated-compression"] = CompressorFactory.Serialize(algorithm.Value)
                 };
                 connection.SetCompression(algorithm.Value, options.CompressionThreshold);
                 LogCompressionNegotiated(connection.Id, algorithm.Value);
@@ -102,7 +102,7 @@ public sealed partial class ConnectHandler(
 
         await connection.SendMessageAsync(new ProtocolMessage {
             Type = CommandType.ConnectAck,
-            Headers = ackHeaders,
+            Headers = ackHeaders
         }, cancellationToken).ConfigureAwait(false);
     }
 

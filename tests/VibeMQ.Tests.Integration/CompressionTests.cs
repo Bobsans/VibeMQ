@@ -1,6 +1,5 @@
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
 using VibeMQ.Client;
 using VibeMQ.Protocol.Compression;
 using VibeMQ.Server;
@@ -10,7 +9,7 @@ namespace VibeMQ.Tests.Integration;
 /// <summary>
 /// Integration tests verifying compression negotiation and end-to-end delivery with compression.
 /// </summary>
-public class CompressionTests : IAsyncLifetime {
+public class CompressionTests : IAsyncLifetime, IDisposable {
     private BrokerServer? _server;
     private Task? _serverTask;
     private CancellationTokenSource? _cts;
@@ -45,6 +44,11 @@ public class CompressionTests : IAsyncLifetime {
         _cts?.Dispose();
     }
 
+    public void Dispose() {
+        _cts?.Dispose();
+        GC.SuppressFinalize(this);
+    }
+
     // -------------------------------------------------------------------------
     // Negotiation scenarios
     // -------------------------------------------------------------------------
@@ -53,7 +57,7 @@ public class CompressionTests : IAsyncLifetime {
     public async Task Negotiation_ClientPrefersBrotli_ServerSupportsBoth_SelectsBrotli() {
         var options = new ClientOptions {
             PreferredCompressions = [CompressionAlgorithm.Brotli, CompressionAlgorithm.GZip],
-            ReconnectPolicy = new ReconnectPolicy { MaxAttempts = 0 },
+            ReconnectPolicy = new ReconnectPolicy { MaxAttempts = 0 }
         };
 
         await using var client = await VibeMQClient.ConnectAsync("127.0.0.1", Port, options);
@@ -64,7 +68,7 @@ public class CompressionTests : IAsyncLifetime {
     public async Task Negotiation_ClientPrefersGZipOnly_ServerSupportsBoth_SelectsGZip() {
         var options = new ClientOptions {
             PreferredCompressions = [CompressionAlgorithm.GZip],
-            ReconnectPolicy = new ReconnectPolicy { MaxAttempts = 0 },
+            ReconnectPolicy = new ReconnectPolicy { MaxAttempts = 0 }
         };
 
         await using var client = await VibeMQClient.ConnectAsync("127.0.0.1", Port, options);
@@ -75,7 +79,7 @@ public class CompressionTests : IAsyncLifetime {
     public async Task Negotiation_ClientDisablesCompression_WorksWithoutCompression() {
         var options = new ClientOptions {
             PreferredCompressions = [],
-            ReconnectPolicy = new ReconnectPolicy { MaxAttempts = 0 },
+            ReconnectPolicy = new ReconnectPolicy { MaxAttempts = 0 }
         };
 
         await using var client = await VibeMQClient.ConnectAsync("127.0.0.1", Port, options);
@@ -91,12 +95,12 @@ public class CompressionTests : IAsyncLifetime {
         // Client with compression and client without compression connect to the same server
         var withCompression = new ClientOptions {
             PreferredCompressions = [CompressionAlgorithm.Brotli],
-            ReconnectPolicy = new ReconnectPolicy { MaxAttempts = 0 },
+            ReconnectPolicy = new ReconnectPolicy { MaxAttempts = 0 }
         };
 
         var withoutCompression = new ClientOptions {
             PreferredCompressions = [],
-            ReconnectPolicy = new ReconnectPolicy { MaxAttempts = 0 },
+            ReconnectPolicy = new ReconnectPolicy { MaxAttempts = 0 }
         };
 
         await using var clientA = await VibeMQClient.ConnectAsync("127.0.0.1", Port, withCompression);
@@ -116,7 +120,7 @@ public class CompressionTests : IAsyncLifetime {
             PreferredCompressions = [CompressionAlgorithm.Brotli],
             CompressionThreshold = 0, // compress everything
             ReconnectPolicy = new ReconnectPolicy { MaxAttempts = 0 },
-            CommandTimeout = TimeSpan.FromSeconds(5),
+            CommandTimeout = TimeSpan.FromSeconds(5)
         };
 
         await using var publisher = await VibeMQClient.ConnectAsync("127.0.0.1", Port, options);
@@ -147,7 +151,7 @@ public class CompressionTests : IAsyncLifetime {
             PreferredCompressions = [CompressionAlgorithm.GZip],
             CompressionThreshold = 0,
             ReconnectPolicy = new ReconnectPolicy { MaxAttempts = 0 },
-            CommandTimeout = TimeSpan.FromSeconds(5),
+            CommandTimeout = TimeSpan.FromSeconds(5)
         };
 
         await using var publisher = await VibeMQClient.ConnectAsync("127.0.0.1", Port, options);
@@ -176,7 +180,7 @@ public class CompressionTests : IAsyncLifetime {
             PreferredCompressions = [CompressionAlgorithm.Brotli, CompressionAlgorithm.GZip],
             CompressionThreshold = 512,
             ReconnectPolicy = new ReconnectPolicy { MaxAttempts = 0 },
-            CommandTimeout = TimeSpan.FromSeconds(5),
+            CommandTimeout = TimeSpan.FromSeconds(5)
         };
 
         await using var publisher = await VibeMQClient.ConnectAsync("127.0.0.1", Port, options);

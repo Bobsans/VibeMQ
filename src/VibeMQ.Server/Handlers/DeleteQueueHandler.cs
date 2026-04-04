@@ -39,7 +39,7 @@ public sealed partial class DeleteQueueHandler(IQueueManager queueManager, IAuth
         await connection.SendMessageAsync(new ProtocolMessage {
             Id = message.Id,
             Type = CommandType.DeleteQueue,
-            Queue = message.Queue,
+            Queue = message.Queue
         }, cancellationToken).ConfigureAwait(false);
     }
 
