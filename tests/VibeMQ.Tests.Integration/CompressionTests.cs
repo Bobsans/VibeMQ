@@ -166,7 +166,6 @@ public class CompressionTests : IClassFixture<NoAuthBrokerFixture> {
         var result = await received.Task.WaitAsync(IntegrationTestTimeouts.MessageDeliveryTimeout);
         Assert.Equal(expectedData, result.Data);
     }
-
 }
 
 public class LargePayload {
