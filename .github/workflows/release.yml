@@ -70,7 +70,7 @@ jobs:
         run: dotnet pack --no-build --configuration Release --output ./artifacts -p:Version=${{ steps.get_version.outputs.version_num }} -p:PackageVersion=${{ steps.get_version.outputs.version_num }}
 
       - name: Upload NuGet artifacts
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: nuget-packages
           path: ./artifacts/*.nupkg
@@ -105,7 +105,7 @@ jobs:
           dotnet-version: '10.0.x'
 
       - name: Download NuGet packages
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: nuget-packages
 
