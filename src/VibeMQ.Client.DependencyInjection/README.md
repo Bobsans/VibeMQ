@@ -20,7 +20,8 @@ using VibeMQ.Client.DependencyInjection;
 services.AddVibeMQClient(settings => {
     settings.Host = "localhost";
     settings.Port = 2925;
-    settings.ClientOptions.AuthToken = "your-token";
+    settings.ClientOptions.Username = "admin";
+    settings.ClientOptions.Password = "change-me";
 });
 
 // Option A: Inject IVibeMQClient (shared client, connects on first use)

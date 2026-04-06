@@ -484,7 +484,10 @@ Production (SQLite)
 
    var broker = BrokerBuilder.Create()
        .UsePort(2925)
-       .UseAuthentication(Environment.GetEnvironmentVariable("VIBEMQ_TOKEN"))
+       .UseAuthorization(options => {
+       options.SuperuserUsername = "admin";
+       options.SuperuserPassword = Environment.GetEnvironmentVariable("VIBEMQ_SUPERUSER_PASSWORD");
+   })
        .UseSqliteStorage(options => {
            options.DatabasePath = "/data/vibemq.db";
            options.EnableWal = true;
@@ -503,8 +506,10 @@ Production with DI (SQLite)
 
    services.AddVibeMQBroker(options => {
        options.Port = 2925;
-       options.EnableAuthentication = true;
-       options.AuthToken = Environment.GetEnvironmentVariable("VIBEMQ_TOKEN");
+       options.Authorization = new AuthorizationOptions {
+           SuperuserUsername = "admin",
+           SuperuserPassword = Environment.GetEnvironmentVariable("VIBEMQ_SUPERUSER_PASSWORD")
+       };
    });
 
 appsettings.json (SQLite)
@@ -515,8 +520,10 @@ appsettings.json (SQLite)
    {
      "VibeMQ": {
        "Port": 2925,
-       "EnableAuthentication": true,
-       "AuthToken": "my-secret-token"
+       "Authorization": {
+         "SuperuserUsername": "admin",
+         "SuperuserPassword": "change-me"
+       }
      }
    }
 

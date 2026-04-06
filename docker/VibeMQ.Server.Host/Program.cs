@@ -45,6 +45,7 @@ var host = Host.CreateDefaultBuilder(args)
     .Build();
 
 var options = host.Services.GetRequiredService<Microsoft.Extensions.Options.IOptions<BrokerOptions>>().Value;
-Console.WriteLine("VibeMQ broker starting. Port: {0}, Auth: {1}", options.Port, options.EnableAuthentication);
+var authEnabled = options.Authorization is not null;
+Console.WriteLine("VibeMQ broker starting. Port: {0}, Auth: {1}", options.Port, authEnabled);
 
 await host.RunAsync();

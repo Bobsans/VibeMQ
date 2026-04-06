@@ -11,12 +11,35 @@ VibeMQ project change history.
 Version History
 ================
 
+Version 1.8.0
+-------------
+
+**Date:** April 2026
+
+**Status:** Current Stable Version
+
+**Breaking changes:**
+
+- **Legacy token authentication removed** — ``BrokerBuilder.UseAuthentication(string)``, ``BrokerOptions.AuthToken``, ``ClientOptions.AuthToken``, ``BrokerOptions.EnableAuthentication``, and the Connect handshake ``authToken`` header path are removed. Use ``UseAuthorization()`` with ``Username`` and ``Password`` on the client.
+- **Removed types** — ``IAuthenticationService`` and ``TokenAuthenticationService``.
+
+**Maintenance:**
+
+- **Connect validation** — client requires ``Username`` and ``Password`` to be set together when using credentials.
+- **Dispose/disconnect** — ``DisposeAsync`` uses a shared disconnect path to avoid redundant work.
+- **Tests** — integration tests use shared timeouts and fixtures; token-auth unit tests removed.
+- **Documentation** — guides updated for authorization-only authentication; Docker and configuration examples aligned.
+
+**Migration from 1.7.x:**
+
+- Replace any ``UseAuthentication(token)`` / ``AuthToken`` usage with ``UseAuthorization(...)`` and ``Username`` + ``Password`` before upgrading.
+
 Version 1.7.1
 -------------
 
 **Date:** March 2026
 
-**Status:** Current Stable Version
+**Status:** Stable
 
 **Maintenance:**
 
@@ -59,16 +82,12 @@ Version 1.7.0
 - Configuration and storage docs aligned with code: ``BrokerOptions`` no longer has ``StorageType`` (persistence is configured via ``UseSqliteStorage``/``UseRedisStorage``); ``ClientOptions`` documents ``Username``/``Password``; ``QueueDefaults`` does not include ``OverflowStrategy`` (use ``QueueOptions`` when creating queues); ``RedisStorageOptions`` table corrected (removed non-existent ``DefaultQueueTtlSeconds``)
 - Full docs pass: FAQ (persistence, server restart), features (MaxRetryAttempts in QueueOptions), examples (CQRS extra brace), docker (StorageType Host-specific note), installation (env vars ``VIBEMQ__*`` / ``VIBEMQCLIENT__*`` for .NET config)
 
-**Planned for 1.8.0:**
-
-- All APIs currently marked ``Obsolete`` (e.g. ``BrokerOptions.AuthToken``, ``ClientOptions.AuthToken``, ``UseAuthentication(token)``, ``IMessageStore``) will be **removed** in version 1.8.0. Migrate to ``UseAuthorization`` / ``Username``/``Password`` and ``IStorageProvider`` before upgrading to 1.8.0.
-
 Version 1.6.1
 -------------
 
 **Date:** February 2026
 
-**Status:** Current Stable Version
+**Status:** Stable
 
 **Maintenance:**
 
@@ -90,9 +109,9 @@ Version 1.6.0
 - **Filtered ListQueues** — regular users see only queues matching their ACL patterns with ``ListQueues`` operation
 - **7 admin protocol commands** — ``AdminCreateUser``, ``AdminDeleteUser``, ``AdminChangePassword``, ``AdminGrantPermission``, ``AdminRevokePermission``, ``AdminListUsers``, ``AdminGetUserPermissions`` (superuser-only)
 - **Client admin API** — ``CreateUserAsync``, ``DeleteUserAsync``, ``ChangePasswordAsync``, ``GrantPermissionAsync``, ``RevokePermissionAsync``, ``ListUsersAsync``, ``GetUserPermissionsAsync`` on ``VibeMQClient`` (superuser-only)
-- **``ClientOptions.Username`` / ``ClientOptions.Password``** — new client credentials; take priority over legacy ``AuthToken``
+- **``ClientOptions.Username`` / ``ClientOptions.Password``** — new client credentials for username/password authorization
 - **``BrokerBuilder.UseAuthorization(Action<AuthorizationOptions>)``** — fluent API to enable the new auth mode
-- **Backward compatibility** — legacy ``UseAuthentication(token)`` / ``AuthToken`` still works unchanged
+- **Backward compatibility** — migration release kept legacy authentication path unchanged (removed in 1.8.0)
 - **Docker image** — official image built from ``VibeMQ.Server.Host``; configuration via ``VibeMQ__*`` environment variables and optional config file (see :doc:`docker`)
 
 **Documentation:**
@@ -100,14 +119,14 @@ Version 1.6.0
 - New :doc:`docker` guide (build, run, environment variables, examples)
 - New :doc:`authorization` guide covering users, ACL, glob patterns, admin commands, and security recommendations
 - Configuration updated: ``AuthorizationOptions``, ``Username``/``Password`` in ``ClientOptions``
-- Server setup updated with ``UseAuthorization`` example and deprecated token auth note
+- Server setup updated with ``UseAuthorization`` example and migration note
 - Russian translations for all updated pages
 
 **Migration from 1.5.x:**
 
-- No breaking API changes — legacy token auth continues to work
+- No breaking API changes — existing deployments remain compatible
 - New ``UseAuthorization()`` is opt-in; existing servers are unaffected
-- ``ClientOptions.AuthToken`` is now deprecated; migrate to ``Username`` + ``Password`` when adopting the new mode
+- Legacy authentication fields were marked deprecated in this release
 
 Version 1.5.0
 -------------
@@ -242,7 +261,7 @@ Version 1.0.0
 - Delivery guarantees via acknowledgments (ACK)
 - Keep-alive (PING/PONG) and automatic reconnections
 - Support for delivery modes (round-robin, fan-out)
-- Token-based authentication
+- username/password authentication
 - Graceful shutdown
 - Health checks for orchestrators
 - Performance metrics collection
@@ -393,4 +412,4 @@ Links
 - `Issues <https://github.com/DarkBoy/VibeMQ/issues>`_
 - `Discussions <https://github.com/DarkBoy/VibeMQ/discussions>`_
 
-Last updated: March 13, 2026
+Last updated: April 4, 2026

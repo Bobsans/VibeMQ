@@ -49,7 +49,7 @@ public sealed class AuthBrokerFixture : IAsyncLifetime, IDisposable {
         _serverTask = _server.RunAsync(_cts.Token);
 
         // Wait until the server is actually listening (this also runs AuthBootstrapper)
-        await WaitForPortAsync(Port, _serverTask, TimeSpan.FromSeconds(10));
+        await WaitForPortAsync(Port, _serverTask, IntegrationTestTimeouts.BrokerStartupTimeout);
 
         // Direct repository access for test user/permission setup
         Repository = new SqliteAuthRepository(_dbPath);
@@ -86,7 +86,7 @@ public sealed class AuthBrokerFixture : IAsyncLifetime, IDisposable {
         var options = new ClientOptions {
             Username = username,
             Password = password,
-            CommandTimeout = TimeSpan.FromSeconds(5),
+            CommandTimeout = IntegrationTestTimeouts.ClientCommandTimeout,
             ReconnectPolicy = new ReconnectPolicy { MaxAttempts = 0 }
         };
 
@@ -100,7 +100,7 @@ public sealed class AuthBrokerFixture : IAsyncLifetime, IDisposable {
 
         if (_serverTask is not null) {
             try {
-                await _serverTask.WaitAsync(TimeSpan.FromSeconds(5));
+                await _serverTask.WaitAsync(IntegrationTestTimeouts.BrokerShutdownWaitTimeout);
             } catch {
                 // Server task may throw on shutdown
             }
@@ -147,7 +147,7 @@ public sealed class AuthBrokerFixture : IAsyncLifetime, IDisposable {
                 await tcp.ConnectAsync("127.0.0.1", port, cts.Token);
                 return;
             } catch (SocketException) {
-                await Task.Delay(50, cts.Token);
+                await Task.Delay(IntegrationTestTimeouts.PortProbeRetryDelayMs, cts.Token);
             }
         }
 

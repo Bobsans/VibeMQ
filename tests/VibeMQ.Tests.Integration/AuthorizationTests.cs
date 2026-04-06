@@ -4,13 +4,14 @@ namespace VibeMQ.Tests.Integration;
 
 /// <summary>
 /// Integration tests for the username/password authorization system.
-/// Each test method gets its own fixture to avoid cross-test state leakage.
+/// Uses a class-scoped fixture to avoid repeated broker restarts.
 /// </summary>
-public class AuthorizationTests : IAsyncLifetime {
-    private readonly AuthBrokerFixture _fixture = new();
+public class AuthorizationTests : IClassFixture<AuthBrokerFixture> {
+    private readonly AuthBrokerFixture _fixture;
 
-    public Task InitializeAsync() => _fixture.InitializeAsync();
-    public Task DisposeAsync() => _fixture.DisposeAsync();
+    public AuthorizationTests(AuthBrokerFixture fixture) {
+        _fixture = fixture;
+    }
 
     // ─── Authentication ────────────────────────────────────────────────────
 
@@ -23,16 +24,12 @@ public class AuthorizationTests : IAsyncLifetime {
 
     [Fact]
     public async Task Connect_WithWrongPassword_Throws() {
-        await Assert.ThrowsAsync<InvalidOperationException>(
-            () => _fixture.ConnectAsync(AuthBrokerFixture.SuperuserUsername, "wrong-password")
-        );
+        await Assert.ThrowsAsync<InvalidOperationException>(() => _fixture.ConnectAsync(AuthBrokerFixture.SuperuserUsername, "wrong-password"));
     }
 
     [Fact]
     public async Task Connect_WithUnknownUser_Throws() {
-        await Assert.ThrowsAsync<InvalidOperationException>(
-            () => _fixture.ConnectAsync("no-such-user", "any-password")
-        );
+        await Assert.ThrowsAsync<InvalidOperationException>(() => _fixture.ConnectAsync("no-such-user", "any-password"));
     }
 
     [Fact]
@@ -48,9 +45,7 @@ public class AuthorizationTests : IAsyncLifetime {
     public async Task Connect_RegularUser_WithWrongPassword_Throws() {
         await _fixture.CreateUserAsync("user-wrongpw", "correct-pass");
 
-        await Assert.ThrowsAsync<InvalidOperationException>(
-            () => _fixture.ConnectAsync("user-wrongpw", "wrong-pass")
-        );
+        await Assert.ThrowsAsync<InvalidOperationException>(() => _fixture.ConnectAsync("user-wrongpw", "wrong-pass"));
     }
 
     // ─── Superuser bypass ─────────────────────────────────────────────────
@@ -79,8 +74,10 @@ public class AuthorizationTests : IAsyncLifetime {
     [Fact]
     public async Task Publish_RegularUser_WithPublishPermission_Succeeds() {
         await _fixture.CreateUserAsync("pub-allowed", "pass");
-        await _fixture.GrantPermissionAsync("pub-allowed", "pub-allowed.*",
-            [QueueOperation.Publish, QueueOperation.CreateQueue]);
+        await _fixture.GrantPermissionAsync("pub-allowed", "pub-allowed.*", [
+            QueueOperation.Publish,
+            QueueOperation.CreateQueue
+        ]);
 
         await using var su = await _fixture.ConnectAsSuperuserAsync();
         await su.CreateQueueAsync("pub-allowed.orders");
@@ -100,25 +97,20 @@ public class AuthorizationTests : IAsyncLifetime {
 
         await using var client = await _fixture.ConnectAsync("pub-denied", "pass");
 
-        await Assert.ThrowsAsync<InvalidOperationException>(
-            () => client.PublishAsync("restricted-pub-queue", new { Data = "x" })
-        );
+        await Assert.ThrowsAsync<InvalidOperationException>(() => client.PublishAsync("restricted-pub-queue", new { Data = "x" }));
     }
 
     [Fact]
     public async Task Publish_UserWithSubscribeOnly_CannotPublish() {
         await _fixture.CreateUserAsync("sub-only", "pass");
-        await _fixture.GrantPermissionAsync("sub-only", "sub-only.*",
-            [QueueOperation.Subscribe]);  // subscribe but NOT publish
+        await _fixture.GrantPermissionAsync("sub-only", "sub-only.*", [QueueOperation.Subscribe]); // subscribe but NOT publish
 
         await using var su = await _fixture.ConnectAsSuperuserAsync();
         await su.CreateQueueAsync("sub-only.events");
 
         await using var client = await _fixture.ConnectAsync("sub-only", "pass");
 
-        await Assert.ThrowsAsync<InvalidOperationException>(
-            () => client.PublishAsync("sub-only.events", new { Data = "x" })
-        );
+        await Assert.ThrowsAsync<InvalidOperationException>(() => client.PublishAsync("sub-only.events", new { Data = "x" }));
     }
 
     // ─── Subscribe authorization ───────────────────────────────────────────
@@ -126,8 +118,11 @@ public class AuthorizationTests : IAsyncLifetime {
     [Fact]
     public async Task Subscribe_RegularUser_WithSubscribePermission_Succeeds() {
         await _fixture.CreateUserAsync("sub-allowed", "pass");
-        await _fixture.GrantPermissionAsync("sub-allowed", "sub-allowed.*",
-            [QueueOperation.Subscribe, QueueOperation.Publish, QueueOperation.CreateQueue]);
+        await _fixture.GrantPermissionAsync("sub-allowed", "sub-allowed.*", [
+            QueueOperation.Subscribe,
+            QueueOperation.Publish,
+            QueueOperation.CreateQueue
+        ]);
 
         await using var su = await _fixture.ConnectAsSuperuserAsync();
         await su.CreateQueueAsync("sub-allowed.events");
@@ -152,9 +147,7 @@ public class AuthorizationTests : IAsyncLifetime {
 
         await using var client = await _fixture.ConnectAsync("sub-denied", "pass");
 
-        await Assert.ThrowsAsync<InvalidOperationException>(
-            () => client.SubscribeAsync<object>("restricted-sub-queue", _ => Task.CompletedTask)
-        );
+        await Assert.ThrowsAsync<InvalidOperationException>(() => client.SubscribeAsync<object>("restricted-sub-queue", _ => Task.CompletedTask));
     }
 
     // ─── Queue management authorization ────────────────────────────────────
@@ -162,8 +155,7 @@ public class AuthorizationTests : IAsyncLifetime {
     [Fact]
     public async Task CreateQueue_RegularUser_WithPermission_Succeeds() {
         await _fixture.CreateUserAsync("cq-allowed", "pass");
-        await _fixture.GrantPermissionAsync("cq-allowed", "cq-allowed.*",
-            [QueueOperation.CreateQueue]);
+        await _fixture.GrantPermissionAsync("cq-allowed", "cq-allowed.*", [QueueOperation.CreateQueue]);
 
         await using var client = await _fixture.ConnectAsync("cq-allowed", "pass");
 
@@ -176,16 +168,16 @@ public class AuthorizationTests : IAsyncLifetime {
 
         await using var client = await _fixture.ConnectAsync("cq-denied", "pass");
 
-        await Assert.ThrowsAsync<InvalidOperationException>(
-            () => client.CreateQueueAsync("restricted-create-queue")
-        );
+        await Assert.ThrowsAsync<InvalidOperationException>(() => client.CreateQueueAsync("restricted-create-queue"));
     }
 
     [Fact]
     public async Task DeleteQueue_RegularUser_WithPermission_Succeeds() {
         await _fixture.CreateUserAsync("dq-allowed", "pass");
-        await _fixture.GrantPermissionAsync("dq-allowed", "dq-allowed.*",
-            [QueueOperation.CreateQueue, QueueOperation.DeleteQueue]);
+        await _fixture.GrantPermissionAsync("dq-allowed", "dq-allowed.*", [
+            QueueOperation.CreateQueue,
+            QueueOperation.DeleteQueue
+        ]);
 
         await using var client = await _fixture.ConnectAsync("dq-allowed", "pass");
 
@@ -210,8 +202,10 @@ public class AuthorizationTests : IAsyncLifetime {
     [Fact]
     public async Task ListQueues_RegularUser_ReturnsOnlyOwnQueues() {
         await _fixture.CreateUserAsync("lq-user", "pass");
-        await _fixture.GrantPermissionAsync("lq-user", "lq-user.*",
-            [QueueOperation.ListQueues, QueueOperation.CreateQueue]);
+        await _fixture.GrantPermissionAsync("lq-user", "lq-user.*", [
+            QueueOperation.ListQueues,
+            QueueOperation.CreateQueue
+        ]);
 
         await using var su = await _fixture.ConnectAsSuperuserAsync();
         await su.CreateQueueAsync("lq-user.mine");
@@ -228,10 +222,8 @@ public class AuthorizationTests : IAsyncLifetime {
     [Fact]
     public async Task ListQueues_RegularUser_MultiplePatterns_UnionResult() {
         await _fixture.CreateUserAsync("lq-multi", "pass");
-        await _fixture.GrantPermissionAsync("lq-multi", "lq-multi.a.*",
-            [QueueOperation.ListQueues]);
-        await _fixture.GrantPermissionAsync("lq-multi", "lq-multi.b.*",
-            [QueueOperation.ListQueues]);
+        await _fixture.GrantPermissionAsync("lq-multi", "lq-multi.a.*", [QueueOperation.ListQueues]);
+        await _fixture.GrantPermissionAsync("lq-multi", "lq-multi.b.*", [QueueOperation.ListQueues]);
 
         await using var su = await _fixture.ConnectAsSuperuserAsync();
         await su.CreateQueueAsync("lq-multi.a.one");
@@ -252,17 +244,14 @@ public class AuthorizationTests : IAsyncLifetime {
     [Fact]
     public async Task Publish_UserWithPattern_CannotPublishOutsidePattern() {
         await _fixture.CreateUserAsync("scope-user", "pass");
-        await _fixture.GrantPermissionAsync("scope-user", "scope-user.*",
-            [QueueOperation.Publish]);
+        await _fixture.GrantPermissionAsync("scope-user", "scope-user.*", [QueueOperation.Publish]);
 
         await using var su = await _fixture.ConnectAsSuperuserAsync();
         await su.CreateQueueAsync("other.tenant.queue");
 
         await using var client = await _fixture.ConnectAsync("scope-user", "pass");
 
-        await Assert.ThrowsAsync<InvalidOperationException>(
-            () => client.PublishAsync("other.tenant.queue", new { Data = "x" })
-        );
+        await Assert.ThrowsAsync<InvalidOperationException>(() => client.PublishAsync("other.tenant.queue", new { Data = "x" }));
     }
 
     // ─── Admin commands (superuser) ─────────────────────────────────────────
@@ -288,9 +277,7 @@ public class AuthorizationTests : IAsyncLifetime {
 
         await using var su = await _fixture.ConnectAsSuperuserAsync();
 
-        await Assert.ThrowsAsync<InvalidOperationException>(
-            () => su.CreateUserAsync("existing-user", "other-pass")
-        );
+        await Assert.ThrowsAsync<InvalidOperationException>(() => su.CreateUserAsync("existing-user", "other-pass"));
     }
 
     [Theory]
@@ -300,9 +287,7 @@ public class AuthorizationTests : IAsyncLifetime {
     public async Task Admin_CreateUser_InvalidUsername_Throws(string username) {
         await using var su = await _fixture.ConnectAsSuperuserAsync();
 
-        await Assert.ThrowsAsync<InvalidOperationException>(
-            () => su.CreateUserAsync(username, "pass")
-        );
+        await Assert.ThrowsAsync<InvalidOperationException>(() => su.CreateUserAsync(username, "pass"));
     }
 
     [Fact]
@@ -315,18 +300,14 @@ public class AuthorizationTests : IAsyncLifetime {
         var users = await su.ListUsersAsync();
         Assert.DoesNotContain(users, u => u.Username == "to-delete");
 
-        await Assert.ThrowsAsync<InvalidOperationException>(
-            () => _fixture.ConnectAsync("to-delete", "pass")
-        );
+        await Assert.ThrowsAsync<InvalidOperationException>(() => _fixture.ConnectAsync("to-delete", "pass"));
     }
 
     [Fact]
     public async Task Admin_DeleteUser_NonExistent_Throws() {
         await using var su = await _fixture.ConnectAsSuperuserAsync();
 
-        await Assert.ThrowsAsync<InvalidOperationException>(
-            () => su.DeleteUserAsync("no-such-user")
-        );
+        await Assert.ThrowsAsync<InvalidOperationException>(() => su.DeleteUserAsync("no-such-user"));
     }
 
     [Fact]
@@ -336,9 +317,7 @@ public class AuthorizationTests : IAsyncLifetime {
         await using var su = await _fixture.ConnectAsSuperuserAsync();
         await su.ChangePasswordAsync("pw-user", "new-pass");
 
-        await Assert.ThrowsAsync<InvalidOperationException>(
-            () => _fixture.ConnectAsync("pw-user", "old-pass")
-        );
+        await Assert.ThrowsAsync<InvalidOperationException>(() => _fixture.ConnectAsync("pw-user", "old-pass"));
         await using var client = await _fixture.ConnectAsync("pw-user", "new-pass");
         Assert.True(client.IsConnected);
     }
@@ -347,8 +326,10 @@ public class AuthorizationTests : IAsyncLifetime {
     public async Task Admin_GrantPermission_Superuser_Succeeds() {
         await using var su = await _fixture.ConnectAsSuperuserAsync();
         await su.CreateUserAsync("grant-user", "pass");
-        await su.GrantPermissionAsync("grant-user", "grant-user.*",
-            [QueueOperation.Publish, QueueOperation.CreateQueue]);
+        await su.GrantPermissionAsync("grant-user", "grant-user.*", [
+            QueueOperation.Publish,
+            QueueOperation.CreateQueue
+        ]);
 
         await su.CreateQueueAsync("grant-user.orders");
         await using var client = await _fixture.ConnectAsync("grant-user", "pass");
@@ -358,17 +339,17 @@ public class AuthorizationTests : IAsyncLifetime {
     [Fact]
     public async Task Admin_RevokePermission_Superuser_Succeeds() {
         await _fixture.CreateUserAsync("revoke-user", "pass");
-        await _fixture.GrantPermissionAsync("revoke-user", "revoke-user.*",
-            [QueueOperation.Publish, QueueOperation.CreateQueue]);
+        await _fixture.GrantPermissionAsync("revoke-user", "revoke-user.*", [
+            QueueOperation.Publish,
+            QueueOperation.CreateQueue
+        ]);
 
         await using var su = await _fixture.ConnectAsSuperuserAsync();
         await su.CreateQueueAsync("revoke-user.data");
         await su.RevokePermissionAsync("revoke-user", "revoke-user.*");
 
         await using var client = await _fixture.ConnectAsync("revoke-user", "pass");
-        await Assert.ThrowsAsync<InvalidOperationException>(
-            () => client.PublishAsync("revoke-user.data", new { X = 1 })
-        );
+        await Assert.ThrowsAsync<InvalidOperationException>(() => client.PublishAsync("revoke-user.data", new { X = 1 }));
     }
 
     [Fact]
@@ -403,9 +384,7 @@ public class AuthorizationTests : IAsyncLifetime {
         Assert.Equal("perm-self.*", own[0].QueuePattern);
         Assert.Contains("Publish", own[0].Operations);
 
-        await Assert.ThrowsAsync<InvalidOperationException>(
-            () => client.GetUserPermissionsAsync("perm-other")
-        );
+        await Assert.ThrowsAsync<InvalidOperationException>(() => client.GetUserPermissionsAsync("perm-other"));
     }
 
     [Fact]
@@ -437,8 +416,6 @@ public class AuthorizationTests : IAsyncLifetime {
 
         await using var client = await _fixture.ConnectAsync("regular", "pass");
 
-        await Assert.ThrowsAsync<InvalidOperationException>(
-            () => client.CreateUserAsync("hacker-created", "pwd")
-        );
+        await Assert.ThrowsAsync<InvalidOperationException>(() => client.CreateUserAsync("hacker-created", "pwd"));
     }
 }

@@ -38,10 +38,6 @@ public sealed class BrokerBuilder {
         _options.Port = options.Port;
         _options.MaxConnections = options.MaxConnections;
         _options.MaxMessageSize = options.MaxMessageSize;
-        _options.EnableAuthentication = options.EnableAuthentication;
-#pragma warning disable CS0618
-        _options.AuthToken = options.AuthToken;
-#pragma warning restore CS0618
         _options.Authorization = options.Authorization;
         _options.QueueDefaults = options.QueueDefaults;
         _options.Tls = options.Tls;
@@ -60,25 +56,12 @@ public sealed class BrokerBuilder {
     }
 
     /// <summary>
-    /// Enables legacy token-based authentication with the specified token.
-    /// </summary>
-    [Obsolete("Use UseAuthorization() for new deployments.")]
-    public BrokerBuilder UseAuthentication(string token) {
-        _options.EnableAuthentication = true;
-#pragma warning disable CS0618
-        _options.AuthToken = token;
-#pragma warning restore CS0618
-        return this;
-    }
-
-    /// <summary>
     /// Enables username/password authorization with per-queue ACL stored in SQLite.
     /// </summary>
     public BrokerBuilder UseAuthorization(Action<AuthorizationOptions> configure) {
         var authOptions = new AuthorizationOptions();
         configure(authOptions);
         _options.Authorization = authOptions;
-        _options.EnableAuthentication = true;
         return this;
     }
 
@@ -171,17 +154,6 @@ public sealed class BrokerBuilder {
             );
         }
 
-        // Legacy token authentication
-        IAuthenticationService? authService = null;
-        if (passwordAuthService is null && _options.EnableAuthentication) {
-#pragma warning disable CS0618
-            var token = _options.AuthToken;
-#pragma warning restore CS0618
-            if (!string.IsNullOrEmpty(token)) {
-                authService = new TokenAuthenticationService(token);
-            }
-        }
-
         // Metrics
         var metrics = new Metrics.BrokerMetrics();
 
@@ -219,7 +191,7 @@ public sealed class BrokerBuilder {
 
         // Command handlers
         var handlerList = new List<ICommandHandler> {
-            new ConnectHandler(_options, authService, passwordAuthService, _loggerFactory.CreateLogger<ConnectHandler>()),
+            new ConnectHandler(_options, passwordAuthService, _loggerFactory.CreateLogger<ConnectHandler>()),
             new PingHandler(),
             new PublishHandler(queueManager, authorizationService, metrics, _loggerFactory.CreateLogger<PublishHandler>()),
             new SubscribeHandler(queueManager, authorizationService, _loggerFactory.CreateLogger<SubscribeHandler>()),

@@ -320,7 +320,8 @@ configuration settings:
    * - Field
      - Type
      - Description
-   * - ``Name``
+   * - `
+ame``
      - ``string``
      - Queue name.
    * - ``MessageCount``
@@ -500,14 +501,17 @@ The client automatically reconnects when the connection is lost.
 Authentication
 ==============
 
-Token-based authentication:
+username/password authentication:
 
 **On server:**
 
 .. code-block:: csharp
 
    var broker = BrokerBuilder.Create()
-       .UseAuthentication("my-secret-token")
+       .UseAuthorization(options => {
+       options.SuperuserUsername = "admin";
+       options.SuperuserPassword = "my-secret-password";
+   })
        .Build();
 
 **On client:**
@@ -517,14 +521,13 @@ Token-based authentication:
    var client = await VibeMQClient.ConnectAsync(
        "localhost",
        2925,
-       new ClientOptions {
-           AuthToken = "my-secret-token"
-       }
+       new ClientOptions { Username = "admin", Password = "my-secret-password"
+        }
    );
 
 .. warning::
 
-   Use complex tokens (32+ characters) and store them in a secure location.
+   Use complex passwords (12+ characters) and store them in a secure location.
 
 TLS/SSL Encryption
 ==================

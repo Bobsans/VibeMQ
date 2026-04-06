@@ -49,7 +49,10 @@ Create a ``Program.cs`` file with the server startup code:
    // Create and configure the broker
    var broker = BrokerBuilder.Create()
        .UsePort(2925)
-       .UseAuthentication("my-secret-token")
+       .UseAuthorization(options => {
+       options.SuperuserUsername = "admin";
+       options.SuperuserPassword = "my-secret-password";
+   })
        .ConfigureQueues(options => {
            options.DefaultDeliveryMode = DeliveryMode.RoundRobin;
            options.MaxQueueSize = 10_000;
@@ -97,12 +100,11 @@ Edit ``Program.cs``:
    await using var client = await VibeMQClient.ConnectAsync(
        "localhost",
        2925,
-       new ClientOptions {
-           AuthToken = "my-secret-token",
+       new ClientOptions { Username = "admin", Password = "my-secret-password",
            ReconnectPolicy = new ReconnectPolicy {
                MaxAttempts = 5,
                UseExponentialBackoff = true
-           }
+            }
        },
        logger
    );
@@ -152,9 +154,8 @@ Create two separate applications:
 
    using VibeMQ.Client;
 
-   await using var publisher = await VibeMQClient.ConnectAsync("localhost", 2925, new ClientOptions {
-       AuthToken = "my-secret-token"
-   });
+   await using var publisher = await VibeMQClient.ConnectAsync("localhost", 2925, new ClientOptions { Username = "admin", Password = "my-secret-password"
+    });
 
    Console.WriteLine("Publisher connected. Enter a message to send:");
 
@@ -177,9 +178,8 @@ Create two separate applications:
 
    using VibeMQ.Client;
 
-   await using var subscriber = await VibeMQClient.ConnectAsync("localhost", 2925, new ClientOptions {
-       AuthToken = "my-secret-token"
-   });
+   await using var subscriber = await VibeMQClient.ConnectAsync("localhost", 2925, new ClientOptions { Username = "admin", Password = "my-secret-password"
+    });
 
    await using var subscription = await subscriber.SubscribeAsync<dynamic>(
        "notifications",

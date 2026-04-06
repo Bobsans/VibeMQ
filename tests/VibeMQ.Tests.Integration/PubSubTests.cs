@@ -3,11 +3,12 @@ using VibeMQ.Interfaces;
 
 namespace VibeMQ.Tests.Integration;
 
-public class PubSubTests : IAsyncLifetime {
-    private readonly TestBrokerFixture _fixture = new();
+public class PubSubTests : IClassFixture<TestBrokerFixture> {
+    private readonly TestBrokerFixture _fixture;
 
-    public Task InitializeAsync() => _fixture.InitializeAsync();
-    public Task DisposeAsync() => _fixture.DisposeAsync();
+    public PubSubTests(TestBrokerFixture fixture) {
+        _fixture = fixture;
+    }
 
     [Fact]
     public async Task PublishAndSubscribe_SingleMessage_Delivered() {
@@ -22,11 +23,11 @@ public class PubSubTests : IAsyncLifetime {
         });
 
         // Allow subscription to register
-        await Task.Delay(100);
+        await Task.Delay(IntegrationTestTimeouts.SubscriptionActivationDelayMs);
 
         await publisher.PublishAsync("test-queue", new TestPayload { Name = "hello", Value = 42 });
 
-        var result = await received.Task.WaitAsync(TimeSpan.FromSeconds(5));
+        var result = await received.Task.WaitAsync(IntegrationTestTimeouts.MessageDeliveryTimeout);
 
         Assert.Equal("hello", result.Name);
         Assert.Equal(42, result.Value);
@@ -48,13 +49,13 @@ public class PubSubTests : IAsyncLifetime {
             return Task.CompletedTask;
         });
 
-        await Task.Delay(100);
+        await Task.Delay(IntegrationTestTimeouts.SubscriptionActivationDelayMs);
 
         for (var i = 0; i < 10; i++) {
             await publisher.PublishAsync("multi-queue", new TestPayload { Name = $"msg-{i}", Value = i });
         }
 
-        await allReceived.Task.WaitAsync(TimeSpan.FromSeconds(10));
+        await allReceived.Task.WaitAsync(IntegrationTestTimeouts.MultipleMessagesDeliveryTimeout);
 
         Assert.Equal(10, count);
     }
@@ -70,11 +71,11 @@ public class PubSubTests : IAsyncLifetime {
 
         await using var subscription = await subscriber.SubscribeAsync<TestPayload, ClassBasedTestPayloadHandler>(queueName);
 
-        await Task.Delay(100);
+        await Task.Delay(IntegrationTestTimeouts.SubscriptionActivationDelayMs);
 
         await publisher.PublishAsync(queueName, new TestPayload { Name = messageName, Value = 777 });
 
-        var received = await receivedTask.WaitAsync(TimeSpan.FromSeconds(5));
+        var received = await receivedTask.WaitAsync(IntegrationTestTimeouts.MessageDeliveryTimeout);
 
         Assert.Equal(messageName, received.Name);
         Assert.Equal(777, received.Value);
@@ -109,10 +110,10 @@ public class PubSubTests : IAsyncLifetime {
         );
 
         await subscribeCts.CancelAsync();
-        await Task.Delay(100, subscribeCts.Token);
+        await Task.Delay(IntegrationTestTimeouts.SubscriptionActivationDelayMs, CancellationToken.None);
 
-        await publisher.PublishAsync(queueName, new TestPayload { Name = messageName, Value = 551 }, subscribeCts.Token);
-        var received = await receivedTask.WaitAsync(TimeSpan.FromSeconds(5), subscribeCts.Token);
+        await publisher.PublishAsync(queueName, new TestPayload { Name = messageName, Value = 551 }, CancellationToken.None);
+        var received = await receivedTask.WaitAsync(IntegrationTestTimeouts.MessageDeliveryTimeout, CancellationToken.None);
 
         Assert.Equal(messageName, received.Name);
         Assert.Equal(551, received.Value);
@@ -143,20 +144,20 @@ public class PubSubTests : IAsyncLifetime {
             return Task.CompletedTask;
         });
 
-        await Task.Delay(100);
+        await Task.Delay(IntegrationTestTimeouts.SubscriptionActivationDelayMs);
 
         await publisher.PublishAsync("unsub-queue", new TestPayload { Name = "before" });
-        await Task.Delay(300);
+        await Task.Delay(IntegrationTestTimeouts.PostUnsubscribePropagationDelayMs);
 
         var countBeforeUnsub = received;
         Assert.True(countBeforeUnsub > 0);
 
         // Unsubscribe
         await subscription.DisposeAsync();
-        await Task.Delay(100);
+        await Task.Delay(IntegrationTestTimeouts.SubscriptionActivationDelayMs);
 
         await publisher.PublishAsync("unsub-queue", new TestPayload { Name = "after" });
-        await Task.Delay(300);
+        await Task.Delay(IntegrationTestTimeouts.PostUnsubscribePropagationDelayMs);
 
         // Should not receive more messages
         Assert.Equal(countBeforeUnsub, received);

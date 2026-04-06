@@ -14,14 +14,17 @@ Requires **VibeMQ.Server**.
 
 ```csharp
 using VibeMQ.Server.DependencyInjection;
-using VibeMQ.Core.Enums;
+using VibeMQ.Configuration;
+using VibeMQ.Enums;
 
 var host = Host.CreateDefaultBuilder(args)
     .ConfigureServices(services => {
         services.AddVibeMQBroker(options => {
             options.Port = 2925;
-            options.EnableAuthentication = true;
-            options.AuthToken = "my-secret-token";
+            options.Authorization = new AuthorizationOptions {
+                SuperuserUsername = "admin",
+                SuperuserPassword = "change-me"
+            };
             options.QueueDefaults.DefaultDeliveryMode = DeliveryMode.RoundRobin;
         });
     })

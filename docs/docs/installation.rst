@@ -124,7 +124,7 @@ For deployment with other services, create a ``docker-compose.yml``:
          - "2926:2926"  # HTTP port for health checks
        environment:
          - VIBEMQ__Port=2925
-         - VIBEMQ__AuthToken=my-secret-token
+         - VibeMQ__Authorization__SuperuserPassword=my-secret-password
          - VIBEMQ__MaxConnections=1000
        volumes:
          - vibemq-data:/data
@@ -208,15 +208,18 @@ For ASP.NET Core applications, use DI integration:
    // Add broker server
    builder.Services.AddVibeMQBroker(options => {
        options.Port = 2925;
-       options.EnableAuthentication = true;
-       options.AuthToken = builder.Configuration["VibeMQ:AuthToken"];
+       options.Authorization = new AuthorizationOptions {
+           SuperuserUsername = builder.Configuration["VibeMQ:Authorization:SuperuserUsername"] ?? "admin",
+           SuperuserPassword = builder.Configuration["VibeMQ:Authorization:SuperuserPassword"] ?? "change-me"
+       };
    });
 
    // Add client for sending messages
    builder.Services.AddVibeMQClient(settings => {
        settings.Host = "localhost";
        settings.Port = 2925;
-       settings.ClientOptions.AuthToken = builder.Configuration["VibeMQ:AuthToken"];
+       settings.ClientOptions.Username = builder.Configuration["VibeMQ:Authorization:SuperuserUsername"];
+       settings.ClientOptions.Password = builder.Configuration["VibeMQ:Authorization:SuperuserPassword"];
    });
 
    var app = builder.Build();
@@ -319,15 +322,18 @@ Authentication Error
 
 **Error:** ``Authentication failed``
 
-**Solution:** Make sure tokens match:
+**Solution:** Make sure credentials match:
 
 .. code-block:: csharp
 
    // Server
-   .UseAuthentication("my-token")
+   .UseAuthorization(options => {
+       options.SuperuserUsername = "admin";
+       options.SuperuserPassword = "my-password";
+   })
 
    // Client
-   new ClientOptions { AuthToken = "my-token" }
+   new ClientOptions { Username = "admin", Password = "my-password"  }
 
 TLS/SSL Errors
 --------------

@@ -137,8 +137,8 @@ msgid "Deprecated; use ``IStorageProvider``."
 msgstr ""
 
 #: ../../docs/architecture.rst:82 f46a226500b74d87b73fd33355f9110c
-msgid "``IAuthenticationService``"
-msgstr "``IAuthenticationService``"
+msgid "``IPasswordAuthenticationService``"
+msgstr "``IPasswordAuthenticationService``"
 
 #: ../../docs/architecture.rst:83 e8c056311b7c45e09657a9d82ea4d451
 msgid "Authentication interface"

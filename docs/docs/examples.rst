@@ -28,7 +28,7 @@ Simple Publisher
    await using var publisher = await VibeMQClient.ConnectAsync(
        "localhost",
        2925,
-       new ClientOptions { AuthToken = "my-token" },
+       new ClientOptions { Username = "admin", Password = "my-password"  },
        logger
    );
 
@@ -63,7 +63,7 @@ Simple Subscriber
    await using var subscriber = await VibeMQClient.ConnectAsync(
        "localhost",
        2925,
-       new ClientOptions { AuthToken = "my-token" },
+       new ClientOptions { Username = "admin", Password = "my-password"  },
        logger
    );
 
@@ -92,7 +92,10 @@ Server
 
    var broker = BrokerBuilder.Create()
        .UsePort(2925)
-       .UseAuthentication("my-token")
+       .UseAuthorization(options => {
+       options.SuperuserUsername = "admin";
+       options.SuperuserPassword = "my-password";
+   })
        .ConfigureQueues(options => {
            options.DefaultDeliveryMode = DeliveryMode.RoundRobin;
            options.MaxQueueSize = 10_000;
@@ -218,7 +221,8 @@ Order Processing
            services.AddVibeMQClient(settings => {
                settings.Host = "localhost";
                settings.Port = 2925;
-               settings.ClientOptions.AuthToken = "my-token";
+               settings.ClientOptions.Username = "admin";
+               settings.ClientOptions.Password = "my-password";
            });
 
            services.AddHostedService<OrderProcessor>();
@@ -275,7 +279,8 @@ Using class-based handlers with automatic subscription:
            services.AddVibeMQClient(settings => {
                settings.Host = "localhost";
                settings.Port = 2925;
-               settings.ClientOptions.AuthToken = "my-token";
+               settings.ClientOptions.Username = "admin";
+               settings.ClientOptions.Password = "my-password";
            });
 
            services.AddScoped<IOrderRepository, OrderRepository>();

@@ -2,29 +2,29 @@ using VibeMQ.Client;
 
 namespace VibeMQ.Tests.Integration;
 
-public class SecurityTests : IAsyncLifetime {
-    private readonly TestBrokerFixture _fixture = new();
+public class SecurityTests : IClassFixture<TestBrokerFixture> {
+    private readonly TestBrokerFixture _fixture;
 
-    public Task InitializeAsync() => _fixture.InitializeAsync();
-    public Task DisposeAsync() => _fixture.DisposeAsync();
+    public SecurityTests(TestBrokerFixture fixture) {
+        _fixture = fixture;
+    }
 
     [Fact]
-    public async Task Connect_WithInvalidToken_ThrowsOrFails() {
-#pragma warning disable CS0618
+    public async Task Connect_WithInvalidCredentials_ThrowsOrFails() {
         var options = new ClientOptions {
-            AuthToken = "wrong-token",
-            CommandTimeout = TimeSpan.FromSeconds(3),
+            Username = "wrong-user",
+            Password = "wrong-pass",
+            CommandTimeout = IntegrationTestTimeouts.ClientCommandTimeout,
             ReconnectPolicy = new ReconnectPolicy { MaxAttempts = 0 }
         };
 
         await Assert.ThrowsAsync<InvalidOperationException>(
             () => VibeMQClient.ConnectAsync("127.0.0.1", _fixture.Port, options)
         );
-#pragma warning restore CS0618
     }
 
     [Fact]
-    public async Task Connect_WithValidToken_Succeeds() {
+    public async Task Connect_WithValidCredentials_Succeeds() {
         await using var client = await _fixture.CreateClientAsync(authenticate: true);
 
         Assert.True(client.IsConnected);

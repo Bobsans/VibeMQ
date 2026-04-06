@@ -19,7 +19,7 @@ What is VibeMQ?
 - Publish/subscribe (pub/sub)
 - Queues with delivery guarantees
 - Automatic reconnections
-- Token-based authentication
+- username/password authentication
 - TLS/SSL encryption
 - Health checks for orchestrators
 
@@ -116,7 +116,10 @@ How to ensure security?
 
 .. code-block:: csharp
 
-   .UseAuthentication("my-secret-token")
+   .UseAuthorization(options => {
+       options.SuperuserUsername = "admin";
+       options.SuperuserPassword = "my-secret-password";
+   })
 
 **TLS encryption:**
 
@@ -226,7 +229,10 @@ How to configure for production?
 
    var broker = BrokerBuilder.Create()
        .UsePort(2925)
-       .UseAuthentication(Environment.GetEnvironmentVariable("VIBEMQ_TOKEN"))
+       .UseAuthorization(options => {
+       options.SuperuserUsername = "admin";
+       options.SuperuserPassword = Environment.GetEnvironmentVariable("VIBEMQ_SUPERUSER_PASSWORD");
+   })
        .UseMaxConnections(5000)
        .ConfigureQueues(options => {
            options.DefaultDeliveryMode = DeliveryMode.FanOutWithAck;
@@ -297,19 +303,19 @@ How to optimize performance?
 Security
 ============
 
-How secure is token authentication?
+How secure is username/password authentication?
 ---------------------------------------------
 
 **Recommendations:**
 
-- Use complex tokens (32+ characters)
-- Store tokens in secure location (Key Vault, Secrets Manager)
-- Rotate tokens periodically
-- Use different tokens for different environments
+- Use complex passwords (12+ characters)
+- Store credentials in a secure location (Key Vault, Secrets Manager)
+- Rotate passwords periodically
+- Use different credentials for different environments
 
 .. warning::
 
-   Token authentication is suitable for internal security.
+   username/password authentication is suitable for internal security.
    For public APIs use OAuth2/OIDC.
 
 Do I need to use TLS?

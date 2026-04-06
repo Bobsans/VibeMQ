@@ -151,7 +151,8 @@ Compression Headers
 +==============================+============================+=============================================+
 | ``supported-compression``    | Client → Server (Connect)  | Comma-separated preferred algorithms        |
 +------------------------------+----------------------------+---------------------------------------------+
-| ``negotiated-compression``   | Server → Client (ConnectAck)| Selected algorithm; absent if none agreed  |
+| `
+egotiated-compression``   | Server → Client (ConnectAck)| Selected algorithm; absent if none agreed  |
 +------------------------------+----------------------------+---------------------------------------------+
 
 Message Format
@@ -282,7 +283,7 @@ Connect
      "id": "conn_123",
      "type": "connect",
      "headers": {
-       "authToken": "my-secret-token",
+       "authPassword": "my-secret-password",
        "clientVersion": "1.0.0"
      }
    }
@@ -618,7 +619,7 @@ Error
      "id": "err_123",
      "type": "error",
      "errorCode": "AUTH_FAILED",
-     "errorMessage": "Invalid authentication token"
+     "errorMessage": "Invalid username or password"
    }
 
 Error Codes
@@ -655,8 +656,8 @@ Common Headers
 
    * - Header
      - Description
-   * - ``authToken``
-     - Authentication token
+  * - ``authPassword``
+    - Authentication password
    * - ``clientVersion``
      - Client version
    * - ``serverVersion``
@@ -721,7 +722,7 @@ Connection Establishment
      "id": "conn_001",
      "type": "connect",
      "headers": {
-       "authToken": "my-token",
+       "authPassword": "my-password",
        "supported-compression": "brotli,gzip"
      }
    }

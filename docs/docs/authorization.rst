@@ -20,16 +20,16 @@ VibeMQ supports two authentication modes:
    * - Mode
      - Description
      - When to use
-   * - **Legacy token**
-     - Single shared token for all clients
+  * - **username/password**
+    - Single shared credentials for all clients
      - Simple setups, backward compatibility
    * - **Username/password + ACL**
      - Per-user BCrypt passwords with per-queue ACL stored in SQLite
      - Production, multi-tenant, fine-grained access control
 
-When authorization is enabled via ``UseAuthorization()``, the legacy token mode
-is automatically disabled. Without any auth configured, the broker accepts all
-connections anonymously.
+When authorization is enabled via ``UseAuthorization()``, the broker requires
+username/password credentials for authentication. Without any auth configured,
+the broker accepts all connections anonymously.
 
 Quick Start
 ===========

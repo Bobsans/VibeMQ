@@ -22,8 +22,6 @@ Main server configuration class:
        public int Port { get; set; } = 2925;
        public int MaxConnections { get; set; } = 1000;
        public int MaxMessageSize { get; set; } = 1_048_576;
-       public bool EnableAuthentication { get; set; }
-       public string? AuthToken { get; set; }
        public AuthorizationOptions? Authorization { get; set; }
        public QueueDefaults QueueDefaults { get; set; } = new();
        public TlsOptions Tls { get; set; } = new();
@@ -33,7 +31,7 @@ Main server configuration class:
        public int CompressionThreshold { get; set; } = 1024;  // 1 KB
    }
 
-**Authorization** (default: ``null``) enables username/password authentication with per-queue ACL. When set, legacy ``AuthToken`` is ignored. See :doc:`authorization` for full details.
+**Authorization** (default: ``null``) enables username/password authentication with per-queue ACL. See :doc:`authorization` for full details.
 
 Persistence is configured on the builder, not in ``BrokerOptions``: use ``BrokerBuilder.UseSqliteStorage(...)`` or ``BrokerBuilder.UseRedisStorage(...)``. See :doc:`storage` for details.
 
@@ -93,38 +91,17 @@ Maximum message size in bytes:
 
    Large messages increase memory usage.
 
-EnableAuthentication
-~~~~~~~~~~~~~~~~~~~~
+Authentication Activation
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
-**Type:** ``bool``
-
-**Default:** ``false``
-
-Enable authentication:
+Authentication is automatically enabled when ``Authorization`` is configured:
 
 .. code-block:: csharp
 
-   .UseAuthentication("my-secret-token")
-
-AuthToken
-~~~~~~~~~
-
-**Type:** ``string?``
-
-**Default:** ``null``
-
-.. deprecated:: 2.0
-   Use ``UseAuthorization()`` for new deployments.
-
-Token for client authentication (legacy mode):
-
-.. code-block:: csharp
-
-   .UseAuthentication("complex-token-with-32-chars-min")
-
-.. warning::
-
-   Use complex tokens (32+ characters) in production.
+   options.Authorization = new AuthorizationOptions {
+       SuperuserUsername = "admin",
+       SuperuserPassword = "change-me"
+   };
 
 Authorization
 ~~~~~~~~~~~~~
@@ -134,7 +111,7 @@ Authorization
 **Default:** ``null``
 
 Enables username/password authentication with per-queue ACL stored in SQLite.
-When set, legacy token authentication is automatically disabled.
+When set, legacy username/password authentication is automatically disabled.
 
 .. code-block:: csharp
 
@@ -372,7 +349,6 @@ ClientOptions
 .. code-block:: csharp
 
    public sealed class ClientOptions {
-       public string? AuthToken { get; set; }
        public string? Username { get; set; }
        public string? Password { get; set; }
        public ReconnectPolicy ReconnectPolicy { get; set; } = new();
@@ -400,23 +376,7 @@ Credentials for username/password authentication (new mode):
    Username = "alice",
    Password = "alice-secret"
 
-When both ``Username`` and ``Password`` are set, they take priority over ``AuthToken``.
-
-AuthToken
-~~~~~~~~~
-
-**Type:** ``string?``
-
-**Default:** ``null``
-
-.. deprecated:: 2.0
-   Use ``Username`` and ``Password`` for new deployments.
-
-Token for authentication (legacy mode):
-
-.. code-block:: csharp
-
-   AuthToken = "my-secret-token"
+Both ``Username`` and ``Password`` must be set together.
 
 PreferredCompressions
 ~~~~~~~~~~~~~~~~~~~~~
@@ -754,7 +714,10 @@ Development
 
    var broker = BrokerBuilder.Create()
        .UsePort(2925)
-       .UseAuthentication("dev-token")
+       .UseAuthorization(options => {
+       options.SuperuserUsername = "admin";
+       options.SuperuserPassword = "dev-password";
+   })
        .ConfigureQueues(options => {
            options.DefaultDeliveryMode = DeliveryMode.RoundRobin;
            options.MaxQueueSize = 10_000;
@@ -769,7 +732,10 @@ Production
 
    var broker = BrokerBuilder.Create()
        .UsePort(2925)
-       .UseAuthentication(Environment.GetEnvironmentVariable("VIBEMQ_TOKEN"))
+       .UseAuthorization(options => {
+       options.SuperuserUsername = "admin";
+       options.SuperuserPassword = Environment.GetEnvironmentVariable("VIBEMQ_SUPERUSER_PASSWORD");
+   })
        .UseMaxConnections(5000)
        .UseMaxMessageSize(2_097_152)
        .ConfigureQueues(options => {
@@ -800,7 +766,10 @@ IoT Scenario
 
    var broker = BrokerBuilder.Create()
        .UsePort(8883)
-       .UseAuthentication("iot-token")
+       .UseAuthorization(options => {
+       options.SuperuserUsername = "admin";
+       options.SuperuserPassword = "iot-password";
+   })
        .UseMaxConnections(10000)
        .ConfigureQueues(options => {
            options.DefaultDeliveryMode = DeliveryMode.RoundRobin;
@@ -820,7 +789,10 @@ Microservices
 
    var broker = BrokerBuilder.Create()
        .UsePort(2925)
-       .UseAuthentication("microservice-token")
+       .UseAuthorization(options => {
+       options.SuperuserUsername = "admin";
+       options.SuperuserPassword = "microservice-password";
+   })
        .ConfigureQueues(options => {
            options.DefaultDeliveryMode = DeliveryMode.FanOutWithAck;
            options.EnableAutoCreate = true;

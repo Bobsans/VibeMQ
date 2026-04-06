@@ -60,8 +60,8 @@ msgid "Automatic reconnections"
 msgstr "Автоматическое переподключение"
 
 #: ../../docs/faq.rst:22 6c19f657d0d049bc95d348246628f1f1
-msgid "Token-based authentication"
-msgstr "Аутентификация по токену"
+msgid "username/password authentication"
+msgstr "аутентификация по логину/паролю"
 
 #: ../../docs/faq.rst:23 58405076fd3c4bcc8718c7ce1bf62aaf
 msgid "TLS/SSL encryption"
@@ -468,31 +468,31 @@ msgid "Security"
 msgstr "Безопасность"
 
 #: ../../docs/faq.rst:301 15ca28e8c9084a4fad9023fe750ff4a8
-msgid "How secure is token authentication?"
-msgstr "Насколько безопасна аутентификация по токену?"
+msgid "How secure is username/password authentication?"
+msgstr "Насколько безопасна аутентификация по логину/паролю?"
 
 #: ../../docs/faq.rst:305 f0263eb00e8748f9a0774ea75458ec9f
-msgid "Use complex tokens (32+ characters)"
-msgstr "Используйте сложные токены (32+ символа)"
+msgid "Use complex passwords (12+ characters)"
+msgstr "Используйте сложные Учетные данные (32+ символа)"
 
 #: ../../docs/faq.rst:306 77da844a66e640b49e2f615e53c00603
-msgid "Store tokens in secure location (Key Vault, Secrets Manager)"
-msgstr "Храните токены в защищённом месте (Key Vault, Secrets Manager)"
+msgid "Store credentials in a secure location (Key Vault, Secrets Manager)"
+msgstr "Храните Учетные данные в защищённом месте (Key Vault, Secrets Manager)"
 
 #: ../../docs/faq.rst:307 4505d49e370c46f58ffb00e8a28cfa2b
-msgid "Rotate tokens periodically"
-msgstr "Регулярно меняйте токены"
+msgid "Rotate passwords periodically"
+msgstr "Регулярно меняйте Учетные данные"
 
 #: ../../docs/faq.rst:308 e5afdb825744466bb94887d2a4a425ca
-msgid "Use different tokens for different environments"
-msgstr "Используйте разные токены для разных окружений"
+msgid "Use different credentials for different environments"
+msgstr "Используйте разные Учетные данные для разных окружений"
 
 #: ../../docs/faq.rst:312 0a8cfd5e51e247cfb0fbc740019f6023
 msgid ""
-"Token authentication is suitable for internal security. For public APIs "
+"username/password authentication is suitable for internal security. For public APIs "
 "use OAuth2/OIDC."
 msgstr ""
-"Токен-аутентификация подходит для внутренней безопасности. Для публичных "
+"аутентификация по логину/паролю подходит для внутренней безопасности. Для публичных "
 "API используйте OAuth2/OIDC."
 
 #: ../../docs/faq.rst:316 a906926e176742fb874da17edd9091a3

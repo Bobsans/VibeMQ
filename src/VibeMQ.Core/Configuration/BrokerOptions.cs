@@ -23,19 +23,8 @@ public sealed class BrokerOptions {
     public int MaxMessageSize { get; set; } = 1_048_576;
 
     /// <summary>
-    /// Whether token-based authentication is required. Default: false.
-    /// </summary>
-    public bool EnableAuthentication { get; set; }
-
-    /// <summary>
-    /// Token used for simple authentication when <see cref="EnableAuthentication"/> is true.
-    /// </summary>
-    [Obsolete("Use Authorization with username/password instead. AuthToken is ignored when UseAuthorization() is configured.")]
-    public string? AuthToken { get; set; }
-
-    /// <summary>
     /// Authorization configuration for username/password authentication with per-queue ACL.
-    /// When set (non-null), username/password auth is active and <see cref="AuthToken"/> is ignored.
+    /// When set (non-null), it provides credential storage and bootstrap settings for auth.
     /// </summary>
     public AuthorizationOptions? Authorization { get; set; }
 

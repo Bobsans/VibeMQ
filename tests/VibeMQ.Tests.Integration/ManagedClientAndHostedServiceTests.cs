@@ -10,11 +10,12 @@ namespace VibeMQ.Tests.Integration;
 /// <summary>
 /// Integration tests for ManagedVibeMQClient and MessageHandlerHostedService with a real broker.
 /// </summary>
-public sealed class ManagedClientAndHostedServiceTests : IAsyncLifetime {
-    private readonly TestBrokerFixture _fixture = new();
+public sealed class ManagedClientAndHostedServiceTests : IClassFixture<TestBrokerFixture> {
+    private readonly TestBrokerFixture _fixture;
 
-    public Task InitializeAsync() => _fixture.InitializeAsync();
-    public Task DisposeAsync() => _fixture.DisposeAsync();
+    public ManagedClientAndHostedServiceTests(TestBrokerFixture fixture) {
+        _fixture = fixture;
+    }
 
     [Fact]
     public async Task ManagedVibeMQClient_ConnectsAndPublishes_WhenResolvedFromDI() {
@@ -24,10 +25,9 @@ public sealed class ManagedClientAndHostedServiceTests : IAsyncLifetime {
             settings.Host = "127.0.0.1";
             settings.Port = _fixture.Port;
             settings.ClientOptions = new ClientOptions {
-#pragma warning disable CS0618
-                AuthToken = TestBrokerFixture.AuthToken,
-#pragma warning restore CS0618
-                CommandTimeout = TimeSpan.FromSeconds(5),
+                Username = TestBrokerFixture.Username,
+                Password = TestBrokerFixture.Password,
+                CommandTimeout = IntegrationTestTimeouts.ClientCommandTimeout,
                 ReconnectPolicy = new ReconnectPolicy { MaxAttempts = 0 }
             };
         });
@@ -57,10 +57,9 @@ public sealed class ManagedClientAndHostedServiceTests : IAsyncLifetime {
             settings.Host = "127.0.0.1";
             settings.Port = _fixture.Port;
             settings.ClientOptions = new ClientOptions {
-#pragma warning disable CS0618
-                AuthToken = TestBrokerFixture.AuthToken,
-#pragma warning restore CS0618
-                CommandTimeout = TimeSpan.FromSeconds(5),
+                Username = TestBrokerFixture.Username,
+                Password = TestBrokerFixture.Password,
+                CommandTimeout = IntegrationTestTimeouts.ClientCommandTimeout,
                 ReconnectPolicy = new ReconnectPolicy { MaxAttempts = 0 }
             };
         });
@@ -80,10 +79,10 @@ public sealed class ManagedClientAndHostedServiceTests : IAsyncLifetime {
         try {
             var client = host.Services.GetRequiredService<IVibeMQClient>();
             await client.CreateQueueAsync("integration-di-queue");
-            await Task.Delay(500, CancellationToken.None); // allow subscription to be active
+            await Task.Delay(IntegrationTestTimeouts.HostedServiceSubscriptionDelayMs, CancellationToken.None); // allow subscription to be active
             await client.PublishAsync("integration-di-queue", new IntegrationDiMessage { Id = 1, Text = "hello" });
 
-            await Task.Delay(1000, CancellationToken.None); // allow delivery
+            await Task.Delay(IntegrationTestTimeouts.HostedServiceDeliveryDelayMs, CancellationToken.None); // allow delivery
 
             Assert.Single(received);
             var msg = received.Single();

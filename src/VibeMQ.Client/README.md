@@ -16,7 +16,10 @@ using VibeMQ.Client;
 await using var client = await VibeMQClient.ConnectAsync(
     "localhost",
     2925,
-    new ClientOptions { AuthToken = "your-token" }
+    new ClientOptions {
+        Username = "admin",
+        Password = "change-me"
+    }
 );
 
 // Publish

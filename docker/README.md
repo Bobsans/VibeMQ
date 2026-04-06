@@ -13,4 +13,4 @@ With Docker Compose:
 docker compose -f docker/docker-compose.yml up -d
 ```
 
-Configuration: environment variables (e.g. `VibeMQ__Port`, `VibeMQ__EnableAuthentication`) or optional config file. See [Docker documentation](../docs/docs/docker.rst) in the docs.
+Configuration: environment variables (e.g. `VibeMQ__Port`, `VibeMQ__Authorization__SuperuserUsername`, `VibeMQ__Authorization__SuperuserPassword`) or optional config file. See [Docker documentation](../docs/docs/docker.rst) in the docs.

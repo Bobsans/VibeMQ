@@ -1,6 +1,5 @@
 using Microsoft.Extensions.Logging;
 using VibeMQ.Configuration;
-using VibeMQ.Interfaces;
 using VibeMQ.Protocol;
 using VibeMQ.Protocol.Compression;
 using VibeMQ.Server.Auth;
@@ -10,12 +9,10 @@ namespace VibeMQ.Server.Handlers;
 
 /// <summary>
 /// Handles the Connect command: authenticates the client and negotiates compression.
-/// Supports both legacy token-based auth (<see cref="IAuthenticationService"/>) and
-/// new username/password auth (<see cref="IPasswordAuthenticationService"/>).
+/// Uses username/password auth (<see cref="IPasswordAuthenticationService"/>) when configured.
 /// </summary>
 public sealed partial class ConnectHandler(
     BrokerOptions options,
-    IAuthenticationService? authService,
     IPasswordAuthenticationService? passwordAuthService,
     ILogger<ConnectHandler> logger
 ) : ICommandHandler {
@@ -28,7 +25,6 @@ public sealed partial class ConnectHandler(
         ProtocolMessage message,
         CancellationToken cancellationToken = default
     ) {
-        // --- Authorization mode: username + password ---
         if (passwordAuthService is not null) {
             var username = message.Headers?.GetValueOrDefault("authUsername");
             var password = message.Headers?.GetValueOrDefault("authPassword");
@@ -58,27 +54,6 @@ public sealed partial class ConnectHandler(
             connection.Username = result.Username;
             connection.IsSuperuser = result.IsSuperuser;
             connection.CachedPermissions = result.Permissions;
-        }
-        // --- Legacy mode: token ---
-        else if (options.EnableAuthentication && authService is not null) {
-            var token = message.Headers?.GetValueOrDefault("authToken");
-
-            if (string.IsNullOrEmpty(token)) {
-                await connection.SendErrorAsync("AUTH_REQUIRED", "Authentication token is required.", cancellationToken)
-                    .ConfigureAwait(false);
-                return;
-            }
-
-#pragma warning disable CS0618 // AuthenticateAsync(token) is intentionally used for backward compat
-            var isValid = await authService.AuthenticateAsync(token, cancellationToken).ConfigureAwait(false);
-#pragma warning restore CS0618
-
-            if (!isValid) {
-                LogAuthFailed(connection.Id, "<token>");
-                await connection.SendErrorAsync("AUTH_FAILED", "Invalid authentication token.", cancellationToken)
-                    .ConfigureAwait(false);
-                return;
-            }
         }
 
         connection.IsAuthenticated = true;

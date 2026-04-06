@@ -12,11 +12,14 @@ dotnet add package VibeMQ.Server
 
 ```csharp
 using VibeMQ.Server;
-using VibeMQ.Core.Enums;
+using VibeMQ.Enums;
 
 var broker = BrokerBuilder.Create()
     .UsePort(2925)
-    .UseAuthentication("my-secret-token")
+    .UseAuthorization(options => {
+        options.SuperuserUsername = "admin";
+        options.SuperuserPassword = "change-me";
+    })
     .ConfigureQueues(options => {
         options.DefaultDeliveryMode = DeliveryMode.RoundRobin;
         options.MaxQueueSize = 10_000;

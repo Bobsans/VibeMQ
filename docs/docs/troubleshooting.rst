@@ -120,9 +120,9 @@ Authentication Issues
 
 .. code-block:: text
 
-   Authentication failed: Invalid token
+   Authentication failed: Invalid username or password
 
-**Cause:** Tokens on server and client do not match.
+**Cause:** Username/password on server and client do not match.
 
 **Solution:**
 
@@ -130,21 +130,23 @@ Authentication Issues
 
    // Server
    var broker = BrokerBuilder.Create()
-       .UseAuthentication("my-secret-token")  // Same token
+       .UseAuthorization(options => {
+       options.SuperuserUsername = "admin";
+       options.SuperuserPassword = "my-secret-password";
+   })  // same credentials
        .Build();
 
    // Client
    var client = await VibeMQClient.ConnectAsync(
        "localhost",
        2925,
-       new ClientOptions {
-           AuthToken = "my-secret-token"  // Same token
-       }
+       new ClientOptions { Username = "admin", Password = "my-secret-password"  // same credentials
+        }
    );
 
 .. warning::
 
-   Tokens are case-sensitive!
+   Credentials are case-sensitive!
 
 "Authentication required"
 -------------------------
@@ -153,9 +155,9 @@ Authentication Issues
 
 .. code-block:: text
 
-   Authentication required: Token not provided
+   Authentication required: Username and password not provided
 
-**Cause:** Server requires authentication, but client did not provide token.
+**Cause:** Server requires authentication, but client did not provide username/password.
 
 **Solution:**
 
@@ -164,9 +166,8 @@ Authentication Issues
    var client = await VibeMQClient.ConnectAsync(
        "localhost",
        2925,
-       new ClientOptions {
-           AuthToken = "my-token"  // Provide token
-       }
+       new ClientOptions { Username = "admin", Password = "my-password"  // Provide credentials
+        }
    );
 
 Queue Issues

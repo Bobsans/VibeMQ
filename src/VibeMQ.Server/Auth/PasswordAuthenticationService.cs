@@ -1,5 +1,3 @@
-using VibeMQ.Interfaces;
-
 namespace VibeMQ.Server.Auth;
 
 /// <summary>
@@ -7,7 +5,7 @@ namespace VibeMQ.Server.Auth;
 /// BCrypt verification is performed once per login; subsequent checks use the
 /// per-session permission cache stored in <see cref="Connections.ClientConnection"/>.
 /// </summary>
-public sealed class PasswordAuthenticationService(IAuthRepository repository) : IAuthenticationService, IPasswordAuthenticationService {
+public sealed class PasswordAuthenticationService(IAuthRepository repository) : IPasswordAuthenticationService {
     public Task<AuthResult?> AuthenticateAsync(string username, string password, CancellationToken cancellationToken = default) {
         return AuthenticateInternalAsync(username, password, cancellationToken);
     }
@@ -24,11 +22,5 @@ public sealed class PasswordAuthenticationService(IAuthRepository repository) : 
 
         var permissions = await repository.GetPermissionsAsync(username, cancellationToken).ConfigureAwait(false);
         return new AuthResult(user.Username, user.IsSuperuser, permissions);
-    }
-
-    // Legacy stub — password auth service does not support bare tokens.
-    [Obsolete("Use AuthenticateAsync(username, password) instead.")]
-    Task<bool> IAuthenticationService.AuthenticateAsync(string token, CancellationToken cancellationToken) {
-        return Task.FromResult(false);
     }
 }

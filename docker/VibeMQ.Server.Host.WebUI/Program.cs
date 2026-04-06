@@ -47,8 +47,9 @@ var host = Host.CreateDefaultBuilder(args)
 
 var brokerOptions = host.Services.GetRequiredService<IOptions<BrokerOptions>>().Value;
 var webUIOptions = host.Services.GetRequiredService<IOptions<WebUIOptions>>().Value;
+var authEnabled = brokerOptions.Authorization is not null;
 Console.WriteLine("VibeMQ broker + Web UI starting. Broker port: {0}, Web UI port: {1}, Auth: {2}",
-    brokerOptions.Port, webUIOptions.Port, brokerOptions.EnableAuthentication);
+    brokerOptions.Port, webUIOptions.Port, authEnabled);
 
 using var cts = new CancellationTokenSource();
 Console.CancelKeyPress += (_, e) => {

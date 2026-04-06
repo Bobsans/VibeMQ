@@ -51,6 +51,7 @@ Registration with Configuration
 
 .. code-block:: csharp
 
+   using VibeMQ.Configuration;
    using VibeMQ.Server.DependencyInjection;
    using VibeMQ.Enums;
 
@@ -58,8 +59,10 @@ Registration with Configuration
        .ConfigureServices(services => {
            services.AddVibeMQBroker(options => {
                options.Port = 2925;
-               options.EnableAuthentication = true;
-               options.AuthToken = "my-secret-token";
+               options.Authorization = new AuthorizationOptions {
+                   SuperuserUsername = "admin",
+                   SuperuserPassword = "change-me"
+               };
                options.QueueDefaults.DefaultDeliveryMode = DeliveryMode.RoundRobin;
                options.QueueDefaults.MaxQueueSize = 10_000;
                options.QueueDefaults.EnableAutoCreate = true;
@@ -79,8 +82,10 @@ Configuration from appsettings.json
    {
      "VibeMQ": {
        "Port": 2925,
-       "EnableAuthentication": true,
-       "AuthToken": "my-secret-token",
+       "Authorization": {
+         "SuperuserUsername": "admin",
+         "SuperuserPassword": "change-me"
+       },
        "QueueDefaults": {
          "DefaultDeliveryMode": "RoundRobin",
          "MaxQueueSize": 10000,
@@ -127,8 +132,10 @@ Advanced Configuration
                options.MaxMessageSize = 2_097_152;
                
                // Authentication
-               options.EnableAuthentication = true;
-               options.AuthToken = Environment.GetEnvironmentVariable("VIBEMQ_TOKEN");
+               options.Authorization = new AuthorizationOptions {
+                   SuperuserUsername = "admin",
+                   SuperuserPassword = Environment.GetEnvironmentVariable("VIBEMQ_SUPERUSER_PASSWORD")
+               };
                
                // Queues (only DefaultDeliveryMode, MaxQueueSize, EnableAutoCreate are in QueueDefaults)
                options.QueueDefaults.DefaultDeliveryMode = DeliveryMode.FanOutWithAck;
@@ -242,7 +249,8 @@ Registration with Configuration
            services.AddVibeMQClient(settings => {
                settings.Host = "localhost";
                settings.Port = 2925;
-               settings.ClientOptions.AuthToken = "my-secret-token";
+               settings.ClientOptions.Username = "admin";
+               settings.ClientOptions.Password = "my-secret-password";
            });
        })
        .Build();
@@ -259,7 +267,8 @@ Configuration from appsettings.json
        "Host": "localhost",
        "Port": 2925,
        "ClientOptions": {
-         "AuthToken": "my-secret-token",
+         "Username": "admin",
+         "Password": "my-secret-password",
          "KeepAliveInterval": "00:00:30",
          "CommandTimeout": "00:00:10",
          "ReconnectPolicy": {
@@ -303,7 +312,8 @@ Advanced Client Configuration
                settings.Host = "vibemq.internal";
                settings.Port = 2925;
                
-               settings.ClientOptions.AuthToken = Environment.GetEnvironmentVariable("VIBEMQ_TOKEN");
+               settings.ClientOptions.Username = "admin";
+               settings.ClientOptions.Password = Environment.GetEnvironmentVariable("VIBEMQ_SUPERUSER_PASSWORD");
                settings.ClientOptions.KeepAliveInterval = TimeSpan.FromSeconds(30);
                settings.ClientOptions.CommandTimeout = TimeSpan.FromSeconds(10);
                
@@ -597,15 +607,18 @@ Server + Client in One Application
            // Broker server
            services.AddVibeMQBroker(options => {
                options.Port = 2925;
-               options.EnableAuthentication = true;
-               options.AuthToken = "my-token";
+               options.Authorization = new AuthorizationOptions {
+                   SuperuserUsername = "admin",
+                   SuperuserPassword = "change-me"
+               };
            });
            
            // Client for local publishing
            services.AddVibeMQClient(settings => {
                settings.Host = "localhost";
                settings.Port = 2925;
-               settings.ClientOptions.AuthToken = "my-token";
+               settings.ClientOptions.Username = "admin";
+               settings.ClientOptions.Password = "change-me";
            });
        })
        .Build();
@@ -628,15 +641,16 @@ For Docker and cloud deployments:
 
    # Server
    VIBEMQ__PORT=2925
-   VIBEMQ__ENABLEAUTHENTICATION=true
-   VIBEMQ__AUTHTOKEN=my-secret-token
+   VIBEMQ__Authorization__SuperuserUsername=admin
+   VibeMQ__Authorization__SuperuserPassword=my-secret-password
    VIBEMQ__QUEUEDEFAULTS__DEFAULTDELIVERYMODE=RoundRobin
    VIBEMQ__QUEUEDEFAULTS__MAXQUEUESIZE=10000
 
    # Client
    VIBEMQCLIENT__HOST=vibemq-server
    VIBEMQCLIENT__PORT=2925
-   VIBEMQCLIENT__CLIENTOPTIONS__AUTHTOKEN=my-secret-token
+   VIBEMQCLIENT__CLIENTOPTIONS__USERNAME=admin
+   VIBEMQCLIENT__CLIENTOPTIONS__PASSWORD=my-secret-password
 
 **Program.cs:**
 
@@ -674,8 +688,8 @@ Docker Compose Example
        image: bobsans/vibemq:latest
        environment:
          - VIBEMQ__PORT=2925
-         - VIBEMQ__ENABLEAUTHENTICATION=true
-         - VIBEMQ__AUTHTOKEN=${VIBEMQ_TOKEN}
+         - VIBEMQ__Authorization__SuperuserUsername=admin
+         - VibeMQ__Authorization__SuperuserPassword=${VIBEMQ_SUPERUSER_PASSWORD}
        ports:
          - "2925:2925"
          - "2926:2926"
@@ -685,7 +699,8 @@ Docker Compose Example
        environment:
          - VIBEMQCLIENT__HOST=vibemq
          - VIBEMQCLIENT__PORT=2925
-         - VIBEMQCLIENT__CLIENTOPTIONS__AUTHTOKEN=${VIBEMQ_TOKEN}
+         - VIBEMQCLIENT__CLIENTOPTIONS__USERNAME=admin
+         - VIBEMQCLIENT__CLIENTOPTIONS__PASSWORD=${VIBEMQ_SUPERUSER_PASSWORD}
        depends_on:
          - vibemq
 

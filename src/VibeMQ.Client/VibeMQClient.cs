@@ -651,6 +651,10 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
             return;
         }
 
+        await DisconnectCoreAsync(cancellationToken).ConfigureAwait(false);
+    }
+
+    private async Task DisconnectCoreAsync(CancellationToken cancellationToken) {
         LogDisconnecting();
         CancellationTokenSource? ctsSnapshot;
         bool canSendDisconnect;
@@ -687,7 +691,7 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
         }
 
         _disposed = true;
-        await DisconnectAsync().ConfigureAwait(false);
+        await DisconnectCoreAsync(CancellationToken.None).ConfigureAwait(false);
 
         // Await background tasks to prevent unobserved exceptions (bounded wait to avoid hanging dispose)
         const int disposeTimeoutMs = 5_000;
@@ -748,19 +752,24 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
         }
 
         // Build Connect headers (auth + compression preference)
-        var connectHeaders = new Dictionary<string, string>();
+        Dictionary<string, string>? connectHeaders = null;
 
-        if (!string.IsNullOrEmpty(_options.Username) && !string.IsNullOrEmpty(_options.Password)) {
-            connectHeaders["authUsername"] = _options.Username;
-            connectHeaders["authPassword"] = _options.Password;
+        var hasUsername = !string.IsNullOrEmpty(_options.Username);
+        var hasPassword = !string.IsNullOrEmpty(_options.Password);
+        if (hasUsername != hasPassword) {
+            throw new InvalidOperationException("Both Username and Password must be set together.");
         }
-#pragma warning disable CS0618
-        else if (!string.IsNullOrEmpty(_options.AuthToken)) {
-            connectHeaders["authToken"] = _options.AuthToken;
+
+        if (hasUsername) {
+            var username = _options.Username!;
+            var password = _options.Password!;
+            connectHeaders = new Dictionary<string, string>(capacity: 2);
+            connectHeaders["authUsername"] = username;
+            connectHeaders["authPassword"] = password;
         }
-#pragma warning restore CS0618
 
         if (_options.PreferredCompressions.Count > 0) {
+            connectHeaders ??= new Dictionary<string, string>(capacity: 1);
             connectHeaders["supported-compression"] = string.Join(
                 ",",
                 _options.PreferredCompressions.Select(CompressorFactory.Serialize)
@@ -769,7 +778,7 @@ public sealed partial class VibeMQClient : IVibeMQClient, IAsyncDisposable {
 
         var connectMsg = new ProtocolMessage {
             Type = CommandType.Connect,
-            Headers = connectHeaders.Count > 0 ? connectHeaders : null
+            Headers = connectHeaders
         };
 
         await _frameWriter.WriteFrameAsync(stream, connectMsg, cancellationToken).ConfigureAwait(false);

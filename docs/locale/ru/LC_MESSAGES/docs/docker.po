@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: VibeMQ 1.3.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-04 10:40+0300\n"
+"POT-Creation-Date: 2026-04-06 15:30+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ru\n"
@@ -18,11 +18,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.18.0\n"
 
-#: ../../docs/docker.rst:3 47fcb32cf87f46d4874e948ddbc22406
+#: ../../docs/docker.rst:3 76a486b0a49b4fd6be17fb700fa4e9a2
 msgid "Docker"
 msgstr "Docker"
 
-#: ../../docs/docker.rst:5 ff4176ffdab54b54ac6e25c4dafd3dc0
+#: ../../docs/docker.rst:5 2180c7e4860c4f95a9cbb3d37deb251d
 msgid ""
 "The official Docker image runs **VibeMQ.Server.Host**: a standalone "
 "broker with configuration from environment variables and an optional "
@@ -32,19 +32,19 @@ msgstr ""
 "брокер с настройкой через переменные окружения и опциональный "
 "конфигурационный файл."
 
-#: ../../docs/docker.rst:9 d36a4b7315a347b7a908aaa3baaeb09a
+#: ../../docs/docker.rst:9 b50f172af4484763870d1c844e40d651
 msgid "Contents"
 msgstr "Содержание"
 
-#: ../../docs/docker.rst:12 ff38c1a75bf44eb6806eafa6c07c943c
+#: ../../docs/docker.rst:12 e194bd6bdbf0482684bd1ded78cb1132
 msgid "Quick Start"
 msgstr "Быстрый старт"
 
-#: ../../docs/docker.rst:14 8fed2d9950b14e9d869fe3b912ae83ec
+#: ../../docs/docker.rst:14 3f1b26a172464a2db884985e3246da10
 msgid "Pull and run from Docker Hub (recommended):"
 msgstr "Загрузка и запуск из Docker Hub (рекомендуется):"
 
-#: ../../docs/docker.rst:21 f72fd04038504a2980b3a574b04ab96d
+#: ../../docs/docker.rst:21 01f6b184e20046478fdab348768b050c
 msgid ""
 "Clients can connect to ``localhost:2925``. By default the broker runs "
 "without authentication."
@@ -52,7 +52,7 @@ msgstr ""
 "Клиенты подключаются к ``localhost:2925``. По умолчанию брокер работает "
 "без аутентификации."
 
-#: ../../docs/docker.rst:23
+#: ../../docs/docker.rst:23 02b5256697624457b2b791c07a97eead
 msgid ""
 "To build from source instead, use ``docker/Dockerfile`` from the "
 "repository (see image variants below)."
@@ -60,11 +60,11 @@ msgstr ""
 "Если нужно собирать из исходников, используйте ``docker/Dockerfile`` из "
 "репозитория (см. варианты образов ниже)."
 
-#: ../../docs/docker.rst:24 79db9bb745f24c92ae36d5910b96b60d
+#: ../../docs/docker.rst:26 893c908821174b55b511ba9e0379a66e
 msgid "Image variants"
 msgstr "Варианты образа"
 
-#: ../../docs/docker.rst:26 7572437c5b81428595a3615c9eafdb33
+#: ../../docs/docker.rst:28 dce067d426f447eeaf428fa806710f6c
 msgid ""
 "The default ``docker/Dockerfile`` builds a **size-optimized** image "
 "(Alpine, self-contained single-file). If you prefer a **framework-"
@@ -76,7 +76,7 @@ msgstr ""
 "**framework-dependent** образ (запуск через ``dotnet`` в контейнере), "
 "собирайте цель ``runtime``:"
 
-#: ../../docs/docker.rst:35 5e75727e66f640a0a7a2314aa88d4e34
+#: ../../docs/docker.rst:37 b27a2732838f4410b12639748c49b9f6
 msgid ""
 "Docker images are built with **invariant globalization** mode for smaller"
 " base images. If your application relies on culture-specific "
@@ -86,11 +86,11 @@ msgstr ""
 "уменьшения базовых образов. Если ваше приложение зависит от "
 "форматирования/парсинга с учётом культуры, протестируйте это поведение."
 
-#: ../../docs/docker.rst:39 748eace430f240f3bb68ec2cef81f369
+#: ../../docs/docker.rst:41 65a1f272c8534d6d8eeb2e58ce70bfc3
 msgid "Broker + Web UI image"
 msgstr "Образ брокера + Web UI"
 
-#: ../../docs/docker.rst:41 120ed1c509d84ef7869e38dd89ef1a72
+#: ../../docs/docker.rst:43 c96816c4b3694c90ae19fd4d10a4c627
 msgid ""
 "To run the broker with the embedded dashboard (port **12925**), use the "
 "official Web UI image:"
@@ -98,11 +98,11 @@ msgstr ""
 "Чтобы запустить брокер со встроенным дашбордом (порт **12925**), "
 "используйте официальный образ Web UI:"
 
-#: ../../docs/docker.rst:49 2c6b8c3ab44c4185ae53d058b1735079
+#: ../../docs/docker.rst:51 7b4ffee770b44170a931ebd749076182
 msgid "Using Docker Compose"
 msgstr "Запуск через Docker Compose"
 
-#: ../../docs/docker.rst:55 f503791f33154512be5a6683e139fb34
+#: ../../docs/docker.rst:57 1618acadd7bb455ea31268b89a93dde1
 msgid ""
 "The broker listens on port 2925. Edit ``docker/docker-compose.yml`` to "
 "change ports or add environment variables."
@@ -110,11 +110,11 @@ msgstr ""
 "Брокер слушает порт 2925. Измените ``docker/docker-compose.yml``, чтобы "
 "задать другой порт или переменные окружения."
 
-#: ../../docs/docker.rst:58 92be76c772cc4697b8bcfd70c039584f
+#: ../../docs/docker.rst:60 0f23dd007bf14a149c0f1413d4d5717b
 msgid "Configuration"
 msgstr "Настройка"
 
-#: ../../docs/docker.rst:60 2394cefc0d9d428788aa078da9d63964
+#: ../../docs/docker.rst:62 8b03b6471e784ad8ad6cf9aa2ca51d1d
 msgid ""
 "The image uses the same options as the rest of VibeMQ (see "
 ":doc:`configuration`). Two mechanisms are supported:"
@@ -122,7 +122,7 @@ msgstr ""
 "Образ использует те же параметры, что и остальной VibeMQ (см. "
 ":doc:`configuration`). Поддерживаются два способа:"
 
-#: ../../docs/docker.rst:62 6ad0489f163f4a229e75cfe6187871e3
+#: ../../docs/docker.rst:64 4eff59ee359047ef9160221421b2b4dd
 msgid ""
 "**Environment variables** — recommended for Docker/Kubernetes. Use the "
 "``VibeMQ__`` prefix and double underscore for nested keys."
@@ -131,7 +131,7 @@ msgstr ""
 "Используйте префикс ``VibeMQ__`` и двойное подчёркивание для вложенных "
 "ключей."
 
-#: ../../docs/docker.rst:63 803d9a35013248c4b44eefc6f7e46bec
+#: ../../docs/docker.rst:65 e46a85594da64561aa0bcc1d3c4dd1a4
 msgid ""
 "**Config file** — optional JSON file (e.g. ``appsettings.json``). Set "
 "``VIBEMQ_CONFIG_PATH`` to the full path of the file; it is loaded first, "
@@ -142,87 +142,71 @@ msgstr ""
 "файлу; он загружается первым, затем переменные окружения переопределяют "
 "значения."
 
-#: ../../docs/docker.rst:66 2ec3fc6332dc44959c39c54ebec6056a
+#: ../../docs/docker.rst:68 0d547f97961942128d2669cfb0986d93
 msgid "Environment variables (examples)"
 msgstr "Переменные окружения (примеры)"
 
-#: ../../docs/docker.rst:72 63483bc1977b40e2972d5cb0f57e9a43
+#: ../../docs/docker.rst:74 9da985e0377a42e2816ec6628022036e
 msgid "Variable"
 msgstr "Переменная"
 
-#: ../../docs/docker.rst:73 f2266c200a5a4341bea2405d21ff8ff5
+#: ../../docs/docker.rst:75 62b0196c021648fa819db23696931dee
 msgid "Description"
 msgstr "Описание"
 
-#: ../../docs/docker.rst:74 2fbfc0dfa1624a719e125bbc35d07fa1
+#: ../../docs/docker.rst:76 b669e462c30145e3ac14cce5b970a41d
 msgid "``VibeMQ__Port``"
 msgstr "``VibeMQ__Port``"
 
-#: ../../docs/docker.rst:75 be7424da88b448e9a6afe07cdf7b6490
+#: ../../docs/docker.rst:77 bd3f63f4ea6747a3bb73c8dc1e9b0424
 msgid "TCP port (default: 2925)"
 msgstr "TCP-порт (по умолчанию: 2925)"
 
-#: ../../docs/docker.rst:76 77d66d5b29d445fd8bd53aab51cf72dc
+#: ../../docs/docker.rst:78 725204e7b3ab4eaaa8f669439c658142
 msgid "``VibeMQ__MaxConnections``"
 msgstr "``VibeMQ__MaxConnections``"
 
-#: ../../docs/docker.rst:77 bce4b7acf0f446b6b2c4d76b95c2dad0
+#: ../../docs/docker.rst:79 82bcfa3888fb49538452d9d78f0e6c9a
 msgid "Max concurrent connections (default: 1000)"
 msgstr "Макс. одновременных подключений (по умолчанию: 1000)"
 
-#: ../../docs/docker.rst:78 215375a156b045d3a145e0adfdcf4d52
+#: ../../docs/docker.rst:80 dd0563f59b7e4471b52d11f621bd412a
 msgid "``VibeMQ__MaxMessageSize``"
 msgstr "``VibeMQ__MaxMessageSize``"
 
-#: ../../docs/docker.rst:79 89ea225cfb5641688d1cf795dec5ebc7
+#: ../../docs/docker.rst:81 fc5da50646574d7d9f3383838d6d7222
 msgid "Max message size in bytes (default: 1048576)"
 msgstr "Макс. размер сообщения в байтах (по умолчанию: 1048576)"
 
-#: ../../docs/docker.rst:80 2a95feff093b4be5b7d7bfb7fc0f94de
-msgid "``VibeMQ__EnableAuthentication``"
-msgstr "``VibeMQ__EnableAuthentication``"
-
-#: ../../docs/docker.rst:81 511a97c0dcb04213a4a79fc50dbe6f53
-msgid "``true`` or ``false``"
-msgstr "``true`` или ``false``"
-
-#: ../../docs/docker.rst:82 f3b40e77f018451098c55ed68c877829
-msgid "``VibeMQ__AuthToken``"
-msgstr "``VibeMQ__AuthToken``"
-
-#: ../../docs/docker.rst:83 0c68a58796034bd6b4559e9061c48829
-msgid "Legacy token when ``EnableAuthentication`` is true"
-msgstr "Устаревший токен при ``EnableAuthentication`` = true"
-
-#: ../../docs/docker.rst:84 157d13efd2eb464db815243dab94ba96
+#: ../../docs/docker.rst:82 8a02516100ee480983ded13b874721cc
 msgid "``VibeMQ__Authorization__SuperuserUsername``"
 msgstr "``VibeMQ__Authorization__SuperuserUsername``"
 
-#: ../../docs/docker.rst:85 beb853f045be4a968c9c20c87767f94d
+#: ../../docs/docker.rst:83 6ae40d3014d74b5781f64d9590a83bc7
 msgid "Superuser login (username/password auth)"
 msgstr "Логин суперпользователя (аутентификация по логину/паролю)"
 
-#: ../../docs/docker.rst:86 fe936afc1fa04981a890d2087f73fa6a
+#: ../../docs/docker.rst:84 34524c223fb94b14b6287ddb182e8463
 msgid "``VibeMQ__Authorization__SuperuserPassword``"
 msgstr "``VibeMQ__Authorization__SuperuserPassword``"
 
-#: ../../docs/docker.rst:87 bacbb6bf324b407ca3552a235dba4f4b
+#: ../../docs/docker.rst:85 48c6a8085e9e46418c05e02b1fcbc626
 msgid "Superuser password on first run (e.g. from secret)"
 msgstr "Пароль суперпользователя при первом запуске (например из секрета)"
 
-#: ../../docs/docker.rst:88 7027352702314b96a9c633ca8f39e426
+#: ../../docs/docker.rst:86 8e947b775cfe4e7ca226299d5becea32
 msgid "``VibeMQ__Authorization__DatabasePath``"
 msgstr "``VibeMQ__Authorization__DatabasePath``"
 
-#: ../../docs/docker.rst:89 7c623a4276af4c659394782eb4b1861b
+#: ../../docs/docker.rst:87 1926696dd2f5423cbe8fe99493179753
 msgid "Path to SQLite auth DB (default: auth.db)"
 msgstr "Путь к SQLite БД аутентификации (по умолчанию: auth.db)"
 
-#: ../../docs/docker.rst:90 4b2f07d2ef334c11a91168b50ec0ec7b
+#: ../../docs/docker.rst:88 3d90dec976bd4aee95ccee3754a8a5ad
 msgid "``VibeMQ__StorageType``"
 msgstr "``VibeMQ__StorageType``"
 
-#: ../../docs/docker.rst:91 50893f2affa240629cfff7bda6fb8472
+#: ../../docs/docker.rst:89 99514c7c04094131ab46034fcbc3dd24
 msgid ""
 "Host-specific: ``Sqlite`` to enable SQLite persistence (not in "
 "``BrokerOptions``; the Docker Host reads this to register "
@@ -232,29 +216,31 @@ msgstr ""
 "``BrokerOptions``; проект Docker Host читает это и регистрирует "
 "``AddVibeMQSqliteStorage``). Не задано или другое значение = в памяти."
 
-#: ../../docs/docker.rst:92 eabfd1ac9ede46b395ea32bda60ef4eb
+#: ../../docs/docker.rst:90 429b5624e628485996410064bd75947e
 msgid "``VibeMQ__SqliteStorage__DatabasePath``"
 msgstr "``VibeMQ__SqliteStorage__DatabasePath``"
 
-#: ../../docs/docker.rst:93 a69cdf91000147c8801ead1e427ede92
+#: ../../docs/docker.rst:91 4a21d7534f0741c3925555789e0c166a
 msgid ""
 "Path to SQLite queue DB when ``StorageType`` is Sqlite (section "
 "``VibeMQ:SqliteStorage``)."
-msgstr "Путь к SQLite БД очередей при ``StorageType`` = Sqlite (секция ``VibeMQ:SqliteStorage``)."
+msgstr ""
+"Путь к SQLite БД очередей при ``StorageType`` = Sqlite (секция "
+"``VibeMQ:SqliteStorage``)."
 
-#: ../../docs/docker.rst:94 51999ae50aad4514b4785da161b02f74
+#: ../../docs/docker.rst:92 46dfaf931d3f4300952547dce1e687cc
 msgid "``Logging__LogLevel__Default``"
 msgstr "``Logging__LogLevel__Default``"
 
-#: ../../docs/docker.rst:95 d923be2d1d45435a93b1f9373f8e7ee3
+#: ../../docs/docker.rst:93 56cf4a18128b4d1daf41980912f7a541
 msgid "Log level: Debug, Information, Warning, Error"
 msgstr "Уровень логирования: Debug, Information, Warning, Error"
 
-#: ../../docs/docker.rst:98 77decd9836bd42b8bc756ad1cbc1883b
+#: ../../docs/docker.rst:96 788ee513e1094cd3a63b60226720356e
 msgid "Config file path"
 msgstr "Путь к конфигурационному файлу"
 
-#: ../../docs/docker.rst:100 62e333c12d544689b7eb1c1499764407
+#: ../../docs/docker.rst:98 cd6e2b90eea04da6b598b6a414486fc4
 msgid ""
 "Set ``VIBEMQ_CONFIG_PATH`` to load an additional or custom JSON config "
 "file (e.g. mounted in the container):"
@@ -262,7 +248,7 @@ msgstr ""
 "Задайте ``VIBEMQ_CONFIG_PATH`` для загрузки дополнительного или своего "
 "JSON-файла (например, смонтированного в контейнер):"
 
-#: ../../docs/docker.rst:109 4a1beb7cfd5c4977a3286cbe4268c5ad
+#: ../../docs/docker.rst:107 15bae59847514b26acab7c8ddd57475e
 msgid ""
 "The built-in ``appsettings.json`` in the image provides defaults; env "
 "vars override any value from config."
@@ -270,43 +256,43 @@ msgstr ""
 "Встроенный ``appsettings.json`` в образе задаёт значения по умолчанию; "
 "переменные окружения переопределяют любые значения из конфига."
 
-#: ../../docs/docker.rst:112 0a3ef1a7e077492eaa3a9c3f940907b4
+#: ../../docs/docker.rst:110 75ad276c66ec4e659197a8de4c1f8a69
 msgid "Example: auth and port"
 msgstr "Пример: аутентификация и порт"
 
-#: ../../docs/docker.rst:114 c8c37bc91f2b4a72b1815e8f3e5ad291
-msgid "Token-based auth on port 9000:"
-msgstr "Токенная аутентификация на порту 9000:"
+#: ../../docs/docker.rst:112 950076fcdb614283aaea6cb0bf9f90b4
+msgid "Username/password auth on port 9000:"
+msgstr "аутентификация по логину/паролю на порту 9000:"
 
-#: ../../docs/docker.rst:124 cbaf8e67811447598c591ea9ef21e9c1
+#: ../../docs/docker.rst:122 84abdf296c5541d09b7c5c667a570e7e
 msgid "Username/password auth with persistent auth DB:"
 msgstr "Аутентификация по логину/паролю с постоянной БД auth:"
 
-#: ../../docs/docker.rst:137 604a2a86f5c54993aa210440a8ec20b1
+#: ../../docs/docker.rst:134 8a41f19644cb4fe8aee52efee3323062
 msgid "Example: SQLite persistence"
 msgstr "Пример: сохранение в SQLite"
 
-#: ../../docs/docker.rst:148 3ae2d01ab2de4e569cc413f7fb2a439b
+#: ../../docs/docker.rst:145 b08366b5390941dea982961d16539908
 msgid "Image details"
 msgstr "Детали образа"
 
-#: ../../docs/docker.rst:150 466970fa446f4626a9eabfc60cd86961
+#: ../../docs/docker.rst:147 a93341dc573a4198848c88b79ac624d7
 msgid "**Published images:** ``bobsans/vibemq`` and ``bobsans/vibemq-webui``"
 msgstr "**Публикуемые образы:** ``bobsans/vibemq`` и ``bobsans/vibemq-webui``"
 
-#: ../../docs/docker.rst:151 6c77ca7f67344fb5a49eb054b10b1480
+#: ../../docs/docker.rst:148 d63cb8b4fbc5495baeca262bfef60bd2
 msgid "**Entrypoint:** ``dotnet VibeMQ.Server.Host.dll``"
 msgstr "**Точка входа:** ``dotnet VibeMQ.Server.Host.dll``"
 
-#: ../../docs/docker.rst:152 82ace594165a416ca525723178d6fbe5
+#: ../../docs/docker.rst:149 8287bb2b51374251bf054af6fe4de454
 msgid "**Working directory:** ``/app``"
 msgstr "**Рабочая директория:** ``/app``"
 
-#: ../../docs/docker.rst:153 3f813358ed034d95a75e570d75f14b4b
+#: ../../docs/docker.rst:150 5fe42156ad1c474cba16e6d3737990c6
 msgid "**Exposed port:** 2925 (override with ``VibeMQ__Port`` and republish)"
 msgstr "**Порт:** 2925 (переопределяется через ``VibeMQ__Port`` и перепубликацию)"
 
-#: ../../docs/docker.rst:155 0fb8746af0344ce8af272ce93bf6bfa8
+#: ../../docs/docker.rst:152 3ebbc18e4b314f8cb4689c302c218574
 msgid ""
 "The host project is ``VibeMQ.Server.Host`` in the ``docker/`` folder of "
 "the repository; it uses :doc:`di-integration` and binds "
@@ -316,4 +302,12 @@ msgstr ""
 " использует :doc:`di-integration` и привязывает :doc:`configuration` из "
 "секции ``VibeMQ``."
 
+#~ msgid "``VibeMQ__Authorization``"
+#~ msgstr "``VibeMQ__Authorization``"
+
+#~ msgid "``true`` or ``false``"
+#~ msgstr "``true`` или ``false``"
+
+#~ msgid "username/password when ``Authorization`` is true"
+#~ msgstr "Устаревший Пароль при ``Authorization`` = true"
 

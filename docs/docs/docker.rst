@@ -79,10 +79,6 @@ Environment variables (examples)
      - Max concurrent connections (default: 1000)
    * - ``VibeMQ__MaxMessageSize``
      - Max message size in bytes (default: 1048576)
-   * - ``VibeMQ__EnableAuthentication``
-     - ``true`` or ``false``
-   * - ``VibeMQ__AuthToken``
-     - Legacy token when ``EnableAuthentication`` is true
    * - ``VibeMQ__Authorization__SuperuserUsername``
      - Superuser login (username/password auth)
    * - ``VibeMQ__Authorization__SuperuserPassword``
@@ -113,14 +109,14 @@ The built-in ``appsettings.json`` in the image provides defaults; env vars overr
 Example: auth and port
 ----------------------
 
-Token-based auth on port 9000:
+Username/password auth on port 9000:
 
 .. code-block:: bash
 
    docker run -p 9000:9000 \
      -e VibeMQ__Port=9000 \
-     -e VibeMQ__EnableAuthentication=true \
-     -e VibeMQ__AuthToken=your-secret-token \
+     -e VibeMQ__Authorization__SuperuserUsername=admin \
+     -e VibeMQ__Authorization__SuperuserPassword=your-secret-password \
      bobsans/vibemq
 
 Username/password auth with persistent auth DB:
@@ -128,7 +124,6 @@ Username/password auth with persistent auth DB:
 .. code-block:: bash
 
    docker run -p 2925:2925 \
-     -e VibeMQ__EnableAuthentication=true \
      -e VibeMQ__Authorization__SuperuserUsername=admin \
      -e VibeMQ__Authorization__SuperuserPassword=secret \
      -e VibeMQ__Authorization__DatabasePath=/data/auth.db \

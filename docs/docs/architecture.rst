@@ -79,7 +79,7 @@ VibeMQ.Core
      - Persistence interface (messages, queues, DLQ). See :doc:`storage`.
    * - ``IMessageStore``
      - Deprecated; use ``IStorageProvider``.
-   * - ``IAuthenticationService``
+   * - ``IPasswordAuthenticationService``
      - Authentication interface
    * - ``IBrokerMetrics``
      - Metrics collection interface
@@ -160,7 +160,10 @@ VibeMQ.Server
 
    var broker = BrokerBuilder.Create()
        .UsePort(2925)
-       .UseAuthentication("token")
+       .UseAuthorization(options => {
+       options.SuperuserUsername = "admin";
+       options.SuperuserPassword = "my-secret-password";
+   })
        .ConfigureQueues(options => { ... })
        .Build();
 

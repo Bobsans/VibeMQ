@@ -1,4 +1,3 @@
-#pragma warning disable CS0618 // Uses legacy AuthToken for existing test coverage
 using VibeMQ.Client;
 using VibeMQ.Client.Exceptions;
 using VibeMQ.Configuration;
@@ -10,11 +9,12 @@ namespace VibeMQ.Tests.Integration;
 /// Integration tests for the queue declaration (auto-provisioning) feature.
 /// Each test uses an isolated queue name to avoid cross-test interference.
 /// </summary>
-public class QueueDeclarationsTests : IAsyncLifetime {
-    private readonly TestBrokerFixture _fixture = new();
+public class QueueDeclarationsTests : IClassFixture<TestBrokerFixture> {
+    private readonly TestBrokerFixture _fixture;
 
-    public Task InitializeAsync() => _fixture.InitializeAsync();
-    public Task DisposeAsync() => _fixture.DisposeAsync();
+    public QueueDeclarationsTests(TestBrokerFixture fixture) {
+        _fixture = fixture;
+    }
 
     // ──────────────────────────────────────────────────────────────
     // Pre-flight validation
@@ -23,7 +23,8 @@ public class QueueDeclarationsTests : IAsyncLifetime {
     [Fact]
     public async Task PreflightValidation_RedirectToDlqWithoutDlq_ThrowsBeforeConnecting() {
         var options = new ClientOptions {
-            AuthToken = "test-secret-token",
+            Username = TestBrokerFixture.Username,
+            Password = TestBrokerFixture.Password,
             ReconnectPolicy = new ReconnectPolicy { MaxAttempts = 0 }
         };
         options.DeclareQueue("irrelevant", q => {
@@ -327,8 +328,9 @@ file static class TestBrokerFixtureExtensions {
         Action<ClientOptions>? configure
     ) {
         var options = new ClientOptions {
-            AuthToken = "test-secret-token",
-            CommandTimeout = TimeSpan.FromSeconds(5),
+            Username = TestBrokerFixture.Username,
+            Password = TestBrokerFixture.Password,
+            CommandTimeout = IntegrationTestTimeouts.ClientCommandTimeout,
             ReconnectPolicy = new ReconnectPolicy { MaxAttempts = 0 }
         };
         configure?.Invoke(options);

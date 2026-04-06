@@ -35,7 +35,10 @@ Start the server:
 
    var broker = BrokerBuilder.Create()
        .UsePort(2925)
-       .UseAuthentication("my-secret-token")
+       .UseAuthorization(options => {
+       options.SuperuserUsername = "admin";
+       options.SuperuserPassword = "my-secret-password";
+   })
        .ConfigureQueues(options => {
            options.DefaultDeliveryMode = DeliveryMode.RoundRobin;
            options.MaxQueueSize = 10_000;
@@ -53,7 +56,7 @@ Connect the client:
    await using var client = await VibeMQClient.ConnectAsync(
        "localhost",
        2925,
-       new ClientOptions { AuthToken = "my-secret-token" }
+       new ClientOptions { Username = "admin", Password = "my-secret-password"  }
    );
 
    // Publish a message
@@ -149,7 +152,7 @@ Connect the client:
 **Security:**
 
 - Username/password authentication with per-queue ACL (BCrypt + SQLite)
-- Legacy token-based authentication
+- Legacy username/password authentication
 - TLS/SSL encryption support
 - Rate limiting for overload protection
 
@@ -198,14 +201,17 @@ Server with Dependency Injection:
 .. code-block:: csharp
 
    using VibeMQ.Server.DependencyInjection;
+   using VibeMQ.Configuration;
    using VibeMQ.Enums;
 
    var host = Host.CreateDefaultBuilder(args)
        .ConfigureServices(services => {
            services.AddVibeMQBroker(options => {
                options.Port = 2925;
-               options.EnableAuthentication = true;
-               options.AuthToken = "my-secret-token";
+               options.Authorization = new AuthorizationOptions {
+                   SuperuserUsername = "admin",
+                   SuperuserPassword = "change-me"
+               };
                options.QueueDefaults.DefaultDeliveryMode = DeliveryMode.RoundRobin;
            });
        })
@@ -225,7 +231,8 @@ Client with Dependency Injection:
            services.AddVibeMQClient(settings => {
                settings.Host = "localhost";
                settings.Port = 2925;
-               settings.ClientOptions.AuthToken = "my-secret-token";
+               settings.ClientOptions.Username = "admin";
+               settings.ClientOptions.Password = "my-secret-password";
            });
        })
        .Build();

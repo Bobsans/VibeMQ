@@ -216,7 +216,7 @@ Docker Compose
          - "2926:2926"
        environment:
          - VIBEMQ__PORT=2925
-         - VIBEMQ__AUTHTOKEN=my-secret-token
+         - VibeMQ__Authorization__SuperuserPassword=my-secret-password
        healthcheck:
          test: ["CMD", "curl", "-f", "http://localhost:2926/health/"]
          interval: 10s

@@ -119,12 +119,12 @@ msgid "\"Authentication failed\""
 msgstr "«Authentication failed»"
 
 #: ../../troubleshooting.rst:125 e1b06fa39651456f8f9a37960b84280c
-msgid "**Cause:** Tokens on server and client do not match."
-msgstr "**Причина:** Токены на сервере и клиенте не совпадают."
+msgid "**Cause:** Username/password on server and client do not match."
+msgstr "**Причина:** Имя пользователя/пароль на сервере и клиенте не совпадают."
 
 #: ../../troubleshooting.rst:147 a8a469f8c43e44a1832201bf2f0863f1
-msgid "Tokens are case-sensitive!"
-msgstr "Токены чувствительны к регистру!"
+msgid "Credentials are case-sensitive!"
+msgstr "Учетные данные чувствительны к регистру!"
 
 #: ../../troubleshooting.rst:150 77abab842de941a49ad413c40686c757
 msgid "\"Authentication required\""
@@ -133,8 +133,8 @@ msgstr "«Authentication required»"
 #: ../../troubleshooting.rst:158 18926b6ad8014031a1488a368ff60881
 msgid ""
 "**Cause:** Server requires authentication, but client did not provide "
-"token."
-msgstr "**Причина:** Сервер требует аутентификацию, но клиент не предоставил токен."
+"username/password."
+msgstr "**Причина:** Сервер требует аутентификацию, но клиент не предоставил имя пользователя/пароль."
 
 #: ../../troubleshooting.rst:173 0ae67a4459634951b086c7c8ecc3ea9c
 msgid "Queue Issues"

@@ -23,7 +23,8 @@ In ASP.NET Core or Worker Service you can inject **``IVibeMQClient``** and use i
    services.AddVibeMQClient(settings => {
        settings.Host = "localhost";
        settings.Port = 2925;
-       settings.ClientOptions.AuthToken = "my-token";
+       settings.ClientOptions.Username = "admin";
+       settings.ClientOptions.Password = "my-password";
    });
 
    // In any service
@@ -70,7 +71,8 @@ environment variables (e.g. ``VIBEMQ_CONNECTION_STRING``) or configuration (e.g.
    );
 
 Supported query/keys: ``tls``, ``skipCertValidation``, ``keepAlive``, ``commandTimeout``,
-``compression`` (``none``, ``brotli``, ``gzip`` or comma-separated), ``compressionThreshold``,
+``compression`` (`
+one``, ``brotli``, ``gzip`` or comma-separated), ``compressionThreshold``,
 ``reconnectMaxAttempts``, ``reconnectInitialDelay``, ``reconnectMaxDelay``, ``reconnectExponentialBackoff``,
 ``queues`` (comma-separated queue names for declare-on-connect). Invalid strings throw
 ``VibeMQConnectionStringException``. Use ``VibeMQConnectionString.Parse`` or ``TryParse`` to obtain
@@ -93,16 +95,15 @@ Basic Connection
 Connection with Authentication
 ------------------------------
 
-Legacy token:
+username/password:
 
 .. code-block:: csharp
 
    var client = await VibeMQClient.ConnectAsync(
        "localhost",
        2925,
-       new ClientOptions {
-           AuthToken = "my-secret-token"
-       }
+       new ClientOptions { Username = "admin", Password = "my-secret-password"
+        }
    );
 
 Username/password (see :doc:`authorization`):
@@ -134,7 +135,7 @@ Connection with Logging
    var client = await VibeMQClient.ConnectAsync(
        "localhost",
        2925,
-       new ClientOptions { AuthToken = "my-token" },
+       new ClientOptions { Username = "admin", Password = "my-password"  },
        logger
    );
 
@@ -376,9 +377,8 @@ Use the fluent ``DeclareQueue`` helper on ``ClientOptions``:
    await using var client = await VibeMQClient.ConnectAsync(
        "localhost",
        2925,
-       new ClientOptions {
-           AuthToken = "my-token",
-       }
+       new ClientOptions { Username = "admin", Password = "my-password",
+        }
        .DeclareQueue("orders", q => {
            q.Mode            = DeliveryMode.FanOutWithAck;
            q.MaxQueueSize    = 50_000;
@@ -596,7 +596,7 @@ ClientOptions
 
    var options = new ClientOptions {
        // Authentication
-       AuthToken = "my-secret-token",
+       Password = "my-secret-password",
 
        // Keep-alive
        KeepAliveInterval = TimeSpan.FromSeconds(30),
@@ -653,7 +653,7 @@ Connection with TLS:
        2925,
        new ClientOptions {
            UseTls = true,
-           AuthToken = "my-token"
+           Password = "my-password"
        }
    );
 
@@ -751,9 +751,8 @@ Simple Publisher
 
    using VibeMQ.Client;
 
-   await using var publisher = await VibeMQClient.ConnectAsync("localhost", 2925, new ClientOptions {
-       AuthToken = "my-token"
-   });
+   await using var publisher = await VibeMQClient.ConnectAsync("localhost", 2925, new ClientOptions { Username = "admin", Password = "my-password"
+    });
 
    Console.WriteLine("Publisher connected. Enter message (Enter to exit):");
 
@@ -776,9 +775,8 @@ Simple Subscriber
 
    using VibeMQ.Client;
 
-   await using var subscriber = await VibeMQClient.ConnectAsync("localhost", 2925, new ClientOptions {
-       AuthToken = "my-token"
-   });
+   await using var subscriber = await VibeMQClient.ConnectAsync("localhost", 2925, new ClientOptions { Username = "admin", Password = "my-password"
+    });
 
    await using var subscription = await subscriber.SubscribeAsync<dynamic>(
        "messages",
@@ -900,15 +898,18 @@ Authentication Error
 
 **Error:** ``Authentication failed``
 
-**Solution:** Make sure tokens match:
+**Solution:** Make sure credentials match:
 
 .. code-block:: csharp
 
    // Server
-   .UseAuthentication("my-token")
+   .UseAuthorization(options => {
+       options.SuperuserUsername = "admin";
+       options.SuperuserPassword = "my-password";
+   })
 
    // Client
-   new ClientOptions { AuthToken = "my-token" }
+   new ClientOptions { Username = "admin", Password = "my-password"  }
 
 Connection Timeout
 ------------------

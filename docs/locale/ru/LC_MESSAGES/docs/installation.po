@@ -231,8 +231,8 @@ msgid "**Error:** ``Authentication failed``"
 msgstr "**Ошибка:** ``Authentication failed``"
 
 #: ../../installation.rst:329 6b68e48baffe497e8d47ec0db51c66ff
-msgid "**Solution:** Make sure tokens match:"
-msgstr "**Решение:** Убедитесь, что токены совпадают:"
+msgid "**Solution:** Make sure credentials match:"
+msgstr "**Решение:** Убедитесь, что Учетные данные совпадают:"
 
 #: ../../installation.rst:340 d93059e543e44896894cbb4c4256b457
 msgid "TLS/SSL Errors"

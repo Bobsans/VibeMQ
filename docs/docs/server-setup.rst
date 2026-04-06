@@ -45,7 +45,10 @@ Advanced Configuration
 
    var broker = BrokerBuilder.Create()
        .UsePort(2925)
-       .UseAuthentication("my-secret-token")
+       .UseAuthorization(options => {
+       options.SuperuserUsername = "admin";
+       options.SuperuserPassword = "my-secret-password";
+   })
        .UseMaxConnections(1000)
        .UseMaxMessageSize(1_048_576)  // 1 MB
        .ConfigureQueues(options => {
@@ -94,15 +97,9 @@ Basic Parameters
    * - ``MaxMessageSize``
      - 1 MB
      - Maximum message size
-   * - ``EnableAuthentication``
-     - false
-     - Enable legacy token authentication
-   * - ``AuthToken``
-     - null
-     - Token for legacy authentication (deprecated)
-   * - ``Authorization``
-     - null
-     - Enable username/password auth with per-queue ACL (see :doc:`authorization`)
+  * - ``Authorization``
+    - null
+    - Enable username/password auth with per-queue ACL (see :doc:`authorization`)
 
 Default Queue Settings
 -------------------------------
@@ -255,7 +252,8 @@ Delivery by message priority:
 
 - ``Critical`` — critical (delivered first)
 - ``High`` — high
-- ``Normal`` — normal (default)
+- `
+ormal`` — normal (default)
 - ``Low`` — low (delivered last)
 
 **Publishing example:**
@@ -379,7 +377,7 @@ and per-queue ACL stored in a dedicated SQLite database:
 
 See :doc:`authorization` for full details (users, ACL patterns, admin commands).
 
-Legacy Token Authentication
+Legacy username/password authentication
 ============================
 
 .. deprecated:: 2.0
@@ -394,15 +392,14 @@ Enabling Authentication:
    var client = await VibeMQClient.ConnectAsync(
        "localhost",
        2925,
-       new ClientOptions {
-           AuthToken = "my-secret-token"
-       }
+       new ClientOptions { Username = "admin", Password = "my-secret-password"
+        }
    );
 
 .. warning::
 
-   Use complex tokens in production (minimum 32 characters).
-   Store tokens securely (Azure Key Vault, AWS Secrets Manager, HashiCorp Vault).
+   Use complex passwords in production (minimum 12 characters).
+   Store credentials securely (Azure Key Vault, AWS Secrets Manager, HashiCorp Vault).
 
 TLS/SSL Encryption
 ==================
@@ -544,7 +541,10 @@ Production Server
 
    var broker = BrokerBuilder.Create()
        .UsePort(2925)
-       .UseAuthentication(Environment.GetEnvironmentVariable("VIBEMQ_TOKEN"))
+       .UseAuthorization(options => {
+       options.SuperuserUsername = "admin";
+       options.SuperuserPassword = Environment.GetEnvironmentVariable("VIBEMQ_SUPERUSER_PASSWORD");
+   })
        .UseMaxConnections(5000)
        .ConfigureQueues(options => {
            options.DefaultDeliveryMode = DeliveryMode.RoundRobin;
@@ -571,7 +571,10 @@ Microservices Server
 
    var broker = BrokerBuilder.Create()
        .UsePort(2925)
-       .UseAuthentication("microservice-token")
+       .UseAuthorization(options => {
+       options.SuperuserUsername = "admin";
+       options.SuperuserPassword = "microservice-password";
+   })
        .ConfigureQueues(options => {
            options.DefaultDeliveryMode = DeliveryMode.FanOutWithAck;
            options.EnableAutoCreate = true;
@@ -590,7 +593,10 @@ IoT Server
 
    var broker = BrokerBuilder.Create()
        .UsePort(8883)  // Standard MQTT port
-       .UseAuthentication("iot-token")
+       .UseAuthorization(options => {
+       options.SuperuserUsername = "admin";
+       options.SuperuserPassword = "iot-password";
+   })
        .UseMaxConnections(10000)
        .ConfigureQueues(options => {
            options.DefaultDeliveryMode = DeliveryMode.RoundRobin;

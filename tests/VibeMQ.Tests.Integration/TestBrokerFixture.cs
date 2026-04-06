@@ -9,14 +9,16 @@ namespace VibeMQ.Tests.Integration;
 /// Shared test fixture that starts a broker on a random port for integration tests.
 /// </summary>
 public sealed class TestBrokerFixture : IAsyncLifetime, IDisposable {
-    private const string AUTH_TOKEN = "test-secret-token";
+    private const string AUTH_USERNAME = "test-admin";
+    private const string AUTH_PASSWORD = "test-password-123";
 
-    /// <summary>Token used by the broker for authentication. Use in client settings when connecting.</summary>
-    public static string AuthToken => AUTH_TOKEN;
+    public static string Username => AUTH_USERNAME;
+    public static string Password => AUTH_PASSWORD;
 
     private BrokerServer? _server;
     private Task? _serverTask;
     private CancellationTokenSource? _cts;
+    private string? _dbPath;
 
     public int Port { get; private set; }
 
@@ -24,32 +26,34 @@ public sealed class TestBrokerFixture : IAsyncLifetime, IDisposable {
         // Let the OS assign a free port to avoid collisions and TIME_WAIT issues
         Port = GetFreePort();
         _cts = new CancellationTokenSource();
+        _dbPath = Path.GetTempFileName();
 
-#pragma warning disable CS0618
         _server = BrokerBuilder.Create()
             .UsePort(Port)
-            .UseAuthentication(AUTH_TOKEN)
+            .UseAuthorization(options => {
+                options.SuperuserUsername = AUTH_USERNAME;
+                options.SuperuserPassword = AUTH_PASSWORD;
+                options.DatabasePath = _dbPath;
+            })
             .UseMaxConnections(100)
             .ConfigureRateLimiting(o => o.Enabled = false)
             .Build();
-#pragma warning restore CS0618
 
         _serverTask = _server.RunAsync(_cts.Token);
 
         // Wait until the server is actually listening (or fail fast if it crashed)
-        await WaitForPortAsync(Port, _serverTask, TimeSpan.FromSeconds(10));
+        await WaitForPortAsync(Port, _serverTask, IntegrationTestTimeouts.BrokerStartupTimeout);
     }
 
     public async Task<VibeMQClient> CreateClientAsync(bool authenticate = true) {
-#pragma warning disable CS0618
         var options = new ClientOptions {
-            AuthToken = authenticate ? AUTH_TOKEN : null,
-            CommandTimeout = TimeSpan.FromSeconds(5),
+            Username = authenticate ? AUTH_USERNAME : null,
+            Password = authenticate ? AUTH_PASSWORD : null,
+            CommandTimeout = IntegrationTestTimeouts.ClientCommandTimeout,
             ReconnectPolicy = new ReconnectPolicy { MaxAttempts = 0 }
         };
 
         var client = await VibeMQClient.ConnectAsync("127.0.0.1", Port, options);
-#pragma warning restore CS0618
         return client;
     }
 
@@ -60,7 +64,7 @@ public sealed class TestBrokerFixture : IAsyncLifetime, IDisposable {
 
         if (_serverTask is not null) {
             try {
-                await _serverTask.WaitAsync(TimeSpan.FromSeconds(5));
+                await _serverTask.WaitAsync(IntegrationTestTimeouts.BrokerShutdownWaitTimeout);
             } catch {
                 // Server task may throw on shutdown
             }
@@ -75,6 +79,14 @@ public sealed class TestBrokerFixture : IAsyncLifetime, IDisposable {
         }
 
         _cts?.Dispose();
+
+        if (_dbPath is not null && File.Exists(_dbPath)) {
+            try {
+                File.Delete(_dbPath);
+            } catch {
+                // best effort cleanup
+            }
+        }
     }
 
     public void Dispose() {
@@ -110,7 +122,7 @@ public sealed class TestBrokerFixture : IAsyncLifetime, IDisposable {
                 await tcp.ConnectAsync("127.0.0.1", port, cts.Token);
                 return; // Port is open — server is ready
             } catch (SocketException) {
-                await Task.Delay(50, cts.Token);
+                await Task.Delay(IntegrationTestTimeouts.PortProbeRetryDelayMs, cts.Token);
             }
         }
 

@@ -1,13 +1,9 @@
-# VibeMQ Documentation (Russian).
-# Copyright (C) 2026, Darkboy
-# This file is distributed under the same license as the VibeMQ package.
-# Darkboy, 2026.
-#
+
 msgid ""
 msgstr ""
 "Project-Id-Version: VibeMQ 1.0.0\n"
 "Report-Msgid-Bugs-To: https://github.com/DarkBoy/VibeMQ/issues\n"
-"POT-Creation-Date: 2026-02-27 19:30+0300\n"
+"POT-Creation-Date: 2026-04-06 15:30+0300\n"
 "PO-Revision-Date: 2026-02-24 12:00+0300\n"
 "Last-Translator: Darkboy\n"
 "Language: ru\n"
@@ -19,39 +15,39 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.18.0\n"
 
-#: ../../index.rst:74
+#: ../../index.rst:77
 msgid "Getting Started"
 msgstr "Начало работы"
 
-#: ../../index.rst:81
+#: ../../index.rst:84
 msgid "Core Concepts"
 msgstr "Основы"
 
-#: ../../index.rst:89
+#: ../../index.rst:92
 msgid "Setup & Usage"
 msgstr "Настройка и использование"
 
-#: ../../index.rst:101
+#: ../../index.rst:104
 msgid "Monitoring & Operations"
 msgstr "Мониторинг и обслуживание"
 
-#: ../../index.rst:110
+#: ../../index.rst:113
 msgid "Additional Resources"
 msgstr "Дополнительно"
 
-#: ../../index.rst:3 7e294a7199df4e9a9459c8690add70f2
+#: ../../index.rst:3 40de7c9cab8c4d5b85544ebd52d78a99
 msgid "VibeMQ — .NET Message Broker"
 msgstr "VibeMQ — Месседж-брокер на .NET"
 
-#: ../../index.rst:5 710bbc6268c7404eac0f9e8439299f5f
+#: ../../index.rst:5 7ee93635fa5b4f4c83f77d7e3f94b7cd
 msgid ".NET Version"
 msgstr "Версия .NET"
 
-#: ../../index.rst:9 8d715c04517e44e6a5f5fb8e7fd9d449
+#: ../../index.rst:9 4be44ca002d446a7a61b1573a03f6872
 msgid "License"
 msgstr "Лицензия"
 
-#: ../../index.rst:13 03ac20e0a5654aa5b5a11241d180802f
+#: ../../index.rst:13 10c7aaac48bf48aa89d006b666ffb6a3
 msgid ""
 "**VibeMQ** is a simple yet reliable message broker for .NET applications "
 "using TCP as transport. It supports publish/subscribe (pub/sub), queues "
@@ -64,283 +60,283 @@ msgstr ""
 "автоматические реконнекты и другие важные функции для построения "
 "распределённых систем."
 
-#: ../../index.rst:17 ee817a5a91144dd5ba70f6bd195f14e1
+#: ../../index.rst:17 7bf247ee4da24b8dbf4556a1322bb13a
 msgid "Contents"
 msgstr "Содержание"
 
-#: ../../index.rst:20 0952c19c0e224a6c8acbca0e13b18950
+#: ../../index.rst:20 fbdda5bf92634792ab2eef2305fb720d
 msgid "🚀 Quick Start"
 msgstr "🚀 Быстрый старт"
 
-#: ../../index.rst:22 3547e37cd3ac4849bb6577d83ff6b488
+#: ../../index.rst:22 5f339a9bb6fc43bebe8a1bdad9775b3b
 msgid "Install via NuGet:"
 msgstr "Установка через NuGet:"
 
-#: ../../index.rst:29 6ddcd74c8b814a14a263238425fc88c4
+#: ../../index.rst:29 f1bfab26261149f9b88bce9373304e47
 msgid "Start the server:"
 msgstr "Запуск сервера:"
 
-#: ../../index.rst:47 f5ae68bb6a59459e98aa9aa0712c0938
+#: ../../index.rst:50 386d341a97584135b97b2167735ec98b
 msgid "Connect the client:"
 msgstr "Подключение клиента:"
 
-#: ../../index.rst:72 d7c3bebbce4b48318dbb05b7819a653f
+#: ../../index.rst:75 f1f17146a604400195c132b9220e27f4
 msgid "📋 Table of Contents"
 msgstr "📋 Оглавление"
 
-#: ../../index.rst:119 5208f7ab7c43401987e3e0bc24bda774
+#: ../../index.rst:122 5074a89dc62e4ae38aa39a5fa5c2f513
 msgid "🎯 Key Features"
 msgstr "🎯 Ключевые возможности"
 
-#: ../../index.rst:121 02ef76acddf0453e9d9ceef8fcefd949
+#: ../../index.rst:124 eba85554ce784a1fb689d387851030a2
 msgid "**Message Delivery Modes:**"
 msgstr "**Режимы доставки сообщений:**"
 
-#: ../../index.rst:123 94736c359732432faa0aa25c81004b5e
+#: ../../index.rst:126 b8156c9ff42e4f09a0cb4df70926dde6
 msgid "**Round-robin** — each message delivered to one subscriber (cyclically)"
 msgstr ""
 "**Round-robin** — каждое сообщение доставляется одному подписчику "
 "(циклически)"
 
-#: ../../index.rst:124 6df13e56f727465ab3f1281141d1b5b1
+#: ../../index.rst:127 5d91fddd14c3442eb9c41a664659d594
 msgid ""
 "**Fan-out with acknowledgment** — to all subscribers with delivery "
 "guarantee"
 msgstr "**Fan-out с подтверждением** — всем подписчикам с гарантией доставки"
 
-#: ../../index.rst:125 87d95072bb5c481c945901a479ac6f27
+#: ../../index.rst:128 a6cfd51fde4340f398ae75e764159184
 msgid ""
 "**Fan-out without acknowledgment** — to all subscribers without "
 "confirmation"
 msgstr "**Fan-out без подтверждения** — всем подписчикам без подтверждения"
 
-#: ../../index.rst:126 168eee9ad1bd4554b9c63fc9800dce54
+#: ../../index.rst:129 dc71a71cb74d4167895624fad30ea210
 msgid "**Priority-based** — delivery by priority (Critical > High > Normal > Low)"
 msgstr ""
 "**Priority-based** — доставка по приоритету (Critical > High > Normal > "
 "Low)"
 
-#: ../../index.rst:128 e8b659153b0e45188511073d9ed10ea1
+#: ../../index.rst:131 648b957976d14b03bbc5f8a41cee9819
 msgid "**Delivery Guarantees:**"
 msgstr "**Гарантии доставки:**"
 
-#: ../../index.rst:130 d296d69990ad430f87275ae54bf01ac0
+#: ../../index.rst:133 df648f13120643278421f7c1e94fae30
 msgid "Acknowledgments (ACK) from receivers"
 msgstr "Подтверждения (ACK) от получателей"
 
-#: ../../index.rst:131 d9f741c5133d426abad143727f8db996
+#: ../../index.rst:134 62aec322af5849de96ed6aff65dc1bb4
 msgid "Automatic retry attempts with exponential backoff"
 msgstr "Автоматические повторные попытки с экспоненциальной задержкой"
 
-#: ../../index.rst:132 e40c24bcdf284f04b120fa9366de9273
+#: ../../index.rst:135 1d6f7d4d81a14ac698d4940f1e012720
 msgid "Dead Letter Queue for failed messages"
 msgstr "Dead Letter Queue для неудачных сообщений"
 
-#: ../../index.rst:133 38673c130af64b258d8a20541e62aa96
+#: ../../index.rst:136 34d5978140b64753bf23c459b0726a32
 msgid "In-flight message tracking"
 msgstr "Отслеживание неподтверждённых сообщений"
 
-#: ../../index.rst:135 9a08fa6b3aaf434e8a4a568e465f4d08
+#: ../../index.rst:138 38d4ffb352e64a2fb910bc8a53791de2
 msgid "**Reliability:**"
 msgstr "**Надёжность:**"
 
-#: ../../index.rst:137 84b9b5c3be6947e1ad31b12f7ed03645
+#: ../../index.rst:140 13592eb9189f4d31b5a2be02716dade7
 msgid "Keep-alive (PING/PONG) for connection maintenance"
 msgstr "Keep-alive (PING/PONG) для поддержания соединений"
 
-#: ../../index.rst:138 c583899f5aca44f1aa28e9a0d85bc79b
+#: ../../index.rst:141 725fc4026a8044ca87e96c0975567ea6
 msgid "Automatic reconnections on client side"
 msgstr "Автоматические реконнекты на стороне клиента"
 
-#: ../../index.rst:139 d1ff62f4857c4cbcbc7aaee61587f0e0
+#: ../../index.rst:142 e8bdd1ab364747759d29d61eab1d8dd5
 msgid "Graceful shutdown without message loss"
 msgstr "Graceful shutdown без потери сообщений"
 
-#: ../../index.rst:140 f8abece31600415bbda33663f88c5242
+#: ../../index.rst:143 0956dbbc6213471abc9a19a99630b02e
 msgid "Health checks for orchestrators"
 msgstr "Health checks для оркестраторов"
 
-#: ../../index.rst:142 7024a6505e8d4eaca9487ba57e4396a1
+#: ../../index.rst:145 d7f2c403d7124242b51b498b214ec583
 msgid "**Persistence:**"
 msgstr "**Персистентность:**"
 
-#: ../../index.rst:144 a3d554a522f94e79a1cdd418a483ad2e
+#: ../../index.rst:147 72feaacd72e44d1a865a5cea9931adea
 msgid "Pluggable storage providers (InMemory by default, SQLite available)"
 msgstr "Подключаемые провайдеры хранилища (InMemory по умолчанию, доступен SQLite)"
 
-#: ../../index.rst:145 66439931875247b78048fbeadad4ab80
+#: ../../index.rst:148 66ca609f23834a17bc896fa6151569c5
 msgid "Write-ahead logging — messages saved before delivery"
 msgstr "Write-ahead — сообщения сохраняются до доставки"
 
-#: ../../index.rst:146 a76827de940040889579d2ea20c766f7
+#: ../../index.rst:149 94fabea085c34e08b2c5fa9e957d59f6
 msgid "Automatic recovery of queues and messages on restart"
 msgstr "Автоматическое восстановление очередей и сообщений при перезапуске"
 
-#: ../../index.rst:147 880c43fdd33447f4bed4095d889e91e1
+#: ../../index.rst:150 6a0bd6ff08784e9a80223c876f61d507
 msgid "Dead Letter Queue persistence"
 msgstr "Персистентность Dead Letter Queue"
 
-#: ../../index.rst:149 70024bf702074378a0fe1f68977902f8
+#: ../../index.rst:152 ea2d86913ad746d1a2dbdd6716e6891c
 msgid "**Security:**"
 msgstr "**Безопасность:**"
 
-#: ../../index.rst:151 9f2947fa03424869ab04ac4e1d04af2d
+#: ../../index.rst:154 bb2d1735aac044febe7ffeec6124f57a
 msgid "Username/password authentication with per-queue ACL (BCrypt + SQLite)"
 msgstr "Аутентификация по логину/паролю с ACL на уровне очередей (BCrypt + SQLite)"
 
-#: ../../index.rst:152 6e2fd5a7730e4352a7383b9ea5014707
-msgid "Legacy token-based authentication"
-msgstr "Устаревшая токен-аутентификация"
+#: ../../index.rst:155 7a2b2be1f01342509f4745bb7cac78ed
+msgid "Legacy username/password authentication"
+msgstr "Устаревшая аутентификация по логину/паролю"
 
-#: ../../index.rst:153 8c355f28509147b4aaebf36b57fbed9d
+#: ../../index.rst:156 a9097eb8bdfc4811a865b8984aca1737
 msgid "TLS/SSL encryption support"
 msgstr "Поддержка TLS/SSL шифрования"
 
-#: ../../index.rst:154 82c8d949dea54324b90aa0219f2f0bdb
+#: ../../index.rst:157 4b83b648ef6f4f8da131b21e4147167b
 msgid "Rate limiting for overload protection"
 msgstr "Rate limiting для защиты от перегрузок"
 
-#: ../../index.rst:156 40fc73901d5b4efa8140e83bd28c4d7f
+#: ../../index.rst:159 bc998eab996b4442aea5d1c388305cad
 msgid "**Monitoring:**"
 msgstr "**Мониторинг:**"
 
-#: ../../index.rst:158 350efdbbf2fe428981c70d19de0f2644
+#: ../../index.rst:161 0a6c3eaf08fb467cb064a4878a4d70e9
 msgid "Built-in performance metrics"
 msgstr "Встроенные метрики производительности"
 
-#: ../../index.rst:159 1c87e22b40ed4cdc8a261767af07ba8a
+#: ../../index.rst:162 8c1dbc8d52cb4290856222ceac98fef9
 msgid "HTTP endpoints for health checks"
 msgstr "HTTP эндпоинты для health checks"
 
-#: ../../index.rst:160 b7e3cb834d054e0d9c8c2bc99051fa31
+#: ../../index.rst:163 73d317d1129144c89675f2ab484d4080
 msgid "Optional Web UI dashboard (VibeMQ.Server.WebUI)"
 msgstr ""
 
-#: ../../index.rst:161 53bfa2e5f8b44f7f8599a9bd2a4eb70c
+#: ../../index.rst:164 7901ded5e6c24142974aed2e0fd8c10d
 msgid "Statistics for queues and connections"
 msgstr "Статистика по очередям и подключениям"
 
-#: ../../index.rst:164 9081949ef0754b75804f017796d476cb
+#: ../../index.rst:167 8c940d1b31a84d0ebaa6ed6efef94502
 msgid "📦 Modular Architecture"
 msgstr "📦 Модульная архитектура"
 
-#: ../../index.rst:166 744d313125e7431584abd9fcbf531f8c
+#: ../../index.rst:169 f12e795cebe54ff1abfe73031c2f77e2
 msgid "VibeMQ consists of several NuGet packages:"
 msgstr "VibeMQ состоит из нескольких NuGet-пакетов:"
 
-#: ../../index.rst:172 14ef597848794bbdad7c960f25100302
+#: ../../index.rst:175 579be8f85fc44b18b8a6fd753eff412c
 msgid "Package"
 msgstr "Пакет"
 
-#: ../../index.rst:173 4c09d9cee3a548079ea45da299d5e038
+#: ../../index.rst:176 3ced752689af4b70b888bc787d8846ea
 msgid "Description"
 msgstr "Описание"
 
-#: ../../index.rst:174 bdfe4efe230a42b2b1938b80d69126e1
+#: ../../index.rst:177 c4ea9267c64846b3bd22aa051b922108
 msgid "``VibeMQ.Server``"
 msgstr "``VibeMQ.Server``"
 
-#: ../../index.rst:175 739e8bfa83c34a588c837ccd209ca2db
+#: ../../index.rst:178 e76c67c1f9214d109c156c7171590aa9
 msgid "Broker server"
 msgstr "Брокер-сервер"
 
-#: ../../index.rst:176 d06141ab50f3462fbfc4033b303a42be
+#: ../../index.rst:179 bb0f2f19a65341a69e4f25cec1a9d715
 msgid "``VibeMQ.Client``"
 msgstr "``VibeMQ.Client``"
 
-#: ../../index.rst:177 ff8e26e48f02490585b213a95130c153
+#: ../../index.rst:180 b74677cc4a534bff8be7ffa9d13a1a84
 msgid "Client for broker connection"
 msgstr "Клиент для подключения к брокеру"
 
-#: ../../index.rst:178 2f3fc050cd414ed5b181306a0f4aea66
+#: ../../index.rst:181 c6a93e9f1d2b482d8965b348e348270b
 msgid "``VibeMQ.Core``"
 msgstr "``VibeMQ.Core``"
 
-#: ../../index.rst:179 136def540bd2481c846f19ebb727cdc2
+#: ../../index.rst:182 7b1c28d15d37491a917c35ebbc95bfb0
 msgid "Core: models, interfaces, configuration"
 msgstr "Ядро: модели, интерфейсы, конфигурация"
 
-#: ../../index.rst:180 57ae8f3bfa384c92b3e8ac9987519580
+#: ../../index.rst:183 0a1670d93388442aad0bbd791c606a62
 msgid "``VibeMQ.Protocol``"
 msgstr "``VibeMQ.Protocol``"
 
-#: ../../index.rst:181 efa44af6e0424c17b0b6c93f768f161a
+#: ../../index.rst:184 a45fcf995a2d49fe93397e97f83bd21b
 msgid "Message exchange protocol"
 msgstr "Протокол обмена сообщениями"
 
-#: ../../index.rst:182 280843e7b5e047b4a1fcdf9e53a81dd6
+#: ../../index.rst:185 5aa0510a3b6040dc9df201f51fb6eb1e
 msgid "``VibeMQ.Health``"
 msgstr "``VibeMQ.Health``"
 
-#: ../../index.rst:183 e1a78caf9e0746c190e0d0207e0b9012
+#: ../../index.rst:186 667414db5ff04d3e84ff633a1c198f10
 msgid "HTTP health check server"
 msgstr "HTTP-сервер проверки работоспособности"
 
-#: ../../index.rst:184 70a88a20295e492296f8cff18874908f
+#: ../../index.rst:187 3b0c015f0f1e416596c3212f979df864
 msgid "``VibeMQ.Server.DependencyInjection``"
 msgstr "``VibeMQ.Server.DependencyInjection``"
 
-#: ../../index.rst:185 bb857446a1d34b4fad233afec3686a1b
+#: ../../index.rst:188 2eee688e90544566829f59cf7aba5e9b
 msgid "Server DI integration"
 msgstr "Интеграция сервера с DI"
 
-#: ../../index.rst:186 394593c8691d4e7891dda752c999178f
+#: ../../index.rst:189 fb72a20fdd494f3386eda08bfd916c12
 msgid "``VibeMQ.Client.DependencyInjection``"
 msgstr "``VibeMQ.Client.DependencyInjection``"
 
-#: ../../index.rst:187 0bb6384930e04affbc368c901befc976
+#: ../../index.rst:190 b1f9915acfde482f912d3b7720a721e5
 msgid "Client DI integration"
 msgstr "Интеграция клиента с DI"
 
-#: ../../index.rst:188 87d8e8232d1346c3a291ef67f0645285
+#: ../../index.rst:191 6b2bbb62761b4fc4a3975bb6c50c16a0
 msgid "``VibeMQ.Server.Storage.Sqlite``"
 msgstr "``VibeMQ.Server.Storage.Sqlite``"
 
-#: ../../index.rst:189 1097ef65b540405eac7de80a335d6c2f
+#: ../../index.rst:192 61c6ef18890a42b7afdb26e6e91d7582
 msgid "SQLite persistence provider"
 msgstr "Провайдер персистентности SQLite"
 
-#: ../../index.rst:190 ae62eaf734084de4b1a7631839276220
+#: ../../index.rst:193 86ca195939db4b59b4826f475b816c0c
 msgid "``VibeMQ.Server.WebUI``"
 msgstr "``VibeMQ.Server.WebUI``"
 
-#: ../../index.rst:191 915f2fe9eedf4ff9b726a90acb0523d8
+#: ../../index.rst:194 98635e7e66f04b37b7eaa0edd8f1d8bc
 msgid "Optional Web dashboard (health, metrics, queues) on a separate port"
 msgstr "Опциональный веб-дашборд (состояние, метрики, очереди) на отдельном порту"
 
-#: ../../index.rst:194 82f97570e4034f1eb6eabe875086e4a9
+#: ../../index.rst:197 8216dce7cf154a0b9e51e076d37627b6
 msgid "💡 Usage Examples"
 msgstr "💡 Примеры использования"
 
-#: ../../index.rst:196 12d66e845f154d3e9177515a2b621201
+#: ../../index.rst:199 c31fb383117d434093176e7d0da627dc
 msgid "Server with Dependency Injection:"
 msgstr "Сервер с Dependency Injection:"
 
-#: ../../index.rst:216 aaa97c395eb548779307de02ef5a30ca
+#: ../../index.rst:222 6f43f6e72f9e4bcb868481f9b553f9db
 msgid "Client with Dependency Injection:"
 msgstr "Клиент с Dependency Injection:"
 
-#: ../../index.rst:242 6b5128ba6fe042a294cd31c0f8359aeb
+#: ../../index.rst:249 792d69732a24427ab660eeb14674f0f9
 msgid "🔗 Links"
 msgstr "🔗 Ссылки"
 
-#: ../../index.rst:244 3ea8ef04e95b4efc98d4517cbe973dc2
+#: ../../index.rst:251 ab6779be1d124f4586d55234ed9d337f
 msgid "`GitHub Repository <https://github.com/DarkBoy/VibeMQ>`_"
 msgstr "`GitHub репозиторий <https://github.com/DarkBoy/VibeMQ>`_"
 
-#: ../../index.rst:245 3ab72a9ae1ad43fe83895a2dd5d5d791
+#: ../../index.rst:252 0a8df4be7f2144a0ab4b5696064549cc
 msgid "`NuGet Packages <https://www.nuget.org/packages?q=VibeMQ>`_"
-msgstr "`NuGet пакеты <https://www.nuget.org/packages?q=VibeMQ>`_"
+msgstr "`NuGet-пакеты <https://www.nuget.org/packages?q=VibeMQ>`_"
 
-#: ../../index.rst:246 3d163087aac241e4a799bff36588ffa7
+#: ../../index.rst:253 0a8df4be7f2144a0ab4b5696064549cc
 msgid "`Issues & Feature Requests <https://github.com/DarkBoy/VibeMQ/issues>`_"
 msgstr "`Issues и предложения <https://github.com/DarkBoy/VibeMQ/issues>`_"
 
-#: ../../index.rst:249 dad12641266c47d5bdec0f3478986781
+#: ../../index.rst:255 4b34ff4dd1e44ae1ae9e21dd97a4d41b
 msgid "📄 License"
 msgstr "📄 Лицензия"
 
-#: ../../index.rst:251 e1343b502fcc4a1d8b825ae302fe91a8
+#: ../../index.rst:259 3b5822235e50473c846fd026743c84ac
 msgid "VibeMQ is distributed under the MIT License. See LICENSE file for details."
 msgstr ""
 "VibeMQ распространяется под лицензией MIT. Подробности см. в файле "
